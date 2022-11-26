@@ -52,6 +52,7 @@ module.exports = {
     'unicorn/prefer-module': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/method-signature-style': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
     'unicorn/prefer-string-slice': 'off',
     'unicorn/no-array-reduce': 'off',
     '@typescript-eslint/member-delimiter-style': [
@@ -104,6 +105,7 @@ module.exports = {
     'standard',
     'plugin:security/recommended',
     'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
     'plugin:unicorn/recommended',
     'plugin:prettier/recommended',
     'standard-with-typescript',
