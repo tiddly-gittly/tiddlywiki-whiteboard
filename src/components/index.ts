@@ -4,7 +4,7 @@ import { App, IAppProps } from './tldraw';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 const Widget = require('$:/plugins/linonetwo/tw-react/widget.js').widget as typeof ReactWidget;
 
-export const SAVE_DEBOUNCE_INTERVAL = 1000;
+const SAVE_DEBOUNCE_INTERVAL = 1000;
 
 class TldrawWhiteBoardWidget extends Widget<IAppProps> {
   public reactComponent = App;

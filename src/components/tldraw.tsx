@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { TDDocument, Tldraw, TldrawApp } from '@tldraw/tldraw';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
 
@@ -26,17 +26,20 @@ export function App(props: IAppProps): JSX.Element {
   const {
     height,
     width,
+    currentTiddler,
     initialTiddlerText,
     saver: { onSave },
   } = props;
-  const [tldrawDocument, tldrawDocumentSetter] = useState<TDDocument | undefined>();
-  useEffect(() => {
+  const initialTiddlerJSONContent = useMemo(() => {
     if (initialTiddlerText) {
       try {
-        tldrawDocumentSetter(JSON.parse(initialTiddlerText) as TDDocument);
-      } catch {}
+        return JSON.parse(initialTiddlerText) as TDDocument;
+      } catch (error) {
+        console.error(`$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, text:\n${initialTiddlerText}\n${(error as Error).message}`);
+      }
     }
-  }, [initialTiddlerText]);
+  }, [currentTiddler, initialTiddlerText]);
+  const [tldrawDocument, tldrawDocumentSetter] = useState<TDDocument | undefined>(initialTiddlerJSONContent);
   const debouncedSaveOnChange = useDebouncedCallback(
     (app: TldrawApp) => {
       const newTiddlerText = JSON.stringify(app.document);
@@ -46,6 +49,8 @@ export function App(props: IAppProps): JSX.Element {
     debounceSaveTime,
   );
   const onChange = (app: TldrawApp) => {
+    // set document title
+    app.document.name = currentTiddler;
     tldrawDocumentSetter(app.document);
     debouncedSaveOnChange(app);
   };

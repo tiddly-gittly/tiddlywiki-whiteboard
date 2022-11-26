@@ -3,4 +3,12 @@ type: text/vnd.tiddlywiki
 
 {{$:/snippets/minilanguageswitcher}}
 
+Use widget:
+
+```tw5
 <$whiteboard />
+```
+
+<$whiteboard />
+
+[[TldrTiddlerExample]]
