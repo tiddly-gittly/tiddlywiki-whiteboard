@@ -25,6 +25,7 @@
     "@types/eslint-plugin-prettier": "3.1.0",
     "@types/fs-extra": "9.0.13",
     "@types/jest": "29.2.3",
+    "@types/lodash": "^4.14.190",
     "@types/prettier": "2.7.1",
     "@typescript-eslint/eslint-plugin": "5.44.0",
     "@typescript-eslint/parser": "5.44.0",
@@ -71,6 +72,7 @@
   },
   "dependencies": {
     "@tldraw/tldraw": "^1.26.2",
+    "beautiful-react-hooks": "^3.11.2",
     "tw-react": "^0.4.3"
   }
 }
