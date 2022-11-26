@@ -11,7 +11,6 @@ import esbuild from 'esbuild';
 import browserslist from 'browserslist';
 import { esbuildPluginBrowserslist } from 'esbuild-plugin-browserslist';
 import tw from 'tiddlywiki';
-import CleanCSS from 'clean-css';
 import { walkFilesAsync } from './utils.mjs';
 import { config } from '../esbuild.config.mjs';
 
@@ -102,11 +101,6 @@ export const initTiddlyWiki = async (_$tw, arguments_) => {
   $tw.boot.boot();
   return $tw;
 };
-
-const cleanCSS = new CleanCSS({
-  compatibility: 'ie8',
-  level: 2,
-});
 
 const excludeFiles = /^.*\.(tsx?|jsx|meta|swp|mjs)$|^\.(git|hg|lock-wscript|svn|DS_Store|(wafpickle-|_).*)$|^CVS$|^npm-debug\.log$/;
 
