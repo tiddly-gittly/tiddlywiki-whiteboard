@@ -66,7 +66,7 @@ const refresh = async () => {
   try {
     const [entryList, metaMap, _] = await findAllEntries();
     await buildEntries(entryList, metaMap);
-    exportPlugins($tw1, false, true, false);
+    exportPlugins($tw1, false, false, true);
   } catch (error) {
     console.error(error);
     return;

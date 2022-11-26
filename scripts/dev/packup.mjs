@@ -13,15 +13,19 @@ import { esbuildPluginBrowserslist } from 'esbuild-plugin-browserslist';
 import tw from 'tiddlywiki';
 import CleanCSS from 'clean-css';
 import { walkFilesAsync } from './utils.mjs';
+import { config } from '../esbuild.config.mjs';
 
 const SOURCE_DIRECTORY = 'src';
 const DISTNATION_DIRECTORY = 'dist';
 const WIKI_DIRECTORY = 'demo';
 const WIKI_TIDDLERS_DIRECTORY = `${WIKI_DIRECTORY}/tiddlers`;
+const DIST_WIKI_TIDDLERS_DIRECTORY = `${DISTNATION_DIRECTORY}/tiddlers`;
 const ENTRANCE_EXT_LIST = new Set(['.ts', '.tsx', '.jsx', '.mjs']);
 const pluginInfo = fs.readJsonSync('src/plugin.info');
 const [_, __, author, name] = pluginInfo.title.split('/');
 const pluginTitle = `${author}/${name}`;
+const DIST_PLUGIN_DIRECTORY = path.join(DISTNATION_DIRECTORY, 'plugins', pluginTitle);
+const SRC_PLUGIN_DIRECTORY = path.join(SOURCE_DIRECTORY, 'plugins', pluginTitle);
 
 export const cleanDist = async () => {
   const distJsTiddler = /^.*\.js\.dist\.tid$/;
@@ -67,27 +71,13 @@ export const findAllEntries = async (previousEntryList) => {
 export const buildEntries = async (entries, metaMap) => {
   // Build .ts, .tsx, .jsx to .js.dist.tid
   const buildResult = await esbuild.build({
+    ...config,
     entryPoints: entries,
-    bundle: true,
-    minify: false,
-    write: false,
     incremental: true,
-    outdir: DISTNATION_DIRECTORY,
-    sourcemap: false,
-    format: 'cjs',
-    treeShaking: true,
-    platform: 'browser',
-    external: ['$:/*', 'react', 'react-dom'],
-    plugins: [
-      // http://browserl.ist/?q=%3E0.25%25%2C+not+ie+11%2C+not+op_mini+all
-      esbuildPluginBrowserslist(browserslist(['last 2 versions']), {
-        printUnknownTargets: false,
-      }),
-    ],
   });
   buildResult.outputFiles.forEach((out) => {
-    const outName = path.basename(out.path);
-    const outKey = out.path.replace(path.resolve(DISTNATION_DIRECTORY), SOURCE_DIRECTORY);
+    const outKey = out.path.replace(path.resolve(DISTNATION_DIRECTORY), SOURCE_DIRECTORY).replace(`/plugins/${pluginTitle}`, '');
+    const outName = outKey.replace(SRC_PLUGIN_DIRECTORY, '').replaceAll('/', '-');
     fs.writeFileSync(
       path.join(DISTNATION_DIRECTORY, 'tiddlers', `${outName}.dist.tid`),
       `${metaMap[outKey]}\n\n${out.text
@@ -121,15 +111,15 @@ const cleanCSS = new CleanCSS({
 const excludeFiles = /^.*\.(tsx?|jsx|meta|swp|mjs)$|^\.(git|hg|lock-wscript|svn|DS_Store|(wafpickle-|_).*)$|^CVS$|^npm-debug\.log$/;
 
 export const exportPlugins = ($tw, minify, exportToDistribution, exportToWiki) => {
-  if (fs.existsSync(SOURCE_DIRECTORY)) {
-    // Ignore ts, tsx, jsm and jsx
-    if (exportToDistribution) fs.mkdirsSync(DISTNATION_DIRECTORY);
-    const directory = SOURCE_DIRECTORY;
+  // Ignore ts, tsx, jsm and jsx
+  if (exportToDistribution) {
+    fs.mkdirsSync(DISTNATION_DIRECTORY);
+    const directory = DIST_PLUGIN_DIRECTORY;
     const directoryStat = fs.statSync(directory);
     if (!directoryStat.isDirectory()) return;
-    const pluginInfo = $tw.loadPluginFolder(directory, excludeFiles);
-    const pluginTiddlerName = `${path.basename($tw.utils.generateTiddlerFilepath(pluginInfo.title, {}))}.json`;
-    if (exportToWiki) fs.writeJSONSync(path.join(WIKI_TIDDLERS_DIRECTORY, `${pluginTiddlerName}.dist.json`), pluginInfo);
-    if (exportToDistribution) fs.writeJSONSync(path.join('dist', 'tiddlers', pluginTiddlerName), pluginInfo);
   }
+  const pluginInfo = $tw.loadPluginFolder(SOURCE_DIRECTORY, excludeFiles);
+  const pluginTiddlerName = `${path.basename($tw.utils.generateTiddlerFilepath(pluginInfo.title, {}))}.json`;
+  if (exportToWiki) fs.writeJSONSync(path.join(DIST_WIKI_TIDDLERS_DIRECTORY, `${pluginTiddlerName}.dist.json`), pluginInfo);
+  if (exportToDistribution) fs.writeJSONSync(path.join('dist', 'tiddlers', pluginTiddlerName), pluginInfo);
 };

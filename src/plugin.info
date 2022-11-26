@@ -1,7 +1,7 @@
 {
-  "title": "$:/plugins/linonetwo/tw-example-plugin",
+  "title": "$:/plugins/linonetwo/tw-whiteboard",
   "author": "LinOnetwo",
-  "description": "put your description here, and fill in the author and title above",
+  "description": "Tiny little drawing app in TW, using tldraw. Providing diagram widget and whiteboard view.",
   "core-version": ">=5.1.22",
   "plugin-type": "plugin",
   "version": "0.0.1",
