@@ -6,7 +6,7 @@ const Widget = require('$:/plugins/linonetwo/tw-react/widget.js').widget as type
 
 class TldrawWhiteBoardWidget extends Widget<IAppProps> {
   reactComponent = App;
-  getProps = () => ({ stateTiddler: this.getAttribute('stateTiddler') });
+  getProps = () => ({ stateTiddler: this.getAttribute('stateTiddler'), height: this.getAttribute('height'), width: this.getAttribute('width') });
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
