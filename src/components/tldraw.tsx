@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { useState, useMemo } from 'react';
-import { TDDocument, Tldraw, TldrawApp } from '@tldraw/tldraw';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { TDAsset, TDDocument, Tldraw, TldrawApp } from '@tldraw/tldraw';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
 
 import './tldraw.css';
@@ -22,6 +22,11 @@ export interface IAppProps {
   width?: string;
 }
 
+export interface TDExportJSON {
+  assets: TDAsset[];
+  document: TDDocument;
+}
+
 export function App(props: IAppProps): JSX.Element {
   const {
     height,
@@ -30,19 +35,31 @@ export function App(props: IAppProps): JSX.Element {
     initialTiddlerText,
     saver: { onSave },
   } = props;
-  const initialTiddlerJSONContent = useMemo(() => {
+  const getTiddlerJSONContent = useCallback(() => {
     if (initialTiddlerText) {
       try {
-        return JSON.parse(initialTiddlerText) as TDDocument;
+        const data = JSON.parse(initialTiddlerText) as TDExportJSON;
+        // seems assets is discarded, from official tldr repo's example... examples/tldraw-example/src/loading-files.tsx
+        return data.document;
       } catch (error) {
         console.error(`$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, text:\n${initialTiddlerText}\n${(error as Error).message}`);
       }
     }
-  }, [currentTiddler, initialTiddlerText]);
+  }, [initialTiddlerText, currentTiddler]);
+  // this initialTiddlerJSONContent should only execute on mount once
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const initialTiddlerJSONContent = useMemo(getTiddlerJSONContent, []);
+  useEffect(() => {
+    const latestUpdatedDocument = getTiddlerJSONContent();
+    if (latestUpdatedDocument !== undefined) {
+      tldrawDocumentSetter(latestUpdatedDocument);
+    }
+  }, [getTiddlerJSONContent]);
   const [tldrawDocument, tldrawDocumentSetter] = useState<TDDocument | undefined>(initialTiddlerJSONContent);
   const debouncedSaveOnChange = useDebouncedCallback(
     (app: TldrawApp) => {
-      const newTiddlerText = JSON.stringify(app.document);
+      const exportedTldrJSON = { document: app.document, assets: app.assets };
+      const newTiddlerText = JSON.stringify(exportedTldrJSON);
       onSave(newTiddlerText);
     },
     [],
@@ -56,7 +73,7 @@ export function App(props: IAppProps): JSX.Element {
   };
   return (
     <div className="tw-whiteboard-tldraw-container" style={{ height, width }}>
-      <Tldraw onPersist={onChange} document={tldrawDocument} />
+      <Tldraw onPersist={onChange} document={tldrawDocument} autofocus={false} />
     </div>
   );
 }
