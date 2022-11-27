@@ -1,0 +1,49 @@
+title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard
+description: White board, for tiddlers with type `application/tldr` in full screen 
+tags: $:/tags/Layout
+
+\whitespace trim
+\define containerClasses()
+tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ tw-whiteboard-layout-container
+\end
+\import [[$:/core/ui/PageMacros]] [all[shadows+tiddlers]tag[$:/tags/Macro]!has[draft.of]]
+
+<$vars
+	tv-config-toolbar-icons={{$:/config/Toolbar/Icons}}
+	tv-config-toolbar-text={{$:/config/Toolbar/Text}}
+	tv-config-toolbar-class={{$:/config/Toolbar/ButtonClass}}
+	tv-show-missing-links={{$:/config/MissingLinks}}
+	storyviewTitle={{$:/view}}
+	languageTitle={{{ [{$:/language}get[name]] }}}>
+
+<div class=<<containerClasses>>>
+
+<$navigator story="$:/StoryList" history="$:/HistoryList" openLinkFromInsideRiver={{$:/config/Navigation/openLinkFromInsideRiver}} openLinkFromOutsideRiver={{$:/config/Navigation/openLinkFromOutsideRiver}} relinkOnRename={{$:/config/RelinkOnRename}}>
+
+<main class="tw-whiteboard-layout-main-area">
+	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="nomatch" text="">
+		<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/tiddler}} height="calc(100vh - 35px)" />
+	</$reveal>
+	<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
+	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="match" text="">
+		<$list filter='[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]'>
+			<$whiteboard tiddler={{{[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]}}} height="calc(100vh - 35px)" />
+		</$list>
+	</$reveal>
+</main>
+
+<nav class="tw-whiteboard-layout-top-bar">
+	Select board: 
+	<!-- default to recently used whiteboard tiddler -->
+	<$select tiddler="$:/state/Whiteboard/PageLayout/tiddler" default={{{[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]}}}>
+		<$list filter='[all[shadows+tiddlers]field:type[application/tldr]sort[modified]]'>
+			<option value=<<currentTiddler>>><$view field='title'/></option>
+		</$list>
+	</$select>
+</nav>
+
+</$navigator>
+
+</div>
+
+</$vars>
