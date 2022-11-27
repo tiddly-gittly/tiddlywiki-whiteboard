@@ -62,6 +62,8 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       return;
     }
     $tw.wiki.setText(this.editTitle, undefined, undefined, newText);
+    // set tiddler type
+    $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/tldr');
   };
 }
 
