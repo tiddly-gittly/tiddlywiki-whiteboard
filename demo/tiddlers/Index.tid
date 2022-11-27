@@ -3,6 +3,8 @@ type: text/vnd.tiddlywiki
 
 {{$:/snippets/minilanguageswitcher}}
 
+[[Readme]]
+
 Use widget:
 
 ```tw5
