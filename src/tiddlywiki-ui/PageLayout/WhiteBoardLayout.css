@@ -7,16 +7,18 @@
   left: calc(50% - 400px / 2);
   padding: 5px;
 
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(5px);
 
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.tw-whiteboard-layout-top-bar > select {
+  max-width: 200px;
+}
 
 .tw-whiteboard-layout-main-area {
-
 }
 
 div.tw-whiteboard-layout-container {
@@ -24,4 +26,18 @@ div.tw-whiteboard-layout-container {
 }
 .tw-whiteboard-layout-container p {
   margin: 0;
+}
+
+.tw-whiteboard-layout-create-new-tiddler-popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+}
+.tw-whiteboard-layout-create-new-tiddler-popup button {
+  width: 100%;
+}
+.tw-whiteboard-layout-create-new-tiddler-popup textarea {
+  width: 100%;
 }
