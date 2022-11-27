@@ -42,7 +42,12 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 			<option value=<<currentTiddler>>><$view field='title'/></option>
 		</$list>
 	</$select>
-	<$button tooltip="New" popup="$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerPopup">{{$:/core/images/new-button}}</$button>
+
+	<$button tooltip="New" popup="$:/state/Whiteboard/PageLayout/CreateNewTiddlerPopup">{{$:/core/images/new-button}}</$button>
+	<$reveal type="popup" state="$:/state/Whiteboard/PageLayout/CreateNewTiddlerPopup">
+		{{$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerPopup}}
+	</$reveal>
+
 	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="nomatch" text="">
 		<$button tooltip="Open In StoryView">
 			{{$:/core/images/home-button}}
