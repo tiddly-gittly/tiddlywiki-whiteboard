@@ -1,3 +1,4 @@
+import { IChangedTiddlers } from 'tiddlywiki';
 import type { ReactWidget } from 'tw-react';
 import { App, IAppProps } from './tldraw';
 
@@ -20,6 +21,15 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       },
     };
   };
+
+  public refresh(changedTiddlers: IChangedTiddlers): boolean {
+    const changedAttributes = this.computeAttributes();
+    if ($tw.utils.count(changedAttributes) > 0 || (this.editTitle !== undefined && changedTiddlers[this.editTitle] !== undefined)) {
+      this.refreshSelf();
+      return true;
+    }
+    return false;
+  }
 
   private readonly currentTiddler: string | undefined;
   editorOperations = {};
