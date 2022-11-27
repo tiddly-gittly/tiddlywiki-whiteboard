@@ -20,6 +20,12 @@ concurrency:
   group: release-ci-group
   cancel-in-progress: true
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   Plugins:
     runs-on: ubuntu-latest
