@@ -1,8 +1,8 @@
 # TW WhiteBoard
 
-## WhiteBoard
+## Document & Usage
 
-## Diagram
+See website [https://tiddly-gittly.github.io/tiddlywiki-whiteboard/](https://tiddly-gittly.github.io/tiddlywiki-whiteboard/) for demo and usage.
 
 ## Development
 
