@@ -1,5 +1,6 @@
 title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard
-description: White board, for tiddlers with type `application/tldr` in full screen 
+name: White Board
+description: show `application/tldr` type tiddlers in full screen whiteboard
 tags: $:/tags/Layout
 
 \whitespace trim
@@ -32,6 +33,7 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 	</$reveal>
 </main>
 
+<!-- put this below main, so nav bar is layered on top of the main. In UI, this nav in on the top of the page. -->
 <nav class="tw-whiteboard-layout-top-bar">
 	Select board: 
 	<!-- default to recently used whiteboard tiddler -->
@@ -40,6 +42,24 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 			<option value=<<currentTiddler>>><$view field='title'/></option>
 		</$list>
 	</$select>
+	<$button tooltip="New" popup="$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerPopup">{{$:/core/images/new-button}}</$button>
+	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="nomatch" text="">
+		<$button tooltip="Open In StoryView">
+			{{$:/core/images/home-button}}
+			<$action-setfield $tiddler="$:/layout" text="$:/core/ui/PageTemplate"/>
+			<$action-navigate $to={{$:/state/Whiteboard/PageLayout/tiddler}}/>
+		</$button>
+	</$reveal>
+	<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
+	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="match" text="">
+		<$list filter='[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]'>
+			<$button tooltip="Open In StoryView">
+				{{$:/core/images/home-button}}
+				<$action-setfield $tiddler="$:/layout" text="$:/core/ui/PageTemplate"/>
+				<$action-navigate $to={{{[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]}}} />
+			</$button>
+		</$list>
+	</$reveal>
 </nav>
 
 </$navigator>

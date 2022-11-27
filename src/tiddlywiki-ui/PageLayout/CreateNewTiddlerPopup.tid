@@ -1,0 +1,7 @@
+title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerPopup
+
+<$edit-text tiddler="$:/state/Whiteboard/PageLayout/create-tiddler" />
+<$button>
+  Create
+  <$action-createtiddler $basetitle={{$:/state/Whiteboard/PageLayout/create-tiddler}} type="application/tldr">
+</$button>
