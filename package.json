@@ -20,6 +20,9 @@
     "installType": "typesync"
   },
   "devDependencies": {
+    "@swc-node/jest": "^1.5.5",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
     "@types/archiver": "5.3.1",
     "@types/eslint": "8.4.10",
     "@types/eslint-plugin-prettier": "3.1.0",
@@ -59,10 +62,10 @@
     "get-port": "^6.1.2",
     "github-action-ts-run-api": "2.3.0",
     "jest": "29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
     "prettier": "2.8.0",
     "serve": "14.1.2",
     "tiddlywiki": "5.2.3",
-    "ts-jest": "29.0.3",
     "tslib": "2.4.1",
     "tw5-plugin-packer": "0.0.10",
     "tw5-typed": "0.2.9",
