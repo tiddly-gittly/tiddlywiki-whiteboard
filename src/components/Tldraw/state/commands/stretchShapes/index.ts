@@ -1,1 +1,1 @@
-export * from './stretchShapes'
+export * from './stretchShapes';

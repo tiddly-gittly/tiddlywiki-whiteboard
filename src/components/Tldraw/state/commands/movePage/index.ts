@@ -1,1 +1,1 @@
-export * from './movePage'
+export * from './movePage';

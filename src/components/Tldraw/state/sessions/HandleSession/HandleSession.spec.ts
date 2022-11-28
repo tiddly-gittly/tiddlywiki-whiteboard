@@ -1,5 +1,5 @@
-import { TldrawTestApp, mockDocument } from '@tldr/test'
-import { SessionType, TDShapeType, TDStatus } from '@tldr/types'
+import { TldrawTestApp, mockDocument } from '@tldr/test';
+import { SessionType, TDShapeType, TDStatus } from '@tldr/types';
 
 describe('Handle session', () => {
   it('begins, updateSession', () => {
@@ -13,12 +13,12 @@ describe('Handle session', () => {
       .movePointer([-10, -10])
       .startSession(SessionType.Arrow, 'arrow1', 'end')
       .movePointer([10, 10])
-      .completeSession()
+      .completeSession();
 
-    expect(app.status).toBe(TDStatus.Idle)
+    expect(app.status).toBe(TDStatus.Idle);
 
-    app.undo().redo()
-  })
+    app.undo().redo();
+  });
 
   it('cancels session', () => {
     const app = new TldrawTestApp()
@@ -31,8 +31,8 @@ describe('Handle session', () => {
       .movePointer([-10, -10])
       .startSession(SessionType.Arrow, 'arrow1', 'end')
       .movePointer([10, 10])
-      .cancelSession()
+      .cancelSession();
 
-    expect(app.getShape('rect1').point).toStrictEqual([0, 0])
-  })
-})
+    expect(app.getShape('rect1').point).toStrictEqual([0, 0]);
+  });
+});

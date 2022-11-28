@@ -1,5 +1,5 @@
-import type { TldrawApp } from '@tldr/state/TldrawApp'
-import type { TldrawCommand } from '@tldr/types'
+import type { TldrawApp } from '@tldr/state/TldrawApp';
+import type { TldrawCommand } from '@tldr/types';
 
 export function changePage(app: TldrawApp, pageId: string): TldrawCommand {
   return {
@@ -14,5 +14,5 @@ export function changePage(app: TldrawApp, pageId: string): TldrawCommand {
         currentPageId: pageId,
       },
     },
-  }
+  };
 }

@@ -1,1 +1,1 @@
-export * from './ArrowUtil'
+export * from './ArrowUtil';

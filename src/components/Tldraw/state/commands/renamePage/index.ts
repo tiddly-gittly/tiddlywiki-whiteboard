@@ -1,1 +1,1 @@
-export * from './renamePage'
+export * from './renamePage';

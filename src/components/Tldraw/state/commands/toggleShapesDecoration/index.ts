@@ -1,1 +1,1 @@
-export * from './toggleShapesDecoration'
+export * from './toggleShapesDecoration';

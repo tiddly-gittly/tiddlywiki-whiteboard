@@ -1,69 +1,55 @@
-import {
-  TLBounds,
-  TLBoundsCorner,
-  TLBoundsEdge,
-  TLBoundsWithCenter,
-  TLSnapLine,
-  Utils,
-} from '@tldraw/core'
-import { Vec } from '@tldraw/vec'
-import { SLOW_SPEED, SNAP_DISTANCE } from '@tldr/constants'
-import { TLDR } from '@tldr/state/TLDR'
-import type { TldrawApp } from '@tldr/state/TldrawApp'
-import { BaseSession } from '@tldr/state/sessions/BaseSession'
-import { SessionType, TDShape, TDStatus, TldrawCommand, TldrawPatch } from '@tldr/types'
+import { TLBounds, TLBoundsCorner, TLBoundsEdge, TLBoundsWithCenter, TLSnapLine, Utils } from '@tldraw/core';
+import { Vec } from '@tldraw/vec';
+import { SLOW_SPEED, SNAP_DISTANCE } from '@tldr/constants';
+import { TLDR } from '@tldr/state/TLDR';
+import type { TldrawApp } from '@tldr/state/TldrawApp';
+import { BaseSession } from '@tldr/state/sessions/BaseSession';
+import { SessionType, TDShape, TDStatus, TldrawCommand, TldrawPatch } from '@tldr/types';
 
 type SnapInfo =
   | {
-      state: 'empty'
+      state: 'empty';
     }
   | {
-      state: 'ready'
-      bounds: TLBoundsWithCenter[]
-    }
+      bounds: TLBoundsWithCenter[];
+      state: 'ready';
+    };
 
 export class TransformSingleSession extends BaseSession {
-  type = SessionType.TransformSingle
-  status = TDStatus.Transforming
-  performanceMode = undefined
-  transformType: TLBoundsEdge | TLBoundsCorner
-  scaleX = 1
-  scaleY = 1
-  isCreate: boolean
-  initialShape: TDShape
-  initialShapeBounds: TLBounds
-  initialCommonBounds: TLBounds
-  snapInfo: SnapInfo = { state: 'empty' }
-  prevPoint = [0, 0]
-  speed = 1
+  type = SessionType.TransformSingle;
+  status = TDStatus.Transforming;
+  performanceMode = undefined;
+  transformType: TLBoundsEdge | TLBoundsCorner;
+  scaleX = 1;
+  scaleY = 1;
+  isCreate: boolean;
+  initialShape: TDShape;
+  initialShapeBounds: TLBounds;
+  initialCommonBounds: TLBounds;
+  snapInfo: SnapInfo = { state: 'empty' };
+  prevPoint = [0, 0];
+  speed = 1;
 
-  constructor(
-    app: TldrawApp,
-    id: string,
-    transformType: TLBoundsEdge | TLBoundsCorner,
-    isCreate = false
-  ) {
-    super(app)
-    this.isCreate = isCreate
-    this.transformType = transformType
+  constructor(app: TldrawApp, id: string, transformType: TLBoundsEdge | TLBoundsCorner, isCreate = false) {
+    super(app);
+    this.isCreate = isCreate;
+    this.transformType = transformType;
 
-    const shape = this.app.getShape(id)
-    this.initialShape = shape
-    this.initialShapeBounds = TLDR.getBounds(shape)
-    this.initialCommonBounds = TLDR.getRotatedBounds(shape)
-    this.app.rotationInfo.selectedIds = [shape.id]
+    const shape = this.app.getShape(id);
+    this.initialShape = shape;
+    this.initialShapeBounds = TLDR.getBounds(shape);
+    this.initialCommonBounds = TLDR.getRotatedBounds(shape);
+    this.app.rotationInfo.selectedIds = [shape.id];
   }
 
   start = (): TldrawPatch | undefined => {
     this.snapInfo = {
       state: 'ready',
-      bounds: this.app.shapes
-        .filter((shape) => shape.id !== this.initialShape.id)
-        .map((shape) => Utils.getBoundsWithCenter(TLDR.getRotatedBounds(shape))),
-    }
+      bounds: this.app.shapes.filter((shape) => shape.id !== this.initialShape.id).map((shape) => Utils.getBoundsWithCenter(TLDR.getRotatedBounds(shape))),
+    };
 
-    return void null
-  }
+    return void null;
+  };
 
   update = (): TldrawPatch | undefined => {
     const {
@@ -83,51 +69,49 @@ export class TransformSingleSession extends BaseSession {
         altKey,
         metaKey,
       },
-    } = this
+    } = this;
 
-    if (initialShape.isLocked) return void null
+    if (initialShape.isLocked) return void null;
 
-    const shapes = {} as Record<string, Partial<TDShape>>
+    const shapes = {} as Record<string, Partial<TDShape>>;
 
-    const delta = altKey
-      ? Vec.mul(Vec.sub(currentPoint, originPoint), 2)
-      : Vec.sub(currentPoint, originPoint)
+    const delta = altKey ? Vec.mul(Vec.sub(currentPoint, originPoint), 2) : Vec.sub(currentPoint, originPoint);
 
-    const shape = this.app.getShape(initialShape.id)
+    const shape = this.app.getShape(initialShape.id);
 
-    const utils = TLDR.getShapeUtil(shape)
+    const utils = TLDR.getShapeUtil(shape);
 
     let newBounds = Utils.getTransformedBoundingBox(
       initialShapeBounds,
       transformType,
       delta,
       shape.rotation,
-      shiftKey || shape.isAspectRatioLocked || utils.isAspectRatioLocked
-    )
+      shiftKey || shape.isAspectRatioLocked || utils.isAspectRatioLocked,
+    );
 
     if (altKey) {
       newBounds = {
         ...newBounds,
         ...Utils.centerBounds(newBounds, Utils.getBoundsCenter(initialShapeBounds)),
-      }
+      };
     }
 
     if (showGrid) {
       newBounds = {
         ...newBounds,
         ...Utils.snapBoundsToGrid(newBounds, currentGrid),
-      }
+      };
     }
 
     // Should we snap?
 
-    const speed = Vec.dist(currentPoint, previousPoint)
+    const speed = Vec.dist(currentPoint, previousPoint);
 
-    const speedChange = speed - this.speed
+    const speedChange = speed - this.speed;
 
-    this.speed = this.speed + speedChange * (speedChange > 1 ? 0.5 : 0.15)
+    this.speed = this.speed + speedChange * (speedChange > 1 ? 0.5 : 0.15);
 
-    let snapLines: TLSnapLine[] = []
+    let snapLines: TLSnapLine[] = [];
 
     if (
       ((isSnapping && !metaKey) || (!isSnapping && metaKey)) &&
@@ -137,22 +121,20 @@ export class TransformSingleSession extends BaseSession {
     ) {
       const snapResult = Utils.getSnapPoints(
         Utils.getBoundsWithCenter(newBounds),
-        this.snapInfo.bounds.filter(
-          (bounds) => Utils.boundsContain(viewport, bounds) || Utils.boundsCollide(viewport, bounds)
-        ),
-        SNAP_DISTANCE / camera.zoom
-      )
+        this.snapInfo.bounds.filter((bounds) => Utils.boundsContain(viewport, bounds) || Utils.boundsCollide(viewport, bounds)),
+        SNAP_DISTANCE / camera.zoom,
+      );
 
       if (snapResult) {
-        snapLines = snapResult.snapLines
+        snapLines = snapResult.snapLines;
 
         newBounds = Utils.getTransformedBoundingBox(
           initialShapeBounds,
           transformType,
           Vec.sub(delta, snapResult.offset),
           shape.rotation,
-          shiftKey || shape.isAspectRatioLocked || utils.isAspectRatioLocked
-        )
+          shiftKey || shape.isAspectRatioLocked || utils.isAspectRatioLocked,
+        );
       }
     }
 
@@ -162,14 +144,14 @@ export class TransformSingleSession extends BaseSession {
       scaleX: newBounds.scaleX,
       scaleY: newBounds.scaleY,
       transformOrigin: [0.5, 0.5],
-    })
+    });
 
     if (afterShape) {
-      shapes[shape.id] = afterShape
+      shapes[shape.id] = afterShape;
     }
 
     if (showGrid && afterShape && afterShape.point) {
-      afterShape.point = Vec.snap(afterShape.point, currentGrid)
+      afterShape.point = Vec.snap(afterShape.point, currentGrid);
     }
 
     return {
@@ -183,21 +165,21 @@ export class TransformSingleSession extends BaseSession {
           },
         },
       },
-    }
-  }
+    };
+  };
 
   cancel = (): TldrawPatch | undefined => {
     const {
       initialShape,
       app: { currentPageId },
-    } = this
+    } = this;
 
-    const shapes = {} as Record<string, TDShape | undefined>
+    const shapes = {} as Record<string, TDShape | undefined>;
 
     if (this.isCreate) {
-      shapes[initialShape.id] = undefined
+      shapes[initialShape.id] = undefined;
     } else {
-      shapes[initialShape.id] = initialShape
+      shapes[initialShape.id] = initialShape;
     }
 
     return {
@@ -216,27 +198,27 @@ export class TransformSingleSession extends BaseSession {
           },
         },
       },
-    }
-  }
+    };
+  };
 
   complete = (): TldrawPatch | TldrawCommand | undefined => {
     const {
       initialShape,
       app: { currentPageId },
-    } = this
+    } = this;
 
-    if (initialShape.isLocked) return
+    if (initialShape.isLocked) return;
 
     if (this.isCreate && Vec.dist(this.app.originPoint, this.app.currentPoint) < 2) {
-      return this.cancel()
+      return this.cancel();
     }
 
-    const beforeShapes = {} as Record<string, Partial<TDShape> | undefined>
-    const afterShapes = {} as Record<string, Partial<TDShape>>
+    const beforeShapes = {} as Record<string, Partial<TDShape> | undefined>;
+    const afterShapes = {} as Record<string, Partial<TDShape>>;
 
-    beforeShapes[initialShape.id] = this.isCreate ? undefined : initialShape
+    beforeShapes[initialShape.id] = this.isCreate ? undefined : initialShape;
 
-    afterShapes[initialShape.id] = TLDR.onSessionComplete(this.app.getShape(initialShape.id))
+    afterShapes[initialShape.id] = TLDR.onSessionComplete(this.app.getShape(initialShape.id));
 
     return {
       id: 'transform_single',
@@ -278,6 +260,6 @@ export class TransformSingleSession extends BaseSession {
           },
         },
       },
-    }
-  }
+    };
+  };
 }

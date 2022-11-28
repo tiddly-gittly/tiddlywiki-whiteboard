@@ -1,1 +1,1 @@
-export * from './toggleShapesProp'
+export * from './toggleShapesProp';

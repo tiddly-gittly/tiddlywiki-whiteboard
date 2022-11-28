@@ -1,24 +1,24 @@
-import { TldrawTestApp, mockDocument } from '@tldr/test'
+import { TldrawTestApp, mockDocument } from '@tldr/test';
 
 describe('Rename page command', () => {
-  const app = new TldrawTestApp()
+  const app = new TldrawTestApp();
 
   it('does, undoes and redoes command', () => {
-    app.loadDocument(mockDocument)
+    app.loadDocument(mockDocument);
 
-    const initialId = app.page.id
-    const initialName = app.page.name
+    const initialId = app.page.id;
+    const initialName = app.page.name;
 
-    app.renamePage(initialId, 'My Special Page')
+    app.renamePage(initialId, 'My Special Page');
 
-    expect(app.page.name).toBe('My Special Page')
+    expect(app.page.name).toBe('My Special Page');
 
-    app.undo()
+    app.undo();
 
-    expect(app.page.name).toBe(initialName)
+    expect(app.page.name).toBe(initialName);
 
-    app.redo()
+    app.redo();
 
-    expect(app.page.name).toBe('My Special Page')
-  })
-})
+    expect(app.page.name).toBe('My Special Page');
+  });
+});

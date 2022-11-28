@@ -1,8 +1,8 @@
-import type { TldrawApp } from '@tldr/state/TldrawApp'
-import type { TldrawCommand } from '@tldr/types'
+import type { TldrawApp } from '@tldr/state/TldrawApp';
+import type { TldrawCommand } from '@tldr/types';
 
 export function renamePage(app: TldrawApp, pageId: string, name: string): TldrawCommand {
-  const { page } = app
+  const { page } = app;
 
   return {
     id: 'rename_page',
@@ -16,9 +16,9 @@ export function renamePage(app: TldrawApp, pageId: string, name: string): Tldraw
     after: {
       document: {
         pages: {
-          [pageId]: { name: name },
+          [pageId]: { name },
         },
       },
     },
-  }
+  };
 }

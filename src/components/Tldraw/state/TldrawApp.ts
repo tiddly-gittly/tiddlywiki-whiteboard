@@ -134,9 +134,9 @@ export interface TDCallbacks {
     e?: KeyboardEvent,
   ) => void;
   /**
-   * (optional) A callback to run when the user undos.
+   * (optional) A callback to run when the opens a file to upload.
    */
-  onUndo?: (app: TldrawApp) => void;
+  onOpenMedia?: (app: TldrawApp) => void;
   /**
    * (optional) A callback to run when the user opens new project through the menu or through a keyboard shortcut.
    */
@@ -146,9 +146,13 @@ export interface TDCallbacks {
     e?: KeyboardEvent,
   ) => void;
   /**
-   * (optional) A callback to run when the user saves a project as a new project through the menu or through a keyboard shortcut.
+   * (optional) A callback to run when the state is patched.
    */
-  onSaveProjectAs?: (app: TldrawApp, e?: KeyboardEvent) => void;
+  onPatch?: (app: TldrawApp, patch: TldrawPatch, reason?: string) => void;
+  /**
+   * (optional) A callback to run when the state is persisted.
+   */
+  onPersist?: (app: TldrawApp) => void;
   /**
    * (optional) A callback to run when the user redos.
    */
@@ -158,13 +162,9 @@ export interface TDCallbacks {
    */
   onSaveProject?: (app: TldrawApp, e?: KeyboardEvent) => void;
   /**
-   * (optional) A callback to run when the opens a file to upload.
+   * (optional) A callback to run when the user saves a project as a new project through the menu or through a keyboard shortcut.
    */
-  onOpenMedia?: (app: TldrawApp) => void;
-  /**
-   * (optional) A callback to run when the state is persisted.
-   */
-  onPersist?: (app: TldrawApp) => void;
+  onSaveProjectAs?: (app: TldrawApp, e?: KeyboardEvent) => void;
   /**
    * (optional) A callback to run when a session ends.
    */
@@ -174,9 +174,9 @@ export interface TDCallbacks {
    */
   onSessionStart?: (app: TldrawApp, id: string) => void;
   /**
-   * (optional) A callback to run when the state is patched.
+   * (optional) A callback to run when the user undos.
    */
-  onPatch?: (app: TldrawApp, patch: TldrawPatch, reason?: string) => void;
+  onUndo?: (app: TldrawApp) => void;
 }
 
 export class TldrawApp extends StateManager<TDSnapshot> {

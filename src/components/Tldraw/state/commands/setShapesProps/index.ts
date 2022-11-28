@@ -1,1 +1,1 @@
-export * from './setShapesProps'
+export * from './setShapesProps';

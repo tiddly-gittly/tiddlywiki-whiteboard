@@ -1,1 +1,1 @@
-export * from './rotateShapes'
+export * from './rotateShapes';

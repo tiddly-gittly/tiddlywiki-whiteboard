@@ -1,1 +1,1 @@
-export * from './reorderShapes'
+export * from './reorderShapes';

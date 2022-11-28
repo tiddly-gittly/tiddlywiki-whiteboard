@@ -1,85 +1,76 @@
-import { Utils } from '@tldraw/core'
-import { TLDR } from '@tldr/state/TLDR'
-import type { TldrawApp } from '@tldr/state/TldrawApp'
-import { TDShape, TDShapeType } from '@tldr/types'
-import type { Patch, TDBinding, TldrawCommand } from '@tldr/types'
+import { Utils } from '@tldraw/core';
+import { TLDR } from '@tldr/state/TLDR';
+import type { TldrawApp } from '@tldr/state/TldrawApp';
+import { TDShape, TDShapeType } from '@tldr/types';
+import type { Patch, TDBinding, TldrawCommand } from '@tldr/types';
 
-export function groupShapes(
-  app: TldrawApp,
-  ids: string[],
-  groupId: string,
-  pageId: string
-): TldrawCommand | undefined {
-  if (ids.length < 2) return
+export function groupShapes(app: TldrawApp, ids: string[], groupId: string, pageId: string): TldrawCommand | undefined {
+  if (ids.length < 2) return;
 
-  const beforeShapes: Record<string, Patch<TDShape | undefined>> = {}
-  const afterShapes: Record<string, Patch<TDShape | undefined>> = {}
+  const beforeShapes: Record<string, Patch<TDShape | undefined>> = {};
+  const afterShapes: Record<string, Patch<TDShape | undefined>> = {};
 
-  const beforeBindings: Record<string, Patch<TDBinding | undefined>> = {}
-  const afterBindings: Record<string, Patch<TDBinding | undefined>> = {}
+  const beforeBindings: Record<string, Patch<TDBinding | undefined>> = {};
+  const afterBindings: Record<string, Patch<TDBinding | undefined>> = {};
 
-  const idsToGroup = [...ids]
-  const shapesToGroup: TDShape[] = []
-  const deletedGroupIds: string[] = []
-  const otherEffectedGroups: TDShape[] = []
+  const idsToGroup = [...ids];
+  const shapesToGroup: TDShape[] = [];
+  const deletedGroupIds: string[] = [];
+  const otherEffectedGroups: TDShape[] = [];
 
   // Collect all of the shapes to group (and their ids)
   for (const id of ids) {
-    const shape = app.getShape(id)
-    if (shape.isLocked) continue
+    const shape = app.getShape(id);
+    if (shape.isLocked) continue;
 
     if (shape.children === undefined) {
-      shapesToGroup.push(shape)
+      shapesToGroup.push(shape);
     } else {
-      const childIds = shape.children.filter((id) => !app.getShape(id).isLocked)
-      otherEffectedGroups.push(shape)
-      idsToGroup.push(...childIds)
-      shapesToGroup.push(...childIds.map((id) => app.getShape(id)).filter(Boolean))
+      const childIds = shape.children.filter((id) => !app.getShape(id).isLocked);
+      otherEffectedGroups.push(shape);
+      idsToGroup.push(...childIds);
+      shapesToGroup.push(...childIds.map((id) => app.getShape(id)).filter(Boolean));
     }
   }
 
   // 1. Can we create this group?
 
   // Do the shapes have the same parent?
-  if (shapesToGroup.every((shape) => shape.parentId === shapesToGroup[0].parentId)) {
-    // Is the common parent a shape (not the page)?
-    if (shapesToGroup[0].parentId !== pageId) {
-      const commonParent = app.getShape(shapesToGroup[0].parentId)
-      // Are all of the common parent's shapes selected?
-      if (commonParent.children?.length === idsToGroup.length) {
-        // Don't create a group if that group would be the same as the
-        // existing group.
-        return
-      }
+  if (
+    shapesToGroup.every((shape) => shape.parentId === shapesToGroup[0].parentId) && // Is the common parent a shape (not the page)?
+    shapesToGroup[0].parentId !== pageId
+  ) {
+    const commonParent = app.getShape(shapesToGroup[0].parentId);
+    // Are all of the common parent's shapes selected?
+    if (commonParent.children?.length === idsToGroup.length) {
+      // Don't create a group if that group would be the same as the
+      // existing group.
+      return;
     }
   }
 
   // A flattened array of shapes from the page
-  const flattenedShapes = TLDR.flattenPage(app.state, pageId)
+  const flattenedShapes = TLDR.flattenPage(app.state, pageId);
 
   // A map of shapes to their index in flattendShapes
-  const shapeIndexMap = Object.fromEntries(
-    shapesToGroup.map((shape) => [shape.id, flattenedShapes.indexOf(shape)])
-  )
+  const shapeIndexMap = Object.fromEntries(shapesToGroup.map((shape) => [shape.id, flattenedShapes.indexOf(shape)]));
 
   // An array of shapes in order by their index in flattendShapes
-  const sortedShapes = shapesToGroup.sort((a, b) => shapeIndexMap[a.id] - shapeIndexMap[b.id])
+  const sortedShapes = shapesToGroup.sort((a, b) => shapeIndexMap[a.id] - shapeIndexMap[b.id]);
 
   // The parentId is always the current page
-  const groupParentId = pageId // sortedShapes[0].parentId
+  const groupParentId = pageId; // sortedShapes[0].parentId
 
   // The childIndex should be the lowest index of the selected shapes
   // with a parent that is the current page; or else the child index
   // of the lowest selected shape.
-  const groupChildIndex = (
-    sortedShapes.filter((shape) => shape.parentId === pageId)[0] || sortedShapes[0]
-  ).childIndex
+  const groupChildIndex = (sortedShapes.find((shape) => shape.parentId === pageId) || sortedShapes[0]).childIndex;
 
   // The shape's point is the min point of its childrens' common bounds
-  const groupBounds = Utils.getCommonBounds(shapesToGroup.map((shape) => TLDR.getBounds(shape)))
+  const groupBounds = Utils.getCommonBounds(shapesToGroup.map((shape) => TLDR.getBounds(shape)));
 
   // Create the group
-  beforeShapes[groupId] = undefined
+  beforeShapes[groupId] = undefined;
 
   afterShapes[groupId] = TLDR.getShapeUtil(TDShapeType.Group).create({
     id: groupId,
@@ -88,67 +79,67 @@ export function groupShapes(
     point: [groupBounds.minX, groupBounds.minY],
     size: [groupBounds.width, groupBounds.height],
     children: sortedShapes.map((shape) => shape.id),
-  })
+  });
 
   // Reparent shapes to the new group
   sortedShapes.forEach((shape, index) => {
     // If the shape is part of a different group, mark the parent shape for cleanup
     if (shape.parentId !== pageId) {
-      const parentShape = app.getShape(shape.parentId)
-      otherEffectedGroups.push(parentShape)
+      const parentShape = app.getShape(shape.parentId);
+      otherEffectedGroups.push(parentShape);
     }
 
     beforeShapes[shape.id] = {
       ...beforeShapes[shape.id],
       parentId: shape.parentId,
       childIndex: shape.childIndex,
-    }
+    };
 
     afterShapes[shape.id] = {
       ...afterShapes[shape.id],
       parentId: groupId,
       childIndex: index + 1,
-    }
-  })
+    };
+  });
 
   // Clean up effected parents
   while (otherEffectedGroups.length > 0) {
-    const shape = otherEffectedGroups.pop()
-    if (!shape) break
+    const shape = otherEffectedGroups.pop();
+    if (!shape) break;
 
     const nextChildren = (beforeShapes[shape.id]?.children || shape.children)!.filter(
-      (childId) => childId && !(idsToGroup.includes(childId) || deletedGroupIds.includes(childId))
-    )
+      (childId) => childId && !(idsToGroup.includes(childId) || deletedGroupIds.includes(childId)),
+    );
 
     // If the parent has no children, remove it
     if (nextChildren.length === 0) {
-      beforeShapes[shape.id] = shape
-      afterShapes[shape.id] = undefined
+      beforeShapes[shape.id] = shape;
+      afterShapes[shape.id] = undefined;
 
       // And if that parent is part of a different group, mark it for cleanup
       // (This is necessary only when we implement nested groups.)
       if (shape.parentId !== pageId) {
-        deletedGroupIds.push(shape.id)
-        otherEffectedGroups.push(app.getShape(shape.parentId))
+        deletedGroupIds.push(shape.id);
+        otherEffectedGroups.push(app.getShape(shape.parentId));
       }
     } else {
       beforeShapes[shape.id] = {
         ...beforeShapes[shape.id],
         children: shape.children,
-      }
+      };
 
       afterShapes[shape.id] = {
         ...afterShapes[shape.id],
         children: nextChildren,
-      }
+      };
     }
   }
 
   // TODO: This code is copied from delete.command. Create a shared helper!
 
-  const { bindings } = app
+  const { bindings } = app;
 
-  const deletedGroupIdsSet = new Set(deletedGroupIds)
+  const deletedGroupIdsSet = new Set(deletedGroupIds);
 
   // We also need to delete bindings that reference the deleted shapes
   bindings.forEach((binding) => {
@@ -156,11 +147,11 @@ export function groupShapes(
       // If the binding references a deleted shape...
       if (deletedGroupIdsSet.has(id)) {
         // Delete this binding
-        beforeBindings[binding.id] = binding
-        afterBindings[binding.id] = undefined
+        beforeBindings[binding.id] = binding;
+        afterBindings[binding.id] = undefined;
 
         // Let's also look each the bound shape...
-        const shape = app.getShape(id)
+        const shape = app.getShape(id);
 
         // If the bound shape has a handle that references the deleted binding...
         if (shape.handles) {
@@ -174,7 +165,7 @@ export function groupShapes(
                   ...beforeShapes[id]?.handles,
                   [handle.id]: { bindingId: binding.id },
                 },
-              }
+              };
 
               // Unless we're currently deleting the shape, remove the
               // binding reference from the after patch
@@ -185,13 +176,13 @@ export function groupShapes(
                     ...afterShapes[id]?.handles,
                     [handle.id]: { bindingId: undefined },
                   },
-                }
+                };
               }
-            })
+            });
         }
       }
     }
-  })
+  });
 
   return {
     id: 'group',
@@ -225,5 +216,5 @@ export function groupShapes(
         },
       },
     },
-  }
+  };
 }

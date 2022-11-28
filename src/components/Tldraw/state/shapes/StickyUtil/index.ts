@@ -1,1 +1,1 @@
-export * from './StickyUtil'
+export * from './StickyUtil';

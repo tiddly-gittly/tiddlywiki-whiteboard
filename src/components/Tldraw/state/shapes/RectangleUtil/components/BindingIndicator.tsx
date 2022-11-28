@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { BINDING_DISTANCE } from '@tldr/constants'
+import * as React from 'react';
+import { BINDING_DISTANCE } from '@tldr/constants';
 
 interface BindingIndicatorProps {
-  strokeWidth: number
-  size: number[]
+  size: number[];
+  strokeWidth: number;
 }
 export function BindingIndicator({ strokeWidth, size }: BindingIndicatorProps) {
   return (
@@ -15,5 +15,5 @@ export function BindingIndicator({ strokeWidth, size }: BindingIndicatorProps) {
       height={Math.max(0, size[1] - strokeWidth / 2)}
       strokeWidth={BINDING_DISTANCE * 2}
     />
-  )
+  );
 }

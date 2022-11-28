@@ -1,1 +1,1 @@
-export * from './updateShapes'
+export * from './updateShapes';

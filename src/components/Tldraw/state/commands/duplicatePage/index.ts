@@ -1,1 +1,1 @@
-export * from './duplicatePage'
+export * from './duplicatePage';
