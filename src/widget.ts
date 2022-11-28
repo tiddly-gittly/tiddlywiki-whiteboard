@@ -1,6 +1,6 @@
 import { IChangedTiddlers } from 'tiddlywiki';
 import type { ReactWidget } from 'tw-react';
-import { App, IAppProps } from './tldraw';
+import { App, IAppProps } from './components/App';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 const Widget = require('$:/plugins/linonetwo/tw-react/widget.js').widget as typeof ReactWidget;

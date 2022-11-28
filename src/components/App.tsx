@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import { TDAsset, TDDocument, Tldraw, TldrawApp } from '@tldraw/tldraw';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
 
 import './tldraw.css';
