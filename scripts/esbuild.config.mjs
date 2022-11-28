@@ -7,6 +7,7 @@ import browserslist from 'browserslist';
 import { esbuildPluginBrowserslist } from 'esbuild-plugin-browserslist';
 import fs from 'fs-extra';
 import path from 'path';
+import alias from "esbuild-plugin-alias";
 
 const pluginInfo = fs.readJsonSync('src/plugin.info');
 const [_, __, author, name] = pluginInfo.title.split('/');
@@ -29,6 +30,9 @@ export const config = {
   treeShaking: true,
   external: ['$:/*', 'react', 'react-dom'],
   plugins: [
+    alias({
+      '@tldr': path.resolve(__dirname, '..', './src/components/Tldraw'),
+    }),
     esbuildPluginBrowserslist(browserslist('last 2 versions'), {
       printUnknownTargets: false,
     }),
