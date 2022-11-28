@@ -1,35 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Arrow shape Creates a shape: arrow 1`] = `
-Object {
+{
   "bend": 0,
   "childIndex": 1,
-  "decorations": Object {
+  "decorations": {
     "end": "arrow",
   },
-  "handles": Object {
-    "bend": Object {
+  "handles": {
+    "bend": {
       "id": "bend",
       "index": 2,
-      "point": Array [
+      "point": [
         0.5,
         0.5,
       ],
     },
-    "end": Object {
+    "end": {
       "canBind": true,
       "id": "end",
       "index": 1,
-      "point": Array [
+      "point": [
         1,
         1,
       ],
     },
-    "start": Object {
+    "start": {
       "canBind": true,
       "id": "start",
       "index": 0,
-      "point": Array [
+      "point": [
         0,
         0,
       ],
@@ -37,18 +37,18 @@ Object {
   },
   "id": "arrow",
   "label": "",
-  "labelPoint": Array [
+  "labelPoint": [
     0.5,
     0.5,
   ],
   "name": "Arrow",
   "parentId": "page",
-  "point": Array [
+  "point": [
     0,
     0,
   ],
   "rotation": 0,
-  "style": Object {
+  "style": {
     "color": "black",
     "dash": "draw",
     "isFilled": false,

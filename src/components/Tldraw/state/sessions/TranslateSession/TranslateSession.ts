@@ -78,7 +78,7 @@ export class TranslateSession extends BaseSession {
         selectedShapes
           .filter((shape) => !selectedShapeIds.has(shape.parentId))
           .flatMap((shape) => {
-            return shape.children ? [shape, ...shape.children.map((childId) => this.app.getShape(childId))] : [shape];
+            return shape.children == undefined ? [shape] : [shape, ...shape.children.map((childId) => this.app.getShape(childId))];
           }),
       ).values(),
     ];
@@ -285,7 +285,7 @@ export class TranslateSession extends BaseSession {
 
           // Add clones to non-selected parents
           if (clone.parentId !== currentPageId && !selectedIds.includes(clone.parentId)) {
-            const children = nextShapes[clone.parentId]?.children || initialParentChildren[clone.parentId];
+            const children = nextShapes[clone.parentId]?.children != undefined || initialParentChildren[clone.parentId];
 
             if (!children.includes(clone.id)) {
               nextShapes[clone.parentId] = {
@@ -413,7 +413,9 @@ export class TranslateSession extends BaseSession {
       nextPageState.selectedIds = [];
     } else {
       // Put initial shapes back to where they started
-      initialShapes.forEach(({ id, point, handles }) => (nextShapes[id] = handles ? { ...nextShapes[id], point, handles } : { ...nextShapes[id], point }));
+      initialShapes.forEach(
+        ({ id, point, handles }) => (nextShapes[id] = handles == undefined ? { ...nextShapes[id], point } : ({ ...nextShapes[id], point, handles } as any)),
+      );
       nextPageState.selectedIds = initialSelectedIds;
 
       // Put back any deleted bindings
@@ -661,7 +663,7 @@ export class TranslateSession extends BaseSession {
 
     // Assign new binding ids to clones (or delete them!)
     clones.forEach((clone) => {
-      if (clone.handles && clone.handles) {
+      if (clone.handles != undefined && clone.handles) {
         for (const id in clone.handles) {
           const handle = clone.handles[id as keyof ArrowShape['handles']];
           handle.bindingId = handle.bindingId ? clonedBindingsMap[handle.bindingId] : undefined;

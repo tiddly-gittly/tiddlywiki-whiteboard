@@ -63,7 +63,7 @@ export const AlertDialog = ({ container }: { container: any }) => {
             display: 'flex',
             justifyContent: 'space-between',
           }}>
-          {onCancel && (
+          {onCancel != undefined && (
             <AlertDialogCancel asChild>
               <Button
                 css={{ color: '$text' }}
@@ -76,7 +76,7 @@ export const AlertDialog = ({ container }: { container: any }) => {
             </AlertDialogCancel>
           )}
           <div style={{ flexShrink: 0 }}>
-            {onNo && (
+            {onNo != undefined && (
               <AlertDialogAction asChild>
                 <Button
                   onClick={() => {
@@ -87,7 +87,7 @@ export const AlertDialog = ({ container }: { container: any }) => {
                 </Button>
               </AlertDialogAction>
             )}
-            {onYes && (
+            {onYes != undefined && (
               <AlertDialogAction asChild>
                 <Button
                   css={{ backgroundColor: '#2F80ED', color: 'White' }}

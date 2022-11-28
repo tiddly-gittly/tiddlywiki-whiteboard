@@ -186,7 +186,7 @@ export class ArrowUtil extends TDShapeUtil<T, E> {
     const hasLabel = label?.trim()?.length ?? 0 > 0;
 
     const font = getFontStyle(style);
-    const labelSize = hasLabel ? getTextLabelSize(label, font) : [0, 0];
+    const labelSize = hasLabel ? getTextLabelSize(label!, font) : [0, 0];
     const isStraightLine = Vec.dist(bend.point, Vec.toFixed(Vec.med(start.point, end.point))) < 1;
 
     const distribution = React.useMemo(() => {

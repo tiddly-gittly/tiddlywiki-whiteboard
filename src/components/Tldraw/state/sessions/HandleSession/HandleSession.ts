@@ -51,7 +51,7 @@ export class HandleSession extends BaseSession {
     // First update the handle's next point
     const change = TLDR.getShapeUtil(shape).onHandleChange?.(shape, handleChanges);
 
-    if (!change) return;
+    if (change == undefined) return;
 
     return {
       document: {

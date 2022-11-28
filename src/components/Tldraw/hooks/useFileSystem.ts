@@ -9,7 +9,7 @@ export function useFileSystem() {
       openDialog: (dialogState: DialogState, onYes: () => Promise<void>, onNo: () => Promise<void>, onCancel: () => Promise<void>) => void,
     ) => {
       openDialog(
-        app.fileSystemHandle ? 'saveFirstTime' : 'saveAgain',
+        app.fileSystemHandle == undefined ? 'saveAgain' : 'saveFirstTime',
         async () => {
           // user pressed yes
           try {
@@ -37,7 +37,7 @@ export function useFileSystem() {
       openDialog: (dialogState: DialogState, onYes: () => Promise<void>, onNo: () => Promise<void>, onCancel: () => Promise<void>) => void,
     ) => {
       openDialog(
-        app.fileSystemHandle ? 'saveFirstTime' : 'saveAgain',
+        app.fileSystemHandle == undefined ? 'saveAgain' : 'saveFirstTime',
         async () => {
           // user pressed yes
           try {

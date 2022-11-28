@@ -5,6 +5,7 @@ import { UndoIcon } from '@tldr/components/Primitives/icons';
 import { useTldrawApp } from '@tldr/hooks';
 import { styled } from '@tldr/styles';
 import { Menu } from './Menu/Menu';
+import { MultiplayerMenu } from './MultiplayerMenu';
 import { PageMenu } from './PageMenu';
 import { StyleMenu } from './StyleMenu';
 import { ZoomMenu } from './ZoomMenu';
@@ -12,12 +13,13 @@ import { ZoomMenu } from './ZoomMenu';
 interface TopPanelProps {
   readOnly: boolean;
   showMenu: boolean;
+  showMultiplayerMenu: boolean;
   showPages: boolean;
   showStyles: boolean;
   showZoom: boolean;
 }
 
-export function _TopPanel({ readOnly, showPages, showMenu, showStyles, showZoom }: TopPanelProps) {
+export function _TopPanel({ readOnly, showPages, showMenu, showStyles, showZoom, showMultiplayerMenu }: TopPanelProps) {
   const app = useTldrawApp();
 
   return (
@@ -25,6 +27,7 @@ export function _TopPanel({ readOnly, showPages, showMenu, showStyles, showZoom 
       {(showMenu || showPages) && (
         <Panel side="left" id="TD-MenuPanel">
           {showMenu && <Menu readOnly={readOnly} />}
+          {showMultiplayerMenu && <MultiplayerMenu />}
           {showPages && <PageMenu />}
         </Panel>
       )}

@@ -5,7 +5,16 @@ import { stopPropagation } from '@tldr/components/stopPropagation';
 import { BINDING_DISTANCE, GHOSTED_OPACITY, LETTER_SPACING } from '@tldr/constants';
 import { TLDR } from '@tldr/state/TLDR';
 import { TDShapeUtil } from '@tldr/state/shapes/TDShapeUtil';
-import { TextAreaUtils, defaultTextStyle, getFontFace, getFontSize, getFontStyle, getShapeStyle, getTextAlign, getTextSvgElement } from '@tldr/state/shapes/shared';
+import {
+  TextAreaUtils,
+  defaultTextStyle,
+  getFontFace,
+  getFontSize,
+  getFontStyle,
+  getShapeStyle,
+  getTextAlign,
+  getTextSvgElement,
+} from '@tldr/state/shapes/shared';
 import { styled } from '@tldr/styles';
 import { AlignStyle, TDMeta, TDShapeType, TextShape, TransformInfo } from '@tldr/types';
 

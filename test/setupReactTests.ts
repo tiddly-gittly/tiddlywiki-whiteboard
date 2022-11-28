@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import '@testing-library/jest-dom/extend-expect';
+import 'fake-indexeddb/auto';
 
-// global.ResizeObserver = require('resize-observer-polyfill');
+global.ResizeObserver = require('resize-observer-polyfill');
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
-    onchange: null,
+    onchange: undefined,
     addListener: jest.fn(), // Deprecated
     removeListener: jest.fn(), // Deprecated
     addEventListener: jest.fn(),

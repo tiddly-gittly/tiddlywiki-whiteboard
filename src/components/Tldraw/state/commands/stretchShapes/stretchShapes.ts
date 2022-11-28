@@ -16,7 +16,7 @@ export function stretchShapes(app: TldrawApp, ids: string[], type: StretchType):
   const idsToMutate = ids
     .flatMap((id) => {
       const shape = app.getShape(id);
-      return shape.children ? shape.children : shape.id;
+      return shape.children == undefined ? shape.id : shape.children;
     })
     .filter((id) => !app.getShape(id).isLocked);
 

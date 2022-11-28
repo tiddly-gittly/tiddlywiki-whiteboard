@@ -1,4 +1,5 @@
 import { Utils } from '@tldraw/core';
+import * as idb from 'idb-keyval';
 import create, { UseBoundStore } from 'zustand';
 import createVanilla, { StoreApi } from 'zustand/vanilla';
 import type { Command, Patch } from '@tldr/types';
@@ -58,6 +59,7 @@ export class StateManager<T extends Record<string, any>> {
   public isPaused = false;
 
   constructor(initialState: T, id?: string, version?: number, update?: (previous: T, next: T, previousVersion: number) => T) {
+    this._idbId = id;
     this._state = deepCopy(initialState);
     this._snapshot = deepCopy(initialState);
     this.initialState = deepCopy(initialState);

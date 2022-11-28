@@ -76,7 +76,7 @@ export function removeShapesFromPage(data: TDSnapshot, ids: string[], pageId: st
           const shape = page.shapes[id];
 
           // If the bound shape has a handle that references the deleted binding...
-          if (shape && shape.handles) {
+          if (shape && shape.handles != undefined) {
             Object.values(shape.handles)
               .filter((handle) => handle.bindingId === binding.id)
               .forEach((handle) => {

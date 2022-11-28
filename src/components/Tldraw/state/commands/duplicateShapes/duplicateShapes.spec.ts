@@ -115,12 +115,12 @@ describe('Duplicate command', () => {
 
       app.undo();
 
-      expect(app.getBinding(newBindingId)).toBeUndefined();
+      expect(app.getBinding(newBindingId!)).toBeUndefined();
       expect(app.getShape<ArrowShape>(newShapeIds[0])).toBeUndefined();
 
       app.redo();
 
-      expect(app.getBinding(newBindingId)).toBeTruthy();
+      expect(app.getBinding(newBindingId!)).toBeTruthy();
       expect(app.getShape<ArrowShape>(newShapeIds[0]).handles.start.bindingId).toBe(newBindingId);
     });
 

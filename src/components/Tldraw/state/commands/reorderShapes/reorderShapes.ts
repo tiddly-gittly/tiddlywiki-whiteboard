@@ -24,7 +24,7 @@ export function reorderShapes(app: TldrawApp, ids: string[], type: MoveType): Tl
       sortedChildren = Object.values(page.shapes).sort((a, b) => a.childIndex - b.childIndex);
     } else {
       const parent = app.getShape(parentId);
-      if (!parent.children) throw new Error('No children in parent!');
+      if (parent.children == undefined) throw new Error('No children in parent!');
 
       sortedChildren = parent.children.map((childId) => app.getShape(childId)).sort((a, b) => a.childIndex - b.childIndex);
     }

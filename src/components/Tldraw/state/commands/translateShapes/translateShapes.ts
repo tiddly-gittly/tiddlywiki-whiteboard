@@ -22,7 +22,7 @@ export function translateShapes(app: TldrawApp, ids: string[], delta: number[]):
   const idsToMutate = ids
     .flatMap((id) => {
       const shape = app.getShape(id);
-      return shape.children ? shape.children : shape.id;
+      return shape.children == undefined ? shape.id : shape.children;
     })
     .filter((id) => !app.getShape(id).isLocked);
 
@@ -49,7 +49,7 @@ export function translateShapes(app: TldrawApp, ids: string[], delta: number[]):
       // Let's also look at the bound shape...
       const shape = app.getShape(id);
 
-      if (!shape.handles) continue;
+      if (shape.handles == undefined) continue;
 
       // If the bound shape has a handle that references the deleted binding, delete that reference
 

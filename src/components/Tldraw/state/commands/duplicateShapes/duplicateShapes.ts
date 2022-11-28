@@ -32,7 +32,7 @@ export function duplicateShapes(app: TldrawApp, ids: string[], point?: number[])
       childIndex: TLDR.getChildIndexAbove(app.state, shape.id, currentPageId),
     };
 
-    if (shape.children) {
+    if (shape.children != undefined) {
       after.shapes[duplicatedId]!.children = [];
     }
 
@@ -46,7 +46,7 @@ export function duplicateShapes(app: TldrawApp, ids: string[], point?: number[])
 
       after.shapes[parent.id] = {
         ...after.shapes[parent.id],
-        children: [...(after.shapes[parent.id] || parent).children!, duplicatedId],
+        children: [...(after.shapes[parent.id] != undefined || parent).children!, duplicatedId],
       };
     }
 
@@ -55,7 +55,7 @@ export function duplicateShapes(app: TldrawApp, ids: string[], point?: number[])
 
   // If the shapes have children, then duplicate those too
   shapesToDuplicate.forEach((shape) => {
-    if (shape.children) {
+    if (shape.children != undefined) {
       shape.children.forEach((childId) => {
         const child = app.getShape(childId);
         const duplicatedId = Utils.uniqueId();
@@ -99,18 +99,18 @@ export function duplicateShapes(app: TldrawApp, ids: string[], point?: number[])
           // Change the duplicated shape's handle so that it reference
           // the duplicated binding
           const boundShape = after.shapes[duplicatedBinding.fromId];
-          Object.values(boundShape.handles!).forEach((handle) => {
-            if (handle.bindingId === binding.id) {
-              handle.bindingId = duplicatedBindingId;
+          Object.values(boundShape!.handles!).forEach((handle) => {
+            if (handle!.bindingId === binding.id) {
+              handle!.bindingId = duplicatedBindingId;
             }
           });
         } else {
           // If only the fromId is selected, delete the binding on
           // the duplicated shape's handles
           const boundShape = after.shapes[duplicateMap[binding.fromId]];
-          Object.values(boundShape.handles!).forEach((handle) => {
-            if (handle.bindingId === binding.id) {
-              handle.bindingId = undefined;
+          Object.values(boundShape!.handles!).forEach((handle) => {
+            if (handle!.bindingId === binding.id) {
+              handle!.bindingId = undefined;
             }
           });
         }
@@ -119,7 +119,7 @@ export function duplicateShapes(app: TldrawApp, ids: string[], point?: number[])
 
   // Now move the shapes
 
-  const shapesToMove = Object.values(after.shapes);
+  const shapesToMove = Object.values(after.shapes) as TDShape[];
 
   if (point == undefined) {
     const offset = [16, 16];

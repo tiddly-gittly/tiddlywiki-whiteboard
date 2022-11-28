@@ -4,7 +4,15 @@ import Vec from '@tldraw/vec';
 import * as React from 'react';
 import { BINDING_DISTANCE, GHOSTED_OPACITY, LABEL_POINT } from '@tldr/constants';
 import { TDShapeUtil } from '@tldr/state/shapes/TDShapeUtil';
-import { TextLabel, defaultStyle, getBoundsRectangle, getFontStyle, getShapeStyle, transformRectangle, transformSingleRectangle } from '@tldr/state/shapes/shared';
+import {
+  TextLabel,
+  defaultStyle,
+  getBoundsRectangle,
+  getFontStyle,
+  getShapeStyle,
+  transformRectangle,
+  transformSingleRectangle,
+} from '@tldr/state/shapes/shared';
 import { styled } from '@tldr/styles';
 import { DashStyle, TDMeta, TDShape, TDShapeType, TriangleShape } from '@tldr/types';
 import { DashedTriangle } from './components/DashedTriangle';

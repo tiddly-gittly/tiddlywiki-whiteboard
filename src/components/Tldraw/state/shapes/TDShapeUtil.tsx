@@ -3,8 +3,8 @@ import type { TLBounds, TLPointerInfo } from '@tldraw/core';
 import { intersectLineSegmentBounds, intersectLineSegmentPolyline, intersectRayBounds } from '@tldraw/intersect';
 import { Vec } from '@tldraw/vec';
 import * as React from 'react';
-import { BINDING_DISTANCE } from '../../constants';
-import { AlignStyle, ShapesWithProp, TDBinding, TDMeta, TDShape, TransformInfo } from '../../types';
+import { BINDING_DISTANCE } from '@tldr/constants';
+import { AlignStyle, ShapesWithProp, TDBinding, TDMeta, TDShape, TransformInfo } from '@tldr/types';
 import { getFontFace, getFontSize, getFontStyle, getShapeStyle } from './shared';
 import { getTextLabelSize } from './shared/getTextSize';
 import { getTextSvgElement } from './shared/getTextSvgElement';
@@ -34,7 +34,7 @@ export abstract class TDShapeUtil<T extends TDShape, E extends Element = any> ex
     const box = Utils.getBoundsFromPoints([A, B]);
     const bounds = this.getBounds(shape);
 
-    return Utils.boundsContain(bounds, box) || Boolean(shape.rotation)
+    return Utils.boundsContain(bounds, box) || shape.rotation
       ? intersectLineSegmentPolyline(A, B, Utils.getRotatedCorners(this.getBounds(shape))).didIntersect
       : intersectLineSegmentBounds(A, B, this.getBounds(shape)).length > 0;
   };
@@ -130,30 +130,28 @@ export abstract class TDShapeUtil<T extends TDShape, E extends Element = any> ex
     return { ...shape, point: [bounds.minX, bounds.minY] };
   };
 
-  transformSingle = (shape: T, bounds: TLBounds, info: TransformInfo<T>): Partial<T> | undefined => {
+  transformSingle = (shape: T, bounds: TLBounds, info: TransformInfo<T>): Partial<T> | void => {
     return this.transform(shape, bounds, info);
   };
 
-  updateChildren?: <K extends TDShape>(shape: T, children: K[]) => Array<Partial<K>> | undefined;
+  updateChildren?: <K extends TDShape>(shape: T, children: K[]) => Array<Partial<K>> | void;
 
-  onChildrenChange?: (shape: T, children: TDShape[]) => Partial<T> | undefined;
+  onChildrenChange?: (shape: T, children: TDShape[]) => Partial<T> | void;
 
-  onHandleChange?: (shape: T, handles: Partial<T['handles']>) => Partial<T> | undefined;
+  onHandleChange?: (shape: T, handles: Partial<T['handles']>) => Partial<T> | void;
 
-  onRightPointHandle?: (shape: T, handles: Partial<T['handles']>, info: Partial<TLPointerInfo>) => Partial<T> | undefined;
+  onRightPointHandle?: (shape: T, handles: Partial<T['handles']>, info: Partial<TLPointerInfo>) => Partial<T> | void;
 
-  onDoubleClickHandle?: (shape: T, handles: Partial<T['handles']>, info: Partial<TLPointerInfo>) => Partial<T> | undefined;
+  onDoubleClickHandle?: (shape: T, handles: Partial<T['handles']>, info: Partial<TLPointerInfo>) => Partial<T> | void;
 
-  onDoubleClickBoundsHandle?: (shape: T) => Partial<T> | undefined;
+  onDoubleClickBoundsHandle?: (shape: T) => Partial<T> | void;
 
-  onSessionComplete?: (shape: T) => Partial<T> | undefined;
+  onSessionComplete?: (shape: T) => Partial<T> | void;
 
-  getSvgElement = (shape: T, isDarkMode: boolean): SVGElement | undefined => {
-    // eslint-disable-next-line unicorn/prefer-query-selector
+  getSvgElement = (shape: T, isDarkMode: boolean): SVGElement | void => {
     const elm = document.getElementById(shape.id + '_svg')?.cloneNode(true) as SVGElement;
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (!elm) return; // possibly in test mode
-    const hasLabel = (shape.label?.trim()?.length ?? 0) > 0;
+    const hasLabel = shape.label?.trim()?.length ?? 0 > 0;
     if (hasLabel) {
       const s = shape as TDShape & { label: string };
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');

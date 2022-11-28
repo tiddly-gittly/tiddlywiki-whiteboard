@@ -27,11 +27,11 @@ enum Status {
   PointingCanvas = 'pointingCanvas',
   PointingClone = 'pointingClone',
   PointingHandle = 'pointingHandle',
-  Transforming = 'transforming',
   Rotating = 'rotating',
+  Transforming = 'transforming',
   Translating = 'translating',
   TranslatingClone = 'translatingClone',
-  TranslatingHandle = 'translatingHandle'
+  TranslatingHandle = 'translatingHandle',
 }
 
 export class SelectTool extends BaseTool<Status> {
@@ -147,10 +147,10 @@ export class SelectTool extends BaseTool<Status> {
   /* ----------------- Event Handlers ----------------- */
 
   onCancel = () => {
-    if (this.app.session) {
-      this.app.cancelSession();
-    } else {
+    if (this.app.session == undefined) {
       this.selectNone();
+    } else {
+      this.app.cancelSession();
     }
 
     this.setStatus(Status.Idle);
@@ -169,7 +169,7 @@ export class SelectTool extends BaseTool<Status> {
           const [selectedId] = this.app.selectedIds;
           const clonedShape = this.getShapeClone(selectedId, 'right');
 
-          if (clonedShape) {
+          if (clonedShape != undefined) {
             this.app.createShapes(clonedShape);
             this.setStatus(Status.Idle);
             if (clonedShape.type === TDShapeType.Sticky) {
@@ -218,13 +218,13 @@ export class SelectTool extends BaseTool<Status> {
     const { originPoint, currentPoint } = this.app;
 
     if (this.app.readOnly && this.app.isPointing) {
-      if (this.app.session) {
-        this.app.updateSession();
-      } else {
+      if (this.app.session == undefined) {
         if (Vec.dist(originPoint, currentPoint) > DEAD_ZONE) {
           this.app.startSession(SessionType.Brush);
           this.setStatus(Status.Brushing);
         }
+      } else {
+        this.app.updateSession();
       }
       return;
     }
@@ -303,7 +303,7 @@ export class SelectTool extends BaseTool<Status> {
         break;
       }
       default: {
-        if (this.app.session) {
+        if (this.app.session != undefined) {
           this.app.updateSession();
           break;
         }
@@ -637,7 +637,7 @@ export class SelectTool extends BaseTool<Status> {
     const clonedShape = this.getShapeClone(selectedShapeId, info.target);
 
     if (info.target === 'left' || info.target === 'right' || info.target === 'top' || info.target === 'bottom') {
-      if (clonedShape) {
+      if (clonedShape != undefined) {
         this.app.createShapes(clonedShape);
 
         // Now start pointing the bounds, so that a user can start

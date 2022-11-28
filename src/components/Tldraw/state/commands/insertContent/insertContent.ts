@@ -70,7 +70,7 @@ export function insertContent(
     while (shapesToInsert.length > 0) {
       const shape = shapesToInsert.shift();
 
-      if (!shape) break;
+      if (shape == undefined) break;
 
       visited.add(shape.id);
 
@@ -86,7 +86,7 @@ export function insertContent(
         // Has that parent been added yet to the after object?
         const parent = after.shapes[shape.parentId];
 
-        if (!parent) {
+        if (parent == undefined) {
           if (visited.has(shape.id)) {
             // If we've already visited this shape, then that means
             // its parent was not among the shapes to insert. Set it
@@ -106,7 +106,7 @@ export function insertContent(
 
       // If the inserting shape has its own children, set the children to
       // an empty array; we'll add them later, as just shown above
-      if (shape.children) {
+      if (shape.children != undefined) {
         shape.children = [];
       }
 
@@ -120,9 +120,9 @@ export function insertContent(
     Object.values(after.shapes).forEach((shape) => {
       // If the shape used to have children, but no longer does have children,
       // then delete the shape. This prevents inserting groups without children.
-      if (shape.children && shape.children.length === 0) {
-        delete before.shapes[shape.id!];
-        delete after.shapes[shape.id!];
+      if (shape!.children != undefined && shape!.children.length === 0) {
+        delete before.shapes[shape!.id!];
+        delete after.shapes[shape!.id!];
       }
     });
 
@@ -141,10 +141,10 @@ export function insertContent(
         if (!toId || !fromId) {
           if (fromId) {
             const handles = after.shapes[fromId]!.handles;
-            if (handles) {
+            if (handles != undefined) {
               Object.values(handles).forEach((handle) => {
-                if (handle.bindingId === binding.id) {
-                  handle.bindingId = undefined;
+                if (handle!.bindingId === binding.id) {
+                  handle!.bindingId = undefined;
                 }
               });
             }
@@ -152,10 +152,10 @@ export function insertContent(
 
           if (toId) {
             const handles = after.shapes[toId]!.handles;
-            if (handles) {
+            if (handles != undefined) {
               Object.values(handles).forEach((handle) => {
-                if (handle.bindingId === binding.id) {
-                  handle.bindingId = undefined;
+                if (handle!.bindingId === binding.id) {
+                  handle!.bindingId = undefined;
                 }
               });
             }
@@ -167,19 +167,19 @@ export function insertContent(
         // Update the shape's to and from references to the new bindingid
 
         const fromHandles = after.shapes[fromId]!.handles;
-        if (fromHandles) {
+        if (fromHandles != undefined) {
           Object.values(fromHandles).forEach((handle) => {
-            if (handle.bindingId === binding.id) {
-              handle.bindingId = newBindingId;
+            if (handle!.bindingId === binding.id) {
+              handle!.bindingId = newBindingId;
             }
           });
         }
 
         const toHandles = after.shapes[toId]!.handles;
-        if (toHandles) {
+        if (toHandles != undefined) {
           Object.values(after.shapes[toId]!.handles!).forEach((handle) => {
-            if (handle.bindingId === binding.id) {
-              handle.bindingId = newBindingId;
+            if (handle!.bindingId === binding.id) {
+              handle!.bindingId = newBindingId;
             }
           });
         }
@@ -201,7 +201,7 @@ export function insertContent(
 
     // Now move the shapes
 
-    const shapesToMove = Object.values(after.shapes);
+    const shapesToMove = Object.values(after.shapes) as TDShape[];
 
     if (shapesToMove.length > 0) {
       if (point == undefined) {

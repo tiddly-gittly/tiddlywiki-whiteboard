@@ -1,26 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Rectangle shape Creates a shape: rectangle 1`] = `
-Object {
+{
   "childIndex": 1,
   "id": "rectangle",
   "label": "",
-  "labelPoint": Array [
+  "labelPoint": [
     0.5,
     0.5,
   ],
   "name": "Rectangle",
   "parentId": "page",
-  "point": Array [
+  "point": [
     0,
     0,
   ],
   "rotation": 0,
-  "size": Array [
+  "size": [
     1,
     1,
   ],
-  "style": Object {
+  "style": {
     "color": "black",
     "dash": "draw",
     "isFilled": false,

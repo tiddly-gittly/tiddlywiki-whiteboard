@@ -146,11 +146,11 @@ export class TransformSingleSession extends BaseSession {
       transformOrigin: [0.5, 0.5],
     });
 
-    if (afterShape) {
+    if (afterShape != undefined) {
       shapes[shape.id] = afterShape;
     }
 
-    if (showGrid && afterShape && afterShape.point) {
+    if (showGrid && afterShape != undefined && afterShape.point != undefined) {
       afterShape.point = Vec.snap(afterShape.point, currentGrid);
     }
 

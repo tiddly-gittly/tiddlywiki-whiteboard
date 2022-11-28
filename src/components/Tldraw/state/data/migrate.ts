@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-dynamic-delete */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable unicorn/consistent-destructuring */
 import { Decoration, FontStyle, TDExportBackground, TDShapeType, TDSnapshot, TextShape } from '@tldr/types';
 
 export function migrate(state: TDSnapshot, newVersion: number): TDSnapshot {
@@ -28,7 +25,7 @@ export function migrate(state: TDSnapshot, newVersion: number): TDSnapshot {
         shape.parentId = page.id;
       }
 
-      if (shape.type === TDShapeType.Group && children) {
+      if (shape.type === TDShapeType.Group && children != undefined) {
         children.forEach((childId) => {
           if (!page.shapes[childId]) {
             console.warn('Encountered a parent with a missing child!', shape.id, childId);
@@ -71,7 +68,7 @@ export function migrate(state: TDSnapshot, newVersion: number): TDSnapshot {
             }
           });
 
-          if (shape.type === TDShapeType.Arrow && shape.decorations) {
+          if (shape.type === TDShapeType.Arrow && shape.decorations != undefined) {
             Object.entries(shape.decorations).forEach(([id, decoration]) => {
               if ((decoration as unknown) === 'Arrow') {
                 shape.decorations = {

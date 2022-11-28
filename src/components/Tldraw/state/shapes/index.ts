@@ -1,5 +1,5 @@
-import type { TDShapeUtil } from '../../state/shapes/TDShapeUtil';
-import { TDShape, TDShapeType } from '../../types';
+import type { TDShapeUtil } from '@tldr/state/shapes/TDShapeUtil';
+import { TDShape, TDShapeType } from '@tldr/types';
 import { ArrowUtil } from './ArrowUtil';
 import { DrawUtil } from './DrawUtil';
 import { EllipseUtil } from './EllipseUtil';
