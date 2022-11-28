@@ -1,1 +1,1 @@
-export * from './insertContent';
+export * from './insertContent'

@@ -1,35 +1,41 @@
-import { TLBoundsCorner, Utils } from '@tldraw/core';
-import { TLDR } from '@tldr/state/TLDR';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import { FlipType } from '@tldr/types';
-import type { TldrawCommand } from '@tldr/types';
+import { TLBoundsCorner, Utils } from '@tldraw/core'
+import { TLDR } from '@tldr/state/TLDR'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import { FlipType } from '@tldr/types'
+import type { TldrawCommand } from '@tldr/types'
 
 export function flipShapes(app: TldrawApp, ids: string[], type: FlipType): TldrawCommand {
   const {
     selectedIds,
     currentPageId,
     page: { shapes },
-  } = app;
+  } = app
 
-  const boundsForShapes = ids.map((id) => TLDR.getBounds(shapes[id]));
+  const boundsForShapes = ids.map((id) => TLDR.getBounds(shapes[id]))
 
-  const isSinglySelectedGroup = ids.length === 1 && shapes[ids[0]].type === 'group';
+  const isSinglySelectedGroup = ids.length === 1 && shapes[ids[0]].type === 'group'
 
-  const commonBounds = Utils.getCommonBounds(boundsForShapes);
+  const commonBounds = Utils.getCommonBounds(boundsForShapes)
 
   const { before, after } = TLDR.mutateShapes(
     app.state,
     ids,
     (shape) => {
-      const shapeBounds = TLDR.getBounds(shape);
-      const isChildOfGroup = shape.parentId !== currentPageId;
+      const shapeBounds = TLDR.getBounds(shape)
+      const isChildOfGroup = shape.parentId !== currentPageId
       switch (type) {
         case FlipType.Horizontal: {
           if (isChildOfGroup && !isSinglySelectedGroup) {
             // do translation of this child
-            const groupBounds = TLDR.getBounds(shapes[shape.parentId]);
-            const newGroupBounds = Utils.getRelativeTransformedBoundingBox(commonBounds, commonBounds, groupBounds, true, false);
-            const dx = newGroupBounds.minX - groupBounds.minX;
+            const groupBounds = TLDR.getBounds(shapes[shape.parentId])
+            const newGroupBounds = Utils.getRelativeTransformedBoundingBox(
+              commonBounds,
+              commonBounds,
+              groupBounds,
+              true,
+              false
+            )
+            const dx = newGroupBounds.minX - groupBounds.minX
             return TLDR.getShapeUtil(shape).transform(
               shape,
               { ...shapeBounds, minX: shapeBounds.minX + dx, maxX: shapeBounds.maxX + dx },
@@ -39,11 +45,17 @@ export function flipShapes(app: TldrawApp, ids: string[], type: FlipType): Tldra
                 scaleY: 1,
                 initialShape: shape,
                 transformOrigin: [0.5, 0.5],
-              },
-            );
+              }
+            )
           }
 
-          const newShapeBounds = Utils.getRelativeTransformedBoundingBox(commonBounds, commonBounds, shapeBounds, true, false);
+          const newShapeBounds = Utils.getRelativeTransformedBoundingBox(
+            commonBounds,
+            commonBounds,
+            shapeBounds,
+            true,
+            false
+          )
 
           return TLDR.getShapeUtil(shape).transform(shape, newShapeBounds, {
             type: TLBoundsCorner.TopLeft,
@@ -51,14 +63,20 @@ export function flipShapes(app: TldrawApp, ids: string[], type: FlipType): Tldra
             scaleY: 1,
             initialShape: shape,
             transformOrigin: [0.5, 0.5],
-          });
+          })
         }
         case FlipType.Vertical: {
           if (isChildOfGroup && !isSinglySelectedGroup) {
             // do translation of this child
-            const groupBounds = TLDR.getBounds(shapes[shape.parentId]);
-            const newGroupBounds = Utils.getRelativeTransformedBoundingBox(commonBounds, commonBounds, groupBounds, false, true);
-            const dy = newGroupBounds.minY - groupBounds.minY;
+            const groupBounds = TLDR.getBounds(shapes[shape.parentId])
+            const newGroupBounds = Utils.getRelativeTransformedBoundingBox(
+              commonBounds,
+              commonBounds,
+              groupBounds,
+              false,
+              true
+            )
+            const dy = newGroupBounds.minY - groupBounds.minY
             return TLDR.getShapeUtil(shape).transform(
               shape,
               { ...shapeBounds, minY: shapeBounds.minY + dy, maxY: shapeBounds.maxY + dy },
@@ -68,10 +86,16 @@ export function flipShapes(app: TldrawApp, ids: string[], type: FlipType): Tldra
                 scaleY: 1,
                 initialShape: shape,
                 transformOrigin: [0.5, 0.5],
-              },
-            );
+              }
+            )
           }
-          const newShapeBounds = Utils.getRelativeTransformedBoundingBox(commonBounds, commonBounds, shapeBounds, false, true);
+          const newShapeBounds = Utils.getRelativeTransformedBoundingBox(
+            commonBounds,
+            commonBounds,
+            shapeBounds,
+            false,
+            true
+          )
 
           return TLDR.getShapeUtil(shape).transform(shape, newShapeBounds, {
             type: TLBoundsCorner.TopLeft,
@@ -79,13 +103,13 @@ export function flipShapes(app: TldrawApp, ids: string[], type: FlipType): Tldra
             scaleY: -1,
             initialShape: shape,
             transformOrigin: [0.5, 0.5],
-          });
+          })
         }
       }
     },
     currentPageId,
-    true,
-  );
+    true
+  )
 
   return {
     id: 'flip',
@@ -113,5 +137,5 @@ export function flipShapes(app: TldrawApp, ids: string[], type: FlipType): Tldra
         },
       },
     },
-  };
+  }
 }

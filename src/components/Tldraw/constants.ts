@@ -1,23 +1,23 @@
-import type { Easing } from '@tldr/types';
+import type { Easing } from '@tldr/types'
 
-export const LETTER_SPACING = '-0.03em';
-export const LINE_HEIGHT = 1;
-export const GRID_SIZE = 8;
-export const SVG_EXPORT_PADDING = 16;
-export const BINDING_DISTANCE = 16;
-export const CLONING_DISTANCE = 32;
-export const FIT_TO_SCREEN_PADDING = 128;
-export const SNAP_DISTANCE = 5;
-export const EMPTY_ARRAY = [] as any[];
-export const SLOW_SPEED = 10;
-export const VERY_SLOW_SPEED = 2.5;
-export const GHOSTED_OPACITY = 0.3;
-export const DEAD_ZONE = 3;
-export const LABEL_POINT = [0.5, 0.5];
+export const LETTER_SPACING = '-0.03em'
+export const LINE_HEIGHT = 1
+export const GRID_SIZE = 8
+export const SVG_EXPORT_PADDING = 16
+export const BINDING_DISTANCE = 16
+export const CLONING_DISTANCE = 32
+export const FIT_TO_SCREEN_PADDING = 128
+export const SNAP_DISTANCE = 5
+export const EMPTY_ARRAY = [] as any[]
+export const SLOW_SPEED = 10
+export const VERY_SLOW_SPEED = 2.5
+export const GHOSTED_OPACITY = 0.3
+export const DEAD_ZONE = 3
+export const LABEL_POINT = [0.5, 0.5]
 
-export const PI2 = Math.PI * 2;
+export const PI2 = Math.PI * 2
 
-export const FILE_EXTENSION = '.tldr';
+export const FILE_EXTENSION = '.tldr'
 
 export const EASINGS: Record<Easing, (t: number) => number> = {
   linear: (t) => t,
@@ -38,8 +38,15 @@ export const EASINGS: Record<Easing, (t: number) => number> = {
   easeInOutSine: (t) => -(Math.cos(Math.PI * t) - 1) / 2,
   easeInExpo: (t) => (t <= 0 ? 0 : Math.pow(2, 10 * t - 10)),
   easeOutExpo: (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t)),
-  easeInOutExpo: (t) => (t <= 0 ? 0 : t >= 1 ? 1 : t < 0.5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2),
-};
+  easeInOutExpo: (t) =>
+    t <= 0
+      ? 0
+      : t >= 1
+      ? 1
+      : t < 0.5
+      ? Math.pow(2, 20 * t - 10) / 2
+      : (2 - Math.pow(2, -20 * t + 10)) / 2,
+}
 
 export const EASING_STRINGS: Record<Easing, string> = {
   linear: `(t) => t`,
@@ -61,14 +68,28 @@ export const EASING_STRINGS: Record<Easing, string> = {
   easeInExpo: `(t) => (t <= 0 ? 0 : Math.pow(2, 10 * t - 10))`,
   easeOutExpo: `(t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t))`,
   easeInOutExpo: `(t) => t <= 0 ? 0 : t >= 1 ? 1 : t < 0.5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2`,
-};
+}
 
-export const USER_COLORS = ['#EC5E41', '#F2555A', '#F04F88', '#E34BA9', '#BD54C6', '#9D5BD2', '#7B66DC', '#02B1CC', '#11B3A3', '#39B178', '#55B467', '#FF802B'];
+export const USER_COLORS = [
+  '#EC5E41',
+  '#F2555A',
+  '#F04F88',
+  '#E34BA9',
+  '#BD54C6',
+  '#9D5BD2',
+  '#7B66DC',
+  '#02B1CC',
+  '#11B3A3',
+  '#39B178',
+  '#55B467',
+  '#FF802B',
+]
 
-export const isSafari = typeof Window === 'undefined' ? false : /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+export const isSafari =
+  typeof Window === 'undefined' ? false : /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
-export const isLinux = typeof Window === 'undefined' ? false : /linux/i.test(navigator.userAgent);
+export const isLinux = typeof Window === 'undefined' ? false : /linux/i.test(navigator.userAgent)
 
-export const IMAGE_EXTENSIONS = ['.png', '.svg', '.jpg', '.jpeg', '.gif'];
+export const IMAGE_EXTENSIONS = ['.png', '.svg', '.jpg', '.jpeg', '.gif']
 
-export const VIDEO_EXTENSIONS = isSafari ? [] : ['.mp4', '.webm'];
+export const VIDEO_EXTENSIONS = isSafari ? [] : ['.mp4', '.webm']

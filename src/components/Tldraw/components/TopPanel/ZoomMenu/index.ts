@@ -1,1 +1,1 @@
-export * from './ZoomMenu';
+export * from './ZoomMenu'

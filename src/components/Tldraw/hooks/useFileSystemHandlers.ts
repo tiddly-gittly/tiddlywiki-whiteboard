@@ -1,50 +1,50 @@
-import * as React from 'react';
-import { useDialog, useTldrawApp } from '@tldr/hooks';
+import * as React from 'react'
+import { useDialog, useTldrawApp } from '@tldr/hooks'
 
 export function useFileSystemHandlers() {
-  const app = useTldrawApp();
+  const app = useTldrawApp()
 
-  const { openDialog } = useDialog();
+  const { openDialog } = useDialog()
 
   const onNewProject = React.useCallback(
     async (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenProject != undefined) e.preventDefault();
-      app.callbacks.onNewProject?.(app, openDialog);
+      if (e && app.callbacks.onOpenProject) e.preventDefault()
+      app.callbacks.onNewProject?.(app, openDialog)
     },
-    [app, openDialog],
-  );
+    [app, openDialog]
+  )
 
   const onSaveProject = React.useCallback(
     (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenProject != undefined) e.preventDefault();
-      app.callbacks.onSaveProject?.(app);
+      if (e && app.callbacks.onOpenProject) e.preventDefault()
+      app.callbacks.onSaveProject?.(app)
     },
-    [app],
-  );
+    [app]
+  )
 
   const onSaveProjectAs = React.useCallback(
     (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenProject != undefined) e.preventDefault();
-      app.callbacks.onSaveProjectAs?.(app);
+      if (e && app.callbacks.onOpenProject) e.preventDefault()
+      app.callbacks.onSaveProjectAs?.(app)
     },
-    [app],
-  );
+    [app]
+  )
 
   const onOpenProject = React.useCallback(
     async (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenProject != undefined) e.preventDefault();
-      app.callbacks.onOpenProject?.(app, openDialog);
+      if (e && app.callbacks.onOpenProject) e.preventDefault()
+      app.callbacks.onOpenProject?.(app, openDialog)
     },
-    [app, openDialog],
-  );
+    [app, openDialog]
+  )
 
   const onOpenMedia = React.useCallback(
     async (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenMedia != undefined) e.preventDefault();
-      app.callbacks.onOpenMedia?.(app);
+      if (e && app.callbacks.onOpenMedia) e.preventDefault()
+      app.callbacks.onOpenMedia?.(app)
     },
-    [app],
-  );
+    [app]
+  )
 
   return {
     onNewProject,
@@ -52,5 +52,5 @@ export function useFileSystemHandlers() {
     onSaveProjectAs,
     onOpenProject,
     onOpenMedia,
-  };
+  }
 }

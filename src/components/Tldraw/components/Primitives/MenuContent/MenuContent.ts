@@ -1,4 +1,4 @@
-import { styled } from '@tldr/styles';
+import { styled } from '@tldr/styles'
 
 export const MenuContent = styled('div', {
   position: 'relative',
@@ -6,7 +6,7 @@ export const MenuContent = styled('div', {
   userSelect: 'none',
   display: 'flex',
   flexDirection: 'column',
-  zIndex: 99_997,
+  zIndex: 99997,
   minWidth: 180,
   pointerEvents: 'all',
   backgroundColor: '$panel',
@@ -35,4 +35,4 @@ export const MenuContent = styled('div', {
       },
     },
   },
-});
+})

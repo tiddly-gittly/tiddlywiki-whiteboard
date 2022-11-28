@@ -1,4 +1,4 @@
-import { ColorStyle, DashStyle, SizeStyle, TDDocument, TDShapeType } from '@tldr/types';
+import { ColorStyle, DashStyle, SizeStyle, TDDocument, TDShapeType } from '@tldr/types'
 
 export const badDocument: TDDocument = {
   version: 0,
@@ -69,4 +69,4 @@ export const badDocument: TDDocument = {
     },
   },
   assets: {},
-};
+}

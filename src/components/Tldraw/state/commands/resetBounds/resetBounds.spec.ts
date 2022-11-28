@@ -1,14 +1,14 @@
-import { TLBoundsCorner, Utils } from '@tldraw/core';
-import { TLDR } from '@tldr/state/TLDR';
-import { TldrawTestApp, mockDocument } from '@tldr/test';
-import { SessionType, TDShapeType } from '@tldr/types';
+import { TLBoundsCorner, Utils } from '@tldraw/core'
+import { TLDR } from '@tldr/state/TLDR'
+import { TldrawTestApp, mockDocument } from '@tldr/test'
+import { SessionType, TDShapeType } from '@tldr/types'
 
 describe('Reset bounds command', () => {
-  const app = new TldrawTestApp();
+  const app = new TldrawTestApp()
 
   beforeEach(() => {
-    app.loadDocument(mockDocument);
-  });
+    app.loadDocument(mockDocument)
+  })
 
   it('does, undoes and redoes command', () => {
     app.createShapes({
@@ -16,10 +16,10 @@ describe('Reset bounds command', () => {
       type: TDShapeType.Text,
       point: [0, 0],
       text: 'Hello World',
-    });
+    })
 
     // Scale is undefined by default
-    expect(app.getShape('text1').style.scale).toBe(1);
+    expect(app.getShape('text1').style.scale).toBe(1)
 
     // Transform the shape in order to change its point and scale
 
@@ -28,36 +28,36 @@ describe('Reset bounds command', () => {
       .movePointer([0, 0])
       .startSession(SessionType.Transform, TLBoundsCorner.TopLeft)
       .movePointer({ x: -100, y: -100, shiftKey: false, altKey: false })
-      .completeSession();
+      .completeSession()
 
-    const scale = app.getShape('text1').style.scale;
-    const bounds = TLDR.getBounds(app.getShape('text1'));
-    const center = Utils.getBoundsCenter(bounds);
+    const scale = app.getShape('text1').style.scale
+    const bounds = TLDR.getBounds(app.getShape('text1'))
+    const center = Utils.getBoundsCenter(bounds)
 
-    expect(scale).not.toBe(1);
-    expect(Number.isNaN(scale)).toBe(false);
+    expect(scale).not.toBe(1)
+    expect(Number.isNaN(scale)).toBe(false)
 
     // Reset the bounds
 
-    app.resetBounds(['text1']);
+    app.resetBounds(['text1'])
 
     // The scale should be back to 1
-    expect(app.getShape('text1').style.scale).toBe(1);
+    expect(app.getShape('text1').style.scale).toBe(1)
     // The centers should be the same
-    expect(Utils.getBoundsCenter(TLDR.getBounds(app.getShape('text1')))).toStrictEqual(center);
+    expect(Utils.getBoundsCenter(TLDR.getBounds(app.getShape('text1')))).toStrictEqual(center)
 
-    app.undo();
+    app.undo()
 
     // The scale should be what it was before
-    expect(app.getShape('text1').style.scale).not.toBe(1);
+    expect(app.getShape('text1').style.scale).not.toBe(1)
     // The centers should be the same
-    expect(Utils.getBoundsCenter(TLDR.getBounds(app.getShape('text1')))).toStrictEqual(center);
+    expect(Utils.getBoundsCenter(TLDR.getBounds(app.getShape('text1')))).toStrictEqual(center)
 
-    app.redo();
+    app.redo()
 
     // The scale should be back to 1
-    expect(app.getShape('text1').style.scale).toBe(1);
+    expect(app.getShape('text1').style.scale).toBe(1)
     // The centers should be the same
-    expect(Utils.getBoundsCenter(TLDR.getBounds(app.getShape('text1')))).toStrictEqual(center);
-  });
-});
+    expect(Utils.getBoundsCenter(TLDR.getBounds(app.getShape('text1')))).toStrictEqual(center)
+  })
+})

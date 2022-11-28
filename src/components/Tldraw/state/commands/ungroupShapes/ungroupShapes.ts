@@ -1,60 +1,66 @@
-import { TLDR } from '@tldr/state/TLDR';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import type { GroupShape, Patch, TDBinding, TDShape, TldrawCommand } from '@tldr/types';
+import { TLDR } from '@tldr/state/TLDR'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import type { GroupShape, Patch, TDBinding, TDShape } from '@tldr/types'
+import type { TldrawCommand } from '@tldr/types'
 
-export function ungroupShapes(app: TldrawApp, selectedIds: string[], groupShapes: GroupShape[], pageId: string): TldrawCommand | undefined {
-  const { bindings } = app;
+export function ungroupShapes(
+  app: TldrawApp,
+  selectedIds: string[],
+  groupShapes: GroupShape[],
+  pageId: string
+): TldrawCommand | undefined {
+  const { bindings } = app
 
-  const beforeShapes: Record<string, Patch<TDShape | undefined>> = {};
-  const afterShapes: Record<string, Patch<TDShape | undefined>> = {};
+  const beforeShapes: Record<string, Patch<TDShape | undefined>> = {}
+  const afterShapes: Record<string, Patch<TDShape | undefined>> = {}
 
-  const beforeBindings: Record<string, Patch<TDBinding | undefined>> = {};
-  const afterBindings: Record<string, Patch<TDBinding | undefined>> = {};
+  const beforeBindings: Record<string, Patch<TDBinding | undefined>> = {}
+  const afterBindings: Record<string, Patch<TDBinding | undefined>> = {}
 
-  const beforeSelectedIds = selectedIds;
-  const afterSelectedIds = selectedIds.filter((id) => groupShapes.find((shape) => shape.id === id) == undefined);
+  const beforeSelectedIds = selectedIds
+  const afterSelectedIds = selectedIds.filter((id) => !groupShapes.find((shape) => shape.id === id))
 
   // The group shape
   groupShapes
     .filter((shape) => !shape.isLocked)
     .forEach((groupShape) => {
-      const shapesToReparent: TDShape[] = [];
-      const deletedGroupIds: string[] = [];
+      const shapesToReparent: TDShape[] = []
+      const deletedGroupIds: string[] = []
 
       // Remove the group shape in the next state
-      beforeShapes[groupShape.id] = groupShape;
-      afterShapes[groupShape.id] = undefined;
+      beforeShapes[groupShape.id] = groupShape
+      afterShapes[groupShape.id] = undefined
 
       // Select its children in the next state
       groupShape.children.forEach((id) => {
-        afterSelectedIds.push(id);
-        const shape = app.getShape(id, pageId);
-        shapesToReparent.push(shape);
-      });
+        afterSelectedIds.push(id)
+        const shape = app.getShape(id, pageId)
+        shapesToReparent.push(shape)
+      })
 
       // We'll start placing the shapes at this childIndex
-      const startingChildIndex = groupShape.childIndex;
+      const startingChildIndex = groupShape.childIndex
 
       // And we'll need to fit them under this child index
-      const endingChildIndex = TLDR.getChildIndexAbove(app.state, groupShape.id, pageId);
+      const endingChildIndex = TLDR.getChildIndexAbove(app.state, groupShape.id, pageId)
 
-      const step = (endingChildIndex - startingChildIndex) / shapesToReparent.length;
+      const step = (endingChildIndex - startingChildIndex) / shapesToReparent.length
 
       // An array of shapes in order by their child index
-      const sortedShapes = shapesToReparent.sort((a, b) => a.childIndex - b.childIndex);
+      const sortedShapes = shapesToReparent.sort((a, b) => a.childIndex - b.childIndex)
 
       // Reparent shapes to the page
       sortedShapes.forEach((shape, index) => {
         beforeShapes[shape.id] = {
           parentId: shape.parentId,
           childIndex: shape.childIndex,
-        };
+        }
 
         afterShapes[shape.id] = {
           parentId: pageId,
           childIndex: startingChildIndex + step * index,
-        };
-      });
+        }
+      })
 
       // We also need to delete bindings that reference the deleted shapes
       bindings
@@ -64,14 +70,14 @@ export function ungroupShapes(app: TldrawApp, selectedIds: string[], groupShapes
             // If the binding references the deleted group...
             if (afterShapes[id] === undefined) {
               // Delete the binding
-              beforeBindings[binding.id] = binding;
-              afterBindings[binding.id] = undefined;
+              beforeBindings[binding.id] = binding
+              afterBindings[binding.id] = undefined
 
               // Let's also look each the bound shape...
-              const shape = app.getShape(id, pageId);
+              const shape = app.getShape(id, pageId)
 
               // If the bound shape has a handle that references the deleted binding...
-              if (shape.handles != undefined) {
+              if (shape.handles) {
                 Object.values(shape.handles)
                   .filter((handle) => handle.bindingId === binding.id)
                   .forEach((handle) => {
@@ -82,7 +88,7 @@ export function ungroupShapes(app: TldrawApp, selectedIds: string[], groupShapes
                         ...beforeShapes[id]?.handles,
                         [handle.id]: { bindingId: binding.id },
                       },
-                    };
+                    }
 
                     // Unless we're currently deleting the shape, remove the
                     // binding reference from the after patch
@@ -93,14 +99,14 @@ export function ungroupShapes(app: TldrawApp, selectedIds: string[], groupShapes
                           ...afterShapes[id]?.handles,
                           [handle.id]: { bindingId: undefined },
                         },
-                      };
+                      }
                     }
-                  });
+                  })
               }
             }
           }
-        });
-    });
+        })
+    })
 
   return {
     id: 'ungroup',
@@ -134,5 +140,5 @@ export function ungroupShapes(app: TldrawApp, selectedIds: string[], groupShapes
         },
       },
     },
-  };
+  }
 }

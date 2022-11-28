@@ -1,11 +1,17 @@
-import { TLBounds, Utils } from '@tldraw/core';
-import { Vec } from '@tldraw/vec';
-import { TLDR } from '@tldr/state/TLDR';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import type { ArrowShape, PagePartial, TDShape, TldrawCommand } from '@tldr/types';
+import { TLBounds, Utils } from '@tldraw/core'
+import { Vec } from '@tldraw/vec'
+import { TLDR } from '@tldr/state/TLDR'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import type { ArrowShape, PagePartial, TDShape, TldrawCommand } from '@tldr/types'
 
-export function moveShapesToPage(app: TldrawApp, ids: string[], viewportBounds: TLBounds, fromPageId: string, toPageId: string): TldrawCommand {
-  const { page } = app;
+export function moveShapesToPage(
+  app: TldrawApp,
+  ids: string[],
+  viewportBounds: TLBounds,
+  fromPageId: string,
+  toPageId: string
+): TldrawCommand {
+  const { page } = app
 
   const fromPage: Record<string, PagePartial> = {
     before: {
@@ -16,7 +22,7 @@ export function moveShapesToPage(app: TldrawApp, ids: string[], viewportBounds: 
       shapes: {},
       bindings: {},
     },
-  };
+  }
 
   const toPage: Record<string, PagePartial> = {
     before: {
@@ -27,40 +33,40 @@ export function moveShapesToPage(app: TldrawApp, ids: string[], viewportBounds: 
       shapes: {},
       bindings: {},
     },
-  };
+  }
 
   // Collect all the shapes to move and their keys.
-  const movingShapeIds = new Set<string>();
-  const shapesToMove = new Set<TDShape>();
+  const movingShapeIds = new Set<string>()
+  const shapesToMove = new Set<TDShape>()
 
   ids
     .map((id) => app.getShape(id, fromPageId))
     .filter((shape) => !shape.isLocked)
     .forEach((shape) => {
-      movingShapeIds.add(shape.id);
-      shapesToMove.add(shape);
+      movingShapeIds.add(shape.id)
+      shapesToMove.add(shape)
       if (shape.children !== undefined) {
         shape.children.forEach((childId) => {
-          movingShapeIds.add(childId);
-          shapesToMove.add(app.getShape(childId, fromPageId));
-        });
+          movingShapeIds.add(childId)
+          shapesToMove.add(app.getShape(childId, fromPageId))
+        })
       }
-    });
+    })
 
   // Where should we put start putting shapes on the "to" page?
-  const startingChildIndex = TLDR.getTopChildIndex(app.state, toPageId);
+  const startingChildIndex = TLDR.getTopChildIndex(app.state, toPageId)
 
   // Which shapes are we moving?
-  const movingShapes = [...shapesToMove.values()];
+  const movingShapes = Array.from(shapesToMove.values())
 
-  movingShapes.forEach((shape, index) => {
+  movingShapes.forEach((shape, i) => {
     // Remove the shape from the fromPage
-    fromPage.before.shapes[shape.id] = shape;
-    fromPage.after.shapes[shape.id] = undefined;
+    fromPage.before.shapes[shape.id] = shape
+    fromPage.after.shapes[shape.id] = undefined
 
     // But the moved shape on the "to" page
-    toPage.before.shapes[shape.id] = undefined;
-    toPage.after.shapes[shape.id] = shape;
+    toPage.before.shapes[shape.id] = undefined
+    toPage.after.shapes[shape.id] = shape
 
     // If the shape's parent isn't moving too, reparent the shape to
     // the "to" page, at the top of the z stack
@@ -68,23 +74,23 @@ export function moveShapesToPage(app: TldrawApp, ids: string[], viewportBounds: 
       toPage.after.shapes[shape.id] = {
         ...shape,
         parentId: toPageId,
-        childIndex: startingChildIndex + index,
-      };
+        childIndex: startingChildIndex + i,
+      }
 
       // If the shape was in a group, then pull the shape from the
       // parent's children array.
       if (shape.parentId !== fromPageId) {
-        const parent = app.getShape(shape.parentId, fromPageId);
+        const parent = app.getShape(shape.parentId, fromPageId)
         fromPage.before.shapes[parent.id] = {
           children: parent.children,
-        };
+        }
 
         fromPage.after.shapes[parent.id] = {
           children: parent.children!.filter((childId) => childId !== shape.id),
-        };
+        }
       }
     }
-  });
+  })
 
   // Handle bindings that effect duplicated shapes
   Object.values(page.bindings)
@@ -92,33 +98,35 @@ export function moveShapesToPage(app: TldrawApp, ids: string[], viewportBounds: 
     .forEach((binding) => {
       // Always delete the binding from the from page
 
-      fromPage.before.bindings[binding.id] = binding;
-      fromPage.after.bindings[binding.id] = undefined;
+      fromPage.before.bindings[binding.id] = binding
+      fromPage.after.bindings[binding.id] = undefined
 
       // Delete the reference from the binding's fromShape
 
-      const fromBoundShape = app.getShape(binding.fromId, fromPageId);
+      const fromBoundShape = app.getShape(binding.fromId, fromPageId)
 
       // Will we be copying this binding to the new page?
 
-      const shouldCopy = movingShapeIds.has(binding.fromId) && movingShapeIds.has(binding.toId);
+      const shouldCopy = movingShapeIds.has(binding.fromId) && movingShapeIds.has(binding.toId)
 
       if (shouldCopy) {
         // Just move the binding to the new page
-        toPage.before.bindings[binding.id] = undefined;
-        toPage.after.bindings[binding.id] = binding;
+        toPage.before.bindings[binding.id] = undefined
+        toPage.after.bindings[binding.id] = binding
       } else {
         if (movingShapeIds.has(binding.fromId)) {
           // If we are only moving the "from" shape, we need to delete
           // the binding reference from the "from" shapes handles
-          const fromShape = app.getShape(binding.fromId, fromPageId);
-          const handle = Object.values(fromBoundShape.handles!).find((handle) => handle.bindingId === binding.id)!;
+          const fromShape = app.getShape(binding.fromId, fromPageId)
+          const handle = Object.values(fromBoundShape.handles!).find(
+            (handle) => handle.bindingId === binding.id
+          )!
 
           // Remove the handle from the shape on the toPage
 
-          const handleId = handle.id as keyof ArrowShape['handles'];
+          const handleId = handle.id as keyof ArrowShape['handles']
 
-          const toPageShape = toPage.after.shapes[fromShape.id]!;
+          const toPageShape = toPage.after.shapes[fromShape.id]!
 
           toPageShape.handles = {
             ...toPageShape.handles,
@@ -126,38 +134,42 @@ export function moveShapesToPage(app: TldrawApp, ids: string[], viewportBounds: 
               ...toPageShape.handles![handleId],
               bindingId: undefined,
             },
-          };
+          }
         } else {
           // If we are only moving the "to" shape, we need to delete
           // the binding reference from the "from" shape's handles
-          const fromShape = app.getShape(binding.fromId, fromPageId);
-          const handle = Object.values(fromBoundShape.handles!).find((handle) => handle.bindingId === binding.id)!;
+          const fromShape = app.getShape(binding.fromId, fromPageId)
+          const handle = Object.values(fromBoundShape.handles!).find(
+            (handle) => handle.bindingId === binding.id
+          )!
 
           fromPage.before.shapes[fromShape.id] = {
             handles: { [handle.id]: { bindingId: binding.id } },
-          };
+          }
 
           fromPage.after.shapes[fromShape.id] = {
             handles: { [handle.id]: { bindingId: undefined } },
-          };
+          }
         }
       }
-    });
+    })
 
   // Finally, center camera on selection
 
-  const toPageState = app.state.document.pageStates[toPageId];
+  const toPageState = app.state.document.pageStates[toPageId]
 
-  const bounds = Utils.getCommonBounds(movingShapes.map((shape) => TLDR.getBounds(shape)));
+  const bounds = Utils.getCommonBounds(movingShapes.map((shape) => TLDR.getBounds(shape)))
 
   const zoom = TLDR.getCameraZoom(
-    viewportBounds.width < viewportBounds.height ? (viewportBounds.width - 128) / bounds.width : (viewportBounds.height - 128) / bounds.height,
-  );
+    viewportBounds.width < viewportBounds.height
+      ? (viewportBounds.width - 128) / bounds.width
+      : (viewportBounds.height - 128) / bounds.height
+  )
 
-  const mx = (viewportBounds.width - bounds.width * zoom) / 2 / zoom;
-  const my = (viewportBounds.height - bounds.height * zoom) / 2 / zoom;
+  const mx = (viewportBounds.width - bounds.width * zoom) / 2 / zoom
+  const my = (viewportBounds.height - bounds.height * zoom) / 2 / zoom
 
-  const point = Vec.toFixed(Vec.add([-bounds.minX, -bounds.minY], [mx, my]));
+  const point = Vec.toFixed(Vec.add([-bounds.minX, -bounds.minY], [mx, my]))
 
   return {
     id: 'move_to_page',
@@ -200,5 +212,5 @@ export function moveShapesToPage(app: TldrawApp, ids: string[], viewportBounds: 
         },
       },
     },
-  };
+  }
 }

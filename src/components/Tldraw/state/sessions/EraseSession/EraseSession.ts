@@ -1,53 +1,63 @@
-import { Vec } from '@tldraw/vec';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import { BaseSession } from '@tldr/state/sessions/BaseSession';
-import { PagePartial, SessionType, TDBinding, TDShape, TDStatus, TldrawCommand, TldrawPatch } from '@tldr/types';
+import { Vec } from '@tldraw/vec'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import { BaseSession } from '@tldr/state/sessions/BaseSession'
+import {
+  PagePartial,
+  SessionType,
+  TDBinding,
+  TDShape,
+  TDStatus,
+  TldrawCommand,
+  TldrawPatch,
+} from '@tldr/types'
 
 export class EraseSession extends BaseSession {
-  type = SessionType.Draw;
-  performanceMode = undefined;
-  status = TDStatus.Creating;
-  isLocked?: boolean;
-  lockedDirection?: 'horizontal' | 'vertical';
-  erasedShapes = new Set<TDShape>();
-  erasedBindings = new Set<TDBinding>();
-  initialSelectedShapes: TDShape[];
-  erasableShapes: Set<TDShape>;
-  prevPoint: number[];
-  prevEraseShapesSize = 0;
+  type = SessionType.Draw
+  performanceMode = undefined
+  status = TDStatus.Creating
+  isLocked?: boolean
+  lockedDirection?: 'horizontal' | 'vertical'
+  erasedShapes = new Set<TDShape>()
+  erasedBindings = new Set<TDBinding>()
+  initialSelectedShapes: TDShape[]
+  erasableShapes: Set<TDShape>
+  prevPoint: number[]
+  prevEraseShapesSize = 0
 
   constructor(app: TldrawApp) {
-    super(app);
-    this.prevPoint = [...app.originPoint];
-    this.initialSelectedShapes = this.app.selectedIds.map((id) => this.app.getShape(id));
-    this.erasableShapes = new Set(this.app.shapes.filter((shape) => !shape.isLocked));
-    this.interval = this.loop();
+    super(app)
+    this.prevPoint = [...app.originPoint]
+    this.initialSelectedShapes = this.app.selectedIds.map((id) => this.app.getShape(id))
+    this.erasableShapes = new Set(this.app.shapes.filter((shape) => !shape.isLocked))
+    this.interval = this.loop()
   }
 
-  interval: any;
-  timestamp1 = 0;
-  timestamp2 = 0;
-  prevErasePoint: number[] = [];
+  interval: any
+  timestamp1 = 0
+  timestamp2 = 0
+  prevErasePoint: number[] = []
 
   loop = () => {
-    const now = Date.now();
-    const elapsed1 = now - this.timestamp1;
-    const elapsed2 = now - this.timestamp2;
-    const { eraseLine } = this.app.appState;
+    const now = Date.now()
+    const elapsed1 = now - this.timestamp1
+    const elapsed2 = now - this.timestamp2
+    const { eraseLine } = this.app.appState
 
-    let next = [...eraseLine];
-    let didUpdate = false;
+    let next = [...eraseLine]
+    let didUpdate = false
 
     if (elapsed1 > 16 && this.prevErasePoint !== this.prevPoint) {
-      didUpdate = true;
-      next = [...eraseLine, this.prevPoint];
-      this.prevErasePoint = this.prevPoint;
+      didUpdate = true
+      next = [...eraseLine, this.prevPoint]
+      this.prevErasePoint = this.prevPoint
     }
 
-    if (elapsed2 > 32 && next.length > 1) {
-      didUpdate = true;
-      next.splice(0, Math.ceil(next.length * 0.1));
-      this.timestamp2 = now;
+    if (elapsed2 > 32) {
+      if (next.length > 1) {
+        didUpdate = true
+        next.splice(0, Math.ceil(next.length * 0.1))
+        this.timestamp2 = now
+      }
     }
 
     if (didUpdate) {
@@ -57,89 +67,89 @@ export class EraseSession extends BaseSession {
             eraseLine: next,
           },
         },
-        'eraseline',
-      );
+        'eraseline'
+      )
     }
 
-    this.interval = requestAnimationFrame(this.loop);
-  };
+    this.interval = requestAnimationFrame(this.loop)
+  }
 
-  start = (): TldrawPatch | undefined => void null;
+  start = (): TldrawPatch | undefined => void null
 
   update = (): TldrawPatch | undefined => {
-    const { page, shiftKey, originPoint, currentPoint, zoom } = this.app;
+    const { page, shiftKey, originPoint, currentPoint, zoom } = this.app
 
     if (shiftKey) {
-      const delta = Vec.sub(currentPoint, originPoint);
+      const delta = Vec.sub(currentPoint, originPoint)
       if (!this.isLocked && Vec.len(delta) > 3 / zoom) {
         // If we're locking before knowing what direction we're in, set it
         // early based on the bigger dimension.
         if (!this.lockedDirection) {
-          const delta = Vec.sub(currentPoint, originPoint);
-          this.lockedDirection = Math.abs(delta[0]) > Math.abs(delta[1]) ? 'horizontal' : 'vertical';
+          const delta = Vec.sub(currentPoint, originPoint)
+          this.lockedDirection = Math.abs(delta[0]) > Math.abs(delta[1]) ? 'horizontal' : 'vertical'
         }
 
-        this.isLocked = true;
+        this.isLocked = true
       }
     } else if (this.isLocked) {
-      this.isLocked = false;
+      this.isLocked = false
     }
 
     if (this.isLocked) {
       if (this.lockedDirection === 'vertical') {
-        currentPoint[0] = originPoint[0];
+        currentPoint[0] = originPoint[0]
       } else {
-        currentPoint[1] = originPoint[1];
+        currentPoint[1] = originPoint[1]
       }
     }
 
-    const newPoint = Vec.toFixed(Vec.add(originPoint, Vec.sub(currentPoint, originPoint)));
+    const newPoint = Vec.toFixed(Vec.add(originPoint, Vec.sub(currentPoint, originPoint)))
 
-    const deletedShapeIds = new Set<string>([]);
+    const deletedShapeIds = new Set<string>([])
 
     this.erasableShapes.forEach((shape) => {
-      if (this.erasedShapes.has(shape)) return;
+      if (this.erasedShapes.has(shape)) return
       if (this.app.getShapeUtil(shape).hitTestLineSegment(shape, this.prevPoint, newPoint)) {
-        this.erasedShapes.add(shape);
-        deletedShapeIds.add(shape.id);
+        this.erasedShapes.add(shape)
+        deletedShapeIds.add(shape.id)
 
         if (shape.children !== undefined) {
           for (const childId of shape.children) {
-            this.erasedShapes.add(this.app.getShape(childId));
-            deletedShapeIds.add(childId);
+            this.erasedShapes.add(this.app.getShape(childId))
+            deletedShapeIds.add(childId)
           }
         }
       }
-    });
+    })
 
     // Erase bindings that reference deleted shapes
 
     Object.values(page.bindings).forEach((binding) => {
       for (const id of [binding.toId, binding.fromId]) {
         if (deletedShapeIds.has(id)) {
-          this.erasedBindings.add(binding);
+          this.erasedBindings.add(binding)
         }
       }
-    });
+    })
 
     this.erasedShapes.forEach((shape) => {
       // Has the shape been deleted? If so, pull it from the list.
       if (!this.app.getShape(shape.id)) {
-        this.erasedShapes.delete(shape);
-        this.erasableShapes.delete(shape);
-        deletedShapeIds.delete(shape.id);
+        this.erasedShapes.delete(shape)
+        this.erasableShapes.delete(shape)
+        deletedShapeIds.delete(shape.id)
       }
-    });
+    })
 
-    const erasedShapes = [...this.erasedShapes.values()];
+    const erasedShapes = Array.from(this.erasedShapes.values())
 
-    this.prevPoint = newPoint;
+    this.prevPoint = newPoint
 
     if (erasedShapes.length === this.prevEraseShapesSize) {
-      return;
+      return
     }
 
-    this.prevEraseShapesSize = erasedShapes.length;
+    this.prevEraseShapesSize = erasedShapes.length
 
     return {
       document: {
@@ -149,22 +159,22 @@ export class EraseSession extends BaseSession {
           },
         },
       },
-    };
-  };
+    }
+  }
 
   cancel = (): TldrawPatch | undefined => {
-    const { page } = this.app;
+    const { page } = this.app
 
-    cancelAnimationFrame(this.interval);
+    cancelAnimationFrame(this.interval)
 
     this.erasedShapes.forEach((shape) => {
       if (!this.app.getShape(shape.id)) {
-        this.erasedShapes.delete(shape);
-        this.erasableShapes.delete(shape);
+        this.erasedShapes.delete(shape)
+        this.erasableShapes.delete(shape)
       }
-    });
+    })
 
-    const erasedShapes = [...this.erasedShapes.values()];
+    const erasedShapes = Array.from(this.erasedShapes.values())
 
     return {
       document: {
@@ -182,47 +192,47 @@ export class EraseSession extends BaseSession {
       appState: {
         eraseLine: [],
       },
-    };
-  };
+    }
+  }
 
   complete = (): TldrawPatch | TldrawCommand | undefined => {
-    const { page } = this.app;
+    const { page } = this.app
 
-    cancelAnimationFrame(this.interval);
+    cancelAnimationFrame(this.interval)
 
     this.erasedShapes.forEach((shape) => {
       if (!this.app.getShape(shape.id)) {
-        this.erasedShapes.delete(shape);
-        this.erasableShapes.delete(shape);
+        this.erasedShapes.delete(shape)
+        this.erasableShapes.delete(shape)
       }
-    });
+    })
 
     this.erasedBindings.forEach((binding) => {
       if (!this.app.getBinding(binding.id)) {
-        this.erasedBindings.delete(binding);
+        this.erasedBindings.delete(binding)
       }
-    });
+    })
 
-    const erasedShapes = [...this.erasedShapes.values()];
-    const erasedBindings = [...this.erasedBindings.values()];
-    const erasedShapeIds = new Set(erasedShapes.map((shape) => shape.id));
-    const erasedBindingIds = new Set(erasedBindings.map((binding) => binding.id));
+    const erasedShapes = Array.from(this.erasedShapes.values())
+    const erasedBindings = Array.from(this.erasedBindings.values())
+    const erasedShapeIds = erasedShapes.map((shape) => shape.id)
+    const erasedBindingIds = erasedBindings.map((binding) => binding.id)
 
     const before: PagePartial = {
       shapes: Object.fromEntries(erasedShapes.map((shape) => [shape.id, shape])),
       bindings: Object.fromEntries(erasedBindings.map((binding) => [binding.id, binding])),
-    };
+    }
 
     const after: PagePartial = {
       shapes: Object.fromEntries(erasedShapes.map((shape) => [shape.id, undefined])),
       bindings: Object.fromEntries(erasedBindings.map((binding) => [binding.id, undefined])),
-    };
+    }
 
     // Remove references on any shape's handles to any deleted bindings
     this.app.shapes.forEach((shape) => {
-      if (shape.handles != undefined && after.shapes[shape.id] == undefined) {
+      if (shape.handles && !after.shapes[shape.id]) {
         Object.values(shape.handles).forEach((handle) => {
-          if (handle.bindingId && erasedBindingIds.has(handle.bindingId)) {
+          if (handle.bindingId && erasedBindingIds.includes(handle.bindingId)) {
             // Save the binding reference in the before patch
             before.shapes[shape.id] = {
               ...before.shapes[shape.id],
@@ -230,10 +240,10 @@ export class EraseSession extends BaseSession {
                 ...before.shapes[shape.id]?.handles,
                 [handle.id]: handle,
               },
-            };
+            }
 
             // Save the binding reference in the before patch
-            if (!erasedShapeIds.has(shape.id)) {
+            if (!erasedShapeIds.includes(shape.id)) {
               after.shapes[shape.id] = {
                 ...after.shapes[shape.id],
                 handles: {
@@ -243,12 +253,12 @@ export class EraseSession extends BaseSession {
                     bindingId: undefined,
                   },
                 },
-              };
+              }
             }
           }
-        });
+        })
       }
-    });
+    })
 
     return {
       id: 'erase',
@@ -259,7 +269,9 @@ export class EraseSession extends BaseSession {
           },
           pageStates: {
             [page.id]: {
-              selectedIds: this.initialSelectedShapes.filter((shape) => !!this.app.getShape(shape.id)).map((shape) => shape.id),
+              selectedIds: this.initialSelectedShapes
+                .filter((shape) => !!this.app.getShape(shape.id))
+                .map((shape) => shape.id),
             },
           },
         },
@@ -276,7 +288,7 @@ export class EraseSession extends BaseSession {
             [page.id]: {
               selectedIds: this.initialSelectedShapes
                 .filter((shape) => !!this.app.getShape(shape.id))
-                .filter((shape) => !erasedShapeIds.has(shape.id))
+                .filter((shape) => !erasedShapeIds.includes(shape.id))
                 .map((shape) => shape.id),
             },
           },
@@ -285,6 +297,6 @@ export class EraseSession extends BaseSession {
           eraseLine: [],
         },
       },
-    };
-  };
+    }
+  }
 }

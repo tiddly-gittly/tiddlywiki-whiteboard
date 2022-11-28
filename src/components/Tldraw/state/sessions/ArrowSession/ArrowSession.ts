@@ -1,52 +1,65 @@
-import { Utils } from '@tldraw/core';
-import { Vec } from '@tldraw/vec';
-import { deepCopy } from '@tldr/state/StateManager/copy';
-import { TLDR } from '@tldr/state/TLDR';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import { BaseSession } from '@tldr/state/sessions/BaseSession';
-import { shapeUtils } from '@tldr/state/shapes';
-import { ArrowBinding, ArrowShape, SessionType, TDBinding, TDShape, TDShapeType, TDStatus, TldrawCommand, TldrawPatch } from '@tldr/types';
+import { Utils } from '@tldraw/core'
+import { Vec } from '@tldraw/vec'
+import { deepCopy } from '@tldr/state/StateManager/copy'
+import { TLDR } from '@tldr/state/TLDR'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import { BaseSession } from '@tldr/state/sessions/BaseSession'
+import { shapeUtils } from '@tldr/state/shapes'
+import {
+  ArrowBinding,
+  ArrowShape,
+  SessionType,
+  TDBinding,
+  TDShape,
+  TDShapeType,
+  TDStatus,
+  TldrawCommand,
+  TldrawPatch,
+} from '@tldr/types'
 
 export class ArrowSession extends BaseSession {
-  type = SessionType.Arrow;
-  performanceMode = undefined;
-  status = TDStatus.TranslatingHandle;
-  newStartBindingId = Utils.uniqueId();
-  draggedBindingId = Utils.uniqueId();
-  didBind = false;
-  initialShape: ArrowShape;
-  handleId: 'start' | 'end';
-  bindableShapeIds: string[];
-  initialBinding?: TDBinding;
-  startBindingShapeId?: string;
-  isCreate: boolean;
+  type = SessionType.Arrow
+  performanceMode = undefined
+  status = TDStatus.TranslatingHandle
+  newStartBindingId = Utils.uniqueId()
+  draggedBindingId = Utils.uniqueId()
+  didBind = false
+  initialShape: ArrowShape
+  handleId: 'start' | 'end'
+  bindableShapeIds: string[]
+  initialBinding?: TDBinding
+  startBindingShapeId?: string
+  isCreate: boolean
 
   constructor(app: TldrawApp, shapeId: string, handleId: 'start' | 'end', isCreate = false) {
-    super(app);
+    super(app)
 
-    this.isCreate = isCreate;
+    this.isCreate = isCreate
 
-    const { currentPageId } = app.state.appState;
+    const { currentPageId } = app.state.appState
 
-    const page = app.state.document.pages[currentPageId];
+    const page = app.state.document.pages[currentPageId]
 
-    this.handleId = handleId;
+    this.handleId = handleId
 
-    this.initialShape = deepCopy(page.shapes[shapeId] as ArrowShape);
+    this.initialShape = deepCopy(page.shapes[shapeId] as ArrowShape)
 
-    this.bindableShapeIds = TLDR.getBindableShapeIds(app.state).filter((id) => !(id === this.initialShape.id || id === this.initialShape.parentId));
+    this.bindableShapeIds = TLDR.getBindableShapeIds(app.state).filter(
+      (id) => !(id === this.initialShape.id || id === this.initialShape.parentId)
+    )
 
     // TODO: find out why this the oppositeHandleBindingId is sometimes missing
-    const oppositeHandleBindingId = this.initialShape.handles[handleId === 'start' ? 'end' : 'start']?.bindingId;
+    const oppositeHandleBindingId =
+      this.initialShape.handles[handleId === 'start' ? 'end' : 'start']?.bindingId
 
     if (oppositeHandleBindingId) {
-      const oppositeToId = page.bindings[oppositeHandleBindingId]?.toId;
+      const oppositeToId = page.bindings[oppositeHandleBindingId]?.toId
       if (oppositeToId) {
-        this.bindableShapeIds = this.bindableShapeIds.filter((id) => id !== oppositeToId);
+        this.bindableShapeIds = this.bindableShapeIds.filter((id) => id !== oppositeToId)
       }
     }
 
-    const { originPoint } = this.app;
+    const { originPoint } = this.app
 
     if (this.isCreate) {
       // If we're creating a new shape, should we bind its first point?
@@ -54,33 +67,37 @@ export class ArrowSession extends BaseSession {
       // bindable shape under the pointer.
       this.startBindingShapeId = this.bindableShapeIds
         .map((id) => page.shapes[id])
-        .filter((shape) => !shape.isLocked && Utils.pointInBounds(originPoint, TLDR.getShapeUtil(shape).getBounds(shape)))
+        .filter(
+          (shape) =>
+            !shape.isLocked &&
+            Utils.pointInBounds(originPoint, TLDR.getShapeUtil(shape).getBounds(shape))
+        )
         .sort((a, b) => {
           // TODO - We should be smarter here, what's the right logic?
-          return b.childIndex - a.childIndex;
-        })[0]?.id;
+          return b.childIndex - a.childIndex
+        })[0]?.id
 
       if (this.startBindingShapeId) {
-        this.bindableShapeIds.splice(this.bindableShapeIds.indexOf(this.startBindingShapeId), 1);
+        this.bindableShapeIds.splice(this.bindableShapeIds.indexOf(this.startBindingShapeId), 1)
       }
     } else {
       // If we're editing an existing line, is there a binding already
       // for the dragging handle?
-      const initialBindingId = this.initialShape.handles[this.handleId].bindingId;
+      const initialBindingId = this.initialShape.handles[this.handleId].bindingId
 
       if (initialBindingId) {
-        this.initialBinding = page.bindings[initialBindingId];
+        this.initialBinding = page.bindings[initialBindingId]
       } else {
         // If not, explicitly set this handle to undefined, so that it gets deleted on undo
-        this.initialShape.handles[this.handleId].bindingId = undefined;
+        this.initialShape.handles[this.handleId].bindingId = undefined
       }
     }
   }
 
-  start = (): TldrawPatch | undefined => void null;
+  start = (): TldrawPatch | undefined => void null
 
   update = (): TldrawPatch | undefined => {
-    const { initialShape } = this;
+    const { initialShape } = this
     const {
       currentPoint,
       shiftKey,
@@ -88,35 +105,37 @@ export class ArrowSession extends BaseSession {
       metaKey,
       currentGrid,
       settings: { showGrid },
-    } = this.app;
+    } = this.app
 
-    const shape = this.app.getShape<ArrowShape>(initialShape.id);
+    const shape = this.app.getShape<ArrowShape>(initialShape.id)
 
-    if (shape.isLocked) return;
+    if (shape.isLocked) return
 
-    const { handles } = initialShape;
+    const { handles } = initialShape
 
-    const handleId = this.handleId as keyof typeof handles;
+    const handleId = this.handleId as keyof typeof handles
     // If the handle can bind, then we need to search bindable shapes for
     // a binding.
-    if (!handles[handleId].canBind) return;
+    if (!handles[handleId].canBind) return
 
     // Find the delta (in shape space)
-    let delta = Vec.sub(currentPoint, Vec.add(handles[handleId].point, initialShape.point));
+    let delta = Vec.sub(currentPoint, Vec.add(handles[handleId].point, initialShape.point))
 
     if (shiftKey) {
-      const A = altKey ? Vec.med(handles.start.point, handles.end.point) : handles[handleId === 'start' ? 'end' : 'start'].point;
-      const B = handles[handleId].point;
-      const C = Vec.add(B, delta);
+      const A = altKey
+        ? Vec.med(handles.start.point, handles.end.point)
+        : handles[handleId === 'start' ? 'end' : 'start'].point
+      const B = handles[handleId].point
+      const C = Vec.add(B, delta)
 
-      const angle = Vec.angle(A, C);
+      const angle = Vec.angle(A, C)
 
-      const adjusted = Vec.rotWith(C, A, Utils.snapAngleToSegments(angle, 24) - angle);
+      const adjusted = Vec.rotWith(C, A, Utils.snapAngleToSegments(angle, 24) - angle)
 
-      delta = Vec.add(delta, Vec.sub(adjusted, C));
+      delta = Vec.add(delta, Vec.sub(adjusted, C))
     }
 
-    const nextPoint = Vec.add(handles[handleId].point, delta);
+    const nextPoint = Vec.add(handles[handleId].point, delta)
 
     const handleChanges = {
       [handleId]: {
@@ -124,7 +143,7 @@ export class ArrowSession extends BaseSession {
         point: showGrid ? Vec.snap(nextPoint, currentGrid) : Vec.toFixed(nextPoint),
         bindingId: undefined,
       },
-    };
+    }
 
     // if (altKey) {
     //   // If the user is holding alt key, apply the inverse delta
@@ -140,65 +159,77 @@ export class ArrowSession extends BaseSession {
     //   }
     // }
 
-    const utils = shapeUtils[TDShapeType.Arrow];
-    const handleChange = utils.onHandleChange?.(initialShape, handleChanges);
+    const utils = shapeUtils[TDShapeType.Arrow]
+    const handleChange = utils.onHandleChange?.(initialShape, handleChanges)
 
     // If the handle changed produced no change, bail here
-    if (handleChange == undefined) return;
+    if (!handleChange) return
 
     // If nothing changes, we want these to be the same object reference as
     // before. If it does change, we'll redefine this later on. And if we've
     // made it this far, the shape should be a new object reference that
     // incorporates the changes we've made due to the handle movement.
-    const next: { bindings: Record<string, TDBinding | undefined>; shape: ArrowShape } = {
+    const next: { shape: ArrowShape; bindings: Record<string, TDBinding | undefined> } = {
       shape: Utils.deepMerge(shape, handleChange),
       bindings: {},
-    };
+    }
 
-    let draggedBinding: ArrowBinding | undefined;
+    let draggedBinding: ArrowBinding | undefined
 
-    const draggingHandle = next.shape.handles[this.handleId];
+    const draggingHandle = next.shape.handles[this.handleId]
 
-    const oppositeHandle = next.shape.handles[this.handleId === 'start' ? 'end' : 'start'];
+    const oppositeHandle = next.shape.handles[this.handleId === 'start' ? 'end' : 'start']
 
     // START BINDING
     // If we have a start binding shape id, the recompute the binding
     // point based on the current end handle position
     if (this.startBindingShapeId) {
-      let nextStartBinding: ArrowBinding | undefined;
+      let nextStartBinding: ArrowBinding | undefined
 
-      const startTarget = this.app.page.shapes[this.startBindingShapeId];
+      const startTarget = this.app.page.shapes[this.startBindingShapeId]
 
-      const startTargetUtils = TLDR.getShapeUtil(startTarget);
+      const startTargetUtils = TLDR.getShapeUtil(startTarget)
 
-      const center = startTargetUtils.getCenter(startTarget);
+      const center = startTargetUtils.getCenter(startTarget)
 
-      const startHandle = next.shape.handles.start;
+      const startHandle = next.shape.handles.start
 
-      const endHandle = next.shape.handles.end;
+      const endHandle = next.shape.handles.end
 
-      const rayPoint = Vec.add(startHandle.point, next.shape.point);
+      const rayPoint = Vec.add(startHandle.point, next.shape.point)
 
-      if (Vec.isEqual(rayPoint, center)) rayPoint[1]++; // Fix bug where ray and center are identical
+      if (Vec.isEqual(rayPoint, center)) rayPoint[1]++ // Fix bug where ray and center are identical
 
-      const rayOrigin = center;
+      const rayOrigin = center
 
-      const isInsideShape = startTargetUtils.hitTestPoint(startTarget, currentPoint);
+      const isInsideShape = startTargetUtils.hitTestPoint(startTarget, currentPoint)
 
-      const rayDirection = Vec.uni(Vec.sub(rayPoint, rayOrigin));
+      const rayDirection = Vec.uni(Vec.sub(rayPoint, rayOrigin))
 
-      const hasStartBinding = this.app.getBinding(this.newStartBindingId) !== undefined;
+      const hasStartBinding = this.app.getBinding(this.newStartBindingId) !== undefined
 
       // Don't bind the start handle if both handles are inside of the target shape.
-      if (!metaKey && !startTargetUtils.hitTestPoint(startTarget, Vec.add(next.shape.point, endHandle.point))) {
-        nextStartBinding = this.findBindingPoint(shape, startTarget, 'start', this.newStartBindingId, center, rayOrigin, rayDirection, isInsideShape);
+      if (
+        !metaKey &&
+        !startTargetUtils.hitTestPoint(startTarget, Vec.add(next.shape.point, endHandle.point))
+      ) {
+        nextStartBinding = this.findBindingPoint(
+          shape,
+          startTarget,
+          'start',
+          this.newStartBindingId,
+          center,
+          rayOrigin,
+          rayDirection,
+          isInsideShape
+        )
       }
 
-      if (nextStartBinding != undefined && !hasStartBinding) {
+      if (nextStartBinding && !hasStartBinding) {
         // Bind the arrow's start handle to the start target
-        this.didBind = true;
+        this.didBind = true
 
-        next.bindings[this.newStartBindingId] = nextStartBinding;
+        next.bindings[this.newStartBindingId] = nextStartBinding
 
         next.shape = Utils.deepMerge(next.shape, {
           handles: {
@@ -206,12 +237,12 @@ export class ArrowSession extends BaseSession {
               bindingId: nextStartBinding.id,
             },
           },
-        });
-      } else if (nextStartBinding == undefined && hasStartBinding) {
+        })
+      } else if (!nextStartBinding && hasStartBinding) {
         // Remove the start binding
-        this.didBind = false;
+        this.didBind = false
 
-        next.bindings[this.newStartBindingId] = undefined;
+        next.bindings[this.newStartBindingId] = undefined
 
         next.shape = Utils.deepMerge(initialShape, {
           handles: {
@@ -219,60 +250,52 @@ export class ArrowSession extends BaseSession {
               bindingId: undefined,
             },
           },
-        });
+        })
       }
     }
 
     // DRAGGED POINT BINDING
     if (!metaKey) {
-      const rayOrigin = Vec.add(oppositeHandle.point, next.shape.point);
+      const rayOrigin = Vec.add(oppositeHandle.point, next.shape.point)
 
-      const rayPoint = Vec.add(draggingHandle.point, next.shape.point);
+      const rayPoint = Vec.add(draggingHandle.point, next.shape.point)
 
-      const rayDirection = Vec.uni(Vec.sub(rayPoint, rayOrigin));
+      const rayDirection = Vec.uni(Vec.sub(rayPoint, rayOrigin))
 
-      const startPoint = Vec.add(next.shape.point, next.shape.handles.start.point);
+      const startPoint = Vec.add(next.shape.point!, next.shape.handles!.start.point!)
 
-      const endPoint = Vec.add(next.shape.point, next.shape.handles.end.point);
+      const endPoint = Vec.add(next.shape.point!, next.shape.handles!.end.point!)
 
       const targets = this.bindableShapeIds
         .map((id) => this.app.page.shapes[id])
         .sort((a, b) => b.childIndex - a.childIndex)
         .filter((shape) => {
-          if (shape.isLocked) return false;
-          const utils = TLDR.getShapeUtil(shape);
-          return ![startPoint, endPoint].every((point) => utils.hitTestPoint(shape, point));
-        });
+          if (shape.isLocked) return false
+          const utils = TLDR.getShapeUtil(shape)
+          return ![startPoint, endPoint].every((point) => utils.hitTestPoint(shape, point))
+        })
 
       for (const target of targets) {
-        draggedBinding = this.findBindingPoint(shape, target, this.handleId, this.draggedBindingId, rayPoint, rayOrigin, rayDirection, altKey);
+        draggedBinding = this.findBindingPoint(
+          shape,
+          target,
+          this.handleId,
+          this.draggedBindingId,
+          rayPoint,
+          rayOrigin,
+          rayDirection,
+          altKey
+        )
 
-        if (draggedBinding != undefined) break;
+        if (draggedBinding) break
       }
     }
 
-    if (draggedBinding == undefined) {
-      // Remove the dragging point binding
-      this.didBind = this.didBind || false;
-
-      const currentBindingId = shape.handles[this.handleId].bindingId;
-
-      if (currentBindingId !== undefined) {
-        next.bindings[currentBindingId] = undefined;
-
-        next.shape = Utils.deepMerge(next.shape, {
-          handles: {
-            [this.handleId]: {
-              bindingId: undefined,
-            },
-          },
-        });
-      }
-    } else {
+    if (draggedBinding) {
       // Create the dragged point binding
-      this.didBind = true;
+      this.didBind = true
 
-      next.bindings[this.draggedBindingId] = draggedBinding;
+      next.bindings[this.draggedBindingId] = draggedBinding
 
       next.shape = Utils.deepMerge(next.shape, {
         handles: {
@@ -280,17 +303,37 @@ export class ArrowSession extends BaseSession {
             bindingId: this.draggedBindingId,
           },
         },
-      });
+      })
+    } else {
+      // Remove the dragging point binding
+      this.didBind = this.didBind || false
+
+      const currentBindingId = shape.handles[this.handleId].bindingId
+
+      if (currentBindingId !== undefined) {
+        next.bindings[currentBindingId] = undefined
+
+        next.shape = Utils.deepMerge(next.shape, {
+          handles: {
+            [this.handleId]: {
+              bindingId: undefined,
+            },
+          },
+        })
+      }
     }
 
-    const change = TLDR.getShapeUtil<ArrowShape>(next.shape).onHandleChange?.(next.shape, next.shape.handles);
+    const change = TLDR.getShapeUtil<ArrowShape>(next.shape).onHandleChange?.(
+      next.shape,
+      next.shape.handles
+    )
 
     return {
       document: {
         pages: {
           [this.app.currentPageId]: {
             shapes: {
-              [shape.id]: { ...next.shape, ...change },
+              [shape.id]: { ...next.shape, ...(change ?? {}) },
             },
             bindings: next.bindings,
           },
@@ -301,26 +344,28 @@ export class ArrowSession extends BaseSession {
           },
         },
       },
-    };
-  };
+    }
+  }
 
   cancel = (): TldrawPatch | undefined => {
-    const { initialShape, initialBinding, newStartBindingId, draggedBindingId } = this;
+    const { initialShape, initialBinding, newStartBindingId, draggedBindingId } = this
 
-    const currentShape = TLDR.onSessionComplete(this.app.page.shapes[initialShape.id]) as ArrowShape;
+    const currentShape = TLDR.onSessionComplete(this.app.page.shapes[initialShape.id]) as ArrowShape
 
-    const isDeleting = this.isCreate || Vec.dist(currentShape.handles.start.point, currentShape.handles.end.point) < 4;
+    const isDeleting =
+      this.isCreate ||
+      Vec.dist(currentShape.handles.start.point, currentShape.handles.end.point) < 4
 
-    const afterBindings: Record<string, TDBinding | undefined> = {};
+    const afterBindings: Record<string, TDBinding | undefined> = {}
 
-    afterBindings[draggedBindingId] = undefined;
+    afterBindings[draggedBindingId] = undefined
 
-    if (initialBinding != undefined) {
-      afterBindings[initialBinding.id] = isDeleting ? undefined : initialBinding;
+    if (initialBinding) {
+      afterBindings[initialBinding.id] = isDeleting ? undefined : initialBinding
     }
 
     if (newStartBindingId) {
-      afterBindings[newStartBindingId] = undefined;
+      afterBindings[newStartBindingId] = undefined
     }
 
     return {
@@ -342,37 +387,37 @@ export class ArrowSession extends BaseSession {
           },
         },
       },
-    };
-  };
+    }
+  }
 
   complete = (): TldrawPatch | TldrawCommand | undefined => {
-    const { initialShape, initialBinding, newStartBindingId, startBindingShapeId, handleId } = this;
+    const { initialShape, initialBinding, newStartBindingId, startBindingShapeId, handleId } = this
 
-    const currentShape = TLDR.onSessionComplete(this.app.page.shapes[initialShape.id]) as ArrowShape;
+    const currentShape = TLDR.onSessionComplete(this.app.page.shapes[initialShape.id]) as ArrowShape
 
-    const currentBindingId = currentShape.handles[handleId].bindingId;
+    const currentBindingId = currentShape.handles[handleId].bindingId
 
-    const length = Vec.dist(currentShape.handles.start.point, currentShape.handles.end.point);
+    const length = Vec.dist(currentShape.handles.start.point, currentShape.handles.end.point)
 
-    if (!(currentBindingId || initialBinding != undefined) && length < 4) return this.cancel();
+    if (!(currentBindingId || initialBinding) && length < 4) return this.cancel()
 
-    const beforeBindings: Partial<Record<string, TDBinding>> = {};
+    const beforeBindings: Partial<Record<string, TDBinding>> = {}
 
-    const afterBindings: Partial<Record<string, TDBinding>> = {};
+    const afterBindings: Partial<Record<string, TDBinding>> = {}
 
-    if (initialBinding != undefined) {
-      beforeBindings[initialBinding.id] = this.isCreate ? undefined : initialBinding;
-      afterBindings[initialBinding.id] = undefined;
+    if (initialBinding) {
+      beforeBindings[initialBinding.id] = this.isCreate ? undefined : initialBinding
+      afterBindings[initialBinding.id] = undefined
     }
 
     if (currentBindingId) {
-      beforeBindings[currentBindingId] = undefined;
-      afterBindings[currentBindingId] = this.app.page.bindings[currentBindingId];
+      beforeBindings[currentBindingId] = undefined
+      afterBindings[currentBindingId] = this.app.page.bindings[currentBindingId]
     }
 
     if (startBindingShapeId) {
-      beforeBindings[newStartBindingId] = undefined;
-      afterBindings[newStartBindingId] = this.app.page.bindings[newStartBindingId];
+      beforeBindings[newStartBindingId] = undefined
+      afterBindings[newStartBindingId] = this.app.page.bindings[newStartBindingId]
     }
 
     return {
@@ -417,10 +462,10 @@ export class ArrowSession extends BaseSession {
           },
         },
       },
-    };
-  };
+    }
+  }
 
-  private readonly findBindingPoint = (
+  private findBindingPoint = (
     shape: ArrowShape,
     target: TDShape,
     handleId: 'start' | 'end',
@@ -428,9 +473,9 @@ export class ArrowSession extends BaseSession {
     point: number[],
     origin: number[],
     direction: number[],
-    bindAnywhere: boolean,
+    bindAnywhere: boolean
   ) => {
-    const util = TLDR.getShapeUtil<TDShape>(target.type);
+    const util = TLDR.getShapeUtil<TDShape>(target.type)
 
     const bindingPoint = util.getBindingPoint(
       target,
@@ -438,20 +483,20 @@ export class ArrowSession extends BaseSession {
       point, // fix dead center bug
       origin,
       direction,
-      bindAnywhere,
-    );
+      bindAnywhere
+    )
 
     // Not all shapes will produce a binding point
-    if (bindingPoint == undefined) return;
+    if (!bindingPoint) return
 
     return {
       id: bindingId,
       type: 'arrow',
       fromId: shape.id,
       toId: target.id,
-      handleId,
+      handleId: handleId,
       point: Vec.toFixed(bindingPoint.point),
       distance: bindingPoint.distance,
-    };
-  };
+    }
+  }
 }

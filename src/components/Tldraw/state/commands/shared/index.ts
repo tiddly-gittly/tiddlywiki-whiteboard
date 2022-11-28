@@ -1,2 +1,2 @@
-export * from './getIncrementedName';
-export * from './removeShapesFromPage';
+export * from './getIncrementedName'
+export * from './removeShapesFromPage'

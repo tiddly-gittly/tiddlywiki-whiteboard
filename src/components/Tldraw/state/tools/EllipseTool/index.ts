@@ -1,1 +1,1 @@
-export * from './EllipseTool';
+export * from './EllipseTool'

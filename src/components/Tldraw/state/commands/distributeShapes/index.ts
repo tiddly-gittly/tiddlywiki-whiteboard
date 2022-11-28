@@ -1,1 +1,1 @@
-export * from './distributeShapes';
+export * from './distributeShapes'

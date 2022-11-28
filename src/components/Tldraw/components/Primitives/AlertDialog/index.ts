@@ -1,2 +1,2 @@
-export * from './AlertDialog';
-export * from './FilenameDialog';
+export * from './AlertDialog'
+export * from './FilenameDialog'

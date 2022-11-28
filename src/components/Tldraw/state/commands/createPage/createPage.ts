@@ -1,27 +1,34 @@
-import { TLPageState, Utils } from '@tldraw/core';
-import type { TldrawApp } from '@tldr/state';
-import { getIncrementedName } from '@tldr/state/commands/shared';
-import type { TDPage, TldrawCommand } from '@tldr/types';
+import { TLPageState, Utils } from '@tldraw/core'
+import type { TldrawApp } from '@tldr/state'
+import { getIncrementedName } from '@tldr/state/commands/shared'
+import type { TDPage, TldrawCommand } from '@tldr/types'
 
-export function createPage(app: TldrawApp, center: number[], pageId = Utils.uniqueId(), pageName = 'Page'): TldrawCommand {
-  const { currentPageId } = app;
+export function createPage(
+  app: TldrawApp,
+  center: number[],
+  pageId = Utils.uniqueId(),
+  pageName = 'Page'
+): TldrawCommand {
+  const { currentPageId } = app
 
-  const pages = Object.values(app.state.document.pages).sort((a, b) => (a.childIndex ?? 0) - (b.childIndex ?? 0));
+  const pages = Object.values(app.state.document.pages).sort(
+    (a, b) => (a.childIndex ?? 0) - (b.childIndex ?? 0)
+  )
 
-  const topPage = pages[pages.length - 1];
+  const topPage = pages[pages.length - 1]
 
-  const nextChildIndex = topPage?.childIndex ? topPage?.childIndex + 1 : 1;
+  const nextChildIndex = topPage?.childIndex ? topPage?.childIndex + 1 : 1
 
   const page: TDPage = {
     id: pageId,
     name: getIncrementedName(
       pageName,
-      pages.map((p) => p.name ?? ''),
+      pages.map((p) => p.name ?? '')
     ),
     childIndex: nextChildIndex,
     shapes: {},
     bindings: {},
-  };
+  }
 
   const pageState: TLPageState = {
     id: pageId,
@@ -31,7 +38,7 @@ export function createPage(app: TldrawApp, center: number[], pageId = Utils.uniq
     bindingId: undefined,
     hoveredId: undefined,
     pointedId: undefined,
-  };
+  }
 
   return {
     id: 'create_page',
@@ -61,5 +68,5 @@ export function createPage(app: TldrawApp, center: number[], pageId = Utils.uniq
         },
       },
     },
-  };
+  }
 }

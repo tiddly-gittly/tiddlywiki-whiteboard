@@ -1,47 +1,50 @@
-import { Utils } from '@tldraw/core';
-import { Vec } from '@tldraw/vec';
-import { TLDR } from '@tldr/state/TLDR';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import { BaseSession } from '@tldr/state/sessions/BaseSession';
-import { SessionType, TDShape, TDStatus, TldrawCommand, TldrawPatch } from '@tldr/types';
+import { Utils } from '@tldraw/core'
+import { Vec } from '@tldraw/vec'
+import { TLDR } from '@tldr/state/TLDR'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import { BaseSession } from '@tldr/state/sessions/BaseSession'
+import { SessionType, TDShape, TDStatus, TldrawCommand, TldrawPatch } from '@tldr/types'
 
 export class RotateSession extends BaseSession {
-  type = SessionType.Rotate;
-  status = TDStatus.Transforming;
-  performanceMode = undefined;
-  delta = [0, 0];
-  commonBoundsCenter: number[];
-  initialAngle: number;
-  initialShapes: Array<{
-    center: number[];
-    shape: TDShape;
-  }>;
-
-  changes: Record<string, Partial<TDShape>> = {};
+  type = SessionType.Rotate
+  status = TDStatus.Transforming
+  performanceMode = undefined
+  delta = [0, 0]
+  commonBoundsCenter: number[]
+  initialAngle: number
+  initialShapes: {
+    shape: TDShape
+    center: number[]
+  }[]
+  changes: Record<string, Partial<TDShape>> = {}
 
   constructor(app: TldrawApp) {
-    super(app);
+    super(app)
 
     const {
       app: { currentPageId, pageState, originPoint },
-    } = this;
+    } = this
 
-    const initialShapes = TLDR.getSelectedBranchSnapshot(app.state, currentPageId).filter((shape) => !shape.isLocked);
+    const initialShapes = TLDR.getSelectedBranchSnapshot(app.state, currentPageId).filter(
+      (shape) => !shape.isLocked
+    )
 
     if (initialShapes.length === 0) {
-      throw new Error('No selected shapes!');
+      throw Error('No selected shapes!')
     }
 
     if (app.rotationInfo.selectedIds === pageState.selectedIds) {
       if (app.rotationInfo.center === undefined) {
-        throw new Error('We should have a center for rotation!');
+        throw Error('We should have a center for rotation!')
       }
 
-      this.commonBoundsCenter = app.rotationInfo.center;
+      this.commonBoundsCenter = app.rotationInfo.center
     } else {
-      this.commonBoundsCenter = Utils.getBoundsCenter(Utils.getCommonBounds(initialShapes.map(TLDR.getBounds)));
-      app.rotationInfo.selectedIds = pageState.selectedIds;
-      app.rotationInfo.center = this.commonBoundsCenter;
+      this.commonBoundsCenter = Utils.getBoundsCenter(
+        Utils.getCommonBounds(initialShapes.map(TLDR.getBounds))
+      )
+      app.rotationInfo.selectedIds = pageState.selectedIds
+      app.rotationInfo.center = this.commonBoundsCenter
     }
 
     this.initialShapes = initialShapes
@@ -50,47 +53,52 @@ export class RotateSession extends BaseSession {
         return {
           shape,
           center: this.app.getShapeUtil(shape).getCenter(shape),
-        };
-      });
+        }
+      })
 
-    this.initialAngle = Vec.angle(this.commonBoundsCenter, originPoint);
+    this.initialAngle = Vec.angle(this.commonBoundsCenter, originPoint)
   }
 
-  start = (): TldrawPatch | undefined => void null;
+  start = (): TldrawPatch | undefined => void null
 
   update = (): TldrawPatch | undefined => {
     const {
       commonBoundsCenter,
       initialShapes,
       app: { currentPageId, currentPoint, shiftKey },
-    } = this;
+    } = this
 
-    const shapes: Record<string, Partial<TDShape>> = {};
+    const shapes: Record<string, Partial<TDShape>> = {}
 
-    let directionDelta = Vec.angle(commonBoundsCenter, currentPoint) - this.initialAngle;
+    let directionDelta = Vec.angle(commonBoundsCenter, currentPoint) - this.initialAngle
 
     if (shiftKey) {
-      directionDelta = Utils.snapAngleToSegments(directionDelta, 24); // 15 degrees
+      directionDelta = Utils.snapAngleToSegments(directionDelta, 24) // 15 degrees
     }
 
     // Update the shapes
     initialShapes.forEach(({ center, shape }) => {
-      const { rotation = 0 } = shape;
-      let shapeDelta = 0;
+      const { rotation = 0 } = shape
+      let shapeDelta = 0
 
       if (shiftKey) {
-        const snappedRotation = Utils.snapAngleToSegments(rotation, 24);
-        shapeDelta = snappedRotation - rotation;
+        const snappedRotation = Utils.snapAngleToSegments(rotation, 24)
+        shapeDelta = snappedRotation - rotation
       }
 
-      const change = TLDR.getRotatedShapeMutation(shape, center, commonBoundsCenter, shiftKey ? directionDelta + shapeDelta : directionDelta);
+      const change = TLDR.getRotatedShapeMutation(
+        shape,
+        center,
+        commonBoundsCenter,
+        shiftKey ? directionDelta + shapeDelta : directionDelta
+      )
 
-      if (change != undefined) {
-        shapes[shape.id] = change;
+      if (change) {
+        shapes[shape.id] = change
       }
-    });
+    })
 
-    this.changes = shapes;
+    this.changes = shapes
 
     return {
       document: {
@@ -100,17 +108,17 @@ export class RotateSession extends BaseSession {
           },
         },
       },
-    };
-  };
+    }
+  }
 
   cancel = (): TldrawPatch | undefined => {
     const {
       initialShapes,
       app: { currentPageId },
-    } = this;
+    } = this
 
-    const shapes: Record<string, TDShape> = {};
-    initialShapes.forEach(({ shape }) => (shapes[shape.id] = shape));
+    const shapes: Record<string, TDShape> = {}
+    initialShapes.forEach(({ shape }) => (shapes[shape.id] = shape))
 
     return {
       document: {
@@ -120,21 +128,21 @@ export class RotateSession extends BaseSession {
           },
         },
       },
-    };
-  };
+    }
+  }
 
   complete = (): TldrawPatch | TldrawCommand | undefined => {
     const {
       initialShapes,
       app: { currentPageId },
-    } = this;
+    } = this
 
-    const beforeShapes = {} as Record<string, Partial<TDShape>>;
-    const afterShapes = this.changes;
+    const beforeShapes = {} as Record<string, Partial<TDShape>>
+    const afterShapes = this.changes
 
     initialShapes.forEach(({ shape: { id, point, rotation, handles } }) => {
-      beforeShapes[id] = { point, rotation, handles };
-    });
+      beforeShapes[id] = { point, rotation, handles }
+    })
 
     return {
       id: 'rotate',
@@ -156,6 +164,6 @@ export class RotateSession extends BaseSession {
           },
         },
       },
-    };
-  };
+    }
+  }
 }

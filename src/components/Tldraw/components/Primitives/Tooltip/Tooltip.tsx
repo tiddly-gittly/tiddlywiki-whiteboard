@@ -1,21 +1,21 @@
-import * as RadixTooltip from '@radix-ui/react-tooltip';
-import * as React from 'react';
-import { Kbd } from '@tldr/components/Primitives/Kbd';
-import { styled } from '@tldr/styles';
+import * as RadixTooltip from '@radix-ui/react-tooltip'
+import * as React from 'react'
+import { Kbd } from '@tldr/components/Primitives/Kbd'
+import { styled } from '@tldr/styles'
 
 /* -------------------------------------------------- */
 /*                       Tooltip                      */
 /* -------------------------------------------------- */
 
 interface TooltipProps {
-  children: React.ReactNode;
-  id?: string;
-  kbd?: string;
-  label: string;
-  side?: 'bottom' | 'left' | 'right' | 'top';
+  children: React.ReactNode
+  label: string
+  kbd?: string
+  id?: string
+  side?: 'bottom' | 'left' | 'right' | 'top'
 }
 
-export function Tooltip({ children, label, kbd: kbdProperty, id, side = 'top' }: TooltipProps) {
+export function Tooltip({ children, label, kbd: kbdProp, id, side = 'top' }: TooltipProps) {
   return (
     <span id={id}>
       <RadixTooltip.Provider>
@@ -25,13 +25,13 @@ export function Tooltip({ children, label, kbd: kbdProperty, id, side = 'top' }:
           </RadixTooltip.Trigger>
           <StyledContent dir="ltr" side={side} sideOffset={8}>
             {label}
-            {kbdProperty ? <Kbd variant="tooltip">{kbdProperty}</Kbd> : null}
+            {kbdProp ? <Kbd variant="tooltip">{kbdProp}</Kbd> : null}
             <StyledArrow />
           </StyledContent>
         </RadixTooltip.Root>
       </RadixTooltip.Provider>
     </span>
-  );
+  )
 }
 
 const StyledContent = styled(RadixTooltip.Content, {
@@ -45,9 +45,9 @@ const StyledContent = styled(RadixTooltip.Content, {
   alignItems: 'center',
   fontFamily: '$ui',
   userSelect: 'none',
-});
+})
 
 const StyledArrow = styled(RadixTooltip.Arrow, {
   fill: '$tooltip',
   margin: '0 8px',
-});
+})

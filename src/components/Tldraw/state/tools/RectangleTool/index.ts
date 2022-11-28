@@ -1,1 +1,1 @@
-export * from './RectangleTool';
+export * from './RectangleTool'

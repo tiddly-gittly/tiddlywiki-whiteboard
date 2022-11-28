@@ -1,7 +1,7 @@
-import { SVGContainer, Utils } from '@tldraw/core';
-import * as React from 'react';
-import { GHOSTED_OPACITY, LABEL_POINT } from '@tldr/constants';
-import { TDShapeUtil } from '@tldr/state/shapes/TDShapeUtil';
+import { SVGContainer, Utils } from '@tldraw/core'
+import * as React from 'react'
+import { GHOSTED_OPACITY, LABEL_POINT } from '@tldr/constants'
+import { TDShapeUtil } from '@tldr/state/shapes/TDShapeUtil'
 import {
   TextLabel,
   defaultStyle,
@@ -10,25 +10,25 @@ import {
   getShapeStyle,
   transformRectangle,
   transformSingleRectangle,
-} from '@tldr/state/shapes/shared';
-import { styled } from '@tldr/styles';
-import { DashStyle, RectangleShape, TDMeta, TDShapeType } from '@tldr/types';
-import { BindingIndicator } from './components/BindingIndicator';
-import { DashedRectangle } from './components/DashedRectangle';
-import { DrawRectangle } from './components/DrawRectangle';
-import { getRectangleIndicatorPathTDSnapshot } from './rectangleHelpers';
+} from '@tldr/state/shapes/shared'
+import { styled } from '@tldr/styles'
+import { DashStyle, RectangleShape, TDMeta, TDShapeType } from '@tldr/types'
+import { BindingIndicator } from './components/BindingIndicator'
+import { DashedRectangle } from './components/DashedRectangle'
+import { DrawRectangle } from './components/DrawRectangle'
+import { getRectangleIndicatorPathTDSnapshot } from './rectangleHelpers'
 
-type T = RectangleShape;
-type E = HTMLDivElement;
+type T = RectangleShape
+type E = HTMLDivElement
 
 export class RectangleUtil extends TDShapeUtil<T, E> {
-  type = TDShapeType.Rectangle as const;
+  type = TDShapeType.Rectangle as const
 
-  canBind = true;
+  canBind = true
 
-  canClone = true;
+  canClone = true
 
-  canEdit = true;
+  canEdit = true
 
   getShape = (props: Partial<T>): T => {
     return Utils.deepMerge<T>(
@@ -45,19 +45,36 @@ export class RectangleUtil extends TDShapeUtil<T, E> {
         label: '',
         labelPoint: [0.5, 0.5],
       },
-      props,
-    );
-  };
+      props
+    )
+  }
 
   Component = TDShapeUtil.Component<T, E, TDMeta>(
-    ({ shape, isEditing, isBinding, isSelected, isGhost, meta, bounds, events, onShapeBlur, onShapeChange }, reference) => {
-      const { id, size, style, label = '', labelPoint = LABEL_POINT } = shape;
-      const font = getFontStyle(style);
-      const styles = getShapeStyle(style, meta.isDarkMode);
-      const Component = style.dash === DashStyle.Draw ? DrawRectangle : DashedRectangle;
-      const handleLabelChange = React.useCallback((label: string) => onShapeChange?.({ id, label }), [onShapeChange]);
+    (
+      {
+        shape,
+        isEditing,
+        isBinding,
+        isSelected,
+        isGhost,
+        meta,
+        bounds,
+        events,
+        onShapeBlur,
+        onShapeChange,
+      },
+      ref
+    ) => {
+      const { id, size, style, label = '', labelPoint = LABEL_POINT } = shape
+      const font = getFontStyle(style)
+      const styles = getShapeStyle(style, meta.isDarkMode)
+      const Component = style.dash === DashStyle.Draw ? DrawRectangle : DashedRectangle
+      const handleLabelChange = React.useCallback(
+        (label: string) => onShapeChange?.({ id, label }),
+        [onShapeChange]
+      )
       return (
-        <FullWrapper ref={reference} {...events}>
+        <FullWrapper ref={ref} {...events}>
           <TextLabel
             isEditing={isEditing}
             onChange={handleLabelChange}
@@ -70,37 +87,52 @@ export class RectangleUtil extends TDShapeUtil<T, E> {
           />
           <SVGContainer id={shape.id + '_svg'} opacity={isGhost ? GHOSTED_OPACITY : 1}>
             {isBinding && <BindingIndicator strokeWidth={styles.strokeWidth} size={size} />}
-            <Component id={id} style={style} size={size} isSelected={isSelected} isDarkMode={meta.isDarkMode} />
+            <Component
+              id={id}
+              style={style}
+              size={size}
+              isSelected={isSelected}
+              isDarkMode={meta.isDarkMode}
+            />
           </SVGContainer>
         </FullWrapper>
-      );
-    },
-  );
+      )
+    }
+  )
 
   Indicator = TDShapeUtil.Indicator<T>(({ shape }) => {
-    const { id, style, size } = shape;
+    const { id, style, size } = shape
 
-    const styles = getShapeStyle(style, false);
-    const sw = styles.strokeWidth;
+    const styles = getShapeStyle(style, false)
+    const sw = styles.strokeWidth
 
     if (style.dash === DashStyle.Draw) {
-      return <path d={getRectangleIndicatorPathTDSnapshot(id, style, size)} />;
+      return <path d={getRectangleIndicatorPathTDSnapshot(id, style, size)} />
     }
 
-    return <rect x={sw} y={sw} rx={1} ry={1} width={Math.max(1, size[0] - sw * 2)} height={Math.max(1, size[1] - sw * 2)} />;
-  });
+    return (
+      <rect
+        x={sw}
+        y={sw}
+        rx={1}
+        ry={1}
+        width={Math.max(1, size[0] - sw * 2)}
+        height={Math.max(1, size[1] - sw * 2)}
+      />
+    )
+  })
 
   getBounds = (shape: T) => {
-    return getBoundsRectangle(shape, this.boundsCache);
-  };
+    return getBoundsRectangle(shape, this.boundsCache)
+  }
 
-  shouldRender = (previous: T, next: T) => {
-    return next.size !== previous.size || next.style !== previous.style || next.label !== previous.label;
-  };
+  shouldRender = (prev: T, next: T) => {
+    return next.size !== prev.size || next.style !== prev.style || next.label !== prev.label
+  }
 
-  transform = transformRectangle;
+  transform = transformRectangle
 
-  transformSingle = transformSingleRectangle;
+  transformSingle = transformSingleRectangle
 }
 
-const FullWrapper = styled('div', { width: '100%', height: '100%' });
+const FullWrapper = styled('div', { width: '100%', height: '100%' })

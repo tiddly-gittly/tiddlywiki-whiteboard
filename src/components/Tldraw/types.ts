@@ -18,8 +18,8 @@ import type {
   TLSnapLine,
   TLUser,
   TLWheelEventHandler,
-} from '@tldraw/core';
-import { TDLanguage } from '@tldr/translations';
+} from '@tldraw/core'
+import { TDLanguage } from '@tldr/translations'
 
 /* -------------------------------------------------- */
 /*                         App                        */
@@ -28,190 +28,190 @@ import { TDLanguage } from '@tldr/translations';
 // A base class for all classes that handle events from the Renderer,
 // including TDApp and all Tools.
 export class TDEventHandler {
-  onPinchStart?: TLPinchEventHandler;
-  onPinchEnd?: TLPinchEventHandler;
-  onPinch?: TLPinchEventHandler;
-  onKeyDown?: TLKeyboardEventHandler;
-  onKeyUp?: TLKeyboardEventHandler;
-  onPointerMove?: TLPointerEventHandler;
-  onPointerUp?: TLPointerEventHandler;
-  onPan?: TLWheelEventHandler;
-  onZoom?: TLWheelEventHandler;
-  onPointerDown?: TLPointerEventHandler;
-  onPointCanvas?: TLCanvasEventHandler;
-  onDoubleClickCanvas?: TLCanvasEventHandler;
-  onRightPointCanvas?: TLCanvasEventHandler;
-  onDragCanvas?: TLCanvasEventHandler;
-  onReleaseCanvas?: TLCanvasEventHandler;
-  onPointShape?: TLPointerEventHandler;
-  onDoubleClickShape?: TLPointerEventHandler;
-  onRightPointShape?: TLPointerEventHandler;
-  onDragShape?: TLPointerEventHandler;
-  onHoverShape?: TLPointerEventHandler;
-  onUnhoverShape?: TLPointerEventHandler;
-  onReleaseShape?: TLPointerEventHandler;
-  onPointBounds?: TLBoundsEventHandler;
-  onDoubleClickBounds?: TLBoundsEventHandler;
-  onRightPointBounds?: TLBoundsEventHandler;
-  onDragBounds?: TLBoundsEventHandler;
-  onHoverBounds?: TLBoundsEventHandler;
-  onUnhoverBounds?: TLBoundsEventHandler;
-  onReleaseBounds?: TLBoundsEventHandler;
-  onPointBoundsHandle?: TLBoundsHandleEventHandler;
-  onDoubleClickBoundsHandle?: TLBoundsHandleEventHandler;
-  onRightPointBoundsHandle?: TLBoundsHandleEventHandler;
-  onDragBoundsHandle?: TLBoundsHandleEventHandler;
-  onHoverBoundsHandle?: TLBoundsHandleEventHandler;
-  onUnhoverBoundsHandle?: TLBoundsHandleEventHandler;
-  onReleaseBoundsHandle?: TLBoundsHandleEventHandler;
-  onPointHandle?: TLPointerEventHandler;
-  onDoubleClickHandle?: TLPointerEventHandler;
-  onRightPointHandle?: TLPointerEventHandler;
-  onDragHandle?: TLPointerEventHandler;
-  onHoverHandle?: TLPointerEventHandler;
-  onUnhoverHandle?: TLPointerEventHandler;
-  onReleaseHandle?: TLPointerEventHandler;
-  onShapeBlur?: TLShapeBlurHandler;
-  onShapeClone?: TLShapeCloneHandler;
+  onPinchStart?: TLPinchEventHandler
+  onPinchEnd?: TLPinchEventHandler
+  onPinch?: TLPinchEventHandler
+  onKeyDown?: TLKeyboardEventHandler
+  onKeyUp?: TLKeyboardEventHandler
+  onPointerMove?: TLPointerEventHandler
+  onPointerUp?: TLPointerEventHandler
+  onPan?: TLWheelEventHandler
+  onZoom?: TLWheelEventHandler
+  onPointerDown?: TLPointerEventHandler
+  onPointCanvas?: TLCanvasEventHandler
+  onDoubleClickCanvas?: TLCanvasEventHandler
+  onRightPointCanvas?: TLCanvasEventHandler
+  onDragCanvas?: TLCanvasEventHandler
+  onReleaseCanvas?: TLCanvasEventHandler
+  onPointShape?: TLPointerEventHandler
+  onDoubleClickShape?: TLPointerEventHandler
+  onRightPointShape?: TLPointerEventHandler
+  onDragShape?: TLPointerEventHandler
+  onHoverShape?: TLPointerEventHandler
+  onUnhoverShape?: TLPointerEventHandler
+  onReleaseShape?: TLPointerEventHandler
+  onPointBounds?: TLBoundsEventHandler
+  onDoubleClickBounds?: TLBoundsEventHandler
+  onRightPointBounds?: TLBoundsEventHandler
+  onDragBounds?: TLBoundsEventHandler
+  onHoverBounds?: TLBoundsEventHandler
+  onUnhoverBounds?: TLBoundsEventHandler
+  onReleaseBounds?: TLBoundsEventHandler
+  onPointBoundsHandle?: TLBoundsHandleEventHandler
+  onDoubleClickBoundsHandle?: TLBoundsHandleEventHandler
+  onRightPointBoundsHandle?: TLBoundsHandleEventHandler
+  onDragBoundsHandle?: TLBoundsHandleEventHandler
+  onHoverBoundsHandle?: TLBoundsHandleEventHandler
+  onUnhoverBoundsHandle?: TLBoundsHandleEventHandler
+  onReleaseBoundsHandle?: TLBoundsHandleEventHandler
+  onPointHandle?: TLPointerEventHandler
+  onDoubleClickHandle?: TLPointerEventHandler
+  onRightPointHandle?: TLPointerEventHandler
+  onDragHandle?: TLPointerEventHandler
+  onHoverHandle?: TLPointerEventHandler
+  onUnhoverHandle?: TLPointerEventHandler
+  onReleaseHandle?: TLPointerEventHandler
+  onShapeBlur?: TLShapeBlurHandler
+  onShapeClone?: TLShapeCloneHandler
 }
 
-export type TDDockPosition = 'bottom' | 'left' | 'right' | 'top';
+export type TDDockPosition = 'bottom' | 'left' | 'right' | 'top'
 
 // The shape of the TldrawApp's React (zustand) store
 export interface TDSnapshot {
-  appState: {
-    activeTool: TDToolType;
-    currentPageId: string;
-    currentStyle: ShapeStyles;
-    disableAssets: boolean;
-    eraseLine: number[][];
-    hoveredId?: string;
-    isEmptyCanvas: boolean;
-    isLoading: boolean;
-    isMenuOpen: boolean;
-    isToolLocked: boolean;
-    selectByContain?: boolean;
-    snapLines: TLSnapLine[];
-    status: string;
-  };
-  document: TDDocument;
-  room?: {
-    id: string;
-    userId: string;
-    users: Record<string, TDUser>;
-  };
   settings: {
-    dockPosition: TDDockPosition;
-    exportBackground: TDExportBackground;
-    isCadSelectMode: boolean;
-    isDarkMode: boolean;
-    isDebugMode: boolean;
-    isFocusMode: boolean;
-    isPenMode: boolean;
-    isReadonlyMode: boolean;
-    isSnapping: boolean;
-    isZoomSnap: boolean;
-    keepStyleMenuOpen: boolean;
-    language: TDLanguage;
-    nudgeDistanceLarge: number;
-    nudgeDistanceSmall: number;
-    showBindingHandles: boolean;
-    showCloneHandles: boolean;
-    showGrid: boolean;
-    showRotateHandles: boolean;
-  };
+    isCadSelectMode: boolean
+    isDarkMode: boolean
+    isDebugMode: boolean
+    isPenMode: boolean
+    isReadonlyMode: boolean
+    isZoomSnap: boolean
+    keepStyleMenuOpen: boolean
+    nudgeDistanceSmall: number
+    nudgeDistanceLarge: number
+    isFocusMode: boolean
+    isSnapping: boolean
+    showRotateHandles: boolean
+    showBindingHandles: boolean
+    showCloneHandles: boolean
+    showGrid: boolean
+    language: TDLanguage
+    dockPosition: TDDockPosition
+    exportBackground: TDExportBackground
+  }
+  appState: {
+    currentStyle: ShapeStyles
+    currentPageId: string
+    hoveredId?: string
+    activeTool: TDToolType
+    isToolLocked: boolean
+    isEmptyCanvas: boolean
+    isMenuOpen: boolean
+    status: string
+    snapLines: TLSnapLine[]
+    eraseLine: number[][]
+    isLoading: boolean
+    disableAssets: boolean
+    selectByContain?: boolean
+  }
+  document: TDDocument
+  room?: {
+    id: string
+    userId: string
+    users: Record<string, TDUser>
+  }
 }
 
-export type TldrawPatch = Patch<TDSnapshot>;
+export type TldrawPatch = Patch<TDSnapshot>
 
-export type TldrawCommand = Command<TDSnapshot>;
+export type TldrawCommand = Command<TDSnapshot>
 
 // The shape of the files stored in JSON
 export interface TDFile {
-  assets: Record<string, unknown>;
-  document: TDDocument;
-  fileHandle: FileSystemFileHandle | null;
-  name: string;
+  name: string
+  fileHandle: FileSystemFileHandle | null
+  document: TDDocument
+  assets: Record<string, unknown>
 }
 
 // The shape of the Tldraw document
 export interface TDDocument {
-  assets: TDAssets;
-  id: string;
-  name: string;
-  pageStates: Record<string, TLPageState>;
-  pages: Record<string, TDPage>;
-  version: number;
+  id: string
+  name: string
+  version: number
+  pages: Record<string, TDPage>
+  pageStates: Record<string, TLPageState>
+  assets: TDAssets
 }
 
 // The shape of a single page in the Tldraw document
-export type TDPage = TLPage<TDShape, TDBinding>;
+export type TDPage = TLPage<TDShape, TDBinding>
 
 // A partial of a TDPage, used for commands / patches
-export interface PagePartial {
-  bindings: Patch<TDPage['bindings']>;
-  shapes: Patch<TDPage['shapes']>;
+export type PagePartial = {
+  shapes: Patch<TDPage['shapes']>
+  bindings: Patch<TDPage['bindings']>
 }
 
 // The meta information passed to TDShapeUtil components
 export interface TDMeta {
-  isDarkMode: boolean;
+  isDarkMode: boolean
 }
 
 // The type of info given to shapes when transforming
 export interface TransformInfo<T extends TLShape> {
-  initialShape: T;
-  scaleX: number;
-  scaleY: number;
-  transformOrigin: number[];
-  type: TLBoundsEdge | TLBoundsCorner;
+  type: TLBoundsEdge | TLBoundsCorner
+  initialShape: T
+  scaleX: number
+  scaleY: number
+  transformOrigin: number[]
 }
 
 // The status of a TDUser
 export enum TDUserStatus {
-  Connected = 'connected',
-  Connecting = 'connecting',
-  Disconnected = 'disconnected',
   Idle = 'idle',
+  Connecting = 'connecting',
+  Connected = 'connected',
+  Disconnected = 'disconnected',
 }
 
 // A TDUser, for multiplayer rooms
 export interface TDUser extends TLUser {
-  activeShapes: TDShape[];
-  session?: boolean;
-  status: TDUserStatus;
+  activeShapes: TDShape[]
+  status: TDUserStatus
+  session?: boolean
 }
 
-export type Theme = 'dark' | 'light';
+export type Theme = 'dark' | 'light'
 
 export enum SessionType {
-  Arrow = 'arrow',
-  Brush = 'brush',
-  Draw = 'draw',
-  Edit = 'edit',
-  Erase = 'erase',
-  Grid = 'grid',
-  Handle = 'handle',
-  Rotate = 'rotate',
   Transform = 'transform',
-  TransformSingle = 'transformSingle',
   Translate = 'translate',
+  TransformSingle = 'transformSingle',
+  Brush = 'brush',
+  Arrow = 'arrow',
+  Draw = 'draw',
+  Erase = 'erase',
+  Rotate = 'rotate',
+  Handle = 'handle',
+  Grid = 'grid',
+  Edit = 'edit',
 }
 
 export enum TDStatus {
+  Idle = 'idle',
+  PointingHandle = 'pointingHandle',
+  PointingBounds = 'pointingBounds',
+  PointingBoundsHandle = 'pointingBoundsHandle',
+  TranslatingLabel = 'translatingLabel',
+  TranslatingHandle = 'translatingHandle',
+  Translating = 'translating',
+  Transforming = 'transforming',
+  Rotating = 'rotating',
+  Pinching = 'pinching',
   Brushing = 'brushing',
   Creating = 'creating',
   EditingText = 'editing-text',
-  Idle = 'idle',
-  Pinching = 'pinching',
-  PointingBounds = 'pointingBounds',
-  PointingBoundsHandle = 'pointingBoundsHandle',
-  PointingHandle = 'pointingHandle',
-  Rotating = 'rotating',
-  Transforming = 'transforming',
-  Translating = 'translating',
-  TranslatingHandle = 'translatingHandle',
-  TranslatingLabel = 'translatingLabel',
 }
 
 export type TDToolType =
@@ -224,7 +224,7 @@ export type TDToolType =
   | TDShapeType.Triangle
   | TDShapeType.Line
   | TDShapeType.Arrow
-  | TDShapeType.Sticky;
+  | TDShapeType.Sticky
 
 export type Easing =
   | 'linear'
@@ -245,22 +245,22 @@ export type Easing =
   | 'easeInOutSine'
   | 'easeInExpo'
   | 'easeOutExpo'
-  | 'easeInOutExpo';
+  | 'easeInOutExpo'
 
 export enum MoveType {
   Backward = 'backward',
   Forward = 'forward',
-  ToBack = 'toBack',
   ToFront = 'toFront',
+  ToBack = 'toBack',
 }
 
 export enum AlignType {
-  Bottom = 'bottom',
-  CenterHorizontal = 'centerHorizontal',
-  CenterVertical = 'centerVertical',
-  Left = 'left',
-  Right = 'right',
   Top = 'top',
+  CenterVertical = 'centerVertical',
+  Bottom = 'bottom',
+  Left = 'left',
+  CenterHorizontal = 'centerHorizontal',
+  Right = 'right',
 }
 
 export enum StretchType {
@@ -283,16 +283,16 @@ export enum FlipType {
 /* -------------------------------------------------- */
 
 export enum TDShapeType {
-  Arrow = 'arrow',
-  Draw = 'draw',
+  Sticky = 'sticky',
   Ellipse = 'ellipse',
+  Rectangle = 'rectangle',
+  Triangle = 'triangle',
+  Draw = 'draw',
+  Arrow = 'arrow',
+  Line = 'line',
+  Text = 'text',
   Group = 'group',
   Image = 'image',
-  Line = 'line',
-  Rectangle = 'rectangle',
-  Sticky = 'sticky',
-  Text = 'text',
-  Triangle = 'triangle',
   Video = 'video',
 }
 
@@ -301,167 +301,177 @@ export enum Decoration {
 }
 
 export interface TDBaseShape extends TLShape {
-  handles?: Record<string, TDHandle>;
-  label?: string;
-  style: ShapeStyles;
-  type: TDShapeType;
+  style: ShapeStyles
+  type: TDShapeType
+  label?: string
+  handles?: Record<string, TDHandle>
 }
 
 export interface DrawShape extends TDBaseShape {
-  isComplete: boolean;
-  points: number[][];
-  type: TDShapeType.Draw;
+  type: TDShapeType.Draw
+  points: number[][]
+  isComplete: boolean
 }
 
 // The extended handle (used for arrows)
 export interface TDHandle extends TLHandle {
-  bindingId?: string;
-  canBind?: boolean;
+  canBind?: boolean
+  bindingId?: string
 }
 
 export interface RectangleShape extends TDBaseShape {
-  label?: string;
-  labelPoint?: number[];
-  size: number[];
-  type: TDShapeType.Rectangle;
+  type: TDShapeType.Rectangle
+  size: number[]
+  label?: string
+  labelPoint?: number[]
 }
 
 export interface EllipseShape extends TDBaseShape {
-  label?: string;
-  labelPoint?: number[];
-  radius: number[];
-  type: TDShapeType.Ellipse;
+  type: TDShapeType.Ellipse
+  radius: number[]
+  label?: string
+  labelPoint?: number[]
 }
 
 export interface TriangleShape extends TDBaseShape {
-  label?: string;
-  labelPoint?: number[];
-  size: number[];
-  type: TDShapeType.Triangle;
+  type: TDShapeType.Triangle
+  size: number[]
+  label?: string
+  labelPoint?: number[]
 }
 
 // The shape created with the arrow tool
 export interface ArrowShape extends TDBaseShape {
-  bend: number;
-  decorations?: {
-    end?: Decoration;
-    middle?: Decoration;
-    start?: Decoration;
-  };
+  type: TDShapeType.Arrow
+  bend: number
   handles: {
-    bend: TDHandle;
-    end: TDHandle;
-    start: TDHandle;
-  };
-  label?: string;
-  labelPoint?: number[];
-  type: TDShapeType.Arrow;
+    start: TDHandle
+    bend: TDHandle
+    end: TDHandle
+  }
+  decorations?: {
+    start?: Decoration
+    end?: Decoration
+    middle?: Decoration
+  }
+  label?: string
+  labelPoint?: number[]
 }
 
 export interface ArrowBinding extends TLBinding {
-  distance: number;
-  handleId: keyof ArrowShape['handles'];
-  point: number[];
+  handleId: keyof ArrowShape['handles']
+  distance: number
+  point: number[]
 }
 
-export type TDBinding = ArrowBinding;
+export type TDBinding = ArrowBinding
 
 export interface ImageShape extends TDBaseShape {
-  assetId: string;
-  size: number[];
-  type: TDShapeType.Image;
+  type: TDShapeType.Image
+  size: number[]
+  assetId: string
 }
 
 export interface VideoShape extends TDBaseShape {
-  assetId: string;
-  currentTime: number;
-  isPlaying: boolean;
-  size: number[];
-  type: TDShapeType.Video;
+  type: TDShapeType.Video
+  size: number[]
+  assetId: string
+  isPlaying: boolean
+  currentTime: number
 }
 
 // The shape created by the text tool
 export interface TextShape extends TDBaseShape {
-  text: string;
-  type: TDShapeType.Text;
+  type: TDShapeType.Text
+  text: string
 }
 
 // The shape created by the sticky tool
 export interface StickyShape extends TDBaseShape {
-  size: number[];
-  text: string;
-  type: TDShapeType.Sticky;
+  type: TDShapeType.Sticky
+  size: number[]
+  text: string
 }
 
 // The shape created when multiple shapes are grouped
 export interface GroupShape extends TDBaseShape {
-  children: string[];
-  size: number[];
-  type: TDShapeType.Group;
+  type: TDShapeType.Group
+  size: number[]
+  children: string[]
 }
 
 // A union of all shapes
-export type TDShape = RectangleShape | EllipseShape | TriangleShape | DrawShape | ArrowShape | TextShape | GroupShape | StickyShape | ImageShape | VideoShape;
+export type TDShape =
+  | RectangleShape
+  | EllipseShape
+  | TriangleShape
+  | DrawShape
+  | ArrowShape
+  | TextShape
+  | GroupShape
+  | StickyShape
+  | ImageShape
+  | VideoShape
 
 /* ------------------ Shape Styles ------------------ */
 
 export enum ColorStyle {
-  Black = 'black',
-  Blue = 'blue',
-  Cyan = 'cyan',
-  Gray = 'gray',
-  Green = 'green',
-  Indigo = 'indigo',
-  LightGray = 'lightGray',
-  Orange = 'orange',
-  Red = 'red',
-  Violet = 'violet',
   White = 'white',
+  LightGray = 'lightGray',
+  Gray = 'gray',
+  Black = 'black',
+  Green = 'green',
+  Cyan = 'cyan',
+  Blue = 'blue',
+  Indigo = 'indigo',
+  Violet = 'violet',
+  Red = 'red',
+  Orange = 'orange',
   Yellow = 'yellow',
 }
 
 export enum SizeStyle {
-  Large = 'large',
-  Medium = 'medium',
   Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
 }
 
 export enum DashStyle {
-  Dashed = 'dashed',
-  Dotted = 'dotted',
   Draw = 'draw',
   Solid = 'solid',
+  Dashed = 'dashed',
+  Dotted = 'dotted',
 }
 
 export enum FontSize {
-  ExtraLarge = 'extraLarge',
-  Large = 'large',
-  Medium = 'medium',
   Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  ExtraLarge = 'extraLarge',
 }
 
 export enum AlignStyle {
+  Start = 'start',
+  Middle = 'middle',
   End = 'end',
   Justify = 'justify',
-  Middle = 'middle',
-  Start = 'start',
 }
 
 export enum FontStyle {
-  Mono = 'mono',
-  Sans = 'sans',
   Script = 'script',
+  Sans = 'sans',
   Serif = 'serif',
+  Mono = 'mono',
 }
 
-export interface ShapeStyles {
-  color: ColorStyle;
-  dash: DashStyle;
-  font?: FontStyle;
-  isFilled?: boolean;
-  scale?: number;
-  size: SizeStyle;
-  textAlign?: AlignStyle;
+export type ShapeStyles = {
+  color: ColorStyle
+  size: SizeStyle
+  dash: DashStyle
+  font?: FontStyle
+  textAlign?: AlignStyle
+  isFilled?: boolean
+  scale?: number
 }
 
 export enum TDAssetType {
@@ -470,98 +480,98 @@ export enum TDAssetType {
 }
 
 export interface TDImageAsset extends TLAsset {
-  fileName: string;
-  size: number[];
-  src: string;
-  type: TDAssetType.Image;
+  type: TDAssetType.Image
+  fileName: string
+  src: string
+  size: number[]
 }
 
 export interface TDVideoAsset extends TLAsset {
-  fileName: string;
-  size: number[];
-  src: string;
-  type: TDAssetType.Video;
+  type: TDAssetType.Video
+  fileName: string
+  src: string
+  size: number[]
 }
 
-export type TDAsset = TDImageAsset | TDVideoAsset;
+export type TDAsset = TDImageAsset | TDVideoAsset
 
-export type TDAssets = Record<string, TDAsset>;
+export type TDAssets = Record<string, TDAsset>
 
 /* -------------------------------------------------- */
 /*                    Export                          */
 /* -------------------------------------------------- */
 
 export enum TDExportType {
-  JPG = 'jpeg',
-  JSON = 'json',
   PNG = 'png',
-  SVG = 'svg',
+  JPG = 'jpeg',
   WEBP = 'webp',
+  SVG = 'svg',
+  JSON = 'json',
 }
 
 export interface TDExport {
-  blob: Blob;
-  name: string;
-  type: string;
+  name: string
+  type: string
+  blob: Blob
 }
 
 export enum TDExportBackground {
-  Auto = 'auto',
-  Dark = 'dark',
-  Light = 'light',
   Transparent = 'transparent',
+  Auto = 'auto',
+  Light = 'light',
+  Dark = 'dark',
 }
 
 /* -------------------------------------------------- */
 /*                    Type Helpers                    */
 /* -------------------------------------------------- */
 
-export type ParametersExceptFirst<F> = F extends (argument0: any, ...rest: infer R) => any ? R : never;
+export type ParametersExceptFirst<F> = F extends (arg0: any, ...rest: infer R) => any ? R : never
 
-export type ExceptFirst<T extends unknown[]> = T extends [any, ...infer U] ? U : never;
+export type ExceptFirst<T extends unknown[]> = T extends [any, ...infer U] ? U : never
 
-export type ExceptFirstTwo<T extends unknown[]> = T extends [any, any, ...infer U] ? U : never;
+export type ExceptFirstTwo<T extends unknown[]> = T extends [any, any, ...infer U] ? U : never
 
 export type PropsOfType<U> = {
-  [K in keyof TDShape]: TDShape[K] extends any ? (TDShape[K] extends U ? K : never) : never;
-}[keyof TDShape];
+  [K in keyof TDShape]: TDShape[K] extends any ? (TDShape[K] extends U ? K : never) : never
+}[keyof TDShape]
 
-export type Difference<A, B, C = A> = A extends B ? never : C;
+export type Difference<A, B, C = A> = A extends B ? never : C
 
-export type Intersection<A, B, C = A> = A extends B ? C : never;
+export type Intersection<A, B, C = A> = A extends B ? C : never
 
 export type FilteredKeys<T, U> = {
-  [P in keyof T]: T[P] extends U ? P : never;
-}[keyof T];
+  [P in keyof T]: T[P] extends U ? P : never
+}[keyof T]
 
 export type RequiredKeys<T> = {
-  [K in keyof T]-?: Difference<Record<string, unknown>, Pick<T, K>, K>;
-}[keyof T];
+  [K in keyof T]-?: Difference<Record<string, unknown>, Pick<T, K>, K>
+}[keyof T]
 
 export type MembersWithRequiredKey<T, U> = {
-  [P in keyof T]: Intersection<U, RequiredKeys<T[P]>, T[P]>;
-}[keyof T];
+  [P in keyof T]: Intersection<U, RequiredKeys<T[P]>, T[P]>
+}[keyof T]
 
 export type MappedByType<U extends string, T extends { type: U }> = {
-  [P in T['type']]: T extends any ? (P extends T['type'] ? T : never) : never;
-};
+  [P in T['type']]: T extends any ? (P extends T['type'] ? T : never) : never
+}
 
-export type ShapesWithProp<U> = MembersWithRequiredKey<MappedByType<TDShapeType, TDShape>, U>;
+export type ShapesWithProp<U> = MembersWithRequiredKey<MappedByType<TDShapeType, TDShape>, U>
 
-export type Patch<T> = Partial<{ [P in keyof T]: Patch<T[P]> }>;
+export type Patch<T> = Partial<{ [P in keyof T]: Patch<T[P]> }>
 
 export interface Command<T extends { [key: string]: any }> {
-  after: Patch<T>;
-  before: Patch<T>;
-  id?: string;
+  id?: string
+  before: Patch<T>
+  after: Patch<T>
 }
 
 export interface FileWithHandle extends File {
-  handle?: FileSystemFileHandle;
+  handle?: FileSystemFileHandle
 }
 
 export interface FileWithDirectoryHandle extends File {
-  directoryHandle?: FileSystemDirectoryHandle;
+  directoryHandle?: FileSystemDirectoryHandle
 }
 
 // The following typings implement the relevant parts of the File System Access
@@ -569,15 +579,15 @@ export interface FileWithDirectoryHandle extends File {
 // and is implemented as part of microsoft/TSJS-lib-generator.
 
 export interface FileSystemHandlePermissionDescriptor {
-  mode?: 'read' | 'readwrite';
+  mode?: 'read' | 'readwrite'
 }
 
 export interface FileSystemHandle {
-  isSameEntry: (other: FileSystemHandle) => Promise<boolean>;
-  readonly kind: 'file' | 'directory';
+  readonly kind: 'file' | 'directory'
+  readonly name: string
 
-  readonly name: string;
+  isSameEntry: (other: FileSystemHandle) => Promise<boolean>
 
-  queryPermission: (descriptor?: FileSystemHandlePermissionDescriptor) => Promise<PermissionState>;
-  requestPermission: (descriptor?: FileSystemHandlePermissionDescriptor) => Promise<PermissionState>;
+  queryPermission: (descriptor?: FileSystemHandlePermissionDescriptor) => Promise<PermissionState>
+  requestPermission: (descriptor?: FileSystemHandlePermissionDescriptor) => Promise<PermissionState>
 }

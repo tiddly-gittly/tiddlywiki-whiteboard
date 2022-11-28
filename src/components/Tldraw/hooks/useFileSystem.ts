@@ -1,75 +1,85 @@
-import * as React from 'react';
-import type { TldrawApp } from '@tldr/state';
-import { DialogState } from './useDialog';
+import * as React from 'react'
+import type { TldrawApp } from '@tldr/state'
+import { DialogState } from './useDialog'
 
 export function useFileSystem() {
   const onNewProject = React.useCallback(
     async (
       app: TldrawApp,
-      openDialog: (dialogState: DialogState, onYes: () => Promise<void>, onNo: () => Promise<void>, onCancel: () => Promise<void>) => void,
+      openDialog: (
+        dialogState: DialogState,
+        onYes: () => Promise<void>,
+        onNo: () => Promise<void>,
+        onCancel: () => Promise<void>
+      ) => void
     ) => {
       openDialog(
-        app.fileSystemHandle == undefined ? 'saveAgain' : 'saveFirstTime',
+        app.fileSystemHandle ? 'saveFirstTime' : 'saveAgain',
         async () => {
           // user pressed yes
           try {
-            await app.saveProject();
-            app.newProject();
-          } catch {
+            await app.saveProject()
+            app.newProject()
+          } catch (e) {
             // noop
           }
         },
         async () => {
           // user pressed no
-          app.newProject();
+          app.newProject()
         },
         async () => {
           // user pressed cancel
-        },
-      );
+        }
+      )
     },
-    [],
-  );
+    []
+  )
 
   const onOpenProject = React.useCallback(
     async (
       app: TldrawApp,
-      openDialog: (dialogState: DialogState, onYes: () => Promise<void>, onNo: () => Promise<void>, onCancel: () => Promise<void>) => void,
+      openDialog: (
+        dialogState: DialogState,
+        onYes: () => Promise<void>,
+        onNo: () => Promise<void>,
+        onCancel: () => Promise<void>
+      ) => void
     ) => {
       openDialog(
-        app.fileSystemHandle == undefined ? 'saveAgain' : 'saveFirstTime',
+        app.fileSystemHandle ? 'saveFirstTime' : 'saveAgain',
         async () => {
           // user pressed yes
           try {
-            await app.saveProject();
-            await app.openProject();
-          } catch {
+            await app.saveProject()
+            await app.openProject()
+          } catch (e) {
             // noop
           }
         },
         async () => {
           // user pressed no
-          app.openProject();
+          app.openProject()
         },
         async () => {
           // user pressed cancel
-        },
-      );
+        }
+      )
     },
-    [],
-  );
+    []
+  )
 
   const onSaveProject = React.useCallback((app: TldrawApp) => {
-    app.saveProject();
-  }, []);
+    app.saveProject()
+  }, [])
 
   const onSaveProjectAs = React.useCallback((app: TldrawApp) => {
-    app.saveProjectAs();
-  }, []);
+    app.saveProjectAs()
+  }, [])
 
   const onOpenMedia = React.useCallback(async (app: TldrawApp) => {
-    app.openAsset?.();
-  }, []);
+    app.openAsset?.()
+  }, [])
 
   return {
     onNewProject,
@@ -77,5 +87,5 @@ export function useFileSystem() {
     onSaveProjectAs,
     onOpenProject,
     onOpenMedia,
-  };
+  }
 }

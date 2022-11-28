@@ -1,26 +1,26 @@
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import type { TldrawCommand } from '@tldr/types';
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import type { TldrawCommand } from '@tldr/types'
 
 export function deletePage(app: TldrawApp, pageId: string): TldrawCommand {
   const {
     currentPageId,
     document: { pages, pageStates },
-  } = app;
+  } = app
 
-  const pagesArray = Object.values(pages).sort((a, b) => (a.childIndex || 0) - (b.childIndex || 0));
+  const pagesArr = Object.values(pages).sort((a, b) => (a.childIndex || 0) - (b.childIndex || 0))
 
-  const currentIndex = pagesArray.findIndex((page) => page.id === pageId);
+  const currentIndex = pagesArr.findIndex((page) => page.id === pageId)
 
-  let nextCurrentPageId: string;
+  let nextCurrentPageId: string
 
   if (pageId === currentPageId) {
-    if (currentIndex === pagesArray.length - 1) {
-      nextCurrentPageId = pagesArray[pagesArray.length - 2].id;
+    if (currentIndex === pagesArr.length - 1) {
+      nextCurrentPageId = pagesArr[pagesArr.length - 2].id
     } else {
-      nextCurrentPageId = pagesArray[currentIndex + 1].id;
+      nextCurrentPageId = pagesArr[currentIndex + 1].id
     }
   } else {
-    nextCurrentPageId = currentPageId;
+    nextCurrentPageId = currentPageId
   }
 
   return {
@@ -51,5 +51,5 @@ export function deletePage(app: TldrawApp, pageId: string): TldrawCommand {
         },
       },
     },
-  };
+  }
 }

@@ -1,1 +1,1 @@
-export * from './resetBounds';
+export * from './resetBounds'

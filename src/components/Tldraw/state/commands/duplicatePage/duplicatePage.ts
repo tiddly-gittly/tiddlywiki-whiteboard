@@ -1,16 +1,16 @@
-import { Utils } from '@tldraw/core';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import type { TldrawCommand } from '@tldr/types';
+import { Utils } from '@tldraw/core'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import type { TldrawCommand } from '@tldr/types'
 
 export function duplicatePage(app: TldrawApp, pageId: string): TldrawCommand {
   const {
     currentPageId,
     pageState: { camera },
-  } = app;
+  } = app
 
-  const page = app.document.pages[pageId];
+  const page = app.document.pages[pageId]
 
-  const newId = Utils.uniqueId();
+  const newId = Utils.uniqueId()
 
   const nextPage = {
     ...page,
@@ -24,10 +24,10 @@ export function duplicatePage(app: TldrawApp, pageId: string): TldrawCommand {
             ...shape,
             parentId: shape.parentId === page.id ? newId : shape.parentId,
           },
-        ];
-      }),
+        ]
+      })
     ),
-  };
+  }
 
   return {
     id: 'duplicate_page',
@@ -66,5 +66,5 @@ export function duplicatePage(app: TldrawApp, pageId: string): TldrawCommand {
         },
       },
     },
-  };
+  }
 }

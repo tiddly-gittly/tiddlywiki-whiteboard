@@ -1,1 +1,1 @@
-export * from './flipShapes';
+export * from './flipShapes'
