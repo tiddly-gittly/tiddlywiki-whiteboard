@@ -1,19 +1,19 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-import { DMContent, DMItem } from '@tldr/components/Primitives/DropdownMenu'
-import { ToolButton } from '@tldr/components/Primitives/ToolButton'
-import { preventEvent } from '@tldr/components/preventEvent'
-import { useTldrawApp } from '@tldr/hooks'
-import { styled } from '@tldr/styles'
-import type { TDSnapshot } from '@tldr/types'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { DMContent, DMItem } from '@tldr/components/Primitives/DropdownMenu';
+import { ToolButton } from '@tldr/components/Primitives/ToolButton';
+import { preventEvent } from '@tldr/components/preventEvent';
+import { useTldrawApp } from '@tldr/hooks';
+import { styled } from '@tldr/styles';
+import type { TDSnapshot } from '@tldr/types';
 
-const zoomSelector = (s: TDSnapshot) => s.document.pageStates[s.appState.currentPageId].camera.zoom
+const zoomSelector = (s: TDSnapshot) => s.document.pageStates[s.appState.currentPageId].camera.zoom;
 
 export const ZoomMenu = function ZoomMenu() {
-  const app = useTldrawApp()
+  const app = useTldrawApp();
 
-  const zoom = app.useStore(zoomSelector)
+  const zoom = app.useStore(zoomSelector);
 
   return (
     <DropdownMenu.Root dir="ltr">
@@ -35,19 +35,14 @@ export const ZoomMenu = function ZoomMenu() {
         <DMItem onSelect={preventEvent} onClick={app.zoomToFit} kbd="⇧1" id="TD-Zoom-To_Fit">
           <FormattedMessage id="zoom.to.fit" />
         </DMItem>
-        <DMItem
-          onSelect={preventEvent}
-          onClick={app.zoomToSelection}
-          kbd="⇧2"
-          id="TD-Zoom-To_Selection"
-        >
+        <DMItem onSelect={preventEvent} onClick={app.zoomToSelection} kbd="⇧2" id="TD-Zoom-To_Selection">
           <FormattedMessage id="zoom.to.selection" />
         </DMItem>
       </DMContent>
     </DropdownMenu.Root>
-  )
-}
+  );
+};
 
 const FixedWidthToolButton = styled(ToolButton, {
   minWidth: 56,
-})
+});

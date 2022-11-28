@@ -1,34 +1,29 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import {
-  GitHubLogoIcon,
-  HeartFilledIcon,
-  QuestionMarkIcon,
-  TwitterLogoIcon,
-} from '@radix-ui/react-icons'
-import * as Popover from '@radix-ui/react-popover'
-import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-import { Divider } from '@tldr/components/Primitives/Divider'
-import { MenuContent } from '@tldr/components/Primitives/MenuContent'
-import { RowButton } from '@tldr/components/Primitives/RowButton'
-import { SmallIcon } from '@tldr/components/Primitives/SmallIcon'
-import { DiscordIcon } from '@tldr/components/Primitives/icons'
-import { LanguageMenu } from '@tldr/components/TopPanel/LanguageMenu/LanguageMenu'
-import { breakpoints } from '@tldr/components/breakpoints'
-import { useTldrawApp } from '@tldr/hooks'
-import { styled } from '@tldr/styles'
-import { TDSnapshot } from '@tldr/types'
-import { KeyboardShortcutDialog } from './KeyboardShortcutDialog'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { GitHubLogoIcon, HeartFilledIcon, QuestionMarkIcon, TwitterLogoIcon } from '@radix-ui/react-icons';
+import * as Popover from '@radix-ui/react-popover';
+import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { Divider } from '@tldr/components/Primitives/Divider';
+import { MenuContent } from '@tldr/components/Primitives/MenuContent';
+import { RowButton } from '@tldr/components/Primitives/RowButton';
+import { SmallIcon } from '@tldr/components/Primitives/SmallIcon';
+import { DiscordIcon } from '@tldr/components/Primitives/icons';
+import { LanguageMenu } from '@tldr/components/TopPanel/LanguageMenu/LanguageMenu';
+import { breakpoints } from '@tldr/components/breakpoints';
+import { useTldrawApp } from '@tldr/hooks';
+import { styled } from '@tldr/styles';
+import { TDSnapshot } from '@tldr/types';
+import { KeyboardShortcutDialog } from './KeyboardShortcutDialog';
 
-const isDebugModeSelector = (s: TDSnapshot) => s.settings.isDebugMode
-const dockPositionState = (s: TDSnapshot) => s.settings.dockPosition
+const isDebugModeSelector = (s: TDSnapshot) => s.settings.isDebugMode;
+const dockPositionState = (s: TDSnapshot) => s.settings.dockPosition;
 
 export function HelpPanel() {
-  const app = useTldrawApp()
-  const isDebugMode = app.useStore(isDebugModeSelector)
-  const side = app.useStore(dockPositionState)
+  const app = useTldrawApp();
+  const isDebugMode = app.useStore(isDebugModeSelector);
+  const side = app.useStore(dockPositionState);
 
-  const [isKeyboardShortcutsOpen, setIsKeyboardShortcutsOpen] = React.useState(false)
+  const [isKeyboardShortcutsOpen, setIsKeyboardShortcutsOpen] = React.useState(false);
 
   return (
     <Popover.Root>
@@ -48,7 +43,7 @@ export function HelpPanel() {
         </StyledContent>
       </Popover.Content>
     </Popover.Root>
-  )
+  );
 }
 
 const LanguageMenuDropdown = () => {
@@ -61,8 +56,8 @@ const LanguageMenuDropdown = () => {
       </DropdownMenu.Trigger>
       <LanguageMenu />
     </DropdownMenu.Root>
-  )
-}
+  );
+};
 
 const linksData = [
   { id: 'github', icon: GitHubLogoIcon, url: 'https://github.com/tldraw/tldraw' },
@@ -73,13 +68,13 @@ const linksData = [
     icon: HeartFilledIcon,
     url: 'https://github.com/sponsors/steveruizok',
   },
-]
+];
 
 const Links = () => {
   return (
     <>
       {linksData.map((item) => (
-        <a key={item.id} href={item.url} target="_blank" rel="nofollow">
+        <a key={item.id} href={item.url} target="_blank" rel="nofollow noreferrer">
           <RowButton id={`TD-Link-${item.id}`} variant="wide">
             <FormattedMessage id={item.id} />
             <SmallIcon>
@@ -89,8 +84,8 @@ const Links = () => {
         </a>
       ))}
     </>
-  )
-}
+  );
+};
 
 const HelpButton = styled('button', {
   width: 32,
@@ -110,7 +105,7 @@ const HelpButton = styled('button', {
     height: 12,
     width: 12,
   },
-})
+});
 
 export const StyledContent = styled(MenuContent, {
   width: 'fit-content',
@@ -134,7 +129,7 @@ export const StyledContent = styled(MenuContent, {
       },
     },
   },
-})
+});
 
 const PopoverAnchor = styled(Popover.Anchor, {
   position: 'absolute',
@@ -183,4 +178,4 @@ const PopoverAnchor = styled(Popover.Anchor, {
       },
     },
   ],
-})
+});

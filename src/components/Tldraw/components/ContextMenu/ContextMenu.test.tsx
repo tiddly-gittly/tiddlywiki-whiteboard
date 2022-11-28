@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { renderWithContext, renderWithIntlProvider } from '@tldr/test'
-import { ContextMenu } from './ContextMenu'
+import * as React from 'react';
+import { renderWithContext, renderWithIntlProvider } from '@tldr/test';
+import { ContextMenu } from './ContextMenu';
 
 describe('context menu', () => {
   test('mounts component without crashing', () => {
@@ -8,8 +8,8 @@ describe('context menu', () => {
       renderWithIntlProvider(
         <ContextMenu onBlur={jest.fn()}>
           <div>Hello</div>
-        </ContextMenu>
-      )
-    )
-  })
-})
+        </ContextMenu>,
+      ),
+    );
+  });
+});

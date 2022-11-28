@@ -1,4 +1,4 @@
-import { styled } from '@tldr/styles'
+import { styled } from '@tldr/styles';
 
 export const IconButton = styled('button', {
   position: 'relative',
@@ -77,4 +77,4 @@ export const IconButton = styled('button', {
       },
     },
   },
-})
+});

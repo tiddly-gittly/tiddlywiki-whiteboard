@@ -1,1 +1,1 @@
-export * from './PageMenu'
+export * from './PageMenu';

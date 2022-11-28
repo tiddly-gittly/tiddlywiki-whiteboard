@@ -1,10 +1,10 @@
-import { DotFilledIcon } from '@radix-ui/react-icons'
-import * as React from 'react'
-import { IconButton } from '@tldr/components/Primitives/IconButton/IconButton'
-import { styled } from '@tldr/styles'
+import { DotFilledIcon } from '@radix-ui/react-icons';
+import * as React from 'react';
+import { IconButton } from '@tldr/components/Primitives/IconButton/IconButton';
+import { styled } from '@tldr/styles';
 
 interface FocusButtonProps {
-  onSelect: () => void
+  onSelect: () => void;
 }
 
 export function FocusButton({ onSelect }: FocusButtonProps) {
@@ -14,7 +14,7 @@ export function FocusButton({ onSelect }: FocusButtonProps) {
         <DotFilledIcon />
       </IconButton>
     </StyledButtonContainer>
-  )
+  );
 }
 
 const StyledButtonContainer = styled('div', {
@@ -29,4 +29,4 @@ const StyledButtonContainer = styled('div', {
   '&:hover svg': {
     color: '$text',
   },
-})
+});

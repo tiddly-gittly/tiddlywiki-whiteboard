@@ -1,4 +1,4 @@
-import { styled } from '@tldr/styles'
+import { styled } from '@tldr/styles';
 
 export const SmallIcon = styled('div', {
   height: '100%',
@@ -24,4 +24,4 @@ export const SmallIcon = styled('div', {
     gridRow: 1,
     gridColumn: 1,
   },
-})
+});

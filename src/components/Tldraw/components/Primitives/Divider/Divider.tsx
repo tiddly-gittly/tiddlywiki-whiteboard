@@ -1,4 +1,4 @@
-import { styled } from '@tldr/styles'
+import { styled } from '@tldr/styles';
 
 export const Divider = styled('hr', {
   height: 0,
@@ -7,4 +7,4 @@ export const Divider = styled('hr', {
   backgroundColor: '$hover',
   border: 'none',
   margin: '$2 -4px',
-})
+});

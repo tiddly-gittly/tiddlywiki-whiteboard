@@ -1,35 +1,33 @@
-import * as React from 'react'
-import { breakpoints } from '@tldr/components/breakpoints'
-import { useTldrawApp } from '@tldr/hooks'
-import { styled } from '@tldr/styles'
-import type { TDSnapshot } from '@tldr/types'
-import { ActionButton } from './ActionButton'
-import { BackToContent } from './BackToContent'
-import { DeleteButton } from './DeleteButton'
-import { HelpPanel } from './HelpPanel'
-import { PrimaryTools } from './PrimaryTools'
-import { StatusBar } from './StatusBar'
+import * as React from 'react';
+import { breakpoints } from '@tldr/components/breakpoints';
+import { useTldrawApp } from '@tldr/hooks';
+import { styled } from '@tldr/styles';
+import type { TDSnapshot } from '@tldr/types';
+import { ActionButton } from './ActionButton';
+import { BackToContent } from './BackToContent';
+import { DeleteButton } from './DeleteButton';
+import { HelpPanel } from './HelpPanel';
+import { PrimaryTools } from './PrimaryTools';
+import { StatusBar } from './StatusBar';
 
-const isDebugModeSelector = (s: TDSnapshot) => s.settings.isDebugMode
-const dockPositionState = (s: TDSnapshot) => s.settings.dockPosition
+const isDebugModeSelector = (s: TDSnapshot) => s.settings.isDebugMode;
+const dockPositionState = (s: TDSnapshot) => s.settings.dockPosition;
 
 interface ToolsPanelProps {
-  onBlur?: React.FocusEventHandler
+  onBlur?: React.FocusEventHandler;
 }
 
 export const ToolsPanel = React.memo(function ToolsPanel({ onBlur }: ToolsPanelProps) {
-  const app = useTldrawApp()
-  const side = app.useStore(dockPositionState)
-  const isDebugMode = app.useStore(isDebugModeSelector)
+  const app = useTldrawApp();
+  const side = app.useStore(dockPositionState);
+  const isDebugMode = app.useStore(isDebugModeSelector);
 
   return (
     <>
       <StyledToolsPanelContainer side={side} onBlur={onBlur} bp={breakpoints} debug={isDebugMode}>
         <StyledCenterWrap id="TD-Tools">
           <BackToContent />
-          <StyledPrimaryTools
-            orientation={side === 'bottom' || side === 'top' ? 'horizontal' : 'vertical'}
-          >
+          <StyledPrimaryTools orientation={side === 'bottom' || side === 'top' ? 'horizontal' : 'vertical'}>
             <ActionButton />
             <PrimaryTools />
             <DeleteButton />
@@ -43,8 +41,8 @@ export const ToolsPanel = React.memo(function ToolsPanel({ onBlur }: ToolsPanelP
         </StyledStatusWrap>
       )}
     </>
-  )
-})
+  );
+});
 
 const StyledToolsPanelContainer = styled('div', {
   position: 'absolute',
@@ -107,7 +105,7 @@ const StyledToolsPanelContainer = styled('div', {
       },
     },
   ],
-})
+});
 
 const StyledCenterWrap = styled('div', {
   display: 'flex',
@@ -117,7 +115,7 @@ const StyledCenterWrap = styled('div', {
   justifyContent: 'center',
   flexDirection: 'column',
   gap: '$4',
-})
+});
 
 const StyledStatusWrap = styled('div', {
   position: 'absolute',
@@ -127,7 +125,7 @@ const StyledStatusWrap = styled('div', {
   height: '40px',
   width: '100%',
   maxWidth: '100%',
-})
+});
 
 const StyledPrimaryTools = styled('div', {
   position: 'relative',
@@ -145,4 +143,4 @@ const StyledPrimaryTools = styled('div', {
       },
     },
   },
-})
+});

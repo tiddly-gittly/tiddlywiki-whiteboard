@@ -1,79 +1,66 @@
-import {
-  ArrowTopRightIcon,
-  CursorArrowIcon,
-  ImageIcon,
-  Pencil1Icon,
-  Pencil2Icon,
-  TextIcon,
-} from '@radix-ui/react-icons'
-import * as React from 'react'
-import { useIntl } from 'react-intl'
-import { Panel } from '@tldr/components/Primitives/Panel'
-import { ToolButtonWithTooltip } from '@tldr/components/Primitives/ToolButton'
-import { EraserIcon } from '@tldr/components/Primitives/icons'
-import { breakpoints } from '@tldr/components/breakpoints'
-import { useTldrawApp } from '@tldr/hooks'
-import { styled } from '@tldr/styles/stitches.config'
-import { TDShapeType, TDSnapshot } from '@tldr/types'
-import { ShapesMenu } from './ShapesMenu'
+import { ArrowTopRightIcon, CursorArrowIcon, ImageIcon, Pencil1Icon, Pencil2Icon, TextIcon } from '@radix-ui/react-icons';
+import * as React from 'react';
+import { useIntl } from 'react-intl';
+import { Panel } from '@tldr/components/Primitives/Panel';
+import { ToolButtonWithTooltip } from '@tldr/components/Primitives/ToolButton';
+import { EraserIcon } from '@tldr/components/Primitives/icons';
+import { breakpoints } from '@tldr/components/breakpoints';
+import { useTldrawApp } from '@tldr/hooks';
+import { styled } from '@tldr/styles/stitches.config';
+import { TDShapeType, TDSnapshot } from '@tldr/types';
+import { ShapesMenu } from './ShapesMenu';
 
-const activeToolSelector = (s: TDSnapshot) => s.appState.activeTool
-const toolLockedSelector = (s: TDSnapshot) => s.appState.isToolLocked
-const dockPositionState = (s: TDSnapshot) => s.settings.dockPosition
+const activeToolSelector = (s: TDSnapshot) => s.appState.activeTool;
+const toolLockedSelector = (s: TDSnapshot) => s.appState.isToolLocked;
+const dockPositionState = (s: TDSnapshot) => s.settings.dockPosition;
 
 export const PrimaryTools = React.memo(function PrimaryTools() {
-  const app = useTldrawApp()
-  const intl = useIntl()
+  const app = useTldrawApp();
+  const intl = useIntl();
 
-  const activeTool = app.useStore(activeToolSelector)
+  const activeTool = app.useStore(activeToolSelector);
 
-  const isToolLocked = app.useStore(toolLockedSelector)
-  const dockPosition = app.useStore(dockPositionState)
+  const isToolLocked = app.useStore(toolLockedSelector);
+  const dockPosition = app.useStore(dockPositionState);
 
   const selectSelectTool = React.useCallback(() => {
-    app.selectTool('select')
-  }, [app])
+    app.selectTool('select');
+  }, [app]);
 
   const selectEraseTool = React.useCallback(() => {
-    app.selectTool('erase')
-  }, [app])
+    app.selectTool('erase');
+  }, [app]);
 
   const selectDrawTool = React.useCallback(() => {
-    app.selectTool(TDShapeType.Draw)
-  }, [app])
+    app.selectTool(TDShapeType.Draw);
+  }, [app]);
 
   const selectArrowTool = React.useCallback(() => {
-    app.selectTool(TDShapeType.Arrow)
-  }, [app])
+    app.selectTool(TDShapeType.Arrow);
+  }, [app]);
 
   const selectTextTool = React.useCallback(() => {
-    app.selectTool(TDShapeType.Text)
-  }, [app])
+    app.selectTool(TDShapeType.Text);
+  }, [app]);
 
   const selectStickyTool = React.useCallback(() => {
-    app.selectTool(TDShapeType.Sticky)
-  }, [app])
+    app.selectTool(TDShapeType.Sticky);
+  }, [app]);
 
   const uploadMedias = React.useCallback(async () => {
-    app.openAsset()
-  }, [app])
+    app.openAsset();
+  }, [app]);
 
-  const panelStyle = dockPosition === 'bottom' || dockPosition === 'top' ? 'row' : 'column'
+  const panelStyle = dockPosition === 'bottom' || dockPosition === 'top' ? 'row' : 'column';
 
   return (
-    <StyledPanel
-      side="center"
-      id="TD-PrimaryTools"
-      style={{ flexDirection: panelStyle }}
-      bp={breakpoints}
-    >
+    <StyledPanel side="center" id="TD-PrimaryTools" style={{ flexDirection: panelStyle }} bp={breakpoints}>
       <ToolButtonWithTooltip
         kbd={'1'}
         label={intl.formatMessage({ id: 'select' })}
         onClick={selectSelectTool}
         isActive={activeTool === 'select'}
-        id="TD-PrimaryTools-CursorArrow"
-      >
+        id="TD-PrimaryTools-CursorArrow">
         <CursorArrowIcon />
       </ToolButtonWithTooltip>
       <ToolButtonWithTooltip
@@ -81,8 +68,7 @@ export const PrimaryTools = React.memo(function PrimaryTools() {
         label={intl.formatMessage({ id: 'draw' })}
         onClick={selectDrawTool}
         isActive={activeTool === TDShapeType.Draw}
-        id="TD-PrimaryTools-Pencil"
-      >
+        id="TD-PrimaryTools-Pencil">
         <Pencil1Icon />
       </ToolButtonWithTooltip>
       <ToolButtonWithTooltip
@@ -90,8 +76,7 @@ export const PrimaryTools = React.memo(function PrimaryTools() {
         label={intl.formatMessage({ id: 'eraser' })}
         onClick={selectEraseTool}
         isActive={activeTool === 'erase'}
-        id="TD-PrimaryTools-Eraser"
-      >
+        id="TD-PrimaryTools-Eraser">
         <EraserIcon />
       </ToolButtonWithTooltip>
       <ShapesMenu activeTool={activeTool} isToolLocked={isToolLocked} />
@@ -101,8 +86,7 @@ export const PrimaryTools = React.memo(function PrimaryTools() {
         onClick={selectArrowTool}
         isLocked={isToolLocked}
         isActive={activeTool === TDShapeType.Arrow}
-        id="TD-PrimaryTools-ArrowTopRight"
-      >
+        id="TD-PrimaryTools-ArrowTopRight">
         <ArrowTopRightIcon />
       </ToolButtonWithTooltip>
       <ToolButtonWithTooltip
@@ -111,8 +95,7 @@ export const PrimaryTools = React.memo(function PrimaryTools() {
         onClick={selectTextTool}
         isLocked={isToolLocked}
         isActive={activeTool === TDShapeType.Text}
-        id="TD-PrimaryTools-Text"
-      >
+        id="TD-PrimaryTools-Text">
         <TextIcon />
       </ToolButtonWithTooltip>
       <ToolButtonWithTooltip
@@ -120,20 +103,15 @@ export const PrimaryTools = React.memo(function PrimaryTools() {
         label={intl.formatMessage({ id: 'sticky' })}
         onClick={selectStickyTool}
         isActive={activeTool === TDShapeType.Sticky}
-        id="TD-PrimaryTools-Pencil2"
-      >
+        id="TD-PrimaryTools-Pencil2">
         <Pencil2Icon />
       </ToolButtonWithTooltip>
-      <ToolButtonWithTooltip
-        label={intl.formatMessage({ id: 'image' })}
-        onClick={uploadMedias}
-        id="TD-PrimaryTools-Image"
-      >
+      <ToolButtonWithTooltip label={intl.formatMessage({ id: 'image' })} onClick={uploadMedias} id="TD-PrimaryTools-Image">
         <ImageIcon />
       </ToolButtonWithTooltip>
     </StyledPanel>
-  )
-})
+  );
+});
 
 const StyledPanel = styled(Panel, {
   variants: {
@@ -147,4 +125,4 @@ const StyledPanel = styled(Panel, {
       },
     },
   },
-})
+});

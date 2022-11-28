@@ -1,4 +1,4 @@
-import { styled } from '@tldr/styles/stitches.config'
+import { styled } from '@tldr/styles/stitches.config';
 
 export const Panel = styled('div', {
   backgroundColor: '$panel',
@@ -38,4 +38,4 @@ export const Panel = styled('div', {
     backgroundColor: 'red',
     border: 'none',
   },
-})
+});
