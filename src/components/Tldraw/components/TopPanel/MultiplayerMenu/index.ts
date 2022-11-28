@@ -1,1 +1,1 @@
-export * from './MultiplayerMenu'
+export * from './MultiplayerMenu';

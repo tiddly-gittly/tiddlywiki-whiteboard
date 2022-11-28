@@ -1,21 +1,17 @@
-import * as Dialog from '@radix-ui/react-dialog'
-import { Cross2Icon } from '@radix-ui/react-icons'
-import * as React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { IconButton } from '@tldr/components/Primitives/IconButton'
-import { Kbd } from '@tldr/components/Primitives/Kbd'
-import { RowButton } from '@tldr/components/Primitives/RowButton'
-import { breakpoints } from '@tldr/components/breakpoints'
-import { useContainer } from '@tldr/hooks'
-import { styled } from '@tldr/styles'
+import * as Dialog from '@radix-ui/react-dialog';
+import { Cross2Icon } from '@radix-ui/react-icons';
+import * as React from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { IconButton } from '@tldr/components/Primitives/IconButton';
+import { Kbd } from '@tldr/components/Primitives/Kbd';
+import { RowButton } from '@tldr/components/Primitives/RowButton';
+import { breakpoints } from '@tldr/components/breakpoints';
+import { useContainer } from '@tldr/hooks';
+import { styled } from '@tldr/styles';
 
-export function KeyboardShortcutDialog({
-  onOpenChange,
-}: {
-  onOpenChange?: (open: boolean) => void
-}) {
-  const intl = useIntl()
-  const container = useContainer()
+export function KeyboardShortcutDialog({ onOpenChange }: { onOpenChange?: (open: boolean) => void }) {
+  const intl = useIntl();
+  const container = useContainer();
 
   const shortcuts = {
     Tools: [
@@ -81,7 +77,7 @@ export function KeyboardShortcutDialog({
       { label: intl.formatMessage({ id: 'delete' }), kbd: '⌫' },
       { label: intl.formatMessage({ id: 'duplicate' }), kbd: '#D' },
     ],
-  }
+  };
 
   return (
     <Dialog.Root onOpenChange={onOpenChange}>
@@ -122,7 +118,7 @@ export function KeyboardShortcutDialog({
         </DialogContent>
       </Dialog.Portal>
     </Dialog.Root>
-  )
+  );
 }
 
 const Label = styled('h3', {
@@ -131,19 +127,19 @@ const Label = styled('h3', {
   fontFamily: '$ui',
   margin: 0,
   paddingBottom: '$5',
-})
+});
 
 const StyledSection = styled('div', {
   breakInside: 'avoid',
   paddingBottom: 24,
-})
+});
 
 const ContentItem = styled('ul', {
   listStyleType: 'none',
   width: '100%',
   padding: 0,
   margin: 0,
-})
+});
 
 const StyledItem = styled('li', {
   display: 'flex',
@@ -161,7 +157,7 @@ const StyledItem = styled('li', {
   userSelect: 'none',
   margin: 0,
   padding: '0 0',
-})
+});
 
 const DialogContent = styled(Dialog.Content, {
   borderRadius: 6,
@@ -179,7 +175,7 @@ const DialogContent = styled(Dialog.Content, {
   pointerEvents: 'all',
   background: '$panel',
   '&:focus': { outline: 'none' },
-})
+});
 
 const StyledColumns = styled('div', {
   maxWidth: '100%',
@@ -209,14 +205,14 @@ const StyledColumns = styled('div', {
       },
     },
   },
-})
+});
 
 const DialogOverlay = styled(Dialog.Overlay, {
   backgroundColor: '$overlay',
   position: 'fixed',
   inset: 0,
   zIndex: 9998,
-})
+});
 
 const DialogIconButton = styled(IconButton, {
   fontFamily: 'inherit',
@@ -229,7 +225,7 @@ const DialogIconButton = styled(IconButton, {
   color: '$text',
   cursor: 'pointer',
   '&:hover': { backgroundColor: '$hover' },
-})
+});
 
 const DialogTitle = styled(Dialog.Title, {
   fontFamily: '$body',
@@ -240,4 +236,4 @@ const DialogTitle = styled(Dialog.Title, {
   alignItems: 'center',
   justifyContent: 'space-between',
   margin: 0,
-})
+});

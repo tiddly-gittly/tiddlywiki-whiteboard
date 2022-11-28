@@ -1,20 +1,20 @@
-import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-import { useTldrawApp } from '@tldr/hooks'
-import { styled } from '@tldr/styles'
-import type { TDSnapshot } from '@tldr/types'
+import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { useTldrawApp } from '@tldr/hooks';
+import { styled } from '@tldr/styles';
+import type { TDSnapshot } from '@tldr/types';
 
-const loadingSelector = (s: TDSnapshot) => s.appState.isLoading
+const loadingSelector = (s: TDSnapshot) => s.appState.isLoading;
 
 export function Loading() {
-  const app = useTldrawApp()
-  const isLoading = app.useStore(loadingSelector)
+  const app = useTldrawApp();
+  const isLoading = app.useStore(loadingSelector);
 
   return (
     <StyledLoadingPanelContainer hidden={!isLoading}>
       <FormattedMessage id="loading" values={{ dots: '...' }} />
     </StyledLoadingPanelContainer>
-  )
+  );
 }
 
 const StyledLoadingPanelContainer = styled('div', {
@@ -44,4 +44,4 @@ const StyledLoadingPanelContainer = styled('div', {
       },
     },
   },
-})
+});

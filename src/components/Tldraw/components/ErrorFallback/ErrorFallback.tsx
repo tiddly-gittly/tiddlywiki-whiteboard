@@ -1,35 +1,35 @@
-import * as React from 'react'
-import { FallbackProps } from 'react-error-boundary'
-import { Divider } from '@tldr/components/Primitives/Divider'
-import { RowButton } from '@tldr/components/Primitives/RowButton'
-import { useTldrawApp } from '@tldr/hooks'
-import { styled } from '@tldr/styles'
+import * as React from 'react';
+import { FallbackProps } from 'react-error-boundary';
+import { Divider } from '@tldr/components/Primitives/Divider';
+import { RowButton } from '@tldr/components/Primitives/RowButton';
+import { useTldrawApp } from '@tldr/hooks';
+import { styled } from '@tldr/styles';
 
 export function ErrorFallback({ error, resetErrorBoundary }: FallbackProps): any {
-  const app = useTldrawApp()
+  const app = useTldrawApp();
 
   const refreshPage = () => {
-    window.location.reload()
-    resetErrorBoundary()
-  }
+    window.location.reload();
+    resetErrorBoundary();
+  };
 
   const copyError = () => {
-    const textarea = document.createElement('textarea')
-    textarea.value = error.message
-    document.body.appendChild(textarea)
-    textarea.select()
-    document.execCommand('copy')
-    textarea.remove()
-  }
+    const textarea = document.createElement('textarea');
+    textarea.value = error.message;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
+  };
 
   const downloadBackup = () => {
-    app.saveProjectAs()
-  }
+    app.saveProjectAs();
+  };
 
   const resetDocument = () => {
-    app.resetDocument()
-    resetErrorBoundary()
-  }
+    app.resetDocument();
+    resetErrorBoundary();
+  };
 
   return (
     <Container>
@@ -56,7 +56,7 @@ export function ErrorFallback({ error, resetErrorBoundary }: FallbackProps): any
         </p>
       </InnerContainer>
     </Container>
-  )
+  );
 }
 
 const Container = styled('div', {
@@ -69,7 +69,7 @@ const Container = styled('div', {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: '$canvas',
-})
+});
 
 const InnerContainer = styled('div', {
   backgroundColor: '$panel',
@@ -111,7 +111,7 @@ const InnerContainer = styled('div', {
     marginLeft: '-$5',
     marginRight: '-$5',
   },
-})
+});
 
 const Buttons = styled('div', {
   display: 'flex',
@@ -119,4 +119,4 @@ const Buttons = styled('div', {
     justifyContent: 'center',
     textAlign: 'center',
   },
-})
+});

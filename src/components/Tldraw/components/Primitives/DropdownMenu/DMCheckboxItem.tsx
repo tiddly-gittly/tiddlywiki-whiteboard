@@ -1,40 +1,24 @@
-import { CheckboxItem } from '@radix-ui/react-dropdown-menu'
-import * as React from 'react'
-import { RowButton, RowButtonProps } from '@tldr/components/Primitives/RowButton'
-import { preventEvent } from '@tldr/components/preventEvent'
+import { CheckboxItem } from '@radix-ui/react-dropdown-menu';
+import * as React from 'react';
+import { RowButton, RowButtonProps } from '@tldr/components/Primitives/RowButton';
+import { preventEvent } from '@tldr/components/preventEvent';
 
 interface DMCheckboxItemProps {
-  checked: boolean
-  disabled?: boolean
-  onCheckedChange: (isChecked: boolean) => void
-  children: React.ReactNode
-  variant?: RowButtonProps['variant']
-  kbd?: string
-  id?: string
+  checked: boolean;
+  children: React.ReactNode;
+  disabled?: boolean;
+  id?: string;
+  kbd?: string;
+  onCheckedChange: (isChecked: boolean) => void;
+  variant?: RowButtonProps['variant'];
 }
 
-export function DMCheckboxItem({
-  checked,
-  disabled = false,
-  variant,
-  onCheckedChange,
-  kbd,
-  id,
-  children,
-}: DMCheckboxItemProps) {
+export function DMCheckboxItem({ checked, disabled = false, variant, onCheckedChange, kbd, id, children }: DMCheckboxItemProps) {
   return (
-    <CheckboxItem
-      dir="ltr"
-      onSelect={preventEvent}
-      onCheckedChange={onCheckedChange}
-      checked={checked}
-      disabled={disabled}
-      asChild
-      id={id}
-    >
+    <CheckboxItem dir="ltr" onSelect={preventEvent} onCheckedChange={onCheckedChange} checked={checked} disabled={disabled} asChild id={id}>
       <RowButton kbd={kbd} variant={variant} hasIndicator>
         {children}
       </RowButton>
     </CheckboxItem>
-  )
+  );
 }

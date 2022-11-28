@@ -1,52 +1,51 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { CheckIcon, PlusIcon } from '@radix-ui/react-icons'
-import * as React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { Divider } from '@tldr/components/Primitives/Divider'
-import { DMContent } from '@tldr/components/Primitives/DropdownMenu'
-import { RowButton } from '@tldr/components/Primitives/RowButton'
-import { SmallIcon } from '@tldr/components/Primitives/SmallIcon'
-import { ToolButton } from '@tldr/components/Primitives/ToolButton'
-import { useTldrawApp } from '@tldr/hooks'
-import { styled } from '@tldr/styles'
-import type { TDSnapshot } from '@tldr/types'
-import { PageOptionsDialog } from '../PageOptionsDialog'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { CheckIcon, PlusIcon } from '@radix-ui/react-icons';
+import * as React from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Divider } from '@tldr/components/Primitives/Divider';
+import { DMContent } from '@tldr/components/Primitives/DropdownMenu';
+import { RowButton } from '@tldr/components/Primitives/RowButton';
+import { SmallIcon } from '@tldr/components/Primitives/SmallIcon';
+import { ToolButton } from '@tldr/components/Primitives/ToolButton';
+import { useTldrawApp } from '@tldr/hooks';
+import { styled } from '@tldr/styles';
+import type { TDSnapshot } from '@tldr/types';
+import { PageOptionsDialog } from '../PageOptionsDialog';
 
-const sortedSelector = (s: TDSnapshot) =>
-  Object.values(s.document.pages).sort((a, b) => (a.childIndex || 0) - (b.childIndex || 0))
+const sortedSelector = (s: TDSnapshot) => Object.values(s.document.pages).sort((a, b) => (a.childIndex || 0) - (b.childIndex || 0));
 
-const currentPageNameSelector = (s: TDSnapshot) => s.document.pages[s.appState.currentPageId].name
+const currentPageNameSelector = (s: TDSnapshot) => s.document.pages[s.appState.currentPageId].name;
 
-const currentPageIdSelector = (s: TDSnapshot) => s.document.pages[s.appState.currentPageId].id
+const currentPageIdSelector = (s: TDSnapshot) => s.document.pages[s.appState.currentPageId].id;
 
 export function PageMenu() {
-  const app = useTldrawApp()
+  const app = useTldrawApp();
 
-  const intl = useIntl()
+  const intl = useIntl();
 
-  const rIsOpen = React.useRef(false)
+  const rIsOpen = React.useRef(false);
 
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (rIsOpen.current !== isOpen) {
-      rIsOpen.current = isOpen
+      rIsOpen.current = isOpen;
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const handleClose = React.useCallback(() => {
-    setIsOpen(false)
-  }, [setIsOpen])
+    setIsOpen(false);
+  }, [setIsOpen]);
 
   const handleOpenChange = React.useCallback(
     (isOpen: boolean) => {
       if (rIsOpen.current !== isOpen) {
-        setIsOpen(isOpen)
+        setIsOpen(isOpen);
       }
     },
-    [setIsOpen]
-  )
-  const currentPageName = app.useStore(currentPageNameSelector)
+    [setIsOpen],
+  );
+  const currentPageName = app.useStore(currentPageNameSelector);
 
   return (
     <DropdownMenu.Root dir="ltr" open={isOpen} onOpenChange={handleOpenChange}>
@@ -57,77 +56,72 @@ export function PageMenu() {
         {isOpen && <PageMenuContent onClose={handleClose} />}
       </DMContent>
     </DropdownMenu.Root>
-  )
+  );
 }
 
 function PageMenuContent({ onClose }: { onClose: () => void }) {
-  const app = useTldrawApp()
-  const intl = useIntl()
+  const app = useTldrawApp();
+  const intl = useIntl();
 
-  const sortedPages = app.useStore(sortedSelector)
+  const sortedPages = app.useStore(sortedSelector);
 
-  const currentPageId = app.useStore(currentPageIdSelector)
+  const currentPageId = app.useStore(currentPageIdSelector);
 
-  const defaultPageName = intl.formatMessage({ id: 'page' })
+  const defaultPageName = intl.formatMessage({ id: 'page' });
 
   const handleCreatePage = React.useCallback(() => {
-    const pageName =
-    defaultPageName + ' ' + (Object.keys(app.document.pages).length + 1)
-    app.createPage(undefined, pageName)
-  }, [app])
+    const pageName = defaultPageName + ' ' + (Object.keys(app.document.pages).length + 1);
+    app.createPage(undefined, pageName);
+  }, [app]);
 
   const handleChangePage = React.useCallback(
     (id: string) => {
-      onClose()
-      app.changePage(id)
+      onClose();
+      app.changePage(id);
     },
-    [app]
-  )
+    [app],
+  );
 
-  const [dragId, setDragId] = React.useState<null | string>(null)
+  const [dragId, setDragId] = React.useState<null | string>(null);
 
-  const [dropIndex, setDropIndex] = React.useState<null | number>(null)
+  const [dropIndex, setDropIndex] = React.useState<null | number>(null);
 
-  const handleDragStart = React.useCallback((ev: React.DragEvent<HTMLDivElement>) => {
-    setDragId(ev.currentTarget.id)
-    setDropIndex(sortedPages.findIndex((p) => p.id === ev.currentTarget.id))
-    ev.dataTransfer.effectAllowed = 'move'
-  }, [])
+  const handleDragStart = React.useCallback((event_: React.DragEvent<HTMLDivElement>) => {
+    setDragId(event_.currentTarget.id);
+    setDropIndex(sortedPages.findIndex((p) => p.id === event_.currentTarget.id));
+    event_.dataTransfer.effectAllowed = 'move';
+  }, []);
 
   const handleDrag = React.useCallback(
-    (ev: React.DragEvent<HTMLDivElement>) => {
-      ev.preventDefault()
+    (event_: React.DragEvent<HTMLDivElement>) => {
+      event_.preventDefault();
 
-      let dropIndex = sortedPages.findIndex((p) => p.id === ev.currentTarget.id)
+      let dropIndex = sortedPages.findIndex((p) => p.id === event_.currentTarget.id);
 
-      const rect = ev.currentTarget.getBoundingClientRect()
-      const ny = (ev.clientY - rect.top) / rect.height
+      const rect = event_.currentTarget.getBoundingClientRect();
+      const ny = (event_.clientY - rect.top) / rect.height;
 
-      dropIndex = ny < 0.5 ? dropIndex : dropIndex + 1
+      dropIndex = ny < 0.5 ? dropIndex : dropIndex + 1;
 
-      setDropIndex(dropIndex)
+      setDropIndex(dropIndex);
     },
-    [dragId, sortedPages]
-  )
+    [dragId, sortedPages],
+  );
 
   const handleDrop = React.useCallback(() => {
     if (dragId !== null && dropIndex !== null) {
-      app.movePage(dragId, dropIndex)
+      app.movePage(dragId, dropIndex);
     }
 
-    setDragId(null)
-    setDropIndex(null)
-  }, [dragId, dropIndex])
+    setDragId(null);
+    setDropIndex(null);
+  }, [dragId, dropIndex]);
 
   return (
     <>
       <DropdownMenu.RadioGroup dir="ltr" value={currentPageId} onValueChange={handleChangePage}>
-        {sortedPages.map((page, i) => (
-          <ButtonWithOptions
-            key={page.id}
-            isDropAbove={i === dropIndex && i === 0}
-            isDropBelow={dropIndex !== null && i === dropIndex - 1}
-          >
+        {sortedPages.map((page, index) => (
+          <ButtonWithOptions key={page.id} isDropAbove={index === dropIndex && index === 0} isDropBelow={dropIndex !== null && index === dropIndex - 1}>
             <DropdownMenu.RadioItem
               title={page.name || defaultPageName}
               value={page.id}
@@ -138,8 +132,7 @@ function PageMenuContent({ onClose }: { onClose: () => void }) {
               onDragStart={handleDragStart}
               // onDrag={handleDrag}
               onDrop={handleDrop}
-              draggable={true}
-            >
+              draggable={true}>
               <PageButton>
                 <span id={page.id}>{page.name || defaultPageName}</span>
                 <DropdownMenu.ItemIndicator>
@@ -165,7 +158,7 @@ function PageMenuContent({ onClose }: { onClose: () => void }) {
         </RowButton>
       </DropdownMenu.Item>
     </>
-  )
+  );
 }
 
 const ButtonWithOptions = styled('div', {
@@ -215,8 +208,8 @@ const ButtonWithOptions = styled('div', {
       },
     },
   },
-})
+});
 
 export const PageButton = styled(RowButton, {
   minWidth: 128,
-})
+});

@@ -1,4 +1,4 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import {
   AlignBottomIcon,
   AlignCenterHorizontallyIcon,
@@ -23,168 +23,162 @@ import {
   SpaceEvenlyVerticallyIcon,
   StretchHorizontallyIcon,
   StretchVerticallyIcon,
-} from '@radix-ui/react-icons'
-import * as React from 'react'
-import { useIntl } from 'react-intl'
-import { Divider } from '@tldr/components/Primitives/Divider'
-import { DMContent } from '@tldr/components/Primitives/DropdownMenu'
-import { ToolButton } from '@tldr/components/Primitives/ToolButton'
-import { Tooltip } from '@tldr/components/Primitives/Tooltip/Tooltip'
-import { useTldrawApp } from '@tldr/hooks'
-import { styled } from '@tldr/styles'
-import { AlignType, DistributeType, StretchType, TDSnapshot } from '@tldr/types'
+} from '@radix-ui/react-icons';
+import * as React from 'react';
+import { useIntl } from 'react-intl';
+import { Divider } from '@tldr/components/Primitives/Divider';
+import { DMContent } from '@tldr/components/Primitives/DropdownMenu';
+import { ToolButton } from '@tldr/components/Primitives/ToolButton';
+import { Tooltip } from '@tldr/components/Primitives/Tooltip/Tooltip';
+import { useTldrawApp } from '@tldr/hooks';
+import { styled } from '@tldr/styles';
+import { AlignType, DistributeType, StretchType, TDSnapshot } from '@tldr/types';
 
-const dockPositionState = (s: TDSnapshot) => s.settings.dockPosition
+const dockPositionState = (s: TDSnapshot) => s.settings.dockPosition;
 
-const selectedShapesCountSelector = (s: TDSnapshot) =>
-  s.document.pageStates[s.appState.currentPageId].selectedIds.length
+const selectedShapesCountSelector = (s: TDSnapshot) => s.document.pageStates[s.appState.currentPageId].selectedIds.length;
 
 const isAllLockedSelector = (s: TDSnapshot) => {
-  const page = s.document.pages[s.appState.currentPageId]
-  const { selectedIds } = s.document.pageStates[s.appState.currentPageId]
-  return selectedIds.every((id) => page.shapes[id].isLocked)
-}
+  const page = s.document.pages[s.appState.currentPageId];
+  const { selectedIds } = s.document.pageStates[s.appState.currentPageId];
+  return selectedIds.every((id) => page.shapes[id].isLocked);
+};
 
 const isAllAspectLockedSelector = (s: TDSnapshot) => {
-  const page = s.document.pages[s.appState.currentPageId]
-  const { selectedIds } = s.document.pageStates[s.appState.currentPageId]
-  return selectedIds.every((id) => page.shapes[id].isAspectRatioLocked)
-}
+  const page = s.document.pages[s.appState.currentPageId];
+  const { selectedIds } = s.document.pageStates[s.appState.currentPageId];
+  return selectedIds.every((id) => page.shapes[id].isAspectRatioLocked);
+};
 
 const isAllGroupedSelector = (s: TDSnapshot) => {
-  const page = s.document.pages[s.appState.currentPageId]
-  const selectedShapes = s.document.pageStates[s.appState.currentPageId].selectedIds.map(
-    (id) => page.shapes[id]
-  )
+  const page = s.document.pages[s.appState.currentPageId];
+  const selectedShapes = s.document.pageStates[s.appState.currentPageId].selectedIds.map((id) => page.shapes[id]);
 
   return selectedShapes.every(
-    (shape) =>
-      shape.children !== undefined ||
-      (shape.parentId === selectedShapes[0].parentId &&
-        selectedShapes[0].parentId !== s.appState.currentPageId)
-  )
-}
+    (shape) => shape.children !== undefined || (shape.parentId === selectedShapes[0].parentId && selectedShapes[0].parentId !== s.appState.currentPageId),
+  );
+};
 
 const hasSelectionSelector = (s: TDSnapshot) => {
-  const { selectedIds } = s.document.pageStates[s.appState.currentPageId]
-  return selectedIds.length > 0
-}
+  const { selectedIds } = s.document.pageStates[s.appState.currentPageId];
+  return selectedIds.length > 0;
+};
 
 const hasMultipleSelectionSelector = (s: TDSnapshot) => {
-  const { selectedIds } = s.document.pageStates[s.appState.currentPageId]
-  return selectedIds.length > 1
-}
+  const { selectedIds } = s.document.pageStates[s.appState.currentPageId];
+  return selectedIds.length > 1;
+};
 
 export function ActionButton() {
-  const app = useTldrawApp()
-  const intl = useIntl()
+  const app = useTldrawApp();
+  const intl = useIntl();
 
-  const isAllLocked = app.useStore(isAllLockedSelector)
+  const isAllLocked = app.useStore(isAllLockedSelector);
 
-  const isAllAspectLocked = app.useStore(isAllAspectLockedSelector)
+  const isAllAspectLocked = app.useStore(isAllAspectLockedSelector);
 
-  const isAllGrouped = app.useStore(isAllGroupedSelector)
+  const isAllGrouped = app.useStore(isAllGroupedSelector);
 
-  const hasSelection = app.useStore(hasSelectionSelector)
+  const hasSelection = app.useStore(hasSelectionSelector);
 
-  const hasMultipleSelection = app.useStore(hasMultipleSelectionSelector)
+  const hasMultipleSelection = app.useStore(hasMultipleSelectionSelector);
 
-  const selectedShapesCount = app.useStore(selectedShapesCountSelector)
+  const selectedShapesCount = app.useStore(selectedShapesCountSelector);
 
-  const dockPosition = app.useStore(dockPositionState)
+  const dockPosition = app.useStore(dockPositionState);
 
-  const hasTwoOrMore = selectedShapesCount > 1
+  const hasTwoOrMore = selectedShapesCount > 1;
 
-  const hasThreeOrMore = selectedShapesCount > 2
+  const hasThreeOrMore = selectedShapesCount > 2;
 
   const handleRotate = React.useCallback(() => {
-    app.rotate()
-  }, [app])
+    app.rotate();
+  }, [app]);
 
   const handleDuplicate = React.useCallback(() => {
-    app.duplicate()
-  }, [app])
+    app.duplicate();
+  }, [app]);
 
   const handleToggleLocked = React.useCallback(() => {
-    app.toggleLocked()
-  }, [app])
+    app.toggleLocked();
+  }, [app]);
 
   const handleToggleAspectRatio = React.useCallback(() => {
-    app.toggleAspectRatioLocked()
-  }, [app])
+    app.toggleAspectRatioLocked();
+  }, [app]);
 
   const handleGroup = React.useCallback(() => {
-    app.group()
-  }, [app])
+    app.group();
+  }, [app]);
 
   const handleMoveToBack = React.useCallback(() => {
-    app.moveToBack()
-  }, [app])
+    app.moveToBack();
+  }, [app]);
 
   const handleMoveBackward = React.useCallback(() => {
-    app.moveBackward()
-  }, [app])
+    app.moveBackward();
+  }, [app]);
 
   const handleMoveForward = React.useCallback(() => {
-    app.moveForward()
-  }, [app])
+    app.moveForward();
+  }, [app]);
 
   const handleMoveToFront = React.useCallback(() => {
-    app.moveToFront()
-  }, [app])
+    app.moveToFront();
+  }, [app]);
 
   const handleResetAngle = React.useCallback(() => {
-    app.setShapeProps({ rotation: 0 })
-  }, [app])
+    app.setShapeProps({ rotation: 0 });
+  }, [app]);
 
   const alignTop = React.useCallback(() => {
-    app.align(AlignType.Top)
-  }, [app])
+    app.align(AlignType.Top);
+  }, [app]);
 
   const alignCenterVertical = React.useCallback(() => {
-    app.align(AlignType.CenterVertical)
-  }, [app])
+    app.align(AlignType.CenterVertical);
+  }, [app]);
 
   const alignBottom = React.useCallback(() => {
-    app.align(AlignType.Bottom)
-  }, [app])
+    app.align(AlignType.Bottom);
+  }, [app]);
 
   const stretchVertically = React.useCallback(() => {
-    app.stretch(StretchType.Vertical)
-  }, [app])
+    app.stretch(StretchType.Vertical);
+  }, [app]);
 
   const distributeVertically = React.useCallback(() => {
-    app.distribute(DistributeType.Vertical)
-  }, [app])
+    app.distribute(DistributeType.Vertical);
+  }, [app]);
 
   const alignLeft = React.useCallback(() => {
-    app.align(AlignType.Left)
-  }, [app])
+    app.align(AlignType.Left);
+  }, [app]);
 
   const alignCenterHorizontal = React.useCallback(() => {
-    app.align(AlignType.CenterHorizontal)
-  }, [app])
+    app.align(AlignType.CenterHorizontal);
+  }, [app]);
 
   const alignRight = React.useCallback(() => {
-    app.align(AlignType.Right)
-  }, [app])
+    app.align(AlignType.Right);
+  }, [app]);
 
   const stretchHorizontally = React.useCallback(() => {
-    app.stretch(StretchType.Horizontal)
-  }, [app])
+    app.stretch(StretchType.Horizontal);
+  }, [app]);
 
   const distributeHorizontally = React.useCallback(() => {
-    app.distribute(DistributeType.Horizontal)
-  }, [app])
+    app.distribute(DistributeType.Horizontal);
+  }, [app]);
 
   const handleMenuOpenChange = React.useCallback(
     (open: boolean) => {
-      app.setMenuOpen(open)
+      app.setMenuOpen(open);
     },
-    [app]
-  )
+    [app],
+  );
 
-  const contentSide = dockPosition === 'bottom' || dockPosition === 'top' ? 'top' : dockPosition
+  const contentSide = dockPosition === 'bottom' || dockPosition === 'top' ? 'top' : dockPosition;
 
   return (
     <DropdownMenu.Root dir="ltr" onOpenChange={handleMenuOpenChange}>
@@ -206,11 +200,7 @@ export function ActionButton() {
                 <RotateCounterClockwiseIcon />
               </ToolButton>
             </Tooltip>
-            <Tooltip
-              label={intl.formatMessage({ id: isAllLocked ? 'unlock' : 'lock' })}
-              kbd={`#L`}
-              id="TD-Tools-Lock"
-            >
+            <Tooltip label={intl.formatMessage({ id: isAllLocked ? 'unlock' : 'lock' })} kbd={`#L`} id="TD-Tools-Lock">
               <ToolButton disabled={!hasSelection} onClick={handleToggleLocked}>
                 {isAllLocked ? <LockClosedIcon /> : <LockOpen1Icon />}
               </ToolButton>
@@ -219,54 +209,34 @@ export function ActionButton() {
               label={intl.formatMessage({
                 id: isAllAspectLocked ? 'unlock.aspect.ratio' : 'lock.aspect.ratio',
               })}
-              id="TD-Tools-AspectRatio"
-            >
+              id="TD-Tools-AspectRatio">
               <ToolButton disabled={!hasSelection} onClick={handleToggleAspectRatio}>
                 {isAllAspectLocked ? <AspectRatioIcon /> : <BoxIcon />}
               </ToolButton>
             </Tooltip>
             <Tooltip label={intl.formatMessage({ id: 'group' })} kbd={`#G`} id="TD-Tools-Group">
-              <ToolButton
-                disabled={!hasSelection || (!isAllGrouped && !hasMultipleSelection)}
-                onClick={handleGroup}
-              >
+              <ToolButton disabled={!hasSelection || (!isAllGrouped && !hasMultipleSelection)} onClick={handleGroup}>
                 <GroupIcon />
               </ToolButton>
             </Tooltip>
           </ButtonsRow>
           <ButtonsRow>
-            <Tooltip
-              label={intl.formatMessage({ id: 'move.to.back' })}
-              kbd={`#⇧[`}
-              id="TD-Tools-PinBottom"
-            >
+            <Tooltip label={intl.formatMessage({ id: 'move.to.back' })} kbd={`#⇧[`} id="TD-Tools-PinBottom">
               <ToolButton disabled={!hasSelection} onClick={handleMoveToBack}>
                 <PinBottomIcon />
               </ToolButton>
             </Tooltip>
-            <Tooltip
-              label={intl.formatMessage({ id: 'move.backward' })}
-              kbd={`#[`}
-              id="TD-Tools-ArrowDown"
-            >
+            <Tooltip label={intl.formatMessage({ id: 'move.backward' })} kbd={`#[`} id="TD-Tools-ArrowDown">
               <ToolButton disabled={!hasSelection} onClick={handleMoveBackward}>
                 <ArrowDownIcon />
               </ToolButton>
             </Tooltip>
-            <Tooltip
-              label={intl.formatMessage({ id: 'move.forward' })}
-              kbd={`#]`}
-              id="TD-Tools-ArrowUp"
-            >
+            <Tooltip label={intl.formatMessage({ id: 'move.forward' })} kbd={`#]`} id="TD-Tools-ArrowUp">
               <ToolButton disabled={!hasSelection} onClick={handleMoveForward}>
                 <ArrowUpIcon />
               </ToolButton>
             </Tooltip>
-            <Tooltip
-              label={intl.formatMessage({ id: 'move.to.front' })}
-              kbd={`#⇧]`}
-              id="TD-Tools-PinTop"
-            >
+            <Tooltip label={intl.formatMessage({ id: 'move.to.front' })} kbd={`#⇧]`} id="TD-Tools-PinTop">
               <ToolButton disabled={!hasSelection} onClick={handleMoveToFront}>
                 <PinTopIcon />
               </ToolButton>
@@ -284,10 +254,7 @@ export function ActionButton() {
                 <AlignLeftIcon />
               </ToolButton>
             </Tooltip>
-            <Tooltip
-              label={intl.formatMessage({ id: 'align.center.x' })}
-              id="TD-Tools-AlignCenterHorizontal"
-            >
+            <Tooltip label={intl.formatMessage({ id: 'align.center.x' })} id="TD-Tools-AlignCenterHorizontal">
               <ToolButton disabled={!hasTwoOrMore} onClick={alignCenterHorizontal}>
                 <AlignCenterHorizontallyIcon />
               </ToolButton>
@@ -297,18 +264,12 @@ export function ActionButton() {
                 <AlignRightIcon />
               </ToolButton>
             </Tooltip>
-            <Tooltip
-              label={intl.formatMessage({ id: 'stretch.x' })}
-              id="TD-Tools-StretchHorizontal"
-            >
+            <Tooltip label={intl.formatMessage({ id: 'stretch.x' })} id="TD-Tools-StretchHorizontal">
               <ToolButton disabled={!hasTwoOrMore} onClick={stretchHorizontally}>
                 <StretchHorizontallyIcon />
               </ToolButton>
             </Tooltip>
-            <Tooltip
-              label={intl.formatMessage({ id: 'distribute.x' })}
-              id="TD-Tools-SpaceEvenlyHorizontal"
-            >
+            <Tooltip label={intl.formatMessage({ id: 'distribute.x' })} id="TD-Tools-SpaceEvenlyHorizontal">
               <ToolButton disabled={!hasThreeOrMore} onClick={distributeHorizontally}>
                 <SpaceEvenlyHorizontallyIcon />
               </ToolButton>
@@ -320,10 +281,7 @@ export function ActionButton() {
                 <AlignTopIcon />
               </ToolButton>
             </Tooltip>
-            <Tooltip
-              label={intl.formatMessage({ id: 'align.center.y' })}
-              id="TD-Tools-AlignCenterVertical"
-            >
+            <Tooltip label={intl.formatMessage({ id: 'align.center.y' })} id="TD-Tools-AlignCenterVertical">
               <ToolButton disabled={!hasTwoOrMore} onClick={alignCenterVertical}>
                 <AlignCenterVerticallyIcon />
               </ToolButton>
@@ -338,10 +296,7 @@ export function ActionButton() {
                 <StretchVerticallyIcon />
               </ToolButton>
             </Tooltip>
-            <Tooltip
-              label={intl.formatMessage({ id: 'distribute.y' })}
-              id="TD-Tools-SpaceEvenlyVertical"
-            >
+            <Tooltip label={intl.formatMessage({ id: 'distribute.y' })} id="TD-Tools-SpaceEvenlyVertical">
               <ToolButton disabled={!hasThreeOrMore} onClick={distributeVertically}>
                 <SpaceEvenlyVerticallyIcon />
               </ToolButton>
@@ -350,7 +305,7 @@ export function ActionButton() {
         </>
       </DMContent>
     </DropdownMenu.Root>
-  )
+  );
 }
 
 export const ButtonsRow = styled('div', {
@@ -364,4 +319,4 @@ export const ButtonsRow = styled('div', {
   alignItems: 'center',
   justifyContent: 'flex-start',
   padding: 0,
-})
+});

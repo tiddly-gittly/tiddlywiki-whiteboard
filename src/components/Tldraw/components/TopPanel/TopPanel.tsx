@@ -1,33 +1,26 @@
-import * as React from 'react'
-import { Panel } from '@tldr/components/Primitives/Panel'
-import { ToolButton } from '@tldr/components/Primitives/ToolButton'
-import { UndoIcon } from '@tldr/components/Primitives/icons'
-import { useTldrawApp } from '@tldr/hooks'
-import { styled } from '@tldr/styles'
-import { Menu } from './Menu/Menu'
-import { MultiplayerMenu } from './MultiplayerMenu'
-import { PageMenu } from './PageMenu'
-import { StyleMenu } from './StyleMenu'
-import { ZoomMenu } from './ZoomMenu'
+import * as React from 'react';
+import { Panel } from '@tldr/components/Primitives/Panel';
+import { ToolButton } from '@tldr/components/Primitives/ToolButton';
+import { UndoIcon } from '@tldr/components/Primitives/icons';
+import { useTldrawApp } from '@tldr/hooks';
+import { styled } from '@tldr/styles';
+import { Menu } from './Menu/Menu';
+import { MultiplayerMenu } from './MultiplayerMenu';
+import { PageMenu } from './PageMenu';
+import { StyleMenu } from './StyleMenu';
+import { ZoomMenu } from './ZoomMenu';
 
 interface TopPanelProps {
-  readOnly: boolean
-  showPages: boolean
-  showMenu: boolean
-  showStyles: boolean
-  showZoom: boolean
-  showMultiplayerMenu: boolean
+  readOnly: boolean;
+  showMenu: boolean;
+  showMultiplayerMenu: boolean;
+  showPages: boolean;
+  showStyles: boolean;
+  showZoom: boolean;
 }
 
-export function _TopPanel({
-  readOnly,
-  showPages,
-  showMenu,
-  showStyles,
-  showZoom,
-  showMultiplayerMenu,
-}: TopPanelProps) {
-  const app = useTldrawApp()
+export function _TopPanel({ readOnly, showPages, showMenu, showStyles, showZoom, showMultiplayerMenu }: TopPanelProps) {
+  const app = useTldrawApp();
 
   return (
     <StyledTopPanel>
@@ -58,7 +51,7 @@ export function _TopPanel({
         </Panel>
       )}
     </StyledTopPanel>
-  )
+  );
 }
 
 const StyledTopPanel = styled('div', {
@@ -73,12 +66,12 @@ const StyledTopPanel = styled('div', {
   '& > *': {
     pointerEvents: 'all',
   },
-})
+});
 
 const StyledSpacer = styled('div', {
   flexGrow: 2,
   pointerEvents: 'none',
-})
+});
 
 const ReadOnlyLabel = styled('div', {
   width: '100%',
@@ -90,6 +83,6 @@ const ReadOnlyLabel = styled('div', {
   paddingLeft: '$4',
   paddingRight: '$1',
   userSelect: 'none',
-})
+});
 
-export const TopPanel = React.memo(_TopPanel)
+export const TopPanel = React.memo(_TopPanel);

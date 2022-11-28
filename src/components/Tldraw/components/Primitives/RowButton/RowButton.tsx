@@ -1,51 +1,36 @@
-import { ItemIndicator } from '@radix-ui/react-dropdown-menu'
-import { CheckIcon, ChevronRightIcon } from '@radix-ui/react-icons'
-import * as React from 'react'
-import { Kbd } from '@tldr/components/Primitives/Kbd'
-import { SmallIcon } from '@tldr/components/Primitives/SmallIcon'
-import { breakpoints } from '@tldr/components/breakpoints'
-import { styled } from '@tldr/styles'
+import { ItemIndicator } from '@radix-ui/react-dropdown-menu';
+import { CheckIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import * as React from 'react';
+import { Kbd } from '@tldr/components/Primitives/Kbd';
+import { SmallIcon } from '@tldr/components/Primitives/SmallIcon';
+import { breakpoints } from '@tldr/components/breakpoints';
+import { styled } from '@tldr/styles';
 
 export interface RowButtonProps {
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
-  children: React.ReactNode
-  disabled?: boolean
-  kbd?: string
-  variant?: 'wide' | 'styleMenu'
-  isActive?: boolean
-  isWarning?: boolean
-  hasIndicator?: boolean
-  hasArrow?: boolean
-  id?: string
+  children: React.ReactNode;
+  disabled?: boolean;
+  hasArrow?: boolean;
+  hasIndicator?: boolean;
+  id?: string;
+  isActive?: boolean;
+  isWarning?: boolean;
+  kbd?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  variant?: 'wide' | 'styleMenu';
 }
 
 export const RowButton = React.forwardRef<HTMLButtonElement, RowButtonProps>(
-  (
-    {
-      onClick,
-      isActive = false,
-      isWarning = false,
-      hasIndicator = false,
-      hasArrow = false,
-      disabled = false,
-      variant,
-      kbd,
-      children,
-      ...rest
-    },
-    ref
-  ) => {
+  ({ onClick, isActive = false, isWarning = false, hasIndicator = false, hasArrow = false, disabled = false, variant, kbd, children, ...rest }, reference) => {
     return (
       <StyledRowButton
-        ref={ref}
+        ref={reference}
         bp={breakpoints}
         isWarning={isWarning}
         isActive={isActive}
         disabled={disabled}
         onClick={onClick}
         variant={variant}
-        {...rest}
-      >
+        {...rest}>
         <StyledRowButtonInner>
           {children}
           {kbd ? <Kbd variant="menu">{kbd}</Kbd> : undefined}
@@ -63,9 +48,9 @@ export const RowButton = React.forwardRef<HTMLButtonElement, RowButtonProps>(
           )}
         </StyledRowButtonInner>
       </StyledRowButton>
-    )
-  }
-)
+    );
+  },
+);
 
 const StyledRowButtonInner = styled('div', {
   height: '100%',
@@ -90,7 +75,7 @@ const StyledRowButtonInner = styled('div', {
   [`& > ${SmallIcon}`]: {
     paddingLeft: '$3',
   },
-})
+});
 
 export const StyledRowButton = styled('button', {
   position: 'relative',
@@ -158,4 +143,4 @@ export const StyledRowButton = styled('button', {
       false: {},
     },
   },
-})
+});
