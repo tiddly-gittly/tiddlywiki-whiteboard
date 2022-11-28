@@ -1,1 +1,1 @@
-export * from './groupShapes';
+export * from './groupShapes'

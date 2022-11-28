@@ -1,1 +1,1 @@
-export * from './deletePage';
+export * from './deletePage'

@@ -1,41 +1,49 @@
-import { TldrawTestApp } from '@tldr/test';
-import { DrawShape, TDShapeType, TDStatus } from '@tldr/types';
+import { TldrawTestApp } from '@tldr/test'
+import { DrawShape, TDShapeType, TDStatus } from '@tldr/types'
 
 describe('Draw session', () => {
   it('begins, updateSession', () => {
-    const app = new TldrawTestApp();
+    const app = new TldrawTestApp()
 
-    app.selectTool(TDShapeType.Draw).pointCanvas([0, 0]).movePointer([10, 10, 0.5]).completeSession();
+    app
+      .selectTool(TDShapeType.Draw)
+      .pointCanvas([0, 0])
+      .movePointer([10, 10, 0.5])
+      .completeSession()
 
-    const shape = app.shapes[0];
+    const shape = app.shapes[0]
 
-    expect(shape).toBeTruthy();
+    expect(shape).toBeTruthy()
 
-    expect(app.status).toBe(TDStatus.Idle);
-  });
+    expect(app.status).toBe(TDStatus.Idle)
+  })
 
   it('does, undoes and redoes', () => {
-    const app = new TldrawTestApp();
+    const app = new TldrawTestApp()
 
-    app.selectTool(TDShapeType.Draw).pointCanvas([0, 0]).movePointer([10, 10, 0.5]).completeSession();
+    app
+      .selectTool(TDShapeType.Draw)
+      .pointCanvas([0, 0])
+      .movePointer([10, 10, 0.5])
+      .completeSession()
 
-    const shape = app.shapes[0];
+    const shape = app.shapes[0]
 
-    expect(app.getShape(shape.id)).toBeTruthy();
+    expect(app.getShape(shape.id)).toBeTruthy()
 
-    app.undo();
+    app.undo()
 
-    expect(app.getShape(shape.id)).toBe(undefined);
+    expect(app.getShape(shape.id)).toBe(undefined)
 
-    app.redo();
+    app.redo()
 
-    expect(app.getShape(shape.id)).toBeTruthy();
-  });
-});
+    expect(app.getShape(shape.id)).toBeTruthy()
+  })
+})
 
 describe('When drawing...', () => {
   it('Creates pressure data if not present', () => {
-    const app = new TldrawTestApp().reset();
+    const app = new TldrawTestApp().reset()
     app
       .selectTool(TDShapeType.Draw)
       .pointCanvas([0, 0])
@@ -45,9 +53,9 @@ describe('When drawing...', () => {
       .movePointer([8, 0])
       .movePointer([16, 0])
       .movePointer([24, 0])
-      .completeSession();
-    const shape = app.shapes[0] as DrawShape;
-    expect(shape.type).toBe(TDShapeType.Draw);
+      .completeSession()
+    const shape = app.shapes[0] as DrawShape
+    expect(shape.type).toBe(TDShapeType.Draw)
     expect(shape.points).toMatchObject([
       [0, 0, 0.5],
       [0, 0, 0.5],
@@ -57,11 +65,11 @@ describe('When drawing...', () => {
       [8, 0, 0.5],
       [16, 0, 0.5],
       [24, 0, 0.5],
-    ]);
-  });
+    ])
+  })
 
   it('Uses pressure data if present', () => {
-    const app = new TldrawTestApp().reset();
+    const app = new TldrawTestApp().reset()
     app
       .selectTool(TDShapeType.Draw)
       .pointCanvas([0, 0, 0.1])
@@ -71,9 +79,9 @@ describe('When drawing...', () => {
       .movePointer([8, 0, 0.5])
       .movePointer([16, 0, 0.6])
       .movePointer([24, 0, 0.7])
-      .completeSession();
-    const shape = app.shapes[0] as DrawShape;
-    expect(shape.type).toBe(TDShapeType.Draw);
+      .completeSession()
+    const shape = app.shapes[0] as DrawShape
+    expect(shape.type).toBe(TDShapeType.Draw)
     expect(shape.points).toMatchObject([
       [0, 0, 0.1],
       [0, 0, 0.1],
@@ -83,6 +91,6 @@ describe('When drawing...', () => {
       [8, 0, 0.5],
       [16, 0, 0.6],
       [24, 0, 0.7],
-    ]);
-  });
-});
+    ])
+  })
+})

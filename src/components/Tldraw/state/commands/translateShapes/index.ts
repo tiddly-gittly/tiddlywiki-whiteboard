@@ -1,1 +1,1 @@
-export * from './translateShapes';
+export * from './translateShapes'

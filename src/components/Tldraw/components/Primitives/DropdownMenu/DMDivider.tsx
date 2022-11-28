@@ -1,5 +1,5 @@
-import { Separator } from '@radix-ui/react-dropdown-menu';
-import { styled } from '@tldr/styles/stitches.config';
+import { Separator } from '@radix-ui/react-dropdown-menu'
+import { styled } from '@tldr/styles/stitches.config'
 
 export const DMDivider = styled(Separator, {
   backgroundColor: '$hover',
@@ -8,4 +8,4 @@ export const DMDivider = styled(Separator, {
   marginRight: '-$2',
   marginBottom: '$2',
   marginLeft: '-$2',
-});
+})

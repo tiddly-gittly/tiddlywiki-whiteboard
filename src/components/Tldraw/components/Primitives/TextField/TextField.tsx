@@ -1,25 +1,27 @@
-import * as React from 'react';
-import { SmallIcon } from '@tldr/components/Primitives/SmallIcon';
-import { styled } from '@tldr/styles';
+import * as React from 'react'
+import { SmallIcon } from '@tldr/components/Primitives/SmallIcon'
+import { styled } from '@tldr/styles'
 
 export interface TextFieldProps extends React.HTMLProps<HTMLInputElement> {
-  icon?: React.ReactElement;
+  icon?: React.ReactElement
 }
 
-export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(({ icon, ...rest }, reference) => {
-  return (
-    <StyledInputWrapper>
-      <StyledInput {...rest} ref={reference} />
-      {icon == undefined ? null : <StyledInputIcon>{icon}</StyledInputIcon>}
-    </StyledInputWrapper>
-  );
-});
+export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
+  ({ icon, ...rest }, ref) => {
+    return (
+      <StyledInputWrapper>
+        <StyledInput {...rest} ref={ref} />
+        {icon ? <StyledInputIcon>{icon}</StyledInputIcon> : null}
+      </StyledInputWrapper>
+    )
+  }
+)
 
 const StyledInputWrapper = styled('div', {
   position: 'relative',
   width: '100%',
   height: 'min-content',
-});
+})
 
 const StyledInput = styled('input', {
   color: '$text',
@@ -38,7 +40,7 @@ const StyledInput = styled('input', {
     backgroundColor: '$hover',
   },
   borderRadius: '$2',
-});
+})
 
 const StyledInputIcon = styled(SmallIcon, {
   top: 0,
@@ -48,4 +50,4 @@ const StyledInputIcon = styled(SmallIcon, {
   paddingRight: '$3',
   pointerEvents: 'none',
   color: '$text',
-});
+})

@@ -1,1 +1,1 @@
-export * from './BrushSession';
+export * from './BrushSession'

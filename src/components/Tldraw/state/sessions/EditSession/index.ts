@@ -1,1 +1,1 @@
-export * from './EditSession';
+export * from './EditSession'

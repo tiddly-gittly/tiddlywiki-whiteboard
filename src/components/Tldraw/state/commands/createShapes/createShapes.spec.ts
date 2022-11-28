@@ -1,37 +1,37 @@
-import { TldrawTestApp, mockDocument } from '@tldr/test';
+import { TldrawTestApp, mockDocument } from '@tldr/test'
 
 describe('Create command', () => {
-  const app = new TldrawTestApp();
+  const app = new TldrawTestApp()
 
   beforeEach(() => {
-    app.loadDocument(mockDocument);
-  });
+    app.loadDocument(mockDocument)
+  })
 
   describe('when no shape is provided', () => {
     it('does nothing', () => {
-      const initialState = app.state;
-      app.create();
+      const initialState = app.state
+      app.create()
 
-      const currentState = app.state;
+      const currentState = app.state
 
-      expect(currentState).toEqual(initialState);
-    });
-  });
+      expect(currentState).toEqual(initialState)
+    })
+  })
 
   it('does, undoes and redoes command', () => {
-    const shape = { ...app.getShape('rect1'), id: 'rect4' };
-    app.create([shape]);
+    const shape = { ...app.getShape('rect1'), id: 'rect4' }
+    app.create([shape])
 
-    expect(app.getShape('rect4')).toBeTruthy();
+    expect(app.getShape('rect4')).toBeTruthy()
 
-    app.undo();
+    app.undo()
 
-    expect(app.getShape('rect4')).toBe(undefined);
+    expect(app.getShape('rect4')).toBe(undefined)
 
-    app.redo();
+    app.redo()
 
-    expect(app.getShape('rect4')).toBeTruthy();
-  });
+    expect(app.getShape('rect4')).toBeTruthy()
+  })
 
-  it.todo('Creates bindings');
-});
+  it.todo('Creates bindings')
+})

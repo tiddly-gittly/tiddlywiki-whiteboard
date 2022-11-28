@@ -8,4 +8,4 @@ export const breakpoints: any = {
   '@sm': 'small',
   '@md': 'medium',
   '@lg': 'large',
-};
+}

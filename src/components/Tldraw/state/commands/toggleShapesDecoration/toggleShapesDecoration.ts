@@ -1,9 +1,13 @@
-import type { TldrawApp } from '@tldr/state/internal';
-import { Decoration } from '@tldr/types';
-import type { ArrowShape, Patch, TldrawCommand } from '@tldr/types';
+import type { TldrawApp } from '@tldr/state/internal'
+import { Decoration } from '@tldr/types'
+import type { ArrowShape, Patch, TldrawCommand } from '@tldr/types'
 
-export function toggleShapesDecoration(app: TldrawApp, ids: string[], decorationId: 'start' | 'end'): TldrawCommand {
-  const { currentPageId, selectedIds } = app;
+export function toggleShapesDecoration(
+  app: TldrawApp,
+  ids: string[],
+  decorationId: 'start' | 'end'
+): TldrawCommand {
+  const { currentPageId, selectedIds } = app
 
   const beforeShapes: Record<string, Patch<ArrowShape>> = Object.fromEntries(
     ids.map((id) => [
@@ -13,8 +17,8 @@ export function toggleShapesDecoration(app: TldrawApp, ids: string[], decoration
           [decorationId]: app.getShape<ArrowShape>(id).decorations?.[decorationId],
         },
       },
-    ]),
-  );
+    ])
+  )
 
   const afterShapes: Record<string, Patch<ArrowShape>> = Object.fromEntries(
     ids
@@ -23,11 +27,13 @@ export function toggleShapesDecoration(app: TldrawApp, ids: string[], decoration
         id,
         {
           decorations: {
-            [decorationId]: app.getShape<ArrowShape>(id).decorations?.[decorationId] ? undefined : Decoration.Arrow,
+            [decorationId]: app.getShape<ArrowShape>(id).decorations?.[decorationId]
+              ? undefined
+              : Decoration.Arrow,
           },
         },
-      ]),
-  );
+      ])
+  )
 
   return {
     id: 'toggle_decorations',
@@ -55,5 +61,5 @@ export function toggleShapesDecoration(app: TldrawApp, ids: string[], decoration
         },
       },
     },
-  };
+  }
 }

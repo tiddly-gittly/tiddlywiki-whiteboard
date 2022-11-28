@@ -1,1 +1,1 @@
-export * from './PageOptionsDialog';
+export * from './PageOptionsDialog'

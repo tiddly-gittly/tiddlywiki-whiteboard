@@ -1,1 +1,1 @@
-export * from './TopPanel';
+export * from './TopPanel'

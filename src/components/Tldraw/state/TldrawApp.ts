@@ -12,12 +12,20 @@ import {
   TLShapeCloneHandler,
   TLWheelEventHandler,
   Utils,
-} from '@tldraw/core';
-import { Vec } from '@tldraw/vec';
-import { FIT_TO_SCREEN_PADDING, GRID_SIZE, IMAGE_EXTENSIONS, SVG_EXPORT_PADDING, USER_COLORS, VIDEO_EXTENSIONS, isLinux } from '@tldr/constants';
-import { DialogState } from '@tldr/hooks';
-import { shapeUtils } from '@tldr/state/shapes';
-import { defaultStyle } from '@tldr/state/shapes/shared';
+} from '@tldraw/core'
+import { Vec } from '@tldraw/vec'
+import {
+  FIT_TO_SCREEN_PADDING,
+  GRID_SIZE,
+  IMAGE_EXTENSIONS,
+  SVG_EXPORT_PADDING,
+  USER_COLORS,
+  VIDEO_EXTENSIONS,
+  isLinux,
+} from '@tldr/constants'
+import { DialogState } from '@tldr/hooks'
+import { shapeUtils } from '@tldr/state/shapes'
+import { defaultStyle } from '@tldr/state/shapes/shared'
 import {
   AlignStyle,
   AlignType,
@@ -46,56 +54,106 @@ import {
   TDUser,
   TldrawCommand,
   TldrawPatch,
-} from '@tldr/types';
-import { getClipboard, setClipboard } from './IdbClipboard';
-import { StateManager } from './StateManager';
-import { deepCopy } from './StateManager/copy';
-import { TLDR } from './TLDR';
-import * as Commands from './commands';
+} from '@tldr/types'
+import { getClipboard, setClipboard } from './IdbClipboard'
+import { StateManager } from './StateManager'
+import { deepCopy } from './StateManager/copy'
+import { TLDR } from './TLDR'
+import * as Commands from './commands'
 import {
   fileToBase64,
   fileToText,
-  getImageSizeFromSrc as getImageSizeFromSource,
-  getVideoSizeFromSrc as getVideoSizeFromSource,
+  getImageSizeFromSrc,
+  getVideoSizeFromSrc,
   loadFileHandle,
   migrate,
   openAssetsFromFileSystem,
   openFromFileSystem,
   saveToFileSystem,
-} from './data';
-import { SessionArgsOfType as SessionArgumentsOfType, TldrawSession, getSession } from './sessions';
-import { clearPrevSize as clearPreviousSize } from './shapes/shared/getTextSize';
-import { ArrowTool } from './tools/ArrowTool';
-import type { BaseTool } from './tools/BaseTool';
-import { DrawTool } from './tools/DrawTool';
-import { EllipseTool } from './tools/EllipseTool';
-import { EraseTool } from './tools/EraseTool';
-import { LineTool } from './tools/LineTool';
-import { RectangleTool } from './tools/RectangleTool';
-import { SelectTool } from './tools/SelectTool';
-import { StickyTool } from './tools/StickyTool';
-import { TextTool } from './tools/TextTool';
-import { TriangleTool } from './tools/TriangleTool';
+} from './data'
+import { SessionArgsOfType, TldrawSession, getSession } from './sessions'
+import { clearPrevSize } from './shapes/shared/getTextSize'
+import { ArrowTool } from './tools/ArrowTool'
+import type { BaseTool } from './tools/BaseTool'
+import { DrawTool } from './tools/DrawTool'
+import { EllipseTool } from './tools/EllipseTool'
+import { EraseTool } from './tools/EraseTool'
+import { LineTool } from './tools/LineTool'
+import { RectangleTool } from './tools/RectangleTool'
+import { SelectTool } from './tools/SelectTool'
+import { StickyTool } from './tools/StickyTool'
+import { TextTool } from './tools/TextTool'
+import { TriangleTool } from './tools/TriangleTool'
 
-const uuid = Utils.uniqueId();
+const uuid = Utils.uniqueId()
 
 export interface TDCallbacks {
   /**
-   * (optional) A callback to run when an asset will be created. Should return the value for the image/video's `src` property.
+   * (optional) A callback to run when the component mounts.
    */
-  onAssetCreate?: (app: TldrawApp, file: File, id: string) => Promise<string | false>;
-  /**
-   * (optional) A callback to run when an asset will be deleted.
-   */
-  onAssetDelete?: (app: TldrawApp, assetId: string) => void;
-  /**
-   * (optional) A callback to run when an asset will be uploaded. Should return the value for the image/video's `src` property.
-   */
-  onAssetUpload?: (app: TldrawApp, file: File, id: string) => Promise<string | false>;
+  onMount?: (app: TldrawApp) => void
   /**
    * (optional) A callback to run when the component's state changes.
    */
-  onChange?: (app: TldrawApp, reason?: string) => void;
+  onChange?: (app: TldrawApp, reason?: string) => void
+  /**
+   * (optional) A callback to run when the user creates a new project through the menu or through a keyboard shortcut.
+   */
+  onNewProject?: (
+    app: TldrawApp,
+    openDialog: (
+      dialogState: DialogState,
+      onYes: () => void,
+      onNo: () => void,
+      onCancel: () => void
+    ) => void,
+    e?: KeyboardEvent
+  ) => void
+  /**
+   * (optional) A callback to run when the user saves a project through the menu or through a keyboard shortcut.
+   */
+  onSaveProject?: (app: TldrawApp, e?: KeyboardEvent) => void
+  /**
+   * (optional) A callback to run when the user saves a project as a new project through the menu or through a keyboard shortcut.
+   */
+  onSaveProjectAs?: (app: TldrawApp, e?: KeyboardEvent) => void
+  /**
+   * (optional) A callback to run when the user opens new project through the menu or through a keyboard shortcut.
+   */
+  onOpenProject?: (
+    app: TldrawApp,
+    openDialog: (
+      dialogState: DialogState,
+      onYes: () => void,
+      onNo: () => void,
+      onCancel: () => void
+    ) => void,
+    e?: KeyboardEvent
+  ) => void
+  /**
+   * (optional) A callback to run when the opens a file to upload.
+   */
+  onOpenMedia?: (app: TldrawApp) => void
+  /**
+   * (optional) A callback to run when the state is patched.
+   */
+  onPatch?: (app: TldrawApp, patch: TldrawPatch, reason?: string) => void
+  /**
+   * (optional) A callback to run when the state is changed with a command.
+   */
+  onCommand?: (app: TldrawApp, command: TldrawCommand, reason?: string) => void
+  /**
+   * (optional) A callback to run when the state is persisted.
+   */
+  onPersist?: (app: TldrawApp) => void
+  /**
+   * (optional) A callback to run when the user undos.
+   */
+  onUndo?: (app: TldrawApp) => void
+  /**
+   * (optional) A callback to run when the user redos.
+   */
+  onRedo?: (app: TldrawApp) => void
   /**
    * (optional) A callback to run when the user changes the current page's shapes.
    */
@@ -104,80 +162,40 @@ export interface TDCallbacks {
     shapes: Record<string, TDShape | undefined>,
     bindings: Record<string, TDBinding | undefined>,
     assets: Record<string, TDAsset | undefined>,
-    addToHistory: boolean,
-  ) => void;
+    addToHistory: boolean
+  ) => void
   /**
    * (optional) A callback to run when the user creates a new project.
    */
-  onChangePresence?: (app: TldrawApp, user: TDUser) => void;
+  onChangePresence?: (app: TldrawApp, user: TDUser) => void
   /**
-   * (optional) A callback to run when the state is changed with a command.
+   * (optional) A callback to run when an asset will be deleted.
    */
-  onCommand?: (app: TldrawApp, command: TldrawCommand, reason?: string) => void;
+  onAssetDelete?: (app: TldrawApp, assetId: string) => void
+  /**
+   * (optional) A callback to run when an asset will be created. Should return the value for the image/video's `src` property.
+   */
+  onAssetCreate?: (app: TldrawApp, file: File, id: string) => Promise<string | false>
+  /**
+   * (optional) A callback to run when an asset will be uploaded. Should return the value for the image/video's `src` property.
+   */
+  onAssetUpload?: (app: TldrawApp, file: File, id: string) => Promise<string | false>
   /**
    * (optional) A callback to run when the user exports their page or selection.
    */
-  onExport?: (app: TldrawApp, info: TDExport) => Promise<void>;
-  /**
-   * (optional) A callback to run when the component mounts.
-   */
-  onMount?: (app: TldrawApp) => void;
-  /**
-   * (optional) A callback to run when the user creates a new project through the menu or through a keyboard shortcut.
-   */
-  onNewProject?: (
-    app: TldrawApp,
-    openDialog: (dialogState: DialogState, onYes: () => void, onNo: () => void, onCancel: () => void) => void,
-    e?: KeyboardEvent,
-  ) => void;
-  /**
-   * (optional) A callback to run when the opens a file to upload.
-   */
-  onOpenMedia?: (app: TldrawApp) => void;
-  /**
-   * (optional) A callback to run when the user opens new project through the menu or through a keyboard shortcut.
-   */
-  onOpenProject?: (
-    app: TldrawApp,
-    openDialog: (dialogState: DialogState, onYes: () => void, onNo: () => void, onCancel: () => void) => void,
-    e?: KeyboardEvent,
-  ) => void;
-  /**
-   * (optional) A callback to run when the state is patched.
-   */
-  onPatch?: (app: TldrawApp, patch: TldrawPatch, reason?: string) => void;
-  /**
-   * (optional) A callback to run when the state is persisted.
-   */
-  onPersist?: (app: TldrawApp) => void;
-  /**
-   * (optional) A callback to run when the user redos.
-   */
-  onRedo?: (app: TldrawApp) => void;
-  /**
-   * (optional) A callback to run when the user saves a project through the menu or through a keyboard shortcut.
-   */
-  onSaveProject?: (app: TldrawApp, e?: KeyboardEvent) => void;
-  /**
-   * (optional) A callback to run when the user saves a project as a new project through the menu or through a keyboard shortcut.
-   */
-  onSaveProjectAs?: (app: TldrawApp, e?: KeyboardEvent) => void;
-  /**
-   * (optional) A callback to run when a session ends.
-   */
-  onSessionEnd?: (app: TldrawApp, id: string) => void;
+  onExport?: (app: TldrawApp, info: TDExport) => Promise<void>
   /**
    * (optional) A callback to run when a session begins.
    */
-  onSessionStart?: (app: TldrawApp, id: string) => void;
+  onSessionStart?: (app: TldrawApp, id: string) => void
   /**
-   * (optional) A callback to run when the user undos.
+   * (optional) A callback to run when a session ends.
    */
-  onUndo?: (app: TldrawApp) => void;
+  onSessionEnd?: (app: TldrawApp, id: string) => void
 }
 
 export class TldrawApp extends StateManager<TDSnapshot> {
-  callbacks: TDCallbacks = {};
+  callbacks: TDCallbacks = {}
 
   tools = {
     select: new SelectTool(this),
@@ -190,98 +208,98 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     [TDShapeType.Line]: new LineTool(this),
     [TDShapeType.Arrow]: new ArrowTool(this),
     [TDShapeType.Sticky]: new StickyTool(this),
-  };
+  }
 
-  currentTool: BaseTool = this.tools.select;
+  currentTool: BaseTool = this.tools.select
 
-  session?: TldrawSession;
+  session?: TldrawSession
 
-  readOnly = false;
+  readOnly = false
 
-  isDirty = false;
+  isDirty = false
 
-  isCreating = false;
+  isCreating = false
 
-  originPoint = [0, 0];
+  originPoint = [0, 0]
 
-  currentPoint = [0, 0];
+  currentPoint = [0, 0]
 
-  previousPoint = [0, 0];
+  previousPoint = [0, 0]
 
-  shiftKey = false;
+  shiftKey = false
 
-  altKey = false;
+  altKey = false
 
-  metaKey = false;
+  metaKey = false
 
-  ctrlKey = false;
+  ctrlKey = false
 
-  spaceKey = false;
+  spaceKey = false
 
-  isPointing = false;
+  isPointing = false
 
-  isForcePanning = false;
+  isForcePanning = false
 
-  isErasingWithPen = false;
+  isErasingWithPen = false
 
-  isPastePrevented = false;
+  isPastePrevented = false
 
-  editingStartTime = -1;
+  editingStartTime = -1
 
-  fileSystemHandle: FileSystemFileHandle | null = null;
+  fileSystemHandle: FileSystemFileHandle | null = null
 
   viewport = Utils.getBoundsFromPoints([
     [0, 0],
     [100, 100],
-  ]);
+  ])
 
   rendererBounds = Utils.getBoundsFromPoints([
     [0, 0],
     [100, 100],
-  ]);
+  ])
 
   selectHistory = {
     stack: [[]] as string[][],
     pointer: 0,
-  };
+  }
 
   clipboard?: {
-    assets: TDAsset[];
-    bindings: TDBinding[];
-    shapes: TDShape[];
-  };
+    shapes: TDShape[]
+    bindings: TDBinding[]
+    assets: TDAsset[]
+  }
 
   rotationInfo = {
     selectedIds: [] as string[],
     center: [0, 0],
-  };
+  }
 
   constructor(id?: string, callbacks = {} as TDCallbacks) {
-    super(TldrawApp.defaultState, id, TldrawApp.version, (previous, next, previousVersion) => {
+    super(TldrawApp.defaultState, id, TldrawApp.version, (prev, next, prevVersion) => {
       return migrate(
         {
           ...next,
-          document: { ...next.document, ...previous.document, version: previousVersion },
+          document: { ...next.document, ...prev.document, version: prevVersion },
         },
-        TldrawApp.version,
-      );
-    });
+        TldrawApp.version
+      )
+    })
 
-    this.callbacks = callbacks;
+    this.callbacks = callbacks
   }
 
   /* -------------------- Internal -------------------- */
 
   protected migrate = (state: TDSnapshot): TDSnapshot => {
-    return migrate(state, TldrawApp.version);
-  };
+    return migrate(state, TldrawApp.version)
+  }
 
   protected onReady = () => {
-    this.loadDocument(this.document);
+    this.loadDocument(this.document)
 
     loadFileHandle().then((fileHandle) => {
-      this.fileSystemHandle = fileHandle;
-    });
+      this.fileSystemHandle = fileHandle
+    })
 
     try {
       this.patchState({
@@ -289,10 +307,10 @@ export class TldrawApp extends StateManager<TDSnapshot> {
         appState: {
           status: TDStatus.Idle,
         },
-      });
-    } catch (error) {
-      console.error('The data appears to be corrupted. Resetting!', error);
-      localStorage.setItem(this.document.id + '_corrupted', JSON.stringify(this.document));
+      })
+    } catch (e) {
+      console.error('The data appears to be corrupted. Resetting!', e)
+      localStorage.setItem(this.document.id + '_corrupted', JSON.stringify(this.document))
 
       this.patchState({
         ...TldrawApp.defaultState,
@@ -300,11 +318,11 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           ...TldrawApp.defaultState.appState,
           status: TDStatus.Idle,
         },
-      });
+      })
     }
 
-    this.callbacks.onMount?.(this);
-  };
+    this.callbacks.onMount?.(this)
+  }
 
   /**
    * Cleanup the state after each state change.
@@ -313,265 +331,271 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @protected
    * @returns The final state
    */
-  protected cleanup = (state: TDSnapshot, previous: TDSnapshot): TDSnapshot => {
-    const next: TDSnapshot = { ...state };
+  protected cleanup = (state: TDSnapshot, prev: TDSnapshot): TDSnapshot => {
+    const next: TDSnapshot = { ...state }
 
     // Remove deleted shapes and bindings (in Commands, these will be set to undefined)
-    if (next.document !== previous.document) {
+    if (next.document !== prev.document) {
       Object.entries(next.document.pages).forEach(([pageId, page]) => {
         if (page === undefined) {
           // If page is undefined, delete the page and pagestate
-          delete next.document.pages[pageId];
-          delete next.document.pageStates[pageId];
-          return;
+          delete next.document.pages[pageId]
+          delete next.document.pageStates[pageId]
+          return
         }
 
-        const previousPage = previous.document.pages[pageId];
+        const prevPage = prev.document.pages[pageId]
 
-        const changedShapes: Record<string, TDShape | undefined> = {};
+        const changedShapes: Record<string, TDShape | undefined> = {}
 
-        if (!previousPage || page.shapes !== previousPage.shapes || page.bindings !== previousPage.bindings) {
-          page.shapes = { ...page.shapes };
-          page.bindings = { ...page.bindings };
+        if (!prevPage || page.shapes !== prevPage.shapes || page.bindings !== prevPage.bindings) {
+          page.shapes = { ...page.shapes }
+          page.bindings = { ...page.bindings }
 
-          const groupsToUpdate = new Set<GroupShape>();
+          const groupsToUpdate = new Set<GroupShape>()
 
           // If shape is undefined, delete the shape
           Object.entries(page.shapes).forEach(([id, shape]) => {
-            let parentId: string;
+            let parentId: string
 
-            if (shape) {
-              parentId = shape.parentId;
+            if (!shape) {
+              parentId = prevPage?.shapes[id]?.parentId
+              delete page.shapes[id]
             } else {
-              parentId = previousPage?.shapes[id]?.parentId;
-              delete page.shapes[id];
+              parentId = shape.parentId
             }
 
-            if (page.id === next.appState.currentPageId && previousPage?.shapes[id] !== shape) {
-              changedShapes[id] = shape;
+            if (page.id === next.appState.currentPageId) {
+              if (prevPage?.shapes[id] !== shape) {
+                changedShapes[id] = shape
+              }
             }
 
             // If the shape is the child of a group, then update the group
             // (unless the group is being deleted too)
             if (parentId && parentId !== pageId) {
-              const group = page.shapes[parentId];
+              const group = page.shapes[parentId]
               if (group !== undefined) {
-                groupsToUpdate.add(page.shapes[parentId] as GroupShape);
+                groupsToUpdate.add(page.shapes[parentId] as GroupShape)
               }
             }
-          });
+          })
 
           // If binding is undefined, delete the binding
           Object.keys(page.bindings).forEach((id) => {
             if (!page.bindings[id]) {
-              delete page.bindings[id];
+              delete page.bindings[id]
             }
-          });
+          })
 
-          next.document.pages[pageId] = page;
+          next.document.pages[pageId] = page
 
           // Get bindings related to the changed shapes
-          const bindingsToUpdate = TLDR.getRelatedBindings(next, Object.keys(changedShapes), pageId);
+          const bindingsToUpdate = TLDR.getRelatedBindings(next, Object.keys(changedShapes), pageId)
 
-          const visitedShapes = new Set<ArrowShape>();
+          const visitedShapes = new Set<ArrowShape>()
 
           // Update all of the bindings we've just collected
           bindingsToUpdate.forEach((binding) => {
             if (!page.bindings[binding.id]) {
-              return;
+              return
             }
 
-            const toShape = page.shapes[binding.toId];
-            const fromShape = page.shapes[binding.fromId] as ArrowShape;
+            const toShape = page.shapes[binding.toId]
+            const fromShape = page.shapes[binding.fromId] as ArrowShape
 
             if (!(toShape && fromShape)) {
-              delete next.document.pages[pageId].bindings[binding.id];
-              return;
+              delete next.document.pages[pageId].bindings[binding.id]
+              return
             }
 
             if (visitedShapes.has(fromShape)) {
-              return;
+              return
             }
             // We only need to update the binding's "from" shape (an arrow)
-            const fromDelta = TLDR.updateArrowBindings(page, fromShape);
-            visitedShapes.add(fromShape);
+            const fromDelta = TLDR.updateArrowBindings(page, fromShape)
+            visitedShapes.add(fromShape)
 
-            if (fromDelta != undefined) {
+            if (fromDelta) {
               const nextShape = {
                 ...fromShape,
                 ...fromDelta,
-              } as ArrowShape;
-              page.shapes[fromShape.id] = nextShape;
+              } as ArrowShape
+              page.shapes[fromShape.id] = nextShape
             }
-          });
+          })
 
           groupsToUpdate.forEach((group) => {
-            if (!group) throw new Error('no group!');
-            const children = group.children.filter((id) => page.shapes[id] !== undefined);
+            if (!group) throw Error('no group!')
+            const children = group.children.filter((id) => page.shapes[id] !== undefined)
 
             const commonBounds = Utils.getCommonBounds(
               children
                 .map((id) => page.shapes[id])
                 .filter(Boolean)
-                .map((shape) => TLDR.getRotatedBounds(shape)),
-            );
+                .map((shape) => TLDR.getRotatedBounds(shape))
+            )
 
             page.shapes[group.id] = {
               ...group,
               point: [commonBounds.minX, commonBounds.minY],
               size: [commonBounds.width, commonBounds.height],
               children,
-            };
-          });
+            }
+          })
         }
 
         // Clean up page state, preventing hovers on deleted shapes
 
         const nextPageState: TLPageState = {
           ...next.document.pageStates[pageId],
-        };
+        }
 
-        if (nextPageState.brush == undefined) {
-          delete nextPageState.brush;
+        if (!nextPageState.brush) {
+          delete nextPageState.brush
         }
 
         if (nextPageState.hoveredId && !page.shapes[nextPageState.hoveredId]) {
-          delete nextPageState.hoveredId;
+          delete nextPageState.hoveredId
         }
 
         if (nextPageState.bindingId && !page.bindings[nextPageState.bindingId]) {
-          TLDR.warn(`Could not find the binding of ${pageId}`);
-          delete nextPageState.bindingId;
+          TLDR.warn(`Could not find the binding of ${pageId}`)
+          delete nextPageState.bindingId
         }
 
         if (nextPageState.editingId && !page.shapes[nextPageState.editingId]) {
-          TLDR.warn('Could not find the editing shape!');
-          delete nextPageState.editingId;
+          TLDR.warn('Could not find the editing shape!')
+          delete nextPageState.editingId
         }
 
-        next.document.pageStates[pageId] = nextPageState;
-      });
+        next.document.pageStates[pageId] = nextPageState
+      })
     }
 
     Object.keys(next.document.assets ?? {}).forEach((id) => {
       if (!next.document.assets?.[id]) {
-        delete next.document.assets?.[id];
+        delete next.document.assets?.[id]
       }
-    });
+    })
 
-    const currentPageId = next.appState.currentPageId;
+    const currentPageId = next.appState.currentPageId
 
-    const currentPageState = next.document.pageStates[currentPageId];
+    const currentPageState = next.document.pageStates[currentPageId]
 
-    if (next.room != undefined && next.room !== previous.room) {
-      const room = { ...next.room, users: { ...next.room.users } };
+    if (next.room && next.room !== prev.room) {
+      const room = { ...next.room, users: { ...next.room.users } }
 
       // Remove any exited users
-      if (previous.room != undefined) {
-        Object.values(previous.room.users)
+      if (prev.room) {
+        Object.values(prev.room.users)
           .filter(Boolean)
           .forEach((user) => {
             if (room.users[user.id] === undefined) {
-              delete room.users[user.id];
+              delete room.users[user.id]
             }
-          });
+          })
       }
 
-      next.room = room;
+      next.room = room
     }
 
-    if (next.room != undefined) {
+    if (next.room) {
       next.room.users[next.room.userId] = {
         ...next.room.users[next.room.userId],
         point: this.currentPoint,
         selectedIds: currentPageState.selectedIds,
-      };
+      }
     }
 
     // Temporary block on editing pages while in readonly mode.
     // This is a broad solution but not a very good one: the UX
     // for interacting with a readOnly document will be more nuanced.
     if (this.readOnly) {
-      next.document.pages = previous.document.pages;
+      next.document.pages = prev.document.pages
     }
 
-    return next;
-  };
+    return next
+  }
 
-  private readonly broadcastPatch = (patch: TldrawPatch, addToHistory: boolean) => {
-    const changedShapes: Record<string, TDShape | undefined> = {};
-    const changedBindings: Record<string, TDBinding | undefined> = {};
-    const changedAssets: Record<string, TDAsset | undefined> = {};
+  private broadcastPatch = (patch: TldrawPatch, addToHistory: boolean) => {
+    const changedShapes: Record<string, TDShape | undefined> = {}
+    const changedBindings: Record<string, TDBinding | undefined> = {}
+    const changedAssets: Record<string, TDAsset | undefined> = {}
 
-    const shapes = patch?.document?.pages?.[this.currentPageId]?.shapes;
-    const bindings = patch?.document?.pages?.[this.currentPageId]?.bindings;
-    const assets = patch?.document?.assets;
+    const shapes = patch?.document?.pages?.[this.currentPageId]?.shapes
+    const bindings = patch?.document?.pages?.[this.currentPageId]?.bindings
+    const assets = patch?.document?.assets
 
-    if (shapes != undefined) {
+    if (shapes) {
       Object.keys(shapes).forEach((id) => {
-        changedShapes[id] = this.getShape(id, this.currentPageId);
-      });
+        changedShapes[id!] = this.getShape(id, this.currentPageId)
+      })
     }
 
-    if (bindings != undefined) {
+    if (bindings) {
       Object.keys(bindings).forEach((id) => {
-        changedBindings[id] = this.getBinding(id, this.currentPageId);
-      });
+        changedBindings[id] = this.getBinding(id, this.currentPageId)
+      })
     }
 
-    if (assets != undefined) {
+    if (assets) {
       Object.keys(assets).forEach((id) => {
-        changedAssets[id] = this.document.assets[id];
-      });
+        changedAssets[id] = this.document.assets[id]
+      })
     }
 
-    this.callbacks.onChangePage?.(this, changedShapes, changedBindings, changedAssets, addToHistory);
-  };
+    this.callbacks.onChangePage?.(this, changedShapes, changedBindings, changedAssets, addToHistory)
+  }
 
   onPatch = (state: TDSnapshot, patch: TldrawPatch, id?: string) => {
     if (
-      ((this.callbacks.onChangePage != undefined && patch?.document?.pages?.[this.currentPageId] != undefined) || patch?.document?.assets != undefined) &&
-      (patch?.document?.assets != undefined ||
-        (this.session != undefined &&
+      (this.callbacks.onChangePage && patch?.document?.pages?.[this.currentPageId]) ||
+      patch?.document?.assets
+    ) {
+      if (
+        patch?.document?.assets ||
+        (this.session &&
           this.session.type !== SessionType.Brush &&
           this.session.type !== SessionType.Erase &&
-          this.session.type !== SessionType.Draw))
-    ) {
-      this.broadcastPatch(patch, false);
+          this.session.type !== SessionType.Draw)
+      ) {
+        this.broadcastPatch(patch, false)
+      }
     }
 
-    this.callbacks.onPatch?.(this, patch, id);
-  };
+    this.callbacks.onPatch?.(this, patch, id)
+  }
 
   onCommand = (state: TDSnapshot, command: TldrawCommand, id?: string) => {
-    this.clearSelectHistory();
-    this.isDirty = true;
-    this.callbacks.onCommand?.(this, command, id);
-  };
+    this.clearSelectHistory()
+    this.isDirty = true
+    this.callbacks.onCommand?.(this, command, id)
+  }
 
   onReplace = () => {
-    this.clearSelectHistory();
-    this.isDirty = false;
-  };
+    this.clearSelectHistory()
+    this.isDirty = false
+  }
 
   onUndo = () => {
-    this.rotationInfo.selectedIds = [...this.selectedIds];
-    this.callbacks.onUndo?.(this);
-  };
+    this.rotationInfo.selectedIds = [...this.selectedIds]
+    this.callbacks.onUndo?.(this)
+  }
 
   onRedo = () => {
-    this.rotationInfo.selectedIds = [...this.selectedIds];
-    this.callbacks.onRedo?.(this);
-  };
+    this.rotationInfo.selectedIds = [...this.selectedIds]
+    this.callbacks.onRedo?.(this)
+  }
 
   onPersist = (state: TDSnapshot, patch: TldrawPatch) => {
     // If we are part of a room, send our changes to the server
 
-    this.callbacks.onPersist?.(this);
-    this.broadcastPatch(patch, true);
-  };
+    this.callbacks.onPersist?.(this)
+    this.broadcastPatch(patch, true)
+  }
 
-  private prevSelectedIds = this.selectedIds;
+  private prevSelectedIds = this.selectedIds
 
   /**
    * Clear the selection history after each new command, undo or redo.
@@ -579,80 +603,80 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param id
    */
   protected onStateDidChange = (_state: TDSnapshot, id?: string): void => {
-    this.callbacks.onChange?.(this, id);
+    this.callbacks.onChange?.(this, id)
 
-    if (this.room != undefined && this.selectedIds !== this.prevSelectedIds) {
+    if (this.room && this.selectedIds !== this.prevSelectedIds) {
       this.callbacks.onChangePresence?.(this, {
         ...this.room.users[this.room.userId],
         selectedIds: this.selectedIds,
-        session: !(this.session == undefined),
-      });
-      this.prevSelectedIds = this.selectedIds;
+        session: !!this.session,
+      })
+      this.prevSelectedIds = this.selectedIds
     }
-  };
+  }
 
-  private readonly preventPaste = () => {
-    if (this.isPastePrevented) return;
+  private preventPaste = () => {
+    if (this.isPastePrevented) return
 
-    const prevent = (event: ClipboardEvent) => event.stopImmediatePropagation();
+    const prevent = (event: ClipboardEvent) => event.stopImmediatePropagation()
 
     const enable = () => {
       setTimeout(() => {
-        document.removeEventListener('paste', prevent, { capture: true });
-        this.isPastePrevented = false;
-      }, 50);
-    };
+        document.removeEventListener('paste', prevent, { capture: true })
+        this.isPastePrevented = false
+      }, 50)
+    }
 
-    document.addEventListener('paste', prevent, { capture: true });
-    window.addEventListener('pointerup', enable, { once: true });
-    this.isPastePrevented = true;
-  };
+    document.addEventListener('paste', prevent, { capture: true })
+    window.addEventListener('pointerup', enable, { once: true })
+    this.isPastePrevented = true
+  }
 
   /* ----------- Managing Multiplayer State ----------- */
 
-  private justSent = false;
+  private justSent = false
 
   getReservedContent = (coreReservedIds: string[], pageId = this.currentPageId) => {
-    const { bindings } = this.document.pages[pageId];
+    const { bindings } = this.document.pages[pageId]
 
     // We want to know which shapes we need to
-    const reservedShapes: Record<string, TDShape> = {};
-    const reservedBindings: Record<string, TDBinding> = {};
+    const reservedShapes: Record<string, TDShape> = {}
+    const reservedBindings: Record<string, TDBinding> = {}
 
     // Quick lookup maps for bindings
-    const bindingsArray = Object.values(bindings);
-    const boundTos = new Map(bindingsArray.map((binding) => [binding.toId, binding]));
-    const boundFroms = new Map(bindingsArray.map((binding) => [binding.fromId, binding]));
-    const bindingMaps = [boundTos, boundFroms];
+    const bindingsArr = Object.values(bindings)
+    const boundTos = new Map(bindingsArr.map((binding) => [binding.toId, binding]))
+    const boundFroms = new Map(bindingsArr.map((binding) => [binding.fromId, binding]))
+    const bindingMaps = [boundTos, boundFroms]
 
     // Unique set of shape ids that are going to be reserved
-    const reservedShapeIds: string[] = [];
+    const reservedShapeIds: string[] = []
 
-    if (this.session != undefined) coreReservedIds.forEach((id) => reservedShapeIds.push(id));
-    if (this.pageState.editingId) reservedShapeIds.push(this.pageState.editingId);
+    if (this.session) coreReservedIds.forEach((id) => reservedShapeIds.push(id))
+    if (this.pageState.editingId) reservedShapeIds.push(this.pageState.editingId)
 
-    const strongReservedShapeIds = new Set(reservedShapeIds);
+    const strongReservedShapeIds = new Set(reservedShapeIds)
 
     // Which shape ids have we already visited?
-    const visited = new Set<string>();
+    const visited = new Set<string>()
 
     // Time to visit every reserved shape and every related shape and binding.
     while (reservedShapeIds.length > 0) {
-      const id = reservedShapeIds.pop();
-      if (!id) break;
-      if (visited.has(id)) continue;
+      const id = reservedShapeIds.pop()
+      if (!id) break
+      if (visited.has(id)) continue
 
       // Add to set so that we don't process this id a second time
-      visited.add(id);
+      visited.add(id)
 
       // Get the shape and reserve it
-      const shape = this.getShape(id);
-      reservedShapes[id] = shape;
+      const shape = this.getShape(id)
+      reservedShapes[id] = shape
 
-      if (shape.parentId !== pageId) reservedShapeIds.push(shape.parentId);
+      if (shape.parentId !== pageId) reservedShapeIds.push(shape.parentId)
 
       // If the shape has children, add the shape's children to the list of ids to process
-      if (shape.children != undefined) reservedShapeIds.push(...shape.children);
+      if (shape.children) reservedShapeIds.push(...shape.children)
 
       // If there are binding for this shape, reserve the bindings and
       // add its related shapes to the list of ids to process
@@ -660,13 +684,13 @@ export class TldrawApp extends StateManager<TDSnapshot> {
         .map((map) => map.get(shape.id)!)
         .filter(Boolean)
         .forEach((binding) => {
-          reservedBindings[binding.id] = binding;
-          reservedShapeIds.push(binding.toId, binding.fromId);
-        });
+          reservedBindings[binding.id] = binding
+          reservedShapeIds.push(binding.toId, binding.fromId)
+        })
     }
 
-    return { reservedShapes, reservedBindings, strongReservedShapeIds };
-  };
+    return { reservedShapes, reservedBindings, strongReservedShapeIds }
+  }
 
   /**
    * Manually patch in page content.
@@ -675,61 +699,69 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     shapes: Record<string, TDShape>,
     bindings: Record<string, TDBinding>,
     assets: Record<string, TDAsset>,
-    pageId = this.currentPageId,
+    pageId = this.currentPageId
   ): this => {
     if (this.justSent) {
       // The incoming update was caused by an update that the client sent, noop.
-      this.justSent = false;
-      return this;
+      this.justSent = false
+      return this
     }
 
-    const page = this.document.pages[this.currentPageId];
+    const page = this.document.pages[this.currentPageId]
 
     Object.values(shapes).forEach((shape) => {
       if (shape.parentId !== pageId && !(page.shapes[shape.parentId] || shapes[shape.parentId])) {
-        console.warn('Added a shape without a parent on the page');
-        shape.parentId = pageId;
+        console.warn('Added a shape without a parent on the page')
+        shape.parentId = pageId
       }
-    });
+    })
 
     this.useStore.setState((current) => {
-      const { hoveredId, editingId, bindingId, selectedIds } = current.document.pageStates[pageId];
+      const { hoveredId, editingId, bindingId, selectedIds } = current.document.pageStates[pageId]
 
-      const coreReservedIds = [...selectedIds];
+      const coreReservedIds = [...selectedIds]
 
-      const editingShape = editingId && current.document.pages[this.currentPageId].shapes[editingId];
-      if (editingShape) coreReservedIds.push(editingShape.id);
+      const editingShape = editingId && current.document.pages[this.currentPageId].shapes[editingId]
+      if (editingShape) coreReservedIds.push(editingShape.id)
 
-      const { reservedShapes, reservedBindings, strongReservedShapeIds } = this.getReservedContent(coreReservedIds, this.currentPageId);
+      const { reservedShapes, reservedBindings, strongReservedShapeIds } = this.getReservedContent(
+        coreReservedIds,
+        this.currentPageId
+      )
 
       // Merge in certain changes to reserved shapes
       Object.values(reservedShapes)
         // Don't merge updates to shapes with text (Text or Sticky)
         .filter((reservedShape) => !('text' in reservedShape))
         .forEach((reservedShape) => {
-          const incomingShape = shapes[reservedShape.id];
-          if (!incomingShape) return;
+          const incomingShape = shapes[reservedShape.id]
+          if (!incomingShape) return
 
           // If the shape isn't "strongly reserved", then use the incoming shape;
           // note that this is only if the incoming shape exists! If the shape was
           // deleted in the incoming shapes, then we'll keep out reserved shape.
           // This logic would need more work for arrows, because the incoming shape
           // include a binding change that we'll need to resolve with our reserved bindings.
-          if (!(reservedShape.type === TDShapeType.Arrow || strongReservedShapeIds.has(reservedShape.id))) {
-            shapes[reservedShape.id] = incomingShape;
-            return;
+          if (
+            !(
+              reservedShape.type === TDShapeType.Arrow ||
+              strongReservedShapeIds.has(reservedShape.id)
+            )
+          ) {
+            shapes[reservedShape.id] = incomingShape
+            return
           }
 
           // Only allow certain merges.
 
           // Allow decorations (of an arrow) to be changed
           if ('decorations' in incomingShape && 'decorations' in reservedShape) {
-            shapes[reservedShape.id] = { ...reservedShape, decorations: incomingShape.decorations };
+            shapes[reservedShape.id] = { ...reservedShape, decorations: incomingShape.decorations }
           }
 
           // Allow the shape's style to be changed
-          reservedShape.style = incomingShape.style;
-        });
+          reservedShape.style = incomingShape.style
+        })
 
       // Use the incoming shapes / bindings as comparisons for what
       // will have changed. This is important because we want to restore
@@ -739,19 +771,19 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       const nextShapes = {
         ...shapes,
         ...reservedShapes,
-      };
+      }
 
       if (editingShape) {
-        nextShapes[editingShape.id] = editingShape;
+        nextShapes[editingShape.id] = editingShape
       }
 
       const nextBindings = {
         ...bindings,
         ...reservedBindings,
-      };
+      }
       const nextAssets = {
         ...assets,
-      };
+      }
 
       const next: TDSnapshot = {
         ...current,
@@ -770,73 +802,81 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             [pageId]: {
               ...current.document.pageStates[pageId],
               selectedIds: selectedIds.filter((id) => nextShapes[id] !== undefined),
-              hoveredId: hoveredId ? (nextShapes[hoveredId] === undefined ? undefined : hoveredId) : undefined,
-              editingId,
-              bindingId: bindingId ? (nextBindings[bindingId] === undefined ? undefined : bindingId) : undefined,
+              hoveredId: hoveredId
+                ? nextShapes[hoveredId] === undefined
+                  ? undefined
+                  : hoveredId
+                : undefined,
+              editingId: editingId,
+              bindingId: bindingId
+                ? nextBindings[bindingId] === undefined
+                  ? undefined
+                  : bindingId
+                : undefined,
             },
           },
         },
-      };
-      const page = next.document.pages[pageId];
+      }
+      const page = next.document.pages[pageId]
 
       // Get bindings related to the changed shapes
-      const bindingsToUpdate = TLDR.getRelatedBindings(next, Object.keys(nextShapes), pageId);
+      const bindingsToUpdate = TLDR.getRelatedBindings(next, Object.keys(nextShapes), pageId)
 
-      const visitedShapes = new Set<ArrowShape>();
+      const visitedShapes = new Set<ArrowShape>()
 
       // Update all of the bindings we've just collected
       bindingsToUpdate.forEach((binding) => {
         if (!page.bindings[binding.id]) {
-          return;
+          return
         }
 
-        const fromShape = page.shapes[binding.fromId] as ArrowShape;
+        const fromShape = page.shapes[binding.fromId] as ArrowShape
 
         if (visitedShapes.has(fromShape)) {
-          return;
+          return
         }
 
         // We only need to update the binding's "from" shape (an arrow)
-        const fromDelta = TLDR.updateArrowBindings(page, fromShape);
-        visitedShapes.add(fromShape);
+        const fromDelta = TLDR.updateArrowBindings(page, fromShape)
+        visitedShapes.add(fromShape)
 
-        if (fromDelta != undefined) {
+        if (fromDelta) {
           const nextShape = {
             ...fromShape,
             ...fromDelta,
-          } as TDShape;
+          } as TDShape
 
-          page.shapes[fromShape.id] = nextShape;
+          page.shapes[fromShape.id] = nextShape
         }
-      });
+      })
 
       Object.values(nextShapes).forEach((shape) => {
-        if (shape.type !== TDShapeType.Group) return;
+        if (shape.type !== TDShapeType.Group) return
 
-        const children = shape.children.filter((id) => page.shapes[id] !== undefined);
+        const children = shape.children.filter((id) => page.shapes[id] !== undefined)
 
         const commonBounds = Utils.getCommonBounds(
           children
             .map((id) => page.shapes[id])
             .filter(Boolean)
-            .map((shape) => TLDR.getRotatedBounds(shape)),
-        );
+            .map((shape) => TLDR.getRotatedBounds(shape))
+        )
 
         page.shapes[shape.id] = {
           ...shape,
           point: [commonBounds.minX, commonBounds.minY],
           size: [commonBounds.width, commonBounds.height],
           children,
-        };
-      });
+        }
+      })
 
-      this.state.document = next.document;
+      this.state.document = next.document
 
-      return next;
-    }, true);
+      return next
+    }, true)
 
-    return this;
-  };
+    return this
+  }
 
   /**
    * Set the current status.
@@ -849,8 +889,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       {
         appState: { status },
       },
-      `set_status:${status}`,
-    );
+      `set_status:${status}`
+    )
   }
 
   /**
@@ -858,19 +898,19 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param bounds
    */
   updateBounds = (bounds: TLBounds) => {
-    this.rendererBounds = bounds;
-    const { point, zoom } = this.camera;
-    this.updateViewport(point, zoom);
+    this.rendererBounds = bounds
+    const { point, zoom } = this.camera
+    this.updateViewport(point, zoom)
 
-    if (!this.readOnly && this.session != undefined) {
-      this.session.update();
+    if (!this.readOnly && this.session) {
+      this.session.update()
     }
-  };
+  }
 
   updateViewport = (point: number[], zoom: number) => {
-    const { width, height } = this.rendererBounds;
-    const [minX, minY] = Vec.sub(Vec.div([0, 0], zoom), point);
-    const [maxX, maxY] = Vec.sub(Vec.div([width, height], zoom), point);
+    const { width, height } = this.rendererBounds
+    const [minX, minY] = Vec.sub(Vec.div([0, 0], zoom), point)
+    const [maxX, maxY] = Vec.sub(Vec.div([width, height], zoom), point)
 
     this.viewport = {
       minX,
@@ -879,28 +919,28 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       maxY,
       height: maxX - minX,
       width: maxY - minY,
-    };
-  };
+    }
+  }
 
   /**
    * Set or clear the editing id
    * @param id [string]
    */
   setEditingId = (id?: string, isCreating = false) => {
-    if (this.readOnly) return;
+    if (this.readOnly) return
 
     if (id) {
       // Start a new editing session
-      this.startSession(SessionType.Edit, id, isCreating);
+      this.startSession(SessionType.Edit, id, isCreating)
     } else {
       // If we're clearing the editing id and we don't have one, bail
-      if (!this.pageState.editingId) return;
+      if (!this.pageState.editingId) return
 
       // If we're clearing the editing id and we do have one, complete the session
-      this.completeSession();
+      this.completeSession()
     }
 
-    this.editingStartTime = performance.now();
+    this.editingStartTime = performance.now()
 
     this.patchState(
       {
@@ -912,9 +952,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           },
         },
       },
-      `set_editing_id`,
-    );
-  };
+      `set_editing_id`
+    )
+  }
 
   /**
    * Set or clear the hovered id
@@ -931,9 +971,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           },
         },
       },
-      `set_hovered_id`,
-    );
-  };
+      `set_hovered_id`
+    )
+  }
 
   /* -------------------------------------------------- */
   /*                    Settings & UI                   */
@@ -942,158 +982,161 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   /**
    * Set a setting.
    */
-  setSetting = <T extends keyof TDSnapshot['settings'], V extends TDSnapshot['settings'][T]>(name: T, value: V | ((value: V) => V)): this => {
-    if (this.session != undefined) return this;
+  setSetting = <T extends keyof TDSnapshot['settings'], V extends TDSnapshot['settings'][T]>(
+    name: T,
+    value: V | ((value: V) => V)
+  ): this => {
+    if (this.session) return this
 
     const patch = {
       settings: {
         [name]: typeof value === 'function' ? value(this.settings[name] as V) : value,
       },
-    };
+    }
 
-    this.patchState(patch, `settings:${name}`);
+    this.patchState(patch, `settings:${name}`)
 
-    this.persist(patch);
-    return this;
-  };
+    this.persist(patch)
+    return this
+  }
 
   /**
    * Toggle pen mode.
    */
   toggleFocusMode = (): this => {
-    if (this.session != undefined) return this;
+    if (this.session) return this
     const patch = {
       settings: {
         isFocusMode: !this.settings.isFocusMode,
       },
-    };
+    }
 
-    this.patchState(patch, `settings:toggled_focus_mode`);
+    this.patchState(patch, `settings:toggled_focus_mode`)
 
-    this.persist(patch);
-    return this;
-  };
+    this.persist(patch)
+    return this
+  }
 
   /**
    * Toggle pen mode.
    */
   togglePenMode = (): this => {
-    if (this.session != undefined) return this;
+    if (this.session) return this
     const patch = {
       settings: {
         isPenMode: !this.settings.isPenMode,
       },
-    };
-    this.patchState(patch, `settings:toggled_pen_mode`);
-    this.persist(patch);
-    return this;
-  };
+    }
+    this.patchState(patch, `settings:toggled_pen_mode`)
+    this.persist(patch)
+    return this
+  }
 
   /**
    * Toggle dark mode.
    */
   toggleDarkMode = (): this => {
-    if (this.session != undefined) return this;
-    const patch = { settings: { isDarkMode: !this.settings.isDarkMode } };
-    this.patchState(patch, `settings:toggled_dark_mode`);
-    this.persist(patch);
-    return this;
-  };
+    if (this.session) return this
+    const patch = { settings: { isDarkMode: !this.settings.isDarkMode } }
+    this.patchState(patch, `settings:toggled_dark_mode`)
+    this.persist(patch)
+    return this
+  }
 
   /**
    * Toggle zoom snap.
    */
   toggleZoomSnap = () => {
-    if (this.session != undefined) return this;
-    const patch = { settings: { isZoomSnap: !this.settings.isZoomSnap } };
-    this.patchState(patch, `settings:toggled_zoom_snap`);
-    this.persist(patch);
-    return this;
-  };
+    if (this.session) return this
+    const patch = { settings: { isZoomSnap: !this.settings.isZoomSnap } }
+    this.patchState(patch, `settings:toggled_zoom_snap`)
+    this.persist(patch)
+    return this
+  }
 
   /**
    * Toggle debug mode.
    */
   toggleDebugMode = () => {
-    if (this.session != undefined) return this;
-    const patch = { settings: { isDebugMode: !this.settings.isDebugMode } };
-    this.patchState(patch, `settings:toggled_debug`);
-    this.persist(patch);
-    return this;
-  };
+    if (this.session) return this
+    const patch = { settings: { isDebugMode: !this.settings.isDebugMode } }
+    this.patchState(patch, `settings:toggled_debug`)
+    this.persist(patch)
+    return this
+  }
 
   /**
    * Toggles the state if menu is opened
    */
   setMenuOpen = (isOpen: boolean): this => {
-    const patch = { appState: { isMenuOpen: isOpen } };
-    this.patchState(patch, 'ui:toggled_menu_opened');
-    this.persist(patch);
-    return this;
-  };
+    const patch = { appState: { isMenuOpen: isOpen } }
+    this.patchState(patch, 'ui:toggled_menu_opened')
+    this.persist(patch)
+    return this
+  }
 
   /**
    * Toggles the state if something is loading
    */
   setIsLoading = (isLoading: boolean): this => {
-    const patch = { appState: { isLoading } };
-    this.patchState(patch, 'ui:toggled_is_loading');
-    this.persist(patch);
-    return this;
-  };
+    const patch = { appState: { isLoading } }
+    this.patchState(patch, 'ui:toggled_is_loading')
+    this.persist(patch)
+    return this
+  }
 
   setDisableAssets = (disableAssets: boolean): this => {
-    this.patchState({ appState: { disableAssets } }, 'ui:toggled_disable_images');
-    return this;
-  };
+    this.patchState({ appState: { disableAssets } }, 'ui:toggled_disable_images')
+    return this
+  }
 
   get isMenuOpen(): boolean {
-    return this.appState.isMenuOpen;
+    return this.appState.isMenuOpen
   }
 
   get isLoading(): boolean {
-    return this.appState.isLoading;
+    return this.appState.isLoading
   }
 
   get disableAssets(): boolean {
-    return this.appState.disableAssets;
+    return this.appState.disableAssets
   }
 
   /**
    * Toggle grids.
    */
   toggleGrid = (): this => {
-    if (this.session != undefined) return this;
-    const patch = { settings: { showGrid: !this.settings.showGrid } };
-    this.patchState(patch, 'settings:toggled_grid');
-    this.persist(patch);
-    return this;
-  };
+    if (this.session) return this
+    const patch = { settings: { showGrid: !this.settings.showGrid } }
+    this.patchState(patch, 'settings:toggled_grid')
+    this.persist(patch)
+    return this
+  }
 
   /**
    * Select a tool.
    * @param tool The tool to select, or "select".
    */
   selectTool = (type: TDToolType): this => {
-    if (this.readOnly || this.session != undefined) return this;
+    if (this.readOnly || this.session) return this
 
-    this.isPointing = false; // reset pointer state, in case something weird happened
+    this.isPointing = false // reset pointer state, in case something weird happened
 
-    const tool = this.tools[type];
+    const tool = this.tools[type]
 
     if (tool === this.currentTool) {
       this.patchState({
         appState: {
           isToolLocked: false,
         },
-      });
-      return this;
+      })
+      return this
     }
 
-    this.currentTool.onExit();
-    tool.previous = this.currentTool.type;
-    this.currentTool = tool;
-    this.currentTool.onEnter();
+    this.currentTool.onExit()
+    tool.previous = this.currentTool.type
+    this.currentTool = tool
+    this.currentTool.onEnter()
 
     return this.patchState(
       {
@@ -1102,24 +1145,24 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           isToolLocked: false,
         },
       },
-      `selected_tool:${type}`,
-    );
-  };
+      `selected_tool:${type}`
+    )
+  }
 
   /**
    * Toggle the tool lock option.
    */
   toggleToolLock = (): this => {
-    if (this.session != undefined) return this;
+    if (this.session) return this
     return this.patchState(
       {
         appState: {
           isToolLocked: !this.appState.isToolLocked,
         },
       },
-      `toggled_tool_lock`,
-    );
-  };
+      `toggled_tool_lock`
+    )
+  }
 
   /* -------------------------------------------------- */
   /*                      Document                      */
@@ -1129,19 +1172,19 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * Reset the document to a blank state.
    */
   resetDocument = (): this => {
-    if (this.session != undefined) return this;
-    this.session = undefined;
-    this.currentTool = this.tools.select;
+    if (this.session) return this
+    this.session = undefined
+    this.currentTool = this.tools.select
 
-    const document_ = TldrawApp.defaultDocument;
+    const doc = TldrawApp.defaultDocument
 
     // Set the default page name to the localized version of "Page"
-    document_.pages.page.name = 'Page 1';
+    doc.pages['page'].name = 'Page 1'
 
-    this.resetHistory().clearSelectHistory().loadDocument(TldrawApp.defaultDocument).persist({});
+    this.resetHistory().clearSelectHistory().loadDocument(TldrawApp.defaultDocument).persist({})
 
-    return this;
-  };
+    return this
+  }
 
   /**
    *
@@ -1154,9 +1197,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           users: Object.fromEntries(users.map((user) => [user.id, user])),
         },
       },
-      isOwnUpdate ? 'room:self:update' : 'room:user:update',
-    );
-  };
+      isOwnUpdate ? 'room:self:update' : 'room:user:update'
+    )
+  }
 
   removeUser = (userId: string) => {
     this.patchState({
@@ -1165,8 +1208,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           [userId]: undefined,
         },
       },
-    });
-  };
+    })
+  }
 
   /**
    * Merge a new document patch into the current document.
@@ -1181,130 +1224,142 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             ...this.state,
             document,
           },
-          TldrawApp.version,
+          TldrawApp.version
         ),
         appState: {
           ...this.appState,
           currentPageId: Object.keys(document.pages)[0],
         },
-      });
-      return this;
+      })
+      return this
     }
 
     // Have we deleted any pages? If so, drop everything and change
     // to the first page. This is an edge case.
-    const currentPageStates = { ...this.document.pageStates };
+    const currentPageStates = { ...this.document.pageStates }
 
     // Update the app state's current page id if needed
     const nextAppState = {
       ...this.appState,
-      currentPageId: document.pages[this.currentPageId] ? this.currentPageId : Object.keys(document.pages)[0],
-      pages: Object.values(document.pages).map((page, index) => ({
+      currentPageId: document.pages[this.currentPageId]
+        ? this.currentPageId
+        : Object.keys(document.pages)[0],
+      pages: Object.values(document.pages).map((page, i) => ({
         id: page.id,
         name: page.name,
-        childIndex: page.childIndex || index,
+        childIndex: page.childIndex || i,
       })),
-    };
+    }
 
     // Reset the history (for now)
-    this.resetHistory();
+    this.resetHistory()
 
     Object.keys(this.document.pages).forEach((pageId) => {
       if (!document.pages[pageId]) {
         if (pageId === this.appState.currentPageId) {
-          this.cancelSession();
-          this.selectNone();
+          this.cancelSession()
+          this.selectNone()
         }
 
-        currentPageStates[pageId] = undefined as unknown as TLPageState;
+        currentPageStates[pageId] = undefined as unknown as TLPageState
       }
-    });
+    })
 
     // Don't allow the selected ids to be deleted during a session—if
     // they've been removed, put them back in the client's document.
-    if (this.session != undefined) {
+    if (this.session) {
       this.selectedIds
         .filter((id) => !document.pages[this.currentPageId].shapes[id])
-        .forEach((id) => (document.pages[this.currentPageId].shapes[id] = this.page.shapes[id]));
+        .forEach((id) => (document.pages[this.currentPageId].shapes[id] = this.page.shapes[id]))
     }
 
     // For other pages, remove any selected ids that were deleted.
     Object.entries(currentPageStates).forEach(([pageId, pageState]) => {
-      pageState.selectedIds = pageState.selectedIds.filter((id) => !!document.pages[pageId].shapes[id]);
-    });
+      pageState.selectedIds = pageState.selectedIds.filter(
+        (id) => !!document.pages[pageId].shapes[id]
+      )
+    })
 
     // If the user is currently creating a shape (ie drawing), then put that
     // shape back onto the page for the client.
-    const { editingId } = this.pageState;
+    const { editingId } = this.pageState
 
     if (editingId) {
-      document.pages[this.currentPageId].shapes[editingId] = this.page.shapes[editingId];
-      currentPageStates[this.currentPageId].selectedIds = [editingId];
+      document.pages[this.currentPageId].shapes[editingId] = this.page.shapes[editingId]
+      currentPageStates[this.currentPageId].selectedIds = [editingId]
     }
 
     return this.replaceState(
       {
-        ...migrate({ ...this.state, document: { ...document, pageStates: currentPageStates } }, TldrawApp.version),
+        ...migrate(
+          { ...this.state, document: { ...document, pageStates: currentPageStates } },
+          TldrawApp.version
+        ),
         appState: nextAppState,
       },
-      'merge',
-    );
-  };
+      'merge'
+    )
+  }
 
   /**
    * Update the current document.
    * @param document
    */
   updateDocument = (document: TDDocument, reason = 'updated_document'): this => {
-    const previousState = this.state;
+    const prevState = this.state
 
     const nextState = {
-      ...previousState,
+      ...prevState,
       document: {
-        ...previousState.document,
+        ...prevState.document,
         assets: document.assets,
       },
-    };
+    }
 
     if (!document.pages[this.currentPageId]) {
       nextState.appState = {
-        ...previousState.appState,
+        ...prevState.appState,
         currentPageId: Object.keys(document.pages)[0],
-      };
+      }
     }
 
-    let index = 1;
+    let i = 1
 
     for (const nextPage of Object.values(document.pages)) {
-      if (nextPage !== previousState.document.pages[nextPage.id]) {
-        nextState.document.pages[nextPage.id] = nextPage;
+      if (nextPage !== prevState.document.pages[nextPage.id]) {
+        nextState.document.pages[nextPage.id] = nextPage
 
         if (!nextPage.name) {
-          nextState.document.pages[nextPage.id].name = `Page ${index + 1}`;
-          index++;
+          nextState.document.pages[nextPage.id].name = `Page ${i + 1}`
+          i++
         }
       }
     }
 
     for (const nextPageState of Object.values(document.pageStates)) {
-      if (nextPageState !== previousState.document.pageStates[nextPageState.id]) {
-        nextState.document.pageStates[nextPageState.id] = nextPageState;
+      if (nextPageState !== prevState.document.pageStates[nextPageState.id]) {
+        nextState.document.pageStates[nextPageState.id] = nextPageState
 
-        const nextPage = document.pages[nextPageState.id];
-        const keysToCheck = ['bindingId', 'editingId', 'hoveredId', 'pointedId'] as const;
+        const nextPage = document.pages[nextPageState.id]
+        const keysToCheck = ['bindingId', 'editingId', 'hoveredId', 'pointedId'] as const
 
         for (const key of keysToCheck) {
           if (!nextPage.shapes[key]) {
-            nextPageState[key] = undefined;
+            nextPageState[key] = undefined
           }
         }
 
-        nextPageState.selectedIds = nextPageState.selectedIds.filter((id) => !!document.pages[nextPage.id].shapes[id]);
+        nextPageState.selectedIds = nextPageState.selectedIds.filter(
+          (id) => !!document.pages[nextPage.id].shapes[id]
+        )
       }
     }
 
-    return this.replaceState(migrate(nextState, nextState.document.version || 0), `${reason}:${document.id}`);
-  };
+    return this.replaceState(
+      migrate(nextState, nextState.document.version || 0),
+      `${reason}:${document.id}`
+    )
+  }
 
   /**
    * Load a fresh room into the state.
@@ -1325,20 +1380,20 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           },
         },
       },
-    });
-    return this;
-  };
+    })
+    return this
+  }
 
   /**
    * Load a new document.
    * @param document The document to load
    */
   loadDocument = (document: TDDocument): this => {
-    this.setIsLoading(true);
-    this.selectNone();
-    this.resetHistory();
-    this.clearSelectHistory();
-    this.session = undefined;
+    this.setIsLoading(true)
+    this.selectNone()
+    this.resetHistory()
+    this.clearSelectHistory()
+    this.session = undefined
 
     const state = {
       ...TldrawApp.defaultState,
@@ -1352,14 +1407,14 @@ export class TldrawApp extends StateManager<TDSnapshot> {
         currentPageId: Object.keys(document.pages)[0],
         disableAssets: this.disableAssets,
       },
-    };
+    }
 
-    this.replaceState(migrate(state, TldrawApp.version), 'loaded_document');
-    const { point, zoom } = this.camera;
-    this.updateViewport(point, zoom);
-    this.setIsLoading(false);
-    return this;
-  };
+    this.replaceState(migrate(state, TldrawApp.version), 'loaded_document')
+    const { point, zoom } = this.camera
+    this.updateViewport(point, zoom)
+    this.setIsLoading(false)
+    return this
+  }
 
   /**
    * load content from URL
@@ -1368,7 +1423,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @returns
    */
   loadPageFromURL = (page: TDPage, pageState: Record<string, TLPageState>) => {
-    const pageId = page.id;
+    const pageId = page.id
     const nextDocument = {
       ...this.state.document,
       pageStates: {
@@ -1379,10 +1434,10 @@ export class TldrawApp extends StateManager<TDSnapshot> {
         ...this.document.pages,
         [pageId]: page,
       },
-    };
-    this.loadDocument(nextDocument as TDDocument);
-    this.persist({});
-  };
+    }
+    this.loadDocument(nextDocument as TDDocument)
+    this.persist({})
+  }
 
   // Should we move this to the app layer? onSave, onSaveAs, etc?
 
@@ -1390,63 +1445,66 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * Create a new project.
    */
   newProject = () => {
-    if (!this.isLocal) return;
-    this.fileSystemHandle = null;
-    this.resetDocument();
-  };
+    if (!this.isLocal) return
+    this.fileSystemHandle = null
+    this.resetDocument()
+  }
 
   /**
    * Save the current project.
    */
   saveProject = async () => {
-    if (this.readOnly) return;
-    const fileHandle = await saveToFileSystem(migrate(this.state, TldrawApp.version).document, this.fileSystemHandle);
-    this.fileSystemHandle = fileHandle;
-    this.persist({});
-    this.isDirty = false;
-    return this;
-  };
+    if (this.readOnly) return
+    const fileHandle = await saveToFileSystem(
+      migrate(this.state, TldrawApp.version).document,
+      this.fileSystemHandle
+    )
+    this.fileSystemHandle = fileHandle
+    this.persist({})
+    this.isDirty = false
+    return this
+  }
 
   /**
    * Save the current project as a new file.
    */
   saveProjectAs = async (filename?: string) => {
     try {
-      const fileHandle = await saveToFileSystem(this.document, null, filename);
-      this.fileSystemHandle = fileHandle;
-      this.persist({});
-      this.isDirty = false;
-    } catch (error: any) {
+      const fileHandle = await saveToFileSystem(this.document, null, filename)
+      this.fileSystemHandle = fileHandle
+      this.persist({})
+      this.isDirty = false
+    } catch (e: any) {
       // Likely cancelled
-      console.error(error.message);
+      console.error(e.message)
     }
-    return this;
-  };
+    return this
+  }
 
   /**
    * Load a project from the filesystem.
    * @todo
    */
   openProject = async () => {
-    if (!this.isLocal) return;
+    if (!this.isLocal) return
 
     try {
-      const result = await openFromFileSystem();
-      if (result == undefined) {
-        throw new Error();
+      const result = await openFromFileSystem()
+      if (!result) {
+        throw Error()
       }
 
-      const { fileHandle, document } = result;
-      this.loadDocument(document);
-      this.fileSystemHandle = fileHandle;
-      this.zoomToFit();
-      this.persist({});
-    } catch (error) {
-      console.error(error);
+      const { fileHandle, document } = result
+      this.loadDocument(document)
+      this.fileSystemHandle = fileHandle
+      this.zoomToFit()
+      this.persist({})
+    } catch (e) {
+      console.error(e)
     } finally {
-      this.persist({});
+      this.persist({})
     }
-  };
+  }
 
   /**
    * Upload media from file
@@ -1454,19 +1512,19 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   openAsset = async () => {
     if (!this.disableAssets)
       try {
-        const file = await openAssetsFromFileSystem();
+        const file = await openAssetsFromFileSystem()
         if (Array.isArray(file)) {
-          this.addMediaFromFiles(file, this.centerPoint);
+          this.addMediaFromFiles(file, this.centerPoint)
         } else {
-          if (!file) return;
-          this.addMediaFromFiles([file]);
+          if (!file) return
+          this.addMediaFromFiles([file])
         }
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        console.error(e)
       } finally {
-        this.persist({});
+        this.persist({})
       }
-  };
+  }
 
   /**
    * Sign out of the current account.
@@ -1475,39 +1533,39 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    */
   signOut = () => {
     // todo
-  };
+  }
   /* -------------------- Getters --------------------- */
 
   /**
    * Get the current app state.
    */
   getAppState = (): TDSnapshot['appState'] => {
-    return this.appState;
-  };
+    return this.appState
+  }
 
   /**
    * Get a page.
    * @param pageId (optional) The page's id.
    */
   getPage = (pageId = this.currentPageId): TDPage => {
-    return TLDR.getPage(this.state, pageId || this.currentPageId);
-  };
+    return TLDR.getPage(this.state, pageId || this.currentPageId)
+  }
 
   /**
    * Get the shapes (as an array) from a given page.
    * @param pageId (optional) The page's id.
    */
   getShapes = (pageId = this.currentPageId): TDShape[] => {
-    return TLDR.getShapes(this.state, pageId || this.currentPageId);
-  };
+    return TLDR.getShapes(this.state, pageId || this.currentPageId)
+  }
 
   /**
    * Get the bindings from a given page.
    * @param pageId (optional) The page's id.
    */
   getBindings = (pageId = this.currentPageId): TDBinding[] => {
-    return TLDR.getBindings(this.state, pageId || this.currentPageId);
-  };
+    return TLDR.getBindings(this.state, pageId || this.currentPageId)
+  }
 
   /**
    * Get a shape from a given page.
@@ -1515,8 +1573,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param pageId (optional) The page's id.
    */
   getShape = <T extends TDShape = TDShape>(id: string, pageId = this.currentPageId): T => {
-    return TLDR.getShape<T>(this.state, id, pageId);
-  };
+    return TLDR.getShape<T>(this.state, id, pageId)
+  }
 
   /**
    * Get the bounds of a shape on a given page.
@@ -1524,8 +1582,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param pageId (optional) The page's id.
    */
   getShapeBounds = (id: string, pageId = this.currentPageId): TLBounds => {
-    return TLDR.getBounds(this.getShape(id, pageId));
-  };
+    return TLDR.getBounds(this.getShape(id, pageId))
+  }
 
   /**
    * Get a binding from a given page.
@@ -1533,16 +1591,16 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param pageId (optional) The page's id.
    */
   getBinding = (id: string, pageId = this.currentPageId): TDBinding => {
-    return TLDR.getBinding(this.state, id, pageId);
-  };
+    return TLDR.getBinding(this.state, id, pageId)
+  }
 
   /**
    * Get the page state for a given page.
    * @param pageId (optional) The page's id.
    */
   getPageState = (pageId = this.currentPageId): TLPageState => {
-    return TLDR.getPageState(this.state, pageId || this.currentPageId);
-  };
+    return TLDR.getPageState(this.state, pageId || this.currentPageId)
+  }
 
   /**
    * Turn a screen point into a point on the page.
@@ -1550,103 +1608,103 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param pageId (optional) The page to use
    */
   getPagePoint = (point: number[], pageId = this.currentPageId): number[] => {
-    const { camera } = this.getPageState(pageId);
-    return Vec.sub(Vec.div(point, camera.zoom), camera.point);
-  };
+    const { camera } = this.getPageState(pageId)
+    return Vec.sub(Vec.div(point, camera.zoom), camera.point)
+  }
 
   /**
    * Get the current undo/redo stack.
    */
   get history() {
-    return this.stack.slice(0, this.pointer + 1);
+    return this.stack.slice(0, this.pointer + 1)
   }
 
   /**
    * Replace the current history stack.
    */
   set history(commands: TldrawCommand[]) {
-    this.replaceHistory(commands);
+    this.replaceHistory(commands)
   }
 
   /**
    * The current document.
    */
   get document(): TDDocument {
-    return this.state.document;
+    return this.state.document
   }
 
   /**
    * The current app state.
    */
   get settings(): TDSnapshot['settings'] {
-    return this.state.settings;
+    return this.state.settings
   }
 
   /**
    * The current app state.
    */
   get appState(): TDSnapshot['appState'] {
-    return this.state.appState;
+    return this.state.appState
   }
 
   /**
    * The current page id.
    */
   get currentPageId(): string {
-    return this.state.appState.currentPageId;
+    return this.state.appState.currentPageId
   }
 
   /**
    * The current page.
    */
   get page(): TDPage {
-    return this.state.document.pages[this.currentPageId];
+    return this.state.document.pages[this.currentPageId]
   }
 
   /**
    * The current page's shapes (as an array).
    */
   get shapes(): TDShape[] {
-    return Object.values(this.page.shapes);
+    return Object.values(this.page.shapes)
   }
 
   /**
    * The current page's bindings.
    */
   get bindings(): TDBinding[] {
-    return Object.values(this.page.bindings);
+    return Object.values(this.page.bindings)
   }
 
   /**
    * The document's assets (as an array).
    */
   get assets(): TDAsset[] {
-    return Object.values(this.document.assets);
+    return Object.values(this.document.assets)
   }
 
   /**
    * The current page's state.
    */
   get pageState(): TLPageState {
-    return this.state.document.pageStates[this.currentPageId];
+    return this.state.document.pageStates[this.currentPageId]
   }
 
   get camera(): {
-    point: number[];
-    zoom: number;
+    point: number[]
+    zoom: number
   } {
-    return this.pageState.camera;
+    return this.pageState.camera
   }
 
   get zoom(): number {
-    return this.pageState.camera.zoom;
+    return this.pageState.camera.zoom
   }
 
   /**
    * The page's current selected ids.
    */
   get selectedIds(): string[] {
-    return this.pageState.selectedIds;
+    return this.pageState.selectedIds
   }
 
   /* -------------------------------------------------- */
@@ -1658,18 +1716,18 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param pageId (optional) The new page's id.
    */
   createPage = (id?: string, name?: string): this => {
-    if (this.readOnly) return this;
-    const { width, height } = this.rendererBounds;
-    return this.setState(Commands.createPage(this, [-width / 2, -height / 2], id, name));
-  };
+    if (this.readOnly) return this
+    const { width, height } = this.rendererBounds
+    return this.setState(Commands.createPage(this, [-width / 2, -height / 2], id, name))
+  }
 
   /**
    * Change the current page.
    * @param pageId The new current page's id.
    */
   changePage = (pageId: string): this => {
-    return this.setState(Commands.changePage(this, pageId));
-  };
+    return this.setState(Commands.changePage(this, pageId))
+  }
 
   /**
    * Move a page above another.
@@ -1677,10 +1735,10 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param index The page above which to move.
    */
   movePage = (pageId: string, index: number): this => {
-    if (this.readOnly) return this;
+    if (this.readOnly) return this
 
-    return this.setState(Commands.movePage(this, pageId, index));
-  };
+    return this.setState(Commands.movePage(this, pageId, index))
+  }
 
   /**
    * Rename a page.
@@ -1688,28 +1746,28 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param name The page's new name
    */
   renamePage = (pageId: string, name: string): this => {
-    if (this.readOnly) return this;
-    return this.setState(Commands.renamePage(this, pageId, name));
-  };
+    if (this.readOnly) return this
+    return this.setState(Commands.renamePage(this, pageId, name))
+  }
 
   /**
    * Duplicate a page.
    * @param pageId The id of the page to duplicate.
    */
   duplicatePage = (pageId: string): this => {
-    if (this.readOnly) return this;
-    return this.setState(Commands.duplicatePage(this, pageId));
-  };
+    if (this.readOnly) return this
+    return this.setState(Commands.duplicatePage(this, pageId))
+  }
 
   /**
    * Delete a page.
    * @param pageId The id of the page to delete.
    */
   deletePage = (pageId?: string): this => {
-    if (this.readOnly) return this;
-    if (Object.values(this.document.pages).length <= 1) return this;
-    return this.setState(Commands.deletePage(this, pageId || this.currentPageId));
-  };
+    if (this.readOnly) return this
+    if (Object.values(this.document.pages).length <= 1) return this
+    return this.setState(Commands.deletePage(this, pageId ? pageId : this.currentPageId))
+  }
 
   /* -------------------------------------------------- */
   /*                      Clipboard                     */
@@ -1720,16 +1778,16 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids of the shapes to cut.
    */
   cut = (ids = this.selectedIds, e?: ClipboardEvent): this => {
-    e?.preventDefault();
+    e?.preventDefault()
 
-    this.copy(ids, e);
+    this.copy(ids, e)
 
     if (!this.readOnly) {
-      this.delete(ids);
+      this.delete(ids)
     }
 
-    return this;
-  };
+    return this
+  }
 
   /**
    * Copy one or more shapes to the clipboard.
@@ -1738,21 +1796,21 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   copy = (ids = this.selectedIds, e?: ClipboardEvent): this => {
     // Allow when in readOnly mode
 
-    e?.preventDefault();
+    e?.preventDefault()
 
-    this.clipboard = this.getContent(ids);
+    this.clipboard = this.getContent(ids)
 
     const jsonString = JSON.stringify({
       type: 'tldr/clipboard',
       ...this.clipboard,
-    });
+    })
 
-    const tldrawString = `<tldraw>${jsonString}</tldraw>`;
+    const tldrawString = `<tldraw>${jsonString}</tldraw>`
 
-    setClipboard(tldrawString);
+    setClipboard(tldrawString)
 
-    if (e != undefined) {
-      e.clipboardData?.setData('text/html', tldrawString);
+    if (e) {
+      e.clipboardData?.setData('text/html', tldrawString)
     }
 
     if (navigator.clipboard && window.ClipboardItem) {
@@ -1760,48 +1818,48 @@ export class TldrawApp extends StateManager<TDSnapshot> {
         new ClipboardItem({
           'text/html': new Blob([tldrawString], { type: 'text/html' }),
         }),
-      ]);
+      ])
     }
 
-    return this;
-  };
+    return this
+  }
 
   /**
    * Paste shapes (or text) from clipboard to a certain point.
    * @param point
    */
   paste = async (point?: number[], e?: ClipboardEvent) => {
-    if (this.readOnly) return;
+    if (this.readOnly) return
 
-    const filesToPaste: File[] = [];
-    const shapesToCreate: TDShape[] = [];
+    const filesToPaste: File[] = []
+    const shapesToCreate: TDShape[] = []
 
-    let clipboardData: any;
+    let clipboardData: any
 
     const getSvgFromText = async (text: string) => {
-      const div = document.createElement('div');
-      div.innerHTML = text;
-      const svg = div.firstChild as SVGSVGElement;
+      const div = document.createElement('div')
+      div.innerHTML = text
+      const svg = div.firstChild as SVGSVGElement
 
-      svg.style.setProperty('background-color', 'transparent');
+      svg.style.setProperty('background-color', 'transparent')
 
       const imageBlob = await TLDR.getImageForSvg(svg, TDExportType.SVG, {
         scale: 1,
         quality: 1,
-      });
+      })
 
-      if (imageBlob == undefined) {
-        getShapeFromText(text);
+      if (imageBlob) {
+        const file = new File([imageBlob], 'image.svg')
+        filesToPaste.push(file)
       } else {
-        const file = new File([imageBlob], 'image.svg');
-        filesToPaste.push(file);
+        getShapeFromText(text)
       }
-    };
+    }
 
     const getShapeFromText = (text: string) => {
-      const pagePoint = this.getPagePoint(point ?? this.centerPoint, this.currentPageId);
+      const pagePoint = this.getPagePoint(point ?? this.centerPoint, this.currentPageId)
 
-      const isMultiline = text.includes('\n');
+      const isMultiline = text.includes('\n')
 
       shapesToCreate.push(
         TLDR.getShapeUtil(TDShapeType.Text).getShape({
@@ -1814,140 +1872,141 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             ...this.appState.currentStyle,
             textAlign: isMultiline ? AlignStyle.Start : this.appState.currentStyle.textAlign,
           },
-        }),
-      );
-    };
+        })
+      )
+    }
 
     const getShapeFromHtml = (html: string) => {
       try {
-        const maybeJson = html.match(/<tldraw>(.*)<\/tldraw>/)?.[1];
+        const maybeJson = html.match(/<tldraw>(.*)<\/tldraw>/)?.[1]
 
-        if (!maybeJson) return;
+        if (!maybeJson) return
 
         const json: {
-          assets: TDAsset[];
-          bindings: TDBinding[];
-          shapes: Array<TDShape & { text: string }>;
-          type: string;
-        } = JSON.parse(maybeJson);
+          type: string
+          shapes: (TDShape & { text: string })[]
+          bindings: TDBinding[]
+          assets: TDAsset[]
+        } = JSON.parse(maybeJson)
         if (json.type === 'tldr/clipboard') {
-          clipboardData = json;
-          return;
+          clipboardData = json
+          return
         } else {
-          throw new Error('Not tldraw data!');
+          throw Error('Not tldraw data!')
         }
-      } catch {
-        getShapeFromText(html);
+      } catch (e) {
+        getShapeFromText(html)
       }
-    };
+    }
 
     if (e !== undefined) {
-      const items = [...(e.clipboardData?.items ?? [])];
+      const items = Array.from(e.clipboardData?.items ?? [])
 
       await Promise.all(
         items.map(async (item) => {
-          const { type, kind } = item;
+          const { type, kind } = item
 
           switch (kind) {
             case 'string': {
-              const string_: string = await new Promise((resolve) => item.getAsString(resolve));
+              const str: string = await new Promise((resolve) => item.getAsString(resolve))
 
               switch (type) {
                 case 'text/html': {
-                  if (string_.match(/<tldraw>(.*)<\/tldraw>/)?.[1]) {
-                    getShapeFromHtml(string_);
+                  if (str.match(/<tldraw>(.*)<\/tldraw>/)?.[1]) {
+                    getShapeFromHtml(str)
+                    return
                   }
-                  break;
+                  break
                 }
                 case 'text/plain': {
-                  if (string_.startsWith('<svg')) {
-                    await getSvgFromText(string_);
+                  if (str.startsWith('<svg')) {
+                    await getSvgFromText(str)
                   } else {
-                    getShapeFromText(string_);
+                    getShapeFromText(str)
                   }
-                  break;
+                  break
                 }
               }
 
-              break;
+              break
             }
             case 'file': {
-              const file = item.getAsFile();
-              if (file) filesToPaste.push(file);
-              break;
+              const file = item.getAsFile()
+              if (file) filesToPaste.push(file)
+              break
             }
           }
-        }),
-      );
+        })
+      )
     }
 
     if (clipboardData) {
-      this.insertContent(clipboardData, { point, select: true });
-      return this;
+      this.insertContent(clipboardData, { point, select: true })
+      return this
     }
 
-    if (filesToPaste.length > 0) {
-      this.addMediaFromFiles(filesToPaste, point);
-      return this;
+    if (filesToPaste.length) {
+      this.addMediaFromFiles(filesToPaste, point)
+      return this
     }
 
-    if (shapesToCreate.length > 0) {
-      const pagePoint = this.getPagePoint(point ?? this.centerPoint, this.currentPageId);
+    if (shapesToCreate.length) {
+      const pagePoint = this.getPagePoint(point ?? this.centerPoint, this.currentPageId)
 
-      const currentPoint = Vec.add(pagePoint, [0, 0]);
+      const currentPoint = Vec.add(pagePoint, [0, 0])
 
-      shapesToCreate.forEach((shape, index) => {
-        const bounds = TLDR.getBounds(shape);
+      shapesToCreate.forEach((shape, i) => {
+        const bounds = TLDR.getBounds(shape)
 
-        if (index === 0) {
+        if (i === 0) {
           // For the first shape, offset the current point so
           // that the first shape's center is at the page point
-          currentPoint[0] -= bounds.width / 2;
-          currentPoint[1] -= bounds.height / 2;
+          currentPoint[0] -= bounds.width / 2
+          currentPoint[1] -= bounds.height / 2
         }
 
         // Set the shape's point the current point
-        shape.point = [...currentPoint];
+        shape.point = [...currentPoint]
 
         // Then bump the page current point by this shape's width
-        currentPoint[0] += bounds.width;
-      });
+        currentPoint[0] += bounds.width
+      })
 
-      this.createShapes(...shapesToCreate);
-      return this;
+      this.createShapes(...shapesToCreate)
+      return this
     }
 
-    if (this.clipboard == undefined) {
+    if (this.clipboard) {
+      // try to get clipboard data from the scene itself
+      this.insertContent(this.clipboard)
+    } else {
       // last chance to get the clipboard data, is it in storage?
       getClipboard().then((text) => {
-        if (text) getShapeFromHtml(text);
-      });
-    } else {
-      // try to get clipboard data from the scene itself
-      this.insertContent(this.clipboard);
+        if (text) getShapeFromHtml(text)
+      })
     }
 
-    return this;
-  };
+    return this
+  }
 
   getSvg = async (
-    ids = this.selectedIds.length > 0 ? this.selectedIds : Object.keys(this.page.shapes),
-    options = {} as Partial<{ includeFonts: boolean }>,
+    ids = this.selectedIds.length ? this.selectedIds : Object.keys(this.page.shapes),
+    opts = {} as Partial<{ includeFonts: boolean }>
   ): Promise<SVGElement | undefined> => {
-    if (ids.length === 0) return;
+    if (ids.length === 0) return
 
     // Embed our custom fonts
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-    const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
+    const style = document.createElementNS('http://www.w3.org/2000/svg', 'style')
 
     if (typeof window !== 'undefined') {
-      window.focus(); // weird but necessary
+      window.focus() // weird but necessary
     }
 
-    if (options.includeFonts) {
+    if (opts.includeFonts) {
       try {
-        const { fonts } = await fetch(TldrawApp.assetSrc, { mode: 'no-cors' }).then(async (d) => await d.json());
+        const { fonts } = await fetch(TldrawApp.assetSrc, { mode: 'no-cors' }).then((d) => d.json())
 
         style.textContent = `
           @font-face {
@@ -1974,137 +2033,158 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             font-weight: 500;
             font-style: normal;
           }
-          `;
-      } catch {
-        TLDR.warn('Could not find tldraw-assets.json file.');
+          `
+      } catch (e) {
+        TLDR.warn('Could not find tldraw-assets.json file.')
       }
     } else {
-      style.textContent = `@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Source+Code+Pro&family=Source+Sans+Pro&family=Crimson+Pro&display=block');`;
+      style.textContent = `@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Source+Code+Pro&family=Source+Sans+Pro&family=Crimson+Pro&display=block');`
     }
 
-    defs.append(style);
-    svg.append(defs);
+    defs.append(style)
+    svg.append(defs)
 
     // Get the shapes in order
-    const shapes = ids.map((id) => this.getShape(id, this.currentPageId)).sort((a, b) => a.childIndex - b.childIndex);
+    const shapes = ids
+      .map((id) => this.getShape(id, this.currentPageId))
+      .sort((a, b) => a.childIndex - b.childIndex)
 
     // Find their common bounding box. Shapes will be positioned relative to this box
-    const commonBounds = Utils.getCommonBounds(shapes.map(TLDR.getRotatedBounds));
+    const commonBounds = Utils.getCommonBounds(shapes.map(TLDR.getRotatedBounds))
 
     // A quick routine to get an SVG element for each shape
     const getSvgElementForShape = (shape: TDShape) => {
-      const util = TLDR.getShapeUtil(shape);
-      const bounds = util.getBounds(shape);
-      const elm = util.getSvgElement(shape, this.settings.isDarkMode);
+      const util = TLDR.getShapeUtil(shape)
+      const bounds = util.getBounds(shape)
+      const elm = util.getSvgElement(shape, this.settings.isDarkMode)
 
-      if (elm == undefined) return;
+      if (!elm) return
 
       // If the element is an image, set the asset src as the xlinkhref
       if (shape.type === TDShapeType.Image) {
-        elm.setAttribute('xlink:href', this.document.assets[shape.assetId].src);
+        elm.setAttribute('xlink:href', this.document.assets[shape.assetId].src)
       } else if (shape.type === TDShapeType.Video) {
-        elm.setAttribute('xlink:href', this.serializeVideo(shape.id));
+        elm.setAttribute('xlink:href', this.serializeVideo(shape.id))
       }
 
       // Put the element in the correct position relative to the common bounds
       elm.setAttribute(
         'transform',
-        `translate(${(SVG_EXPORT_PADDING + shape.point[0] - commonBounds.minX).toFixed(2)}, ${(SVG_EXPORT_PADDING + shape.point[1] - commonBounds.minY).toFixed(
-          2,
-        )}) rotate(${(((shape.rotation || 0) * 180) / Math.PI).toFixed(2)}, ${(bounds.width / 2).toFixed(2)}, ${(bounds.height / 2).toFixed(2)})`,
-      );
+        `translate(${(SVG_EXPORT_PADDING + shape.point[0] - commonBounds.minX).toFixed(2)}, ${(
+          SVG_EXPORT_PADDING +
+          shape.point[1] -
+          commonBounds.minY
+        ).toFixed(2)}) rotate(${(((shape.rotation || 0) * 180) / Math.PI).toFixed(2)}, ${(
+          bounds.width / 2
+        ).toFixed(2)}, ${(bounds.height / 2).toFixed(2)})`
+      )
 
-      return elm;
-    };
+      return elm
+    }
 
     // Assemble the final SVG by iterating through each shape and its children
     shapes.forEach((shape) => {
       // The shape is a group! Just add the children.
       if (shape.children?.length) {
         // Create a group <g> elm for shape
-        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
 
         // Get the shape's children as elms and add them to the group
         shape.children.forEach((childId) => {
-          const shape = this.getShape(childId, this.currentPageId);
-          const elm = getSvgElementForShape(shape);
+          const shape = this.getShape(childId, this.currentPageId)
+          const elm = getSvgElementForShape(shape)
 
-          if (elm != undefined) {
-            g.append(elm);
+          if (elm) {
+            g.append(elm)
           }
-        });
+        })
 
         // Add the group elm to the SVG
-        svg.append(g);
+        svg.append(g)
 
-        return;
+        return
       }
 
       // Just add the shape's element to the
-      const elm = getSvgElementForShape(shape);
+      const elm = getSvgElementForShape(shape)
 
-      if (elm != undefined) {
-        svg.append(elm);
+      if (elm) {
+        svg.append(elm)
       }
-    });
+    })
 
     // Resize the elm to the bounding box
-    svg.setAttribute('viewBox', [0, 0, commonBounds.width + SVG_EXPORT_PADDING * 2, commonBounds.height + SVG_EXPORT_PADDING * 2].join(' '));
+    svg.setAttribute(
+      'viewBox',
+      [
+        0,
+        0,
+        commonBounds.width + SVG_EXPORT_PADDING * 2,
+        commonBounds.height + SVG_EXPORT_PADDING * 2,
+      ].join(' ')
+    )
 
     // Clean up the SVG by removing any hidden elements
-    svg.setAttribute('width', (commonBounds.width + SVG_EXPORT_PADDING * 2).toString());
-    svg.setAttribute('height', (commonBounds.height + SVG_EXPORT_PADDING * 2).toString());
+    svg.setAttribute('width', (commonBounds.width + SVG_EXPORT_PADDING * 2).toString())
+    svg.setAttribute('height', (commonBounds.height + SVG_EXPORT_PADDING * 2).toString())
 
     // Set export background
-    const exportBackground: TDExportBackground = this.settings.exportBackground;
-    const darkBackground = '#212529';
-    const lightBackground = 'rgb(248, 249, 250)';
+    const exportBackground: TDExportBackground = this.settings.exportBackground
+    const darkBackground = '#212529'
+    const lightBackground = 'rgb(248, 249, 250)'
 
     switch (exportBackground) {
       case TDExportBackground.Auto: {
-        svg.style.setProperty('background-color', this.settings.isDarkMode ? darkBackground : lightBackground);
-        break;
+        svg.style.setProperty(
+          'background-color',
+          this.settings.isDarkMode ? darkBackground : lightBackground
+        )
+        break
       }
       case TDExportBackground.Dark: {
-        svg.style.setProperty('background-color', darkBackground);
-        break;
+        svg.style.setProperty('background-color', darkBackground)
+        break
       }
       case TDExportBackground.Light: {
-        svg.style.setProperty('background-color', lightBackground);
-        break;
+        svg.style.setProperty('background-color', lightBackground)
+        break
       }
       case TDExportBackground.Transparent:
       default: {
-        svg.style.setProperty('background-color', 'transparent');
-        break;
+        svg.style.setProperty('background-color', 'transparent')
+        break
       }
     }
 
-    svg.querySelectorAll('.tl-fill-hitarea, .tl-stroke-hitarea, .tl-binding-indicator').forEach((elm) => elm.remove());
+    svg
+      .querySelectorAll('.tl-fill-hitarea, .tl-stroke-hitarea, .tl-binding-indicator')
+      .forEach((elm) => elm.remove())
 
-    return svg;
-  };
+    return svg
+  }
 
   /**
    * Copy one or more shapes as SVG.
    * @param ids The ids of the shapes to copy.
    * @returns A string containing the JSON.
    */
-  copySvg = async (ids = this.selectedIds.length > 0 ? this.selectedIds : Object.keys(this.page.shapes)) => {
-    if (ids.length === 0) return;
+  copySvg = async (
+    ids = this.selectedIds.length ? this.selectedIds : Object.keys(this.page.shapes)
+  ) => {
+    if (ids.length === 0) return
 
-    const svg = await this.getSvg(ids);
+    const svg = await this.getSvg(ids)
 
-    if (svg == undefined) return;
+    if (!svg) return
 
-    const svgString = TLDR.getSvgString(svg, 1);
+    const svgString = TLDR.getSvgString(svg, 1)
 
-    this.clipboard = this.getContent(ids);
+    this.clipboard = this.getContent(ids)
 
     const tldrawString = JSON.stringify({
       type: 'tldr/clipboard',
       ...this.clipboard,
-    });
+    })
 
     if (navigator.clipboard && window.ClipboardItem) {
       navigator.clipboard.write([
@@ -2112,11 +2192,11 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           'text/html': new Blob([tldrawString], { type: 'text/html' }),
           'text/plain': new Blob([svgString], { type: 'text/plain' }),
         }),
-      ]);
+      ])
     }
 
-    return svgString;
-  };
+    return svgString
+  }
 
   /**
    * Get the shapes and bindings for the current selection, if any, or else the current page.
@@ -2124,83 +2204,83 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids of the shapes to get content for.
    */
   getContent = (ids?: string[]) => {
-    const page = this.getPage(this.currentPageId);
+    const page = this.getPage(this.currentPageId)
 
     // If ids is explicitly empty ([]) return
-    if (ids != undefined && ids.length === 0) return;
+    if (ids && ids.length === 0) return
 
     // If ids was not provided, use the selected ids
-    if (ids == undefined) ids = this.selectedIds;
+    if (!ids) ids = this.selectedIds
 
     // If there are no selected ids, use all the page's shape ids
-    if (ids.length === 0) ids = Object.keys(page.shapes);
+    if (ids.length === 0) ids = Object.keys(page.shapes)
 
     // If the page was empty, return
-    if (ids.length === 0) return;
+    if (ids.length === 0) return
 
     const shapes = ids
       .map((id) => page.shapes[id])
       .flatMap((shape) => [shape, ...(shape.children ?? []).map((childId) => page.shapes[childId])])
-      .map(deepCopy);
+      .map(deepCopy)
 
-    const idsSet = new Set(shapes.map((s) => s.id));
+    const idsSet = new Set(shapes.map((s) => s.id))
 
     shapes.forEach((shape) => {
       if (shape.parentId === this.currentPageId) {
-        shape.parentId = 'currentPageId';
+        shape.parentId = 'currentPageId'
       }
-    });
+    })
 
     // If a binding's from and to are included, then include the binding;
     // but if only one shape is included, discard the binding
     const bindings = Object.values(page.bindings)
       .filter((binding) => {
         if (idsSet.has(binding.fromId) || idsSet.has(binding.toId)) {
-          return true;
+          return true
         }
 
         if (idsSet.has(binding.fromId)) {
-          const shape = shapes.find((s) => s.id === binding.fromId);
-          const handles = shape!.handles;
-          if (handles != undefined) {
+          const shape = shapes.find((s) => s.id === binding.fromId)
+          const handles = shape!.handles
+          if (handles) {
             Object.values(handles).forEach((handle) => {
-              if (handle.bindingId === binding.id) {
-                handle.bindingId = undefined;
+              if (handle!.bindingId === binding.id) {
+                handle!.bindingId = undefined
               }
-            });
+            })
           }
         }
 
         if (idsSet.has(binding.toId)) {
-          const shape = shapes.find((s) => s.id === binding.toId);
-          const handles = shape!.handles;
-          if (handles != undefined) {
+          const shape = shapes.find((s) => s.id === binding.toId)
+          const handles = shape!.handles
+          if (handles) {
             Object.values(handles).forEach((handle) => {
-              if (handle.bindingId === binding.id) {
-                handle.bindingId = undefined;
+              if (handle!.bindingId === binding.id) {
+                handle!.bindingId = undefined
               }
-            });
+            })
           }
         }
 
-        return false;
+        return false
       })
-      .map(deepCopy);
+      .map(deepCopy)
 
     const assets = [
       ...new Set(
         shapes
           .map((shape) => {
-            if (!shape.assetId) return;
-            return this.document.assets[shape.assetId];
+            if (!shape.assetId) return
+            return this.document.assets[shape.assetId]
           })
           .filter(Boolean)
-          .map(deepCopy),
+          .map(deepCopy)
       ),
-    ] as TDAsset[];
+    ] as TDAsset[]
 
-    return { shapes, bindings, assets };
-  };
+    return { shapes, bindings, assets }
+  }
 
   /**
    * Copy one or more shapes as JSON.
@@ -2208,14 +2288,14 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @returns A string containing the JSON.
    */
   copyJson = (ids = this.selectedIds) => {
-    const content = this.getContent(ids);
+    const content = this.getContent(ids)
 
-    if (content != undefined) {
-      TLDR.copyStringToClipboard(JSON.stringify(content));
+    if (content) {
+      TLDR.copyStringToClipboard(JSON.stringify(content))
     }
 
-    return this;
-  };
+    return this
+  }
 
   /**
    * Export one or more shapes as JSON.
@@ -2223,19 +2303,19 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @returns A string containing the JSON.
    */
   exportJson = (ids = this.selectedIds) => {
-    const content = this.getContent(ids);
+    const content = this.getContent(ids)
 
-    if (content != undefined) {
-      const blob = new Blob([JSON.stringify(content)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `export.json`;
-      link.click();
+    if (content) {
+      const blob = new Blob([JSON.stringify(content)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `export.json`
+      link.click()
     }
 
-    return this;
-  };
+    return this
+  }
 
   /**
    * Insert content.
@@ -2250,11 +2330,11 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param opts.overwrite (optional) When true, the inserted shapes and bindings will overwrite any existing shapes and bindings. Defaults to false.
    */
   insertContent = (
-    content: { assets?: TDAsset[]; bindings?: TDBinding[]; shapes: TDShape[] },
-    options = {} as { overwrite?: boolean; point?: number[]; select?: boolean },
+    content: { shapes: TDShape[]; bindings?: TDBinding[]; assets?: TDAsset[] },
+    opts = {} as { point?: number[]; select?: boolean; overwrite?: boolean }
   ) => {
-    return this.setState(Commands.insertContent(this, content, options), 'insert_content');
-  };
+    return this.setState(Commands.insertContent(this, content, opts), 'insert_content')
+  }
 
   /**
    * Get an image of the selected shapes.
@@ -2267,33 +2347,34 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    */
   getImage = async (
     format: Exclude<TDExportType, TDExportType.JSON> = TDExportType.PNG,
-    options = {} as Partial<{
-      ids: string[];
-      quality: number;
-      scale: number;
-      transparentBackground: boolean;
-    }>,
+    opts = {} as Partial<{
+      ids: string[]
+      scale: number
+      quality: number
+      transparentBackground: boolean
+    }>
   ): Promise<Blob | undefined> => {
-    const { ids = this.selectedIds.length > 0 ? this.selectedIds : Object.keys(this.page.shapes) } = options;
+    const { ids = this.selectedIds.length ? this.selectedIds : Object.keys(this.page.shapes) } =
+      opts
 
     const svg = await this.getSvg(ids, {
       includeFonts: format !== TDExportType.SVG,
-    });
+    })
 
-    if (svg == undefined) return;
+    if (!svg) return
 
     if (format === TDExportType.SVG) {
-      const svgString = TLDR.getSvgString(svg, 1);
-      const blob = new Blob([svgString], { type: 'image/svg+xml' });
-      return blob;
+      const svgString = TLDR.getSvgString(svg, 1)
+      const blob = new Blob([svgString], { type: 'image/svg+xml' })
+      return blob
     }
 
-    const imageBlob = await TLDR.getImageForSvg(svg, format, options);
+    const imageBlob = await TLDR.getImageForSvg(svg, format, opts)
 
-    if (imageBlob == undefined) return;
+    if (!imageBlob) return
 
-    return imageBlob;
-  };
+    return imageBlob
+  }
 
   /**
    * Copy an image of the selected shapes.
@@ -2306,65 +2387,65 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    */
   copyImage = async (
     format: TDExportType.PNG | TDExportType.SVG = TDExportType.PNG,
-    options = {} as Partial<{
-      ids: string[];
-      quality: number;
-      scale: number;
-      transparentBackground: boolean;
-    }>,
+    opts = {} as Partial<{
+      ids: string[]
+      scale: number
+      quality: number
+      transparentBackground: boolean
+    }>
   ) => {
     if (format === TDExportType.SVG) {
-      this.copySvg(options.ids);
-      return;
+      this.copySvg(opts.ids)
+      return
     }
 
     if (!(navigator.clipboard && window.ClipboardItem)) {
-      console.warn('Sorry, your browser does not support copying images.');
-      return;
+      console.warn('Sorry, your browser does not support copying images.')
+      return
     }
 
-    const blob = await this.getImage(format, options);
+    const blob = await this.getImage(format, opts)
 
-    if (blob == undefined) return;
+    if (!blob) return
 
     navigator.clipboard.write([
       new ClipboardItem({
         [blob.type]: blob,
       }),
-    ]);
-  };
+    ])
+  }
 
   exportImage = async (
     format: Exclude<TDExportType, TDExportType.JSON> = TDExportType.PNG,
-    options = {} as Partial<{
-      ids: string[];
-      pageId: string;
-      quality: number;
-      scale: number;
-    }>,
+    opts = {} as Partial<{
+      ids: string[]
+      pageId: string
+      scale: number
+      quality: number
+    }>
   ) => {
-    const { pageId = this.currentPageId } = options;
+    const { pageId = this.currentPageId } = opts
 
-    const blob = await this.getImage(format, options);
+    const blob = await this.getImage(format, opts)
 
-    if (blob == undefined) return;
+    if (!blob) return
 
-    const name = this.document.pages[pageId].name ?? 'export';
+    const name = this.document.pages[pageId].name ?? 'export'
 
-    if (this.callbacks.onExport == undefined) {
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${name}.${format}`;
-      link.click();
-    } else {
+    if (this.callbacks.onExport) {
       this.callbacks.onExport(this, {
         name,
         type: format,
         blob,
-      });
+      })
+    } else {
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${name}.${format}`
+      link.click()
     }
-  };
+  }
 
   /* -------------------------------------------------- */
   /*                       Camera                       */
@@ -2377,7 +2458,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param reason Why did the camera change?
    */
   setCamera = (point: number[], zoom: number, reason: string): this => {
-    this.updateViewport(point, zoom);
+    this.updateViewport(point, zoom)
     this.patchState(
       {
         document: {
@@ -2386,26 +2467,26 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           },
         },
       },
-      reason,
-    );
-    return this;
-  };
+      reason
+    )
+    return this
+  }
 
   /**
    * Reset the camera to the default position
    */
   resetCamera = (): this => {
-    return this.setCamera(this.centerPoint, 1, `reset_camera`);
-  };
+    return this.setCamera(this.centerPoint, 1, `reset_camera`)
+  }
 
   /**
    * Pan the camera
    * @param delta
    */
   pan = (delta: number[]): this => {
-    const { camera } = this.pageState;
-    return this.setCamera(Vec.toFixed(Vec.sub(camera.point, delta)), camera.zoom, `panned`);
-  };
+    const { camera } = this.pageState
+    return this.setCamera(Vec.toFixed(Vec.sub(camera.point, delta)), camera.zoom, `panned`)
+  }
 
   /**
    * Pinch to a new zoom level, possibly together with a pan.
@@ -2414,13 +2495,17 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param zoomDelta The zoom detal
    */
   pinchZoom = (point: number[], delta: number[], zoom: number): this => {
-    const { camera } = this.pageState;
-    const nextPoint = Vec.sub(camera.point, Vec.div(delta, camera.zoom));
-    const nextZoom = zoom;
-    const p0 = Vec.sub(Vec.div(point, camera.zoom), nextPoint);
-    const p1 = Vec.sub(Vec.div(point, nextZoom), nextPoint);
-    return this.setCamera(Vec.toFixed(Vec.add(nextPoint, Vec.sub(p1, p0))), nextZoom, `pinch_zoomed`);
-  };
+    const { camera } = this.pageState
+    const nextPoint = Vec.sub(camera.point, Vec.div(delta, camera.zoom))
+    const nextZoom = zoom
+    const p0 = Vec.sub(Vec.div(point, camera.zoom), nextPoint)
+    const p1 = Vec.sub(Vec.div(point, nextZoom), nextPoint)
+    return this.setCamera(
+      Vec.toFixed(Vec.add(nextPoint, Vec.sub(p1, p0))),
+      nextZoom,
+      `pinch_zoomed`
+    )
+  }
 
   /**
    * Zoom to a new zoom level, keeping the point under the cursor in the same position
@@ -2428,29 +2513,29 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param center The point to zoom towards (defaults to screen center).
    */
   zoomTo = (next: number, center = this.centerPoint): this => {
-    const { zoom, point } = this.camera;
-    const p0 = Vec.sub(Vec.div(center, zoom), point);
-    const p1 = Vec.sub(Vec.div(center, next), point);
-    return this.setCamera(Vec.toFixed(Vec.add(point, Vec.sub(p1, p0))), next, `zoomed_camera`);
-  };
+    const { zoom, point } = this.camera
+    const p0 = Vec.sub(Vec.div(center, zoom), point)
+    const p1 = Vec.sub(Vec.div(center, next), point)
+    return this.setCamera(Vec.toFixed(Vec.add(point, Vec.sub(p1, p0))), next, `zoomed_camera`)
+  }
 
   /**
    * Zoom out by 25%
    */
   zoomIn = (): this => {
-    const index = Math.round((this.camera.zoom * 100) / 25);
-    const nextZoom = TLDR.getCameraZoom((index + 1) * 0.25);
-    return this.zoomTo(nextZoom);
-  };
+    const i = Math.round((this.camera.zoom * 100) / 25)
+    const nextZoom = TLDR.getCameraZoom((i + 1) * 0.25)
+    return this.zoomTo(nextZoom)
+  }
 
   /**
    * Zoom in by 25%.
    */
   zoomOut = (): this => {
-    const index = Math.round((this.camera.zoom * 100) / 25);
-    const nextZoom = TLDR.getCameraZoom((index - 1) * 0.25);
-    return this.zoomTo(nextZoom);
-  };
+    const i = Math.round((this.camera.zoom * 100) / 25)
+    const nextZoom = TLDR.getCameraZoom((i - 1) * 0.25)
+    return this.zoomTo(nextZoom)
+  }
 
   /**
    * Zoom to fit the page's shapes.
@@ -2459,65 +2544,83 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     const {
       shapes,
       pageState: { camera },
-    } = this;
-    if (shapes.length === 0) return this;
-    const { rendererBounds } = this;
-    const commonBounds = Utils.getCommonBounds(shapes.map(TLDR.getBounds));
+    } = this
+    if (shapes.length === 0) return this
+    const { rendererBounds } = this
+    const commonBounds = Utils.getCommonBounds(shapes.map(TLDR.getBounds))
     let zoom = TLDR.getCameraZoom(
-      Math.min((rendererBounds.width - FIT_TO_SCREEN_PADDING) / commonBounds.width, (rendererBounds.height - FIT_TO_SCREEN_PADDING) / commonBounds.height),
-    );
-    zoom = camera.zoom === zoom || camera.zoom < 1 ? Math.min(1, zoom) : zoom;
-    const mx = (rendererBounds.width - commonBounds.width * zoom) / 2 / zoom;
-    const my = (rendererBounds.height - commonBounds.height * zoom) / 2 / zoom;
-    return this.setCamera(Vec.toFixed(Vec.sub([mx, my], [commonBounds.minX, commonBounds.minY])), zoom, `zoomed_to_fit`);
-  };
+      Math.min(
+        (rendererBounds.width - FIT_TO_SCREEN_PADDING) / commonBounds.width,
+        (rendererBounds.height - FIT_TO_SCREEN_PADDING) / commonBounds.height
+      )
+    )
+    zoom = camera.zoom === zoom || camera.zoom < 1 ? Math.min(1, zoom) : zoom
+    const mx = (rendererBounds.width - commonBounds.width * zoom) / 2 / zoom
+    const my = (rendererBounds.height - commonBounds.height * zoom) / 2 / zoom
+    return this.setCamera(
+      Vec.toFixed(Vec.sub([mx, my], [commonBounds.minX, commonBounds.minY])),
+      zoom,
+      `zoomed_to_fit`
+    )
+  }
 
   /**
    * Zoom to the selected shapes.
    */
   zoomToSelection = (): this => {
-    if (this.selectedIds.length === 0) return this;
+    if (this.selectedIds.length === 0) return this
 
-    const { rendererBounds } = this;
-    const selectedBounds = TLDR.getSelectedBounds(this.state);
+    const { rendererBounds } = this
+    const selectedBounds = TLDR.getSelectedBounds(this.state)
 
     let zoom = TLDR.getCameraZoom(
-      Math.min((rendererBounds.width - FIT_TO_SCREEN_PADDING) / selectedBounds.width, (rendererBounds.height - FIT_TO_SCREEN_PADDING) / selectedBounds.height),
-    );
+      Math.min(
+        (rendererBounds.width - FIT_TO_SCREEN_PADDING) / selectedBounds.width,
+        (rendererBounds.height - FIT_TO_SCREEN_PADDING) / selectedBounds.height
+      )
+    )
 
-    zoom = this.camera.zoom === zoom || this.camera.zoom < 1 ? Math.min(1, zoom) : zoom;
+    zoom = this.camera.zoom === zoom || this.camera.zoom < 1 ? Math.min(1, zoom) : zoom
 
-    const mx = (rendererBounds.width - selectedBounds.width * zoom) / 2 / zoom;
-    const my = (rendererBounds.height - selectedBounds.height * zoom) / 2 / zoom;
+    const mx = (rendererBounds.width - selectedBounds.width * zoom) / 2 / zoom
+    const my = (rendererBounds.height - selectedBounds.height * zoom) / 2 / zoom
 
-    return this.setCamera(Vec.toFixed(Vec.sub([mx, my], [selectedBounds.minX, selectedBounds.minY])), zoom, `zoomed_to_selection`);
-  };
+    return this.setCamera(
+      Vec.toFixed(Vec.sub([mx, my], [selectedBounds.minX, selectedBounds.minY])),
+      zoom,
+      `zoomed_to_selection`
+    )
+  }
 
   /**
    * Zoom back to content when the canvas is empty.
    */
   zoomToContent = (): this => {
-    const shapes = this.shapes;
-    const pageState = this.pageState;
+    const shapes = this.shapes
+    const pageState = this.pageState
 
-    if (shapes.length === 0) return this;
+    if (shapes.length === 0) return this
 
-    const { rendererBounds } = this;
-    const { zoom } = pageState.camera;
-    const commonBounds = Utils.getCommonBounds(shapes.map(TLDR.getBounds));
+    const { rendererBounds } = this
+    const { zoom } = pageState.camera
+    const commonBounds = Utils.getCommonBounds(shapes.map(TLDR.getBounds))
 
-    const mx = (rendererBounds.width - commonBounds.width * zoom) / 2 / zoom;
-    const my = (rendererBounds.height - commonBounds.height * zoom) / 2 / zoom;
+    const mx = (rendererBounds.width - commonBounds.width * zoom) / 2 / zoom
+    const my = (rendererBounds.height - commonBounds.height * zoom) / 2 / zoom
 
-    return this.setCamera(Vec.toFixed(Vec.sub([mx, my], [commonBounds.minX, commonBounds.minY])), this.camera.zoom, `zoomed_to_content`);
-  };
+    return this.setCamera(
+      Vec.toFixed(Vec.sub([mx, my], [commonBounds.minX, commonBounds.minY])),
+      this.camera.zoom,
+      `zoomed_to_content`
+    )
+  }
 
   /**
    * Zoom the camera to 100%.
    */
   resetZoom = (): this => {
-    return this.zoomTo(1);
-  };
+    return this.zoomTo(1)
+  }
 
   /**
    * Zoom the camera by a certain delta.
@@ -2525,10 +2628,10 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param center The point to zoom toward.
    */
   zoomBy = Utils.throttle((delta: number, center?: number[]): this => {
-    const { zoom } = this.camera;
-    const nextZoom = TLDR.getCameraZoom(zoom - delta * zoom);
-    return this.zoomTo(nextZoom, center);
-  }, 16);
+    const { zoom } = this.camera
+    const nextZoom = TLDR.getCameraZoom(zoom - delta * zoom)
+    return this.zoomTo(nextZoom, center)
+  }, 16)
 
   /* -------------------------------------------------- */
   /*                      Selection                     */
@@ -2537,31 +2640,31 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   /**
    * Clear the selection history (undo/redo stack for selection).
    */
-  private readonly clearSelectHistory = (): this => {
-    this.selectHistory.pointer = 0;
-    this.selectHistory.stack = [this.selectedIds];
-    return this;
-  };
+  private clearSelectHistory = (): this => {
+    this.selectHistory.pointer = 0
+    this.selectHistory.stack = [this.selectedIds]
+    return this
+  }
 
   /**
    * Adds a selection to the selection history (undo/redo stack for selection).
    */
-  private readonly addToSelectHistory = (ids: string[]): this => {
+  private addToSelectHistory = (ids: string[]): this => {
     if (this.selectHistory.pointer < this.selectHistory.stack.length) {
-      this.selectHistory.stack = this.selectHistory.stack.slice(0, this.selectHistory.pointer + 1);
+      this.selectHistory.stack = this.selectHistory.stack.slice(0, this.selectHistory.pointer + 1)
     }
-    this.selectHistory.pointer++;
-    this.selectHistory.stack.push(ids);
-    return this;
-  };
+    this.selectHistory.pointer++
+    this.selectHistory.stack.push(ids)
+    return this
+  }
 
   /**
    * Set the current selection.
    * @param ids The ids to select
    * @param push Whether to add the ids to the current selection instead.
    */
-  private readonly setSelectedIds = (ids: string[], push = false): this => {
-    const nextIds = push ? [...this.pageState.selectedIds, ...ids] : [...ids];
+  private setSelectedIds = (ids: string[], push = false): this => {
+    const nextIds = push ? [...this.pageState.selectedIds, ...ids] : [...ids]
 
     return this.patchState(
       {
@@ -2576,31 +2679,31 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           },
         },
       },
-      `selected`,
-    );
-  };
+      `selected`
+    )
+  }
 
   /**
    * Undo the most recent selection.
    */
   undoSelect = (): this => {
     if (this.selectHistory.pointer > 0) {
-      this.selectHistory.pointer--;
-      this.setSelectedIds(this.selectHistory.stack[this.selectHistory.pointer]);
+      this.selectHistory.pointer--
+      this.setSelectedIds(this.selectHistory.stack[this.selectHistory.pointer])
     }
-    return this;
-  };
+    return this
+  }
 
   /**
    * Redo the previous selection.
    */
   redoSelect = (): this => {
     if (this.selectHistory.pointer < this.selectHistory.stack.length - 1) {
-      this.selectHistory.pointer++;
-      this.setSelectedIds(this.selectHistory.stack[this.selectHistory.pointer]);
+      this.selectHistory.pointer++
+      this.setSelectedIds(this.selectHistory.stack[this.selectHistory.pointer])
     }
-    return this;
-  };
+    return this
+  }
 
   /**
    * Select one or more shapes.
@@ -2609,42 +2712,42 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   select = (...ids: string[]): this => {
     ids.forEach((id) => {
       if (!this.page.shapes[id]) {
-        throw new Error(`That shape does not exist on page ${this.currentPageId}`);
+        throw Error(`That shape does not exist on page ${this.currentPageId}`)
       }
-    });
-    this.setSelectedIds(ids);
-    this.addToSelectHistory(ids);
-    return this;
-  };
+    })
+    this.setSelectedIds(ids)
+    this.addToSelectHistory(ids)
+    return this
+  }
 
   /**
    * Select all shapes on the page.
    */
   selectAll = (pageId = this.currentPageId): this => {
-    if (this.session != undefined) return this;
+    if (this.session) return this
 
     // Select only shapes that are the direct child of the page
     this.setSelectedIds(
       Object.values(this.document.pages[pageId].shapes)
         .filter((shape) => shape.parentId === pageId)
-        .map((shape) => shape.id),
-    );
+        .map((shape) => shape.id)
+    )
 
-    this.addToSelectHistory(this.selectedIds);
+    this.addToSelectHistory(this.selectedIds)
 
-    this.selectTool('select');
+    this.selectTool('select')
 
-    return this;
-  };
+    return this
+  }
 
   /**
    * Deselect any selected shapes.
    */
   selectNone = (): this => {
-    this.setSelectedIds([]);
-    this.addToSelectHistory(this.selectedIds);
-    return this;
-  };
+    this.setSelectedIds([])
+    this.addToSelectHistory(this.selectedIds)
+    return this
+  }
 
   /* -------------------------------------------------- */
   /*                      Sessions                 p      */
@@ -2655,79 +2758,79 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param type The session type
    * @param args arguments of the session's start method.
    */
-  startSession = <T extends SessionType>(type: T, ...arguments_: SessionArgumentsOfType<T>): this => {
-    if (this.readOnly && type !== SessionType.Brush) return this;
+  startSession = <T extends SessionType>(type: T, ...args: SessionArgsOfType<T>): this => {
+    if (this.readOnly && type !== SessionType.Brush) return this
 
-    if (this.session != undefined) {
-      TLDR.warn(`Already in a session! (${this.session.constructor.name})`);
-      this.cancelSession();
+    if (this.session) {
+      TLDR.warn(`Already in a session! (${this.session.constructor.name})`)
+      this.cancelSession()
     }
 
-    const Session = getSession(type) as any;
-    this.session = new Session(this, ...arguments_);
+    const Session = getSession(type) as any
+    this.session = new Session(this, ...args)
 
-    const result = this.session!.start();
+    const result = this.session!.start()
 
-    if (result != undefined) {
-      this.patchState(result, `session:start_${this.session!.constructor.name}`);
+    if (result) {
+      this.patchState(result, `session:start_${this.session!.constructor.name}`)
     }
 
-    this.callbacks.onSessionStart?.(this, this.session!.constructor.name);
+    this.callbacks.onSessionStart?.(this, this.session!.constructor.name)
 
-    return this;
+    return this
     // return this.setStatus(this.session.status)
-  };
+  }
 
   /**
    * updateSession.
    * @param args The arguments of the current session's update method.
    */
   updateSession = (): this => {
-    const { session } = this;
-    if (session == undefined) return this;
+    const { session } = this
+    if (!session) return this
 
-    // @ts-expect-error
-    const patch = session.update();
-    if (patch == undefined) return this;
-    return this.patchState(patch, `session:${session?.constructor.name}`);
-  };
+    // @ts-ignore
+    const patch = session.update()
+    if (!patch) return this
+    return this.patchState(patch, `session:${session?.constructor.name}`)
+  }
 
   /**
    * Cancel the current session.
    * @param args The arguments of the current session's cancel method.
    */
   cancelSession = (): this => {
-    const { session } = this;
-    if (session == undefined) return this;
-    this.session = undefined;
+    const { session } = this
+    if (!session) return this
+    this.session = undefined
 
-    const result = session.cancel();
+    const result = session.cancel()
 
-    if (result != undefined) {
-      this.patchState(result, `session:cancel:${session.constructor.name}`);
+    if (result) {
+      this.patchState(result, `session:cancel:${session.constructor.name}`)
     }
 
-    this.setEditingId();
+    this.setEditingId()
 
-    this.callbacks.onSessionEnd?.(this, session.constructor.name);
+    this.callbacks.onSessionEnd?.(this, session.constructor.name)
 
-    return this;
-  };
+    return this
+  }
 
   /**
    * Complete the current session.
    * @param args The arguments of the current session's complete method.
    */
   completeSession = (): this => {
-    const { session } = this;
+    const { session } = this
 
-    if (session == undefined) return this;
+    if (!session) return this
 
-    this.session = undefined;
-    const result = session.complete();
+    this.session = undefined
+    const result = session.complete()
 
     if (result === undefined) {
-      this.isCreating = false;
+      this.isCreating = false
 
       this.patchState(
         {
@@ -2744,8 +2847,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             },
           },
         },
-        `session:complete:${session.constructor.name}`,
-      );
+        `session:complete:${session.constructor.name}`
+      )
     } else if ('after' in result) {
       // Session ended with a command
 
@@ -2774,33 +2877,33 @@ export class TldrawApp extends StateManager<TDSnapshot> {
               },
             },
           },
-        };
-
-        if (this.appState.isToolLocked) {
-          const pageState = result.after?.document?.pageStates?.[this.currentPageId] != undefined || {};
-          pageState.selectedIds = [];
         }
 
-        this.isCreating = false;
+        if (this.appState.isToolLocked) {
+          const pageState = result.after?.document?.pageStates?.[this.currentPageId] || {}
+          pageState.selectedIds = []
+        }
+
+        this.isCreating = false
       }
 
       result.after.appState = {
         ...result.after.appState,
         status: TDStatus.Idle,
-      };
+      }
 
       result.after.document = {
         ...result.after.document,
         pageStates: {
           ...result.after.document?.pageStates,
           [this.currentPageId]: {
-            ...(result.after.document?.pageStates != undefined || {})[this.currentPageId],
+            ...(result.after.document?.pageStates || {})[this.currentPageId],
             editingId: null,
           },
         },
-      };
+      }
 
-      this.setState(result, `session:complete:${session.constructor.name}`);
+      this.setState(result, `session:complete:${session.constructor.name}`)
     } else {
       this.patchState(
         {
@@ -2819,14 +2922,14 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             },
           },
         },
-        `session:complete:${session.constructor.name}`,
-      );
+        `session:complete:${session.constructor.name}`
+      )
     }
 
-    this.callbacks.onSessionEnd?.(this, session.constructor.name);
+    this.callbacks.onSessionEnd?.(this, session.constructor.name)
 
-    return this;
-  };
+    return this
+  }
 
   /* -------------------------------------------------- */
   /*                   Shape Functions                  */
@@ -2837,41 +2940,48 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param shapes An array of shape partials, containing the initial props for the shapes.
    * @command
    */
-  createShapes = (...shapes: Array<{ id: string; type: TDShapeType } & Partial<TDShape>>): this => {
-    if (shapes.length === 0) return this;
+  createShapes = (...shapes: ({ id: string; type: TDShapeType } & Partial<TDShape>)[]): this => {
+    if (shapes.length === 0) return this
 
     return this.create(
       shapes.map((shape) => {
         return TLDR.getShapeUtil(shape.type).create({
           parentId: this.currentPageId,
           ...shape,
-        });
-      }),
-    );
-  };
+        })
+      })
+    )
+  }
 
   /**
    * Manually update a set of shapes.
    * @param shapes An array of shape partials, containing the changes to be made to each shape.
    * @command
    */
-  updateShapes = (...shapes: Array<{ id: string } & Partial<TDShape>>): this => {
-    const pageShapes = this.document.pages[this.currentPageId].shapes;
-    const shapesToUpdate = shapes.filter((shape) => pageShapes[shape.id]);
-    if (shapesToUpdate.length === 0) return this;
-    return this.setState(Commands.updateShapes(this, shapesToUpdate, this.currentPageId), 'updated_shapes');
-  };
+  updateShapes = (...shapes: ({ id: string } & Partial<TDShape>)[]): this => {
+    const pageShapes = this.document.pages[this.currentPageId].shapes
+    const shapesToUpdate = shapes.filter((shape) => pageShapes[shape.id])
+    if (shapesToUpdate.length === 0) return this
+    return this.setState(
+      Commands.updateShapes(this, shapesToUpdate, this.currentPageId),
+      'updated_shapes'
+    )
+  }
 
   createTextShapeAtPoint(point: number[], id?: string, patch?: boolean): this {
     const {
       shapes,
       appState: { currentPageId, currentStyle },
-    } = this;
+    } = this
 
     const childIndex =
-      shapes.length === 0 ? 1 : shapes.filter((shape) => shape.parentId === currentPageId).sort((a, b) => b.childIndex - a.childIndex)[0].childIndex + 1;
+      shapes.length === 0
+        ? 1
+        : shapes
+            .filter((shape) => shape.parentId === currentPageId)
+            .sort((a, b) => b.childIndex - a.childIndex)[0].childIndex + 1
 
-    const Text = shapeUtils[TDShapeType.Text];
+    const Text = shapeUtils[TDShapeType.Text]
 
     const newShape = Text.create({
       id: id || Utils.uniqueId(),
@@ -2879,50 +2989,60 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       childIndex,
       point,
       style: { ...currentStyle },
-    });
+    })
 
-    const bounds = Text.getBounds(newShape);
-    newShape.point = Vec.sub(newShape.point, [bounds.width / 2, bounds.height / 2]);
+    const bounds = Text.getBounds(newShape)
+    newShape.point = Vec.sub(newShape.point, [bounds.width / 2, bounds.height / 2])
 
     if (patch) {
-      this.patchCreate([TLDR.getShapeUtil(newShape.type).create(newShape)]);
+      this.patchCreate([TLDR.getShapeUtil(newShape.type).create(newShape)])
     } else {
-      this.createShapes(newShape);
+      this.createShapes(newShape)
     }
 
-    this.setEditingId(newShape.id, true);
+    this.setEditingId(newShape.id, true)
 
-    return this;
+    return this
   }
 
-  getImageOrVideoShapeAtPoint(id: string, type: TDShapeType.Image | TDShapeType.Video, point: number[], size: number[], assetId: string) {
+  getImageOrVideoShapeAtPoint(
+    id: string,
+    type: TDShapeType.Image | TDShapeType.Video,
+    point: number[],
+    size: number[],
+    assetId: string
+  ) {
     const {
       shapes,
       appState: { currentPageId, currentStyle },
-    } = this;
+    } = this
 
     const childIndex =
-      shapes.length === 0 ? 1 : shapes.filter((shape) => shape.parentId === currentPageId).sort((a, b) => b.childIndex - a.childIndex)[0].childIndex + 1;
+      shapes.length === 0
+        ? 1
+        : shapes
+            .filter((shape) => shape.parentId === currentPageId)
+            .sort((a, b) => b.childIndex - a.childIndex)[0].childIndex + 1
 
-    const Shape = shapeUtils[type];
+    const Shape = shapeUtils[type]
 
     // Ensure that the pasted shape fits inside of the current viewport
 
     if (size[0] > this.viewport.width) {
-      const r = size[1] / size[0];
-      size[0] = this.viewport.width - (FIT_TO_SCREEN_PADDING / this.camera.zoom) * 2;
-      size[1] = size[0] * r;
+      const r = size[1] / size[0]
+      size[0] = this.viewport.width - (FIT_TO_SCREEN_PADDING / this.camera.zoom) * 2
+      size[1] = size[0] * r
       if (size[1] < 32 || size[1] < 32) {
-        size[1] = 32;
-        size[0] = size[1] / r;
+        size[1] = 32
+        size[0] = size[1] / r
       }
     } else if (size[1] > this.viewport.height) {
-      const r = size[0] / size[1];
-      size[1] = this.viewport.height - (FIT_TO_SCREEN_PADDING / this.camera.zoom) * 2;
-      size[0] = size[1] * r;
+      const r = size[0] / size[1]
+      size[1] = this.viewport.height - (FIT_TO_SCREEN_PADDING / this.camera.zoom) * 2
+      size[0] = size[1] * r
       if (size[1] < 32 || size[1] < 32) {
-        size[0] = 32;
-        size[1] = size[0] / r;
+        size[0] = 32
+        size[1] = size[0] / r
       }
     }
 
@@ -2934,9 +3054,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       size,
       style: { ...currentStyle },
       assetId,
-    });
+    })
 
-    return newShape;
+    return newShape
   }
 
   /**
@@ -2945,9 +3065,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @command
    */
   create = (shapes: TDShape[] = [], bindings: TDBinding[] = []): this => {
-    if (shapes.length === 0) return this;
-    return this.setState(Commands.createShapes(this, shapes, bindings));
-  };
+    if (shapes.length === 0) return this
+    return this.setState(Commands.createShapes(this, shapes, bindings))
+  }
 
   /**
    * Patch in a new set of shapes
@@ -2955,9 +3075,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param bindings
    */
   patchCreate = (shapes: TDShape[] = [], bindings: TDBinding[] = []): this => {
-    if (shapes.length === 0) return this;
-    return this.patchState(Commands.createShapes(this, shapes, bindings).after);
-  };
+    if (shapes.length === 0) return this
+    return this.patchState(Commands.createShapes(this, shapes, bindings).after)
+  }
 
   /**
    * Delete one or more shapes.
@@ -2965,30 +3085,38 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @command
    */
   delete = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
+    if (ids.length === 0) return this
 
-    if (this.session != undefined) return this;
-    const drawCommand = Commands.deleteShapes(this, ids);
+    if (this.session) return this
+    const drawCommand = Commands.deleteShapes(this, ids)
 
-    if (this.callbacks.onAssetDelete != undefined && drawCommand.before.document?.assets != undefined && drawCommand.after.document?.assets != undefined) {
-      const beforeAssetIds = Object.keys(drawCommand.before.document.assets).filter((k) => !(drawCommand.before.document!.assets![k] == undefined));
-      const afterAssetIds = new Set(Object.keys(drawCommand.after.document.assets).filter((k) => !(drawCommand.after.document!.assets![k] == undefined)));
+    if (
+      this.callbacks.onAssetDelete &&
+      drawCommand.before.document?.assets &&
+      drawCommand.after.document?.assets
+    ) {
+      const beforeAssetIds = Object.keys(drawCommand.before.document.assets).filter(
+        (k) => !!drawCommand.before.document!.assets![k]
+      )
+      const afterAssetIds = Object.keys(drawCommand.after.document.assets).filter(
+        (k) => !!drawCommand.after.document!.assets![k]
+      )
 
-      const intersection = beforeAssetIds.filter((x) => !afterAssetIds.has(x));
-      intersection.forEach((id) => this.callbacks.onAssetDelete!(this, id));
+      const intersection = beforeAssetIds.filter((x) => !afterAssetIds.includes(x))
+      intersection.forEach((id) => this.callbacks.onAssetDelete!(this, id))
     }
 
-    return this.setState(drawCommand);
-  };
+    return this.setState(drawCommand)
+  }
 
   /**
    * Delete all shapes on the page.
    */
   deleteAll = (): this => {
-    this.selectAll();
-    this.delete();
-    return this;
-  };
+    this.selectAll()
+    this.delete()
+    return this
+  }
 
   /**
    * Change the style for one or more shapes.
@@ -2996,8 +3124,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   style = (style: Partial<ShapeStyles>, ids = this.selectedIds): this => {
-    return this.setState(Commands.styleShapes(this, ids, style));
-  };
+    return this.setState(Commands.styleShapes(this, ids, style))
+  }
 
   /**
    * Align one or more shapes.
@@ -3005,9 +3133,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   align = (type: AlignType, ids = this.selectedIds): this => {
-    if (ids.length < 2) return this;
-    return this.setState(Commands.alignShapes(this, ids, type));
-  };
+    if (ids.length < 2) return this
+    return this.setState(Commands.alignShapes(this, ids, type))
+  }
 
   /**
    * Distribute one or more shapes.
@@ -3015,9 +3143,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   distribute = (direction: DistributeType, ids = this.selectedIds): this => {
-    if (ids.length < 3) return this;
-    return this.setState(Commands.distributeShapes(this, ids, direction));
-  };
+    if (ids.length < 3) return this
+    return this.setState(Commands.distributeShapes(this, ids, direction))
+  }
 
   /**
    * Stretch one or more shapes to their common bounds.
@@ -3025,27 +3153,27 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   stretch = (direction: StretchType, ids = this.selectedIds): this => {
-    if (ids.length < 2) return this;
-    return this.setState(Commands.stretchShapes(this, ids, direction));
-  };
+    if (ids.length < 2) return this
+    return this.setState(Commands.stretchShapes(this, ids, direction))
+  }
 
   /**
    * Flip one or more shapes horizontally.
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   flipHorizontal = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    return this.setState(Commands.flipShapes(this, ids, FlipType.Horizontal));
-  };
+    if (ids.length === 0) return this
+    return this.setState(Commands.flipShapes(this, ids, FlipType.Horizontal))
+  }
 
   /**
    * Flip one or more shapes vertically.
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   flipVertical = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    return this.setState(Commands.flipShapes(this, ids, FlipType.Vertical));
-  };
+    if (ids.length === 0) return this
+    return this.setState(Commands.flipShapes(this, ids, FlipType.Vertical))
+  }
 
   /**
    * Move one or more shapes to a new page. Will also break or move bindings.
@@ -3053,48 +3181,52 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param fromPageId The id of the page to move the shapes from (defaults to current page).
    * @param ids The ids of the shapes to move (defaults to selection).
    */
-  moveToPage = (toPageId: string, fromPageId = this.currentPageId, ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    const { rendererBounds } = this;
-    this.setState(Commands.moveShapesToPage(this, ids, rendererBounds, fromPageId, toPageId));
-    return this;
-  };
+  moveToPage = (
+    toPageId: string,
+    fromPageId = this.currentPageId,
+    ids = this.selectedIds
+  ): this => {
+    if (ids.length === 0) return this
+    const { rendererBounds } = this
+    this.setState(Commands.moveShapesToPage(this, ids, rendererBounds, fromPageId, toPageId))
+    return this
+  }
 
   /**
    * Move one or more shapes to the back of the page.
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   moveToBack = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    return this.setState(Commands.reorderShapes(this, ids, MoveType.ToBack));
-  };
+    if (ids.length === 0) return this
+    return this.setState(Commands.reorderShapes(this, ids, MoveType.ToBack))
+  }
 
   /**
    * Move one or more shapes backward on of the page.
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   moveBackward = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    return this.setState(Commands.reorderShapes(this, ids, MoveType.Backward));
-  };
+    if (ids.length === 0) return this
+    return this.setState(Commands.reorderShapes(this, ids, MoveType.Backward))
+  }
 
   /**
    * Move one or more shapes forward on the page.
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   moveForward = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    return this.setState(Commands.reorderShapes(this, ids, MoveType.Forward));
-  };
+    if (ids.length === 0) return this
+    return this.setState(Commands.reorderShapes(this, ids, MoveType.Forward))
+  }
 
   /**
    * Move one or more shapes to the front of the page.
    * @param ids The ids of the shapes to change (defaults to selection).
    */
   moveToFront = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    return this.setState(Commands.reorderShapes(this, ids, MoveType.ToFront));
-  };
+    if (ids.length === 0) return this
+    return this.setState(Commands.reorderShapes(this, ids, MoveType.ToFront))
+  }
 
   /**
    * Nudge one or more shapes in a direction.
@@ -3103,21 +3235,27 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids to change (defaults to selection).
    */
   nudge = (delta: number[], isMajor = false, ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    const size = isMajor ? (this.settings.showGrid ? this.currentGrid * 4 : 10) : this.settings.showGrid ? this.currentGrid : 1;
+    if (ids.length === 0) return this
+    const size = isMajor
+      ? this.settings.showGrid
+        ? this.currentGrid * 4
+        : 10
+      : this.settings.showGrid
+      ? this.currentGrid
+      : 1
 
-    return this.setState(Commands.translateShapes(this, ids, Vec.mul(delta, size)));
-  };
+    return this.setState(Commands.translateShapes(this, ids, Vec.mul(delta, size)))
+  }
 
   /**
    * Duplicate one or more shapes.
    * @param ids The ids to duplicate (defaults to selection).
    */
   duplicate = (ids = this.selectedIds, point?: number[]): this => {
-    if (this.readOnly) return this;
-    if (ids.length === 0) return this;
-    return this.setState(Commands.duplicateShapes(this, ids, point));
-  };
+    if (this.readOnly) return this
+    if (ids.length === 0) return this
+    return this.setState(Commands.duplicateShapes(this, ids, point))
+  }
 
   /**
    * Reset the bounds for one or more shapes. Usually when the
@@ -3126,36 +3264,36 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids to change (defaults to selection).
    */
   resetBounds = (ids = this.selectedIds): this => {
-    const command = Commands.resetBounds(this, ids, this.currentPageId);
-    return this.setState(Commands.resetBounds(this, ids, this.currentPageId), command.id);
-  };
+    const command = Commands.resetBounds(this, ids, this.currentPageId)
+    return this.setState(Commands.resetBounds(this, ids, this.currentPageId), command.id)
+  }
 
   /**
    * Toggle the hidden property of one or more shapes.
    * @param ids The ids to change (defaults to selection).
    */
   toggleHidden = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    return this.setState(Commands.toggleShapeProp(this, ids, 'isHidden'));
-  };
+    if (ids.length === 0) return this
+    return this.setState(Commands.toggleShapeProp(this, ids, 'isHidden'))
+  }
 
   /**
    * Toggle the locked property of one or more shapes.
    * @param ids The ids to change (defaults to selection).
    */
   toggleLocked = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    return this.setState(Commands.toggleShapeProp(this, ids, 'isLocked'));
-  };
+    if (ids.length === 0) return this
+    return this.setState(Commands.toggleShapeProp(this, ids, 'isLocked'))
+  }
 
   /**
    * Toggle the fixed-aspect-ratio property of one or more shapes.
    * @param ids The ids to change (defaults to selection).
    */
   toggleAspectRatioLocked = (ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    return this.setState(Commands.toggleShapeProp(this, ids, 'isAspectRatioLocked'));
-  };
+    if (ids.length === 0) return this
+    return this.setState(Commands.toggleShapeProp(this, ids, 'isAspectRatioLocked'))
+  }
 
   /**
    * Toggle the decoration at a handle of one or more shapes.
@@ -3163,9 +3301,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids of the shapes to toggle the decoration on.
    */
   toggleDecoration = (handleId: string, ids = this.selectedIds): this => {
-    if (ids.length === 0 || !(handleId === 'start' || handleId === 'end')) return this;
-    return this.setState(Commands.toggleShapesDecoration(this, ids, handleId));
-  };
+    if (ids.length === 0 || !(handleId === 'start' || handleId === 'end')) return this
+    return this.setState(Commands.toggleShapesDecoration(this, ids, handleId))
+  }
 
   /**
    * Set the props of one or more shapes
@@ -3173,8 +3311,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids of the shapes to set props on.
    */
   setShapeProps = <T extends TDShape>(props: Partial<T>, ids = this.selectedIds) => {
-    return this.setState(Commands.setShapesProps(this, ids, props));
-  };
+    return this.setState(Commands.setShapesProps(this, ids, props))
+  }
 
   /**
    * Rotate one or more shapes by a delta.
@@ -3182,136 +3320,144 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @param ids The ids to rotate (defaults to selection).
    */
   rotate = (delta = Math.PI * -0.5, ids = this.selectedIds): this => {
-    if (ids.length === 0) return this;
-    const change = Commands.rotateShapes(this, ids, delta);
-    if (change == undefined) return this;
-    return this.setState(change);
-  };
+    if (ids.length === 0) return this
+    const change = Commands.rotateShapes(this, ids, delta)
+    if (!change) return this
+    return this.setState(change)
+  }
 
   /**
    * Group the selected shapes.
    * @param ids The ids to group (defaults to selection).
    * @param groupId The new group's id.
    */
-  group = (ids = this.selectedIds, groupId = Utils.uniqueId(), pageId = this.currentPageId): this => {
-    if (this.readOnly) return this;
+  group = (
+    ids = this.selectedIds,
+    groupId = Utils.uniqueId(),
+    pageId = this.currentPageId
+  ): this => {
+    if (this.readOnly) return this
 
     if (ids.length === 1 && this.getShape(ids[0], pageId).type === TDShapeType.Group) {
-      return this.ungroup(ids, pageId);
+      return this.ungroup(ids, pageId)
     }
 
-    if (ids.length < 2) return this;
+    if (ids.length < 2) return this
 
-    const command = Commands.groupShapes(this, ids, groupId, pageId);
-    if (command == undefined) return this;
-    return this.setState(command);
-  };
+    const command = Commands.groupShapes(this, ids, groupId, pageId)
+    if (!command) return this
+    return this.setState(command)
+  }
 
   /**
    * Ungroup the selected groups.
    * @todo
    */
   ungroup = (ids = this.selectedIds, pageId = this.currentPageId): this => {
-    if (this.readOnly) return this;
+    if (this.readOnly) return this
 
-    const groups = ids.map((id) => this.getShape(id, pageId)).filter((shape) => shape.type === TDShapeType.Group);
+    const groups = ids
+      .map((id) => this.getShape(id, pageId))
+      .filter((shape) => shape.type === TDShapeType.Group)
 
-    if (groups.length === 0) return this;
+    if (groups.length === 0) return this
 
-    const command = Commands.ungroupShapes(this, ids, groups as GroupShape[], pageId);
+    const command = Commands.ungroupShapes(this, ids, groups as GroupShape[], pageId)
 
-    if (command == undefined) {
-      return this;
+    if (!command) {
+      return this
     }
 
-    return this.setState(command);
-  };
+    return this.setState(command)
+  }
 
   /**
    * Cancel the current session.
    */
   cancel = (): this => {
-    this.currentTool.onCancel?.();
+    this.currentTool.onCancel?.()
 
-    return this;
-  };
+    return this
+  }
 
   addMediaFromFiles = async (files: File[], point = this.centerPoint) => {
-    this.setIsLoading(true);
+    this.setIsLoading(true)
 
     // Rather than creating each shape individually (which will produce undo / redo entries
     // for each shape), create an array of all the shapes that we'll need to create. We'll
     // iterate through these at the bottom of the function to set their points, then create
     // them through a single call to `createShapes`.
 
-    const shapesToCreate: TDShape[] = [];
+    const shapesToCreate: TDShape[] = []
 
-    const pagePoint = this.getPagePoint(point);
+    const pagePoint = this.getPagePoint(point)
 
     for (const file of files) {
-      const id = Utils.uniqueId();
-      const extension = file.name.match(/\.[\da-z]+$/i);
+      const id = Utils.uniqueId()
+      const extension = file.name.match(/\.[0-9a-z]+$/i)
 
-      if (extension == undefined) throw new Error('No extension');
+      if (!extension) throw Error('No extension')
 
-      const isImage = IMAGE_EXTENSIONS.includes(extension[0].toLowerCase());
-      const isVideo = VIDEO_EXTENSIONS.includes(extension[0].toLowerCase());
+      const isImage = IMAGE_EXTENSIONS.includes(extension[0].toLowerCase())
+      const isVideo = VIDEO_EXTENSIONS.includes(extension[0].toLowerCase())
 
-      if (!(isImage || isVideo)) throw new Error('Wrong extension');
+      if (!(isImage || isVideo)) throw Error('Wrong extension')
 
-      const shapeType = isImage ? TDShapeType.Image : TDShapeType.Video;
-      const assetType = isImage ? TDAssetType.Image : TDAssetType.Video;
+      const shapeType = isImage ? TDShapeType.Image : TDShapeType.Video
+      const assetType = isImage ? TDAssetType.Image : TDAssetType.Video
 
-      let source: string | ArrayBuffer | null;
+      let src: string | ArrayBuffer | null
 
       try {
-        if (this.callbacks.onAssetCreate == undefined) {
-          source = await fileToBase64(file);
+        if (this.callbacks.onAssetCreate) {
+          const result = await this.callbacks.onAssetCreate(this, file, id)
+
+          if (!result) throw Error('Asset creation callback returned false')
+
+          src = result
         } else {
-          const result = await this.callbacks.onAssetCreate(this, file, id);
-
-          if (!result) throw new Error('Asset creation callback returned false');
-
-          source = result;
+          src = await fileToBase64(file)
         }
 
-        if (typeof source === 'string') {
-          let size = [0, 0];
+        if (typeof src === 'string') {
+          let size = [0, 0]
 
           if (isImage) {
             // attempt to get actual svg size from viewBox attribute as
             if (extension[0] == '.svg') {
-              let viewBox: string[];
-              const svgString = await fileToText(file);
-              const viewBoxAttribute = this.getViewboxFromSVG(svgString);
+              let viewBox: string[]
+              const svgString = await fileToText(file)
+              const viewBoxAttribute = this.getViewboxFromSVG(svgString)
 
               if (viewBoxAttribute) {
-                viewBox = viewBoxAttribute.split(' ');
-                size[0] = Number.parseFloat(viewBox[2]);
-                size[1] = Number.parseFloat(viewBox[3]);
+                viewBox = viewBoxAttribute.split(' ')
+                size[0] = parseFloat(viewBox[2])
+                size[1] = parseFloat(viewBox[3])
               }
             }
             if (Vec.isEqual(size, [0, 0])) {
-              size = await getImageSizeFromSource(source);
+              size = await getImageSizeFromSrc(src)
             }
           } else {
-            size = await getVideoSizeFromSource(source);
+            size = await getVideoSizeFromSrc(src)
           }
 
-          const match = Object.values(this.document.assets).find((asset) => asset.type === assetType && asset.src === source);
+          const match = Object.values(this.document.assets).find(
+            (asset) => asset.type === assetType && asset.src === src
+          )
 
-          let assetId: string;
+          let assetId: string
 
-          if (match == undefined) {
-            assetId = id;
+          if (!match) {
+            assetId = id
 
             const asset = {
               id: assetId,
               type: assetType,
               name: file.name,
-              src: source,
+              src,
               size,
-            };
+            }
 
             this.patchState({
               document: {
@@ -3319,68 +3465,68 @@ export class TldrawApp extends StateManager<TDSnapshot> {
                   [assetId]: asset,
                 },
               },
-            });
+            })
           } else {
-            assetId = match.id;
+            assetId = match.id
           }
 
-          shapesToCreate.push(this.getImageOrVideoShapeAtPoint(id, shapeType, point, size, assetId));
+          shapesToCreate.push(this.getImageOrVideoShapeAtPoint(id, shapeType, point, size, assetId))
         }
       } catch (error) {
         // Even if one shape errors, keep going (we might have had other shapes that didn't error)
-        console.warn(error);
+        console.warn(error)
       }
     }
 
-    if (shapesToCreate.length > 0) {
-      const currentPoint = Vec.add(pagePoint, [0, 0]);
+    if (shapesToCreate.length) {
+      const currentPoint = Vec.add(pagePoint, [0, 0])
 
-      shapesToCreate.forEach((shape, index) => {
-        const bounds = TLDR.getBounds(shape);
+      shapesToCreate.forEach((shape, i) => {
+        const bounds = TLDR.getBounds(shape)
 
-        if (index === 0) {
+        if (i === 0) {
           // For the first shape, offset the current point so
           // that the first shape's center is at the page point
-          currentPoint[0] -= bounds.width / 2;
-          currentPoint[1] -= bounds.height / 2;
+          currentPoint[0] -= bounds.width / 2
+          currentPoint[1] -= bounds.height / 2
         }
 
         // Set the shape's point the current point
-        shape.point = [...currentPoint];
+        shape.point = [...currentPoint]
 
         // Then bump the page current point by this shape's width
-        currentPoint[0] += bounds.width;
-      });
+        currentPoint[0] += bounds.width
+      })
 
-      const commonBounds = Utils.getCommonBounds(shapesToCreate.map(TLDR.getBounds));
+      const commonBounds = Utils.getCommonBounds(shapesToCreate.map(TLDR.getBounds))
 
-      this.createShapes(...shapesToCreate);
+      this.createShapes(...shapesToCreate)
 
       // Are the common bounds too big for the viewport?
       if (!Utils.boundsContain(this.viewport, commonBounds)) {
-        this.zoomToSelection();
+        this.zoomToSelection()
         if (this.zoom > 1) {
-          this.resetZoom();
+          this.resetZoom()
         }
       }
     }
 
-    this.setIsLoading(false);
-    return this;
-  };
+    this.setIsLoading(false)
+    return this
+  }
 
-  private readonly getViewboxFromSVG = (svgString: string | ArrayBuffer | null) => {
-    const viewBoxRegex = /.*?viewBox=["'](-?[\d.]+[ ,]+-?(?:[\d.]+[ ,]){2}[\d.]+)["']/;
+  private getViewboxFromSVG = (svgStr: string | ArrayBuffer | null) => {
+    const viewBoxRegex = /.*?viewBox=["'](-?[\d.]+[, ]+-?[\d.]+[, ][\d.]+[, ][\d.]+)["']/
 
-    if (typeof svgString === 'string') {
-      const matches = svgString.match(viewBoxRegex);
-      return matches != undefined && matches.length >= 2 ? matches[1] : null;
+    if (typeof svgStr === 'string') {
+      const matches = svgStr.match(viewBoxRegex)
+      return matches && matches.length >= 2 ? matches[1] : null
     }
 
-    this.setIsLoading(false);
+    this.setIsLoading(false)
 
-    return null;
-  };
+    return null
+  }
 
   /* -------------------------------------------------- */
   /*                   Event Handlers                   */
@@ -3392,7 +3538,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     switch (e.key) {
       case '/': {
         if (this.status === 'idle' && !this.pageState.editingId) {
-          const { shiftKey, metaKey, altKey, ctrlKey, spaceKey } = this;
+          const { shiftKey, metaKey, altKey, ctrlKey, spaceKey } = this
 
           this.onPointerDown(
             {
@@ -3415,45 +3561,45 @@ export class TldrawApp extends StateManager<TDSnapshot> {
               pointerId: 0,
               clientX: info.point[0],
               clientY: info.point[1],
-            } as unknown as React.PointerEvent<HTMLDivElement>,
-          );
+            } as unknown as React.PointerEvent<HTMLDivElement>
+          )
         }
-        break;
+        break
       }
       case 'Escape': {
-        this.cancel();
-        break;
+        this.cancel()
+        break
       }
       case 'Meta': {
-        this.metaKey = true;
-        break;
+        this.metaKey = true
+        break
       }
       case 'Alt': {
-        this.altKey = true;
-        break;
+        this.altKey = true
+        break
       }
       case 'Control': {
-        this.ctrlKey = true;
-        break;
+        this.ctrlKey = true
+        break
       }
       case ' ': {
-        this.isForcePanning = true;
-        this.spaceKey = true;
-        break;
+        this.isForcePanning = true
+        this.spaceKey = true
+        break
       }
     }
 
-    this.currentTool.onKeyDown?.(key, info, e);
+    this.currentTool.onKeyDown?.(key, info, e)
 
-    return this;
-  };
+    return this
+  }
 
   onKeyUp: TLKeyboardEventHandler = (key, info, e) => {
-    if (!info) return;
+    if (!info) return
 
     switch (e.key) {
       case '/': {
-        const { currentPoint, shiftKey, metaKey, altKey, ctrlKey, spaceKey } = this;
+        const { currentPoint, shiftKey, metaKey, altKey, ctrlKey, spaceKey } = this
 
         this.onPointerUp(
           {
@@ -3476,31 +3622,31 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             pointerId: 0,
             clientX: currentPoint[0],
             clientY: currentPoint[1],
-          } as unknown as React.PointerEvent<HTMLDivElement>,
-        );
-        break;
+          } as unknown as React.PointerEvent<HTMLDivElement>
+        )
+        break
       }
       case 'Meta': {
-        this.metaKey = false;
-        break;
+        this.metaKey = false
+        break
       }
       case 'Alt': {
-        this.altKey = false;
-        break;
+        this.altKey = false
+        break
       }
       case 'Control': {
-        this.ctrlKey = false;
-        break;
+        this.ctrlKey = false
+        break
       }
       case ' ': {
-        this.isForcePanning = false;
-        this.spaceKey = false;
-        break;
+        this.isForcePanning = false
+        this.spaceKey = false
+        break
       }
     }
 
-    this.currentTool.onKeyUp?.(key, info, e);
-  };
+    this.currentTool.onKeyUp?.(key, info, e)
+  }
 
   /** Force bounding boxes to reset when the document loads. */
   refreshBoundingBoxes = () => {
@@ -3512,8 +3658,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           point: [...shape.point],
           ...('label' in shape && { label: '' }),
         },
-      ];
-    });
+      ]
+    })
 
     const restore = this.shapes.map((shape) => {
       return [
@@ -3522,10 +3668,10 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           point: [...shape.point],
           ...('label' in shape && { label: shape.label }),
         },
-      ];
-    });
+      ]
+    })
 
-    clearPreviousSize();
+    clearPrevSize()
 
     this.patchState({
       document: {
@@ -3535,7 +3681,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           },
         },
       },
-    });
+    })
     this.patchState({
       document: {
         pages: {
@@ -3544,359 +3690,359 @@ export class TldrawApp extends StateManager<TDSnapshot> {
           },
         },
       },
-    });
-  };
+    })
+  }
 
   /* ------------- Renderer Event Handlers ------------ */
 
   onDragOver: TLDropEventHandler = (e) => {
-    e.preventDefault();
-  };
+    e.preventDefault()
+  }
 
   onDrop: TLDropEventHandler = async (e) => {
-    e.preventDefault();
-    if (this.disableAssets) return this;
+    e.preventDefault()
+    if (this.disableAssets) return this
     if (e.dataTransfer.files?.length) {
-      this.addMediaFromFiles(Object.values(e.dataTransfer.files), [e.clientX, e.clientY]);
+      this.addMediaFromFiles(Object.values(e.dataTransfer.files), [e.clientX, e.clientY])
     }
-    return this;
-  };
+    return this
+  }
 
   onPinchStart: TLPinchEventHandler = (info, e) => {
-    this.currentTool.onPinchStart?.(info, e);
-  };
+    this.currentTool.onPinchStart?.(info, e)
+  }
 
-  onPinchEnd: TLPinchEventHandler = (info, e) => this.currentTool.onPinchEnd?.(info, e);
+  onPinchEnd: TLPinchEventHandler = (info, e) => this.currentTool.onPinchEnd?.(info, e)
 
-  onPinch: TLPinchEventHandler = (info, e) => this.currentTool.onPinch?.(info, e);
+  onPinch: TLPinchEventHandler = (info, e) => this.currentTool.onPinch?.(info, e)
 
   onPan: TLWheelEventHandler = (info, e) => {
-    if (this.appState.status === 'pinching') return;
+    if (this.appState.status === 'pinching') return
     // TODO: Pan and pinchzoom are firing at the same time. Considering turning one of them off!
 
-    const delta = Vec.div(info.delta, this.camera.zoom);
-    const previous = this.camera.point;
-    const next = Vec.sub(previous, delta);
+    const delta = Vec.div(info.delta, this.camera.zoom)
+    const prev = this.camera.point
+    const next = Vec.sub(prev, delta)
 
-    if (Vec.isEqual(next, previous)) return;
+    if (Vec.isEqual(next, prev)) return
 
-    this.pan(delta);
+    this.pan(delta)
 
     // When panning, we also want to call onPointerMove, except when "force panning" via spacebar / middle wheel button (it's called elsewhere in that case)
-    if (!this.isForcePanning) this.onPointerMove(info, e as unknown as React.PointerEvent);
+    if (!this.isForcePanning) this.onPointerMove(info, e as unknown as React.PointerEvent)
 
     // prevent middle click paste on linux
-    if (isLinux && this.isForcePanning) this.preventPaste();
-  };
+    if (isLinux && this.isForcePanning) this.preventPaste()
+  }
 
   onZoom: TLWheelEventHandler = (info, e) => {
-    if (this.state.appState.status !== TDStatus.Idle) return;
-    const delta = info.delta[2] / 50;
-    this.zoomBy(delta, info.point);
-    this.onPointerMove(info, e as unknown as React.PointerEvent);
-  };
+    if (this.state.appState.status !== TDStatus.Idle) return
+    const delta = info.delta[2] / 50
+    this.zoomBy(delta, info.point)
+    this.onPointerMove(info, e as unknown as React.PointerEvent)
+  }
 
   /* ----------------- Pointer Events ----------------- */
 
   updateInputs: TLPointerEventHandler = (info) => {
-    this.currentPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.shiftKey = info.shiftKey;
-    this.altKey = info.altKey;
-    this.ctrlKey = info.ctrlKey;
-    this.metaKey = info.metaKey;
-  };
+    this.currentPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.shiftKey = info.shiftKey
+    this.altKey = info.altKey
+    this.ctrlKey = info.ctrlKey
+    this.metaKey = info.metaKey
+  }
 
   onPointerMove: TLPointerEventHandler = (info, e) => {
-    this.previousPoint = this.currentPoint;
-    this.updateInputs(info, e);
+    this.previousPoint = this.currentPoint
+    this.updateInputs(info, e)
     if (this.isForcePanning && this.isPointing) {
-      this.onPan?.({ ...info, delta: Vec.neg(info.delta) }, e as unknown as WheelEvent);
-      return;
+      this.onPan?.({ ...info, delta: Vec.neg(info.delta) }, e as unknown as WheelEvent)
+      return
     }
 
     // Several events (e.g. pan) can trigger the same "pointer move" behavior
-    this.currentTool.onPointerMove?.(info, e);
+    this.currentTool.onPointerMove?.(info, e)
 
     // Move this to an emitted event
-    if (this.state.room != undefined) {
-      const { users, userId } = this.state.room;
+    if (this.state.room) {
+      const { users, userId } = this.state.room
 
       this.callbacks.onChangePresence?.(this, {
         ...users[userId],
         point: this.getPagePoint(info.point),
-        session: !(this.session == undefined),
-      });
+        session: !!this.session,
+      })
     }
-  };
+  }
 
   onPointerDown: TLPointerEventHandler = (info, e) => {
     if (e.buttons === 4) {
-      this.isForcePanning = true;
+      this.isForcePanning = true
     } else if (this.isPointing) {
-      return;
+      return
     }
-    this.isPointing = true;
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    if (this.isForcePanning) return;
+    this.isPointing = true
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    if (this.isForcePanning) return
     if (this.currentTool.type === TDShapeType.Draw && e.pointerType === 'pen' && e.button === 5) {
-      this.selectTool('erase');
-      this.isErasingWithPen = true;
+      this.selectTool('erase')
+      this.isErasingWithPen = true
     }
-    this.currentTool.onPointerDown?.(info, e);
-  };
+    this.currentTool.onPointerDown?.(info, e)
+  }
 
   onPointerUp: TLPointerEventHandler = (info, e) => {
-    this.isPointing = false;
-    if (!this.shiftKey) this.isForcePanning = false;
-    this.updateInputs(info, e);
-    this.currentTool.onPointerUp?.(info, e);
+    this.isPointing = false
+    if (!this.shiftKey) this.isForcePanning = false
+    this.updateInputs(info, e)
+    this.currentTool.onPointerUp?.(info, e)
     if (this.isErasingWithPen && e.pointerType === 'pen' && e.button === 5) {
-      this.selectTool(TDShapeType.Draw);
-      this.isErasingWithPen = false;
+      this.selectTool(TDShapeType.Draw)
+      this.isErasingWithPen = false
     }
-  };
+  }
 
   // Canvas (background)
   onPointCanvas: TLCanvasEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onPointCanvas?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onPointCanvas?.(info, e)
+  }
 
   onDoubleClickCanvas: TLCanvasEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onDoubleClickCanvas?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onDoubleClickCanvas?.(info, e)
+  }
 
   onRightPointCanvas: TLCanvasEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onRightPointCanvas?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onRightPointCanvas?.(info, e)
+  }
 
   onDragCanvas: TLCanvasEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onDragCanvas?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onDragCanvas?.(info, e)
+  }
 
   onReleaseCanvas: TLCanvasEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onReleaseCanvas?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onReleaseCanvas?.(info, e)
+  }
 
   // Shape
   onPointShape: TLPointerEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onPointShape?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onPointShape?.(info, e)
+  }
 
   onReleaseShape: TLPointerEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onReleaseShape?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onReleaseShape?.(info, e)
+  }
 
   onDoubleClickShape: TLPointerEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onDoubleClickShape?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onDoubleClickShape?.(info, e)
+  }
 
   onRightPointShape: TLPointerEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onRightPointShape?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onRightPointShape?.(info, e)
+  }
 
   onDragShape: TLPointerEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onDragShape?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onDragShape?.(info, e)
+  }
 
   onHoverShape: TLPointerEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onHoverShape?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onHoverShape?.(info, e)
+  }
 
   onUnhoverShape: TLPointerEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onUnhoverShape?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onUnhoverShape?.(info, e)
+  }
 
   // Bounds (bounding box background)
   onPointBounds: TLBoundsEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onPointBounds?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onPointBounds?.(info, e)
+  }
 
   onDoubleClickBounds: TLBoundsEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onDoubleClickBounds?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onDoubleClickBounds?.(info, e)
+  }
 
   onRightPointBounds: TLBoundsEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onRightPointBounds?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onRightPointBounds?.(info, e)
+  }
 
   onDragBounds: TLBoundsEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onDragBounds?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onDragBounds?.(info, e)
+  }
 
   onHoverBounds: TLBoundsEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onHoverBounds?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onHoverBounds?.(info, e)
+  }
 
   onUnhoverBounds: TLBoundsEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onUnhoverBounds?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onUnhoverBounds?.(info, e)
+  }
 
   onReleaseBounds: TLBoundsEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onReleaseBounds?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onReleaseBounds?.(info, e)
+  }
 
   // Bounds handles (corners, edges)
   onPointBoundsHandle: TLBoundsHandleEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onPointBoundsHandle?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onPointBoundsHandle?.(info, e)
+  }
 
   onDoubleClickBoundsHandle: TLBoundsHandleEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onDoubleClickBoundsHandle?.(info, e);
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onDoubleClickBoundsHandle?.(info, e)
 
     // hack time to reset the size / clipping of an image
-    if (this.selectedIds.length !== 1) return;
+    if (this.selectedIds.length !== 1) return
 
-    const shape = this.getShape(this.selectedIds[0]);
+    const shape = this.getShape(this.selectedIds[0])
 
     if (shape.type === TDShapeType.Image || shape.type === TDShapeType.Video) {
-      const asset = this.document.assets[shape.assetId];
-      const util = TLDR.getShapeUtil(shape);
-      const centerA = util.getCenter(shape);
-      const centerB = util.getCenter({ ...shape, size: asset.size });
-      const delta = Vec.sub(centerB, centerA);
+      const asset = this.document.assets[shape.assetId]
+      const util = TLDR.getShapeUtil(shape)
+      const centerA = util.getCenter(shape)
+      const centerB = util.getCenter({ ...shape, size: asset.size })
+      const delta = Vec.sub(centerB, centerA)
 
       this.updateShapes({
         id: shape.id,
         point: Vec.sub(shape.point, delta),
         size: asset.size,
-      });
+      })
     }
-  };
+  }
 
   onRightPointBoundsHandle: TLBoundsHandleEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onRightPointBoundsHandle?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onRightPointBoundsHandle?.(info, e)
+  }
 
   onDragBoundsHandle: TLBoundsHandleEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onDragBoundsHandle?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onDragBoundsHandle?.(info, e)
+  }
 
   onHoverBoundsHandle: TLBoundsHandleEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onHoverBoundsHandle?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onHoverBoundsHandle?.(info, e)
+  }
 
   onUnhoverBoundsHandle: TLBoundsHandleEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onUnhoverBoundsHandle?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onUnhoverBoundsHandle?.(info, e)
+  }
 
   onReleaseBoundsHandle: TLBoundsHandleEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onReleaseBoundsHandle?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onReleaseBoundsHandle?.(info, e)
+  }
 
   // Handles (ie the handles of a selected arrow)
   onPointHandle: TLPointerEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onPointHandle?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onPointHandle?.(info, e)
+  }
 
   onDoubleClickHandle: TLPointerEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onDoubleClickHandle?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onDoubleClickHandle?.(info, e)
+  }
 
   onRightPointHandle: TLPointerEventHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onRightPointHandle?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onRightPointHandle?.(info, e)
+  }
 
   onDragHandle: TLPointerEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onDragHandle?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onDragHandle?.(info, e)
+  }
 
   onHoverHandle: TLPointerEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onHoverHandle?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onHoverHandle?.(info, e)
+  }
 
   onUnhoverHandle: TLPointerEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onUnhoverHandle?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onUnhoverHandle?.(info, e)
+  }
 
   onReleaseHandle: TLPointerEventHandler = (info, e) => {
-    this.updateInputs(info, e);
-    this.currentTool.onReleaseHandle?.(info, e);
-  };
+    this.updateInputs(info, e)
+    this.currentTool.onReleaseHandle?.(info, e)
+  }
 
   onShapeChange = (shape: { id: string } & Partial<TLShape>) => {
-    const pageShapes = this.document.pages[this.currentPageId].shapes;
-    const shapeToUpdate = { ...(pageShapes[shape.id] as any), ...shape };
-    const patch = Commands.updateShapes(this, [shapeToUpdate], this.currentPageId).after;
-    return this.patchState(patch, 'patched_shapes');
+    const pageShapes = this.document.pages[this.currentPageId].shapes
+    const shapeToUpdate = { ...(pageShapes[shape.id] as any), ...shape }
+    const patch = Commands.updateShapes(this, [shapeToUpdate], this.currentPageId).after
+    return this.patchState(patch, 'patched_shapes')
     // this.updateShapes(shape)
-  };
+  }
 
   onShapeBlur = () => {
     // This prevents an auto-blur event from Safari
-    if (performance.now() - this.editingStartTime < 50) return;
+    if (performance.now() - this.editingStartTime < 50) return
 
-    const { editingId } = this.pageState;
-    const { isToolLocked } = this.getAppState();
+    const { editingId } = this.pageState
+    const { isToolLocked } = this.getAppState()
 
     if (editingId) {
       // If we're editing text, then delete the text if it's empty
-      const shape = this.getShape(editingId);
-      this.setEditingId();
+      const shape = this.getShape(editingId)
+      this.setEditingId()
       if (shape.type === TDShapeType.Text) {
         if (shape.text.trim().length <= 0) {
-          this.patchState(Commands.deleteShapes(this, [editingId]).after, 'delete_empty_text');
+          this.patchState(Commands.deleteShapes(this, [editingId]).after, 'delete_empty_text')
         } else if (!isToolLocked) {
-          this.select(editingId);
+          this.select(editingId)
         }
       }
     }
 
-    this.currentTool.onShapeBlur?.();
-  };
+    this.currentTool.onShapeBlur?.()
+  }
 
   onShapeClone: TLShapeCloneHandler = (info, e) => {
-    this.originPoint = this.getPagePoint(info.point).concat(info.pressure);
-    this.updateInputs(info, e);
-    this.currentTool.onShapeClone?.(info, e);
-  };
+    this.originPoint = this.getPagePoint(info.point).concat(info.pressure)
+    this.updateInputs(info, e)
+    this.currentTool.onShapeClone?.(info, e)
+  }
 
   onRenderCountChange = (ids: string[]) => {
-    const appState = this.getAppState();
+    const appState = this.getAppState()
     if (appState.isEmptyCanvas && ids.length > 0) {
       this.patchState(
         {
@@ -3904,8 +4050,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             isEmptyCanvas: false,
           },
         },
-        'empty_canvas:false',
-      );
+        'empty_canvas:false'
+      )
     } else if (!appState.isEmptyCanvas && ids.length <= 0) {
       this.patchState(
         {
@@ -3913,17 +4059,17 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             isEmptyCanvas: true,
           },
         },
-        'empty_canvas:true',
-      );
+        'empty_canvas:true'
+      )
     }
-  };
+  }
 
   onError = () => {
     // TODO
-  };
+  }
 
   isSelected(id: string) {
-    return this.selectedIds.includes(id);
+    return this.selectedIds.includes(id)
   }
 
   /* ----------------- Export ----------------- */
@@ -3935,14 +4081,14 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @throws Error if video shape with given ID does not exist
    */
   serializeVideo(id: string): string {
-    const video = document.getElementById(id + '_video') as HTMLVideoElement;
+    const video = document.getElementById(id + '_video') as HTMLVideoElement
     if (video) {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext('2d')!.drawImage(video, 0, 0);
-      return canvas.toDataURL('image/png');
-    } else throw new Error('Video with id ' + id + ' not found');
+      const canvas = document.createElement('canvas')
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
+      canvas.getContext('2d')!.drawImage(video, 0, 0)
+      return canvas.toDataURL('image/png')
+    } else throw new Error('Video with id ' + id + ' not found')
   }
 
   /**
@@ -3952,60 +4098,60 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * @throws Error if image shape with given ID does not exist
    */
   serializeImage(id: string): string {
-    const image = document.getElementById(id + '_image') as HTMLImageElement;
+    const image = document.getElementById(id + '_image') as HTMLImageElement
     if (image) {
-      const canvas = document.createElement('canvas');
-      canvas.width = image.width;
-      canvas.height = image.height;
-      canvas.getContext('2d')!.drawImage(image, 0, 0);
-      return canvas.toDataURL('image/png');
-    } else throw new Error('Image with id ' + id + ' not found');
+      const canvas = document.createElement('canvas')
+      canvas.width = image.width
+      canvas.height = image.height
+      canvas.getContext('2d')!.drawImage(image, 0, 0)
+      return canvas.toDataURL('image/png')
+    } else throw new Error('Image with id ' + id + ' not found')
   }
 
   patchAssets(assets: TDAssets) {
     this.document.assets = {
       ...this.document.assets,
       ...assets,
-    };
+    }
   }
 
   get room() {
-    return this.state.room;
+    return this.state.room
   }
 
   get isLocal() {
-    return this.state.room === undefined || this.state.room.id === 'local';
+    return this.state.room === undefined || this.state.room.id === 'local'
   }
 
   get status() {
-    return this.appState.status;
+    return this.appState.status
   }
 
   get currentUser() {
-    if (this.state.room == undefined) return;
-    return this.state.room.users[this.state.room.userId];
+    if (!this.state.room) return
+    return this.state.room.users[this.state.room.userId]
   }
 
   // The center of the component (in screen space)
   get centerPoint() {
-    const { width, height } = this.rendererBounds;
-    return Vec.toFixed([width / 2, height / 2]);
+    const { width, height } = this.rendererBounds
+    return Vec.toFixed([width / 2, height / 2])
   }
 
   get currentGrid() {
-    const { zoom } = this.camera;
+    const { zoom } = this.camera
     if (zoom < 0.15) {
-      return GRID_SIZE * 16;
+      return GRID_SIZE * 16
     } else if (zoom < 1) {
-      return GRID_SIZE * 4;
+      return GRID_SIZE * 4
     } else {
-      return GRID_SIZE * 1;
+      return GRID_SIZE * 1
     }
   }
 
-  getShapeUtil = TLDR.getShapeUtil;
+  getShapeUtil = TLDR.getShapeUtil
 
-  static version = 15.5;
+  static version = 15.5
 
   static defaultDocument: TDDocument = {
     id: 'doc',
@@ -4031,7 +4177,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       },
     },
     assets: {},
-  };
+  }
 
   static defaultState: TDSnapshot = {
     settings: {
@@ -4069,7 +4215,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       disableAssets: false,
     },
     document: TldrawApp.defaultDocument,
-  };
+  }
 
-  static assetSrc = 'tldraw-assets.json';
+  static assetSrc = 'tldraw-assets.json'
 }

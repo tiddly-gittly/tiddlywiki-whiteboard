@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { breakpoints } from '@tldr/components/breakpoints';
-import { useTldrawApp } from '@tldr/hooks';
-import { styled } from '@tldr/styles';
-import type { TDSnapshot } from '@tldr/types';
+import * as React from 'react'
+import { breakpoints } from '@tldr/components/breakpoints'
+import { useTldrawApp } from '@tldr/hooks'
+import { styled } from '@tldr/styles'
+import type { TDSnapshot } from '@tldr/types'
 
-const statusSelector = (s: TDSnapshot) => s.appState.status;
-const activeToolSelector = (s: TDSnapshot) => s.appState.activeTool;
+const statusSelector = (s: TDSnapshot) => s.appState.status
+const activeToolSelector = (s: TDSnapshot) => s.appState.activeTool
 
 export function StatusBar() {
-  const app = useTldrawApp();
-  const status = app.useStore(statusSelector);
-  const activeTool = app.useStore(activeToolSelector);
+  const app = useTldrawApp()
+  const status = app.useStore(statusSelector)
+  const activeTool = app.useStore(activeToolSelector)
 
   return (
     <StyledStatusBar bp={breakpoints} id="TD-StatusBar">
@@ -18,7 +18,7 @@ export function StatusBar() {
         {activeTool} | {status}
       </StyledSection>
     </StyledStatusBar>
-  );
+  )
 }
 
 const StyledStatusBar = styled('div', {
@@ -43,9 +43,9 @@ const StyledStatusBar = styled('div', {
       },
     },
   },
-});
+})
 
 const StyledSection = styled('div', {
   whiteSpace: 'nowrap',
   overflow: 'hidden',
-});
+})

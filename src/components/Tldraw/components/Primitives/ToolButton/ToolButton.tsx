@@ -1,27 +1,42 @@
-import * as React from 'react';
-import { Tooltip } from '@tldr/components/Primitives/Tooltip';
-import { breakpoints } from '@tldr/components/breakpoints';
-import { useTldrawApp } from '@tldr/hooks';
-import { styled } from '@tldr/styles';
+import * as React from 'react'
+import { Tooltip } from '@tldr/components/Primitives/Tooltip'
+import { breakpoints } from '@tldr/components/breakpoints'
+import { useTldrawApp } from '@tldr/hooks'
+import { styled } from '@tldr/styles'
 
 export interface ToolButtonProps {
-  children: React.ReactNode;
-  disabled?: boolean;
-  id?: string;
-  isActive?: boolean;
-  isToolLocked?: boolean;
-  onClick?: () => void;
-  onDoubleClick?: () => void;
-  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
-  onSelect?: () => void;
-  variant?: 'icon' | 'text' | 'circle' | 'primary';
+  onClick?: () => void
+  onSelect?: () => void
+  onDoubleClick?: () => void
+  disabled?: boolean
+  isActive?: boolean
+  isToolLocked?: boolean
+  variant?: 'icon' | 'text' | 'circle' | 'primary'
+  children: React.ReactNode
+  id?: string
+  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>
 }
 
 export const ToolButton = React.forwardRef<HTMLButtonElement, ToolButtonProps>(
-  ({ onSelect, onClick, onDoubleClick, variant, children, isToolLocked = false, disabled = false, isActive = false, onKeyDown, id, ...rest }, reference) => {
+  (
+    {
+      onSelect,
+      onClick,
+      onDoubleClick,
+      variant,
+      children,
+      isToolLocked = false,
+      disabled = false,
+      isActive = false,
+      onKeyDown,
+      id,
+      ...rest
+    },
+    ref
+  ) => {
     return (
       <StyledToolButton
-        ref={reference}
+        ref={ref}
         isActive={isActive}
         variant={variant}
         onClick={onClick}
@@ -31,40 +46,52 @@ export const ToolButton = React.forwardRef<HTMLButtonElement, ToolButtonProps>(
         onKeyDown={onKeyDown}
         bp={breakpoints}
         id={id}
-        {...rest}>
+        {...rest}
+      >
         <StyledToolButtonInner>{children}</StyledToolButtonInner>
         {isToolLocked && <ToolLockIndicator />}
       </StyledToolButton>
-    );
-  },
-);
+    )
+  }
+)
 
 /* ------------------ With Tooltip ------------------ */
 
 interface ToolButtonWithTooltipProps extends ToolButtonProps {
-  isLocked?: boolean;
-  kbd?: string;
-  label: string;
+  label: string
+  isLocked?: boolean
+  kbd?: string
 }
 
-export function ToolButtonWithTooltip({ label, kbd, isLocked, ...rest }: ToolButtonWithTooltipProps) {
-  const app = useTldrawApp();
+export function ToolButtonWithTooltip({
+  label,
+  kbd,
+  isLocked,
+  ...rest
+}: ToolButtonWithTooltipProps) {
+  const app = useTldrawApp()
 
   const handleDoubleClick = React.useCallback(() => {
-    app.toggleToolLock();
-  }, []);
+    app.toggleToolLock()
+  }, [])
 
   const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === ' ' && app.isForcePanning) {
-      e.preventDefault();
+      e.preventDefault()
     }
-  }, []);
+  }, [])
 
   return (
     <Tooltip label={label[0].toUpperCase() + label.slice(1)} kbd={kbd}>
-      <ToolButton {...rest} variant="primary" isToolLocked={isLocked && rest.isActive} onDoubleClick={handleDoubleClick} onKeyDown={handleKeyDown} />
+      <ToolButton
+        {...rest}
+        variant="primary"
+        isToolLocked={isLocked && rest.isActive}
+        onDoubleClick={handleDoubleClick}
+        onKeyDown={handleKeyDown}
+      />
     </Tooltip>
-  );
+  )
 }
 
 export const StyledToolButtonInner = styled('div', {
@@ -84,7 +111,7 @@ export const StyledToolButtonInner = styled('div', {
   border: '1px solid transparent',
   '-webkit-tap-highlight-color': 'transparent',
   'tap-highlight-color': 'transparent',
-});
+})
 
 export const StyledToolButton = styled('button', {
   position: 'relative',
@@ -205,7 +232,7 @@ export const StyledToolButton = styled('button', {
       },
     },
   ],
-});
+})
 
 const ToolLockIndicator = styled('div', {
   position: 'absolute',
@@ -216,4 +243,4 @@ const ToolLockIndicator = styled('div', {
   bottom: -2,
   border: '2px solid $panel',
   zIndex: 100,
-});
+})

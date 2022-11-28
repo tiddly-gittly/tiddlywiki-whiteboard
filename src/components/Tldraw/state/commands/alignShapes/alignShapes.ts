@@ -1,26 +1,26 @@
-import { Utils } from '@tldraw/core';
-import { Vec } from '@tldraw/vec';
-import { TLDR } from '@tldr/state/TLDR';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import { AlignType, TDShapeType, TldrawCommand } from '@tldr/types';
+import { Utils } from '@tldraw/core'
+import { Vec } from '@tldraw/vec'
+import { TLDR } from '@tldr/state/TLDR'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import { AlignType, TDShapeType, TldrawCommand } from '@tldr/types'
 
 export function alignShapes(app: TldrawApp, ids: string[], type: AlignType): TldrawCommand {
-  const { currentPageId } = app;
+  const { currentPageId } = app
 
-  const initialShapes = ids.map((id) => app.getShape(id));
+  const initialShapes = ids.map((id) => app.getShape(id))
 
   const boundsForShapes = initialShapes.map((shape) => {
     return {
       id: shape.id,
       point: [...shape.point],
       bounds: TLDR.getBounds(shape),
-    };
-  });
+    }
+  })
 
-  const commonBounds = Utils.getCommonBounds(boundsForShapes.map(({ bounds }) => bounds));
+  const commonBounds = Utils.getCommonBounds(boundsForShapes.map(({ bounds }) => bounds))
 
-  const midX = commonBounds.minX + commonBounds.width / 2;
-  const midY = commonBounds.minY + commonBounds.height / 2;
+  const midX = commonBounds.minX + commonBounds.width / 2
+  const midY = commonBounds.minY + commonBounds.height / 2
 
   const deltaMap = Object.fromEntries(
     boundsForShapes.map(({ id, point, bounds }) => {
@@ -37,35 +37,35 @@ export function alignShapes(app: TldrawApp, ids: string[], type: AlignType): Tld
             [AlignType.Right]: [commonBounds.maxX - bounds.width, point[1]],
           }[type],
         },
-      ];
-    }),
-  );
+      ]
+    })
+  )
 
   const { before, after } = TLDR.mutateShapes(
     app.state,
     ids,
     (shape) => {
-      if (!deltaMap[shape.id]) return shape;
-      return { point: deltaMap[shape.id].next };
+      if (!deltaMap[shape.id]) return shape
+      return { point: deltaMap[shape.id].next }
     },
     currentPageId,
-    false,
-  );
+    false
+  )
 
   initialShapes.forEach((shape) => {
     if (shape.type === TDShapeType.Group) {
-      const delta = Vec.sub(after[shape.id].point!, before[shape.id].point!);
+      const delta = Vec.sub(after[shape.id].point!, before[shape.id].point!)
 
       shape.children.forEach((id) => {
-        const child = app.getShape(id);
-        before[child.id] = { point: child.point };
-        after[child.id] = { point: Vec.add(child.point, delta) };
-      });
+        const child = app.getShape(id)
+        before[child.id] = { point: child.point }
+        after[child.id] = { point: Vec.add(child.point, delta) }
+      })
 
-      delete before[shape.id];
-      delete after[shape.id];
+      delete before[shape.id]
+      delete after[shape.id]
     }
-  });
+  })
 
   return {
     id: 'align',
@@ -97,5 +97,5 @@ export function alignShapes(app: TldrawApp, ids: string[], type: AlignType): Tld
         },
       },
     },
-  };
+  }
 }

@@ -1,1 +1,1 @@
-export * from './LineTool';
+export * from './LineTool'

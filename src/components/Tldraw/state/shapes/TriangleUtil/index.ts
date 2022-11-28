@@ -1,1 +1,1 @@
-export * from './TriangleUtil';
+export * from './TriangleUtil'

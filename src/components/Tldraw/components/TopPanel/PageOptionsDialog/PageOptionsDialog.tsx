@@ -1,141 +1,142 @@
-import * as Dialog from '@radix-ui/react-alert-dialog';
-import { MixerVerticalIcon, Pencil1Icon } from '@radix-ui/react-icons';
-import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { Divider } from '@tldr/components/Primitives/Divider';
-import { IconButton } from '@tldr/components/Primitives/IconButton/IconButton';
-import { RowButton, RowButtonProps } from '@tldr/components/Primitives/RowButton';
-import { SmallIcon } from '@tldr/components/Primitives/SmallIcon';
-import { TextField } from '@tldr/components/Primitives/TextField';
-import { breakpoints } from '@tldr/components/breakpoints';
-import { useContainer, useTldrawApp } from '@tldr/hooks';
-import { styled } from '@tldr/styles';
-import type { TDPage, TDSnapshot } from '@tldr/types';
+import * as Dialog from '@radix-ui/react-alert-dialog'
+import { MixerVerticalIcon, Pencil1Icon } from '@radix-ui/react-icons'
+import * as React from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
+import { Divider } from '@tldr/components/Primitives/Divider'
+import { IconButton } from '@tldr/components/Primitives/IconButton/IconButton'
+import { RowButton, RowButtonProps } from '@tldr/components/Primitives/RowButton'
+import { SmallIcon } from '@tldr/components/Primitives/SmallIcon'
+import { TextField } from '@tldr/components/Primitives/TextField'
+import { breakpoints } from '@tldr/components/breakpoints'
+import { useContainer, useTldrawApp } from '@tldr/hooks'
+import { styled } from '@tldr/styles'
+import type { TDPage, TDSnapshot } from '@tldr/types'
 
 const canDeleteSelector = (s: TDSnapshot) => {
-  return Object.keys(s.document.pages).length > 1;
-};
+  return Object.keys(s.document.pages).length > 1
+}
 
 interface PageOptionsDialogProps {
-  onClose?: () => void;
-  onOpen?: () => void;
-  page: TDPage;
+  page: TDPage
+  onOpen?: () => void
+  onClose?: () => void
 }
 
 export function PageOptionsDialog({ page, onOpen, onClose }: PageOptionsDialogProps) {
-  const app = useTldrawApp();
-  const intl = useIntl();
+  const app = useTldrawApp()
+  const intl = useIntl()
 
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [pageName, setPageName] = React.useState(page.name || 'Page');
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [pageName, setPageName] = React.useState(page.name || 'Page')
 
-  const canDelete = app.useStore(canDeleteSelector);
+  const canDelete = app.useStore(canDeleteSelector)
 
-  const rInput = React.useRef<HTMLInputElement>(null);
+  const rInput = React.useRef<HTMLInputElement>(null)
 
   const handleClose = React.useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    setIsOpen(false)
+  }, [])
 
   const handleDuplicate = React.useCallback(() => {
-    app.duplicatePage(page.id);
-  }, [app]);
+    app.duplicatePage(page.id)
+  }, [app])
 
   const handleDelete = React.useCallback(() => {
     if (window.confirm(`Are you sure you want to delete this page?`)) {
-      app.deletePage(page.id);
+      app.deletePage(page.id)
     }
-  }, [app]);
+  }, [app])
 
   const handleOpenChange = React.useCallback(
     (isOpen: boolean) => {
-      setIsOpen(isOpen);
+      setIsOpen(isOpen)
 
       if (isOpen) {
-        onOpen?.();
+        onOpen?.()
+        return
       }
     },
-    [app],
-  );
+    [app]
+  )
 
   function stopPropagation(e: React.KeyboardEvent<HTMLDivElement>) {
-    e.stopPropagation();
+    e.stopPropagation()
   }
 
-  const rInitialName = React.useRef(page.name || 'Page');
-  const rCurrentName = React.useRef(rInitialName.current);
+  const rInitialName = React.useRef(page.name || 'Page')
+  const rCurrentName = React.useRef(rInitialName.current)
 
   const handleTextFieldChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.trimStart();
-    rCurrentName.current = value;
-    setPageName(value);
-  }, []);
+    const value = event.target.value.trimStart()
+    rCurrentName.current = value
+    setPageName(value)
+  }, [])
 
   const handleTextFieldKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case 'Enter': {
         if (rCurrentName.current === rInitialName.current) {
-          setIsOpen(false);
+          setIsOpen(false)
         } else {
-          rInitialName.current = rCurrentName.current;
-          app.renamePage(page.id, rCurrentName.current.trim());
-          setIsOpen(false);
+          rInitialName.current = rCurrentName.current
+          app.renamePage(page.id, rCurrentName.current.trim())
+          setIsOpen(false)
         }
 
-        break;
+        break
       }
       case 'Escape': {
         // If the name hasn't changed, close the menu
         if (rCurrentName.current === rInitialName.current) {
-          setIsOpen(false);
-          return;
+          setIsOpen(false)
+          return
         }
 
         // If the name has changed, revert the change
-        rCurrentName.current = rInitialName.current;
-        setPageName(rInitialName.current);
+        rCurrentName.current = rInitialName.current
+        setPageName(rInitialName.current)
 
         // ...and refocus the input
         requestAnimationFrame(() => {
-          const elm = rInput.current;
-          if (elm != undefined) {
-            elm.focus();
-            elm.setSelectionRange(0, elm.value.length);
+          const elm = rInput.current
+          if (elm) {
+            elm.focus()
+            elm.setSelectionRange(0, elm.value.length)
           }
-        });
-        break;
+        })
+        break
       }
     }
-  }, []);
+  }, [])
 
-  const rWasOpen = React.useRef(false);
+  const rWasOpen = React.useRef(false)
 
   React.useEffect(() => {
     if (isOpen) {
-      rWasOpen.current = true;
-      rInitialName.current = page.name || 'Page';
-      rCurrentName.current = rInitialName.current;
+      rWasOpen.current = true
+      rInitialName.current = page.name || 'Page'
+      rCurrentName.current = rInitialName.current
 
       requestAnimationFrame(() => {
-        const elm = rInput.current;
-        if (elm != undefined) {
-          elm.focus();
-          elm.setSelectionRange(0, elm.value.length);
+        const elm = rInput.current
+        if (elm) {
+          elm.focus()
+          elm.setSelectionRange(0, elm.value.length)
         }
-      });
+      })
     } else if (rWasOpen.current) {
-      onClose?.();
+      onClose?.()
     }
 
     return () => {
       if (rCurrentName.current !== rInitialName.current) {
-        rInitialName.current = rCurrentName.current;
-        app.renamePage(page.id, rCurrentName.current);
+        rInitialName.current = rCurrentName.current
+        app.renamePage(page.id, rCurrentName.current)
       }
-    };
-  }, [isOpen]);
+    }
+  }, [isOpen])
 
-  const container = useContainer();
+  const container = useContainer()
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={handleOpenChange}>
@@ -173,7 +174,7 @@ export function PageOptionsDialog({ page, onOpen, onClose }: PageOptionsDialogPr
         </StyledDialogContent>
       </Dialog.Portal>
     </Dialog.Root>
-  );
+  )
 }
 
 /* -------------------------------------------------- */
@@ -194,24 +195,27 @@ export const StyledDialogContent = styled(Dialog.Content, {
   padding: '$1',
   borderRadius: '$2',
   font: '$ui',
-  zIndex: 999_999,
+  zIndex: 999999,
   '&:focus': {
     outline: 'none',
   },
-});
+})
 
 export const StyledDialogOverlay = styled(Dialog.Overlay, {
   backgroundColor: 'rgba(0, 0, 0, .15)',
   position: 'absolute',
   pointerEvents: 'all',
   inset: 0,
-  zIndex: 999_998,
-});
+  zIndex: 999998,
+})
 
-function DialogAction({ onSelect, ...rest }: RowButtonProps & { onSelect: (e: React.SyntheticEvent<HTMLButtonElement, Event>) => void }) {
+function DialogAction({
+  onSelect,
+  ...rest
+}: RowButtonProps & { onSelect: (e: React.SyntheticEvent<HTMLButtonElement, Event>) => void }) {
   return (
     <Dialog.Action asChild onClick={onSelect} onSelect={onSelect}>
       <RowButton {...rest} />
     </Dialog.Action>
-  );
+  )
 }

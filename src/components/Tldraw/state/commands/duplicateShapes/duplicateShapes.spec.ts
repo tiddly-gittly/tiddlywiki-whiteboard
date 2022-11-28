@@ -1,46 +1,46 @@
-import { Utils } from '@tldraw/core';
-import { TLDR } from '@tldr/state/TLDR';
-import { TldrawTestApp, mockDocument } from '@tldr/test';
-import { ArrowShape, SessionType, TDShapeType } from '@tldr/types';
+import { Utils } from '@tldraw/core'
+import { TLDR } from '@tldr/state/TLDR'
+import { TldrawTestApp, mockDocument } from '@tldr/test'
+import { ArrowShape, SessionType, TDShapeType } from '@tldr/types'
 
 describe('Duplicate command', () => {
-  const app = new TldrawTestApp();
+  const app = new TldrawTestApp()
 
   beforeEach(() => {
-    app.loadDocument(mockDocument);
-  });
+    app.loadDocument(mockDocument)
+  })
 
   describe('when no shape is selected', () => {
     it('does nothing', () => {
-      const initialState = app.state;
-      app.duplicate();
-      const currentState = app.state;
+      const initialState = app.state
+      app.duplicate()
+      const currentState = app.state
 
-      expect(currentState).toEqual(initialState);
-    });
-  });
+      expect(currentState).toEqual(initialState)
+    })
+  })
 
   it('does, undoes and redoes command', () => {
-    app.select('rect1');
+    app.select('rect1')
 
-    expect(Object.keys(app.getPage().shapes).length).toBe(3);
+    expect(Object.keys(app.getPage().shapes).length).toBe(3)
 
-    app.duplicate();
+    app.duplicate()
 
-    expect(Object.keys(app.getPage().shapes).length).toBe(4);
+    expect(Object.keys(app.getPage().shapes).length).toBe(4)
 
-    app.undo();
+    app.undo()
 
-    expect(Object.keys(app.getPage().shapes).length).toBe(3);
+    expect(Object.keys(app.getPage().shapes).length).toBe(3)
 
-    app.redo();
+    app.redo()
 
-    expect(Object.keys(app.getPage().shapes).length).toBe(4);
-  });
+    expect(Object.keys(app.getPage().shapes).length).toBe(4)
+  })
 
   describe('when duplicating a shape', () => {
-    it.todo('sets the correct props (parent and childIndex)');
-  });
+    it.todo('sets the correct props (parent and childIndex)')
+  })
 
   describe('when duplicating a bound shape', () => {
     it('removed the binding when the target is not selected', () => {
@@ -55,29 +55,34 @@ describe('Duplicate command', () => {
           type: TDShapeType.Arrow,
           id: 'arrow1',
           point: [200, 200],
-        },
-      );
+        }
+      )
 
-      const beforeShapeIds = Object.keys(app.page.shapes);
+      const beforeShapeIds = Object.keys(app.page.shapes)
 
-      app.select('arrow1').movePointer([200, 200]).startSession(SessionType.Arrow, 'arrow1', 'start').movePointer([50, 50]).completeSession();
+      app
+        .select('arrow1')
+        .movePointer([200, 200])
+        .startSession(SessionType.Arrow, 'arrow1', 'start')
+        .movePointer([50, 50])
+        .completeSession()
 
-      const beforeArrow = app.getShape<ArrowShape>('arrow1');
+      const beforeArrow = app.getShape<ArrowShape>('arrow1')
 
-      expect(beforeArrow.handles.start.bindingId).toBeTruthy();
+      expect(beforeArrow.handles.start.bindingId).toBeTruthy()
 
-      app.select('arrow1').duplicate();
+      app.select('arrow1').duplicate()
 
-      const afterShapeIds = Object.keys(app.page.shapes);
+      const afterShapeIds = Object.keys(app.page.shapes)
 
-      const newShapeIds = afterShapeIds.filter((id) => !beforeShapeIds.includes(id));
+      const newShapeIds = afterShapeIds.filter((id) => !beforeShapeIds.includes(id))
 
-      expect(newShapeIds.length).toBe(1);
+      expect(newShapeIds.length).toBe(1)
 
-      const duplicatedArrow = app.getShape<ArrowShape>(newShapeIds[0]);
+      const duplicatedArrow = app.getShape<ArrowShape>(newShapeIds[0])
 
-      expect(duplicatedArrow.handles.start.bindingId).toBeUndefined();
-    });
+      expect(duplicatedArrow.handles.start.bindingId).toBeUndefined()
+    })
 
     it('duplicates the binding when the target is selected', () => {
       app.resetDocument().createShapes(
@@ -91,97 +96,108 @@ describe('Duplicate command', () => {
           type: TDShapeType.Arrow,
           id: 'arrow1',
           point: [200, 200],
-        },
-      );
+        }
+      )
 
-      const beforeShapeIds = Object.keys(app.page.shapes);
+      const beforeShapeIds = Object.keys(app.page.shapes)
 
-      app.select('arrow1').movePointer([200, 200]).startSession(SessionType.Arrow, 'arrow1', 'start').movePointer([50, 50]).completeSession();
+      app
+        .select('arrow1')
+        .movePointer([200, 200])
+        .startSession(SessionType.Arrow, 'arrow1', 'start')
+        .movePointer([50, 50])
+        .completeSession()
 
-      const oldBindingId = app.getShape<ArrowShape>('arrow1').handles.start.bindingId;
-      expect(oldBindingId).toBeTruthy();
+      const oldBindingId = app.getShape<ArrowShape>('arrow1').handles.start.bindingId
+      expect(oldBindingId).toBeTruthy()
 
-      app.select('arrow1', 'target1').duplicate();
+      app.select('arrow1', 'target1').duplicate()
 
-      const afterShapeIds = Object.keys(app.page.shapes);
+      const afterShapeIds = Object.keys(app.page.shapes)
 
-      const newShapeIds = afterShapeIds.filter((id) => !beforeShapeIds.includes(id));
+      const newShapeIds = afterShapeIds.filter((id) => !beforeShapeIds.includes(id))
 
-      expect(newShapeIds.length).toBe(2);
+      expect(newShapeIds.length).toBe(2)
 
-      const newBindingId = app.getShape<ArrowShape>(newShapeIds[0]).handles.start.bindingId;
+      const newBindingId = app.getShape<ArrowShape>(newShapeIds[0]).handles.start.bindingId
 
-      expect(newBindingId).toBeTruthy();
+      expect(newBindingId).toBeTruthy()
 
-      app.undo();
+      app.undo()
 
-      expect(app.getBinding(newBindingId!)).toBeUndefined();
-      expect(app.getShape<ArrowShape>(newShapeIds[0])).toBeUndefined();
+      expect(app.getBinding(newBindingId!)).toBeUndefined()
+      expect(app.getShape<ArrowShape>(newShapeIds[0])).toBeUndefined()
 
-      app.redo();
+      app.redo()
 
-      expect(app.getBinding(newBindingId!)).toBeTruthy();
-      expect(app.getShape<ArrowShape>(newShapeIds[0]).handles.start.bindingId).toBe(newBindingId);
-    });
+      expect(app.getBinding(newBindingId!)).toBeTruthy()
+      expect(app.getShape<ArrowShape>(newShapeIds[0]).handles.start.bindingId).toBe(newBindingId)
+    })
 
     it('duplicates groups', () => {
-      app.group(['rect1', 'rect2'], 'newGroup').select('newGroup');
+      app.group(['rect1', 'rect2'], 'newGroup').select('newGroup')
 
-      const beforeShapeIds = Object.keys(app.page.shapes);
+      const beforeShapeIds = Object.keys(app.page.shapes)
 
-      app.duplicate();
+      app.duplicate()
 
-      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length + 3);
+      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length + 3)
 
-      app.undo();
+      app.undo()
 
-      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length);
+      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length)
 
-      app.redo();
+      app.redo()
 
-      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length + 3);
-    });
+      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length + 3)
+    })
 
     it('duplicates grouped shapes', () => {
-      app.group(['rect1', 'rect2'], 'newGroup').select('rect1');
+      app.group(['rect1', 'rect2'], 'newGroup').select('rect1')
 
-      const beforeShapeIds = Object.keys(app.page.shapes);
+      const beforeShapeIds = Object.keys(app.page.shapes)
 
-      app.duplicate();
+      app.duplicate()
 
-      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length + 1);
+      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length + 1)
 
-      app.undo();
+      app.undo()
 
-      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length);
+      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length)
 
-      app.redo();
+      app.redo()
 
-      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length + 1);
-    });
-  });
+      expect(Object.keys(app.page.shapes).length).toBe(beforeShapeIds.length + 1)
+    })
+  })
 
-  it.todo('Does not delete uneffected bindings.');
-});
+  it.todo('Does not delete uneffected bindings.')
+})
 
 describe('when point-duplicating', () => {
   it('duplicates without crashing', () => {
-    const app = new TldrawTestApp();
+    const app = new TldrawTestApp()
 
-    app.loadDocument(mockDocument).group(['rect1', 'rect2']).selectAll().duplicate(app.selectedIds, [200, 200]);
-  });
+    app
+      .loadDocument(mockDocument)
+      .group(['rect1', 'rect2'])
+      .selectAll()
+      .duplicate(app.selectedIds, [200, 200])
+  })
 
   it('duplicates in the correct place', () => {
-    const app = new TldrawTestApp();
+    const app = new TldrawTestApp()
 
-    app.loadDocument(mockDocument).group(['rect1', 'rect2']).selectAll();
+    app.loadDocument(mockDocument).group(['rect1', 'rect2']).selectAll()
 
-    const before = new Set(app.shapes.map((shape) => shape.id));
+    const before = app.shapes.map((shape) => shape.id)
 
-    app.duplicate(app.selectedIds, [200, 200]);
+    app.duplicate(app.selectedIds, [200, 200])
 
-    const after = app.shapes.filter((shape) => !before.has(shape.id));
+    const after = app.shapes.filter((shape) => !before.includes(shape.id))
 
-    expect(Utils.getBoundsCenter(Utils.getCommonBounds(after.map((shape) => TLDR.getBounds(shape))))).toStrictEqual([200, 200]);
-  });
-});
+    expect(
+      Utils.getBoundsCenter(Utils.getCommonBounds(after.map((shape) => TLDR.getBounds(shape))))
+    ).toStrictEqual([200, 200])
+  })
+})

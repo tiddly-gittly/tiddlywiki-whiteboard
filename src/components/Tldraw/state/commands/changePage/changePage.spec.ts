@@ -1,31 +1,31 @@
-import { TldrawTestApp, mockDocument } from '@tldr/test';
+import { TldrawTestApp, mockDocument } from '@tldr/test'
 
 describe('Change page command', () => {
-  const app = new TldrawTestApp();
+  const app = new TldrawTestApp()
 
   it('does, undoes and redoes command', () => {
-    app.loadDocument(mockDocument);
+    app.loadDocument(mockDocument)
 
-    const initialId = app.page.id;
+    const initialId = app.page.id
 
-    app.createPage();
+    app.createPage()
 
-    const nextId = app.page.id;
+    const nextId = app.page.id
 
-    app.changePage(initialId);
+    app.changePage(initialId)
 
-    expect(app.page.id).toBe(initialId);
+    expect(app.page.id).toBe(initialId)
 
-    app.changePage(nextId);
+    app.changePage(nextId)
 
-    expect(app.page.id).toBe(nextId);
+    expect(app.page.id).toBe(nextId)
 
-    app.undo();
+    app.undo()
 
-    expect(app.page.id).toBe(initialId);
+    expect(app.page.id).toBe(initialId)
 
-    app.redo();
+    app.redo()
 
-    expect(app.page.id).toBe(nextId);
-  });
-});
+    expect(app.page.id).toBe(nextId)
+  })
+})

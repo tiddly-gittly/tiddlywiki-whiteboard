@@ -1,1 +1,1 @@
-export * from './ungroupShapes';
+export * from './ungroupShapes'

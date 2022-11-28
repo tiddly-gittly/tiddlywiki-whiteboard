@@ -1,66 +1,68 @@
-import React, { RefObject } from 'react';
+import React, { RefObject } from 'react'
 
-export function useCursor(reference: RefObject<HTMLDivElement>) {
+export function useCursor(ref: RefObject<HTMLDivElement>) {
   React.useEffect(() => {
-    let isPointing = false;
-    let isSpacePanning = false;
+    let isPointing = false
+    let isSpacePanning = false
 
-    const elm = reference.current;
-    if (elm == undefined) return;
+    const elm = ref.current
+    if (!elm) return
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === ' ' && !isSpacePanning) {
-        isSpacePanning = true;
+        isSpacePanning = true
 
         if (isPointing) {
-          elm.setAttribute('style', 'cursor: grabbing !important');
+          elm.setAttribute('style', 'cursor: grabbing !important')
         } else {
-          elm.setAttribute('style', 'cursor: grab !important');
+          elm.setAttribute('style', 'cursor: grab !important')
         }
       }
-    };
+    }
 
     const onKeyUp = (e: KeyboardEvent) => {
       if (e.key === ' ') {
-        isSpacePanning = false;
-        elm.setAttribute('style', 'cursor: initial');
+        isSpacePanning = false
+        elm.setAttribute('style', 'cursor: initial')
       }
-    };
+    }
 
     const onPointerDown = (e: PointerEvent) => {
-      isPointing = true;
+      isPointing = true
 
       // On middle mouse down
       if (e.button === 1) {
-        elm.setAttribute('style', 'cursor: grabbing !important');
+        elm.setAttribute('style', 'cursor: grabbing !important')
       }
 
       // On left mouse down
-      if (e.button === 0 && isSpacePanning) {
-        elm.setAttribute('style', 'cursor: grabbing !important');
+      if (e.button === 0) {
+        if (isSpacePanning) {
+          elm.setAttribute('style', 'cursor: grabbing !important')
+        }
       }
-    };
+    }
 
     const onPointerUp = () => {
-      isPointing = false;
+      isPointing = false
 
       if (isSpacePanning) {
-        elm.setAttribute('style', 'cursor: grab !important');
+        elm.setAttribute('style', 'cursor: grab !important')
       } else {
-        elm.setAttribute('style', 'cursor: initial');
+        elm.setAttribute('style', 'cursor: initial')
       }
-    };
+    }
 
-    elm.addEventListener('keydown', onKeyDown);
-    elm.addEventListener('keyup', onKeyUp);
-    elm.addEventListener('pointerdown', onPointerDown);
-    elm.addEventListener('pointerup', onPointerUp);
+    elm.addEventListener('keydown', onKeyDown)
+    elm.addEventListener('keyup', onKeyUp)
+    elm.addEventListener('pointerdown', onPointerDown)
+    elm.addEventListener('pointerup', onPointerUp)
 
     return () => {
-      elm.removeEventListener('keydown', onKeyDown);
-      elm.removeEventListener('keyup', onKeyUp);
-      elm.removeEventListener('pointerdown', onPointerDown);
-      elm.removeEventListener('pointerup', onPointerUp);
-    };
-  }, [reference.current]);
+      elm.removeEventListener('keydown', onKeyDown)
+      elm.removeEventListener('keyup', onKeyUp)
+      elm.removeEventListener('pointerdown', onPointerDown)
+      elm.removeEventListener('pointerup', onPointerUp)
+    }
+  }, [ref.current])
 }

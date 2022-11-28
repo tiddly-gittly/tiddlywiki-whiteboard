@@ -1,11 +1,16 @@
-import { TLDR } from '@tldr/state/TLDR';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import type { TldrawCommand } from '@tldr/types';
+import { TLDR } from '@tldr/state/TLDR'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import type { TldrawCommand } from '@tldr/types'
 
 export function resetBounds(app: TldrawApp, ids: string[], pageId: string): TldrawCommand {
-  const { currentPageId } = app;
+  const { currentPageId } = app
 
-  const { before, after } = TLDR.mutateShapes(app.state, ids, (shape) => app.getShapeUtil(shape).onDoubleClickBoundsHandle?.(shape), pageId);
+  const { before, after } = TLDR.mutateShapes(
+    app.state,
+    ids,
+    (shape) => app.getShapeUtil(shape).onDoubleClickBoundsHandle?.(shape),
+    pageId
+  )
 
   return {
     id: 'reset_bounds',
@@ -33,5 +38,5 @@ export function resetBounds(app: TldrawApp, ids: string[], pageId: string): Tldr
         },
       },
     },
-  };
+  }
 }

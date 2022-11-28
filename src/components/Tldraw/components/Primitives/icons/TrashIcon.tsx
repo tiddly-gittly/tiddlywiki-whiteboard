@@ -1,9 +1,20 @@
-import * as React from 'react';
+import * as React from 'react'
 
 export function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg width={18} height={18} viewBox="0 0 15 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path fillRule="evenodd" clipRule="evenodd" d="M2 4.656a.5.5 0 01.5-.5h9.7a.5.5 0 010 1H2.5a.5.5 0 01-.5-.5z" />
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 15 15"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M2 4.656a.5.5 0 01.5-.5h9.7a.5.5 0 010 1H2.5a.5.5 0 01-.5-.5z"
+      />
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -15,5 +26,5 @@ export function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
         d="M6.272 6.85a.5.5 0 01.5.5v3.233a.5.5 0 11-1 0V7.35a.5.5 0 01.5-.5zM8.428 6.85a.5.5 0 01.5.5v3.233a.5.5 0 11-1 0V7.35a.5.5 0 01.5-.5z"
       />
     </svg>
-  );
+  )
 }

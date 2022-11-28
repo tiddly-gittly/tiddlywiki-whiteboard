@@ -1,1 +1,1 @@
-export * from './TextTool';
+export * from './TextTool'

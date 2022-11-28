@@ -1,23 +1,23 @@
-import { TldrawTestApp, mockDocument } from '@tldr/test';
+import { TldrawTestApp, mockDocument } from '@tldr/test'
 
 describe('Duplicate page command', () => {
-  const app = new TldrawTestApp();
+  const app = new TldrawTestApp()
 
   it('does, undoes and redoes command', () => {
-    app.loadDocument(mockDocument);
+    app.loadDocument(mockDocument)
 
-    const initialId = app.page.id;
+    const initialId = app.page.id
 
-    app.duplicatePage(app.currentPageId);
+    app.duplicatePage(app.currentPageId)
 
-    const nextId = app.page.id;
+    const nextId = app.page.id
 
-    app.undo();
+    app.undo()
 
-    expect(app.page.id).toBe(initialId);
+    expect(app.page.id).toBe(initialId)
 
-    app.redo();
+    app.redo()
 
-    expect(app.page.id).toBe(nextId);
-  });
-});
+    expect(app.page.id).toBe(nextId)
+  })
+})

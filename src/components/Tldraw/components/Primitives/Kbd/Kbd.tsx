@@ -1,21 +1,21 @@
-import { Utils } from '@tldraw/core';
-import * as React from 'react';
-import { styled } from '@tldr/styles';
+import { Utils } from '@tldraw/core'
+import * as React from 'react'
+import { styled } from '@tldr/styles'
 
 /* -------------------------------------------------- */
 /*                  Keyboard Shortcut                 */
 /* -------------------------------------------------- */
 
-const commandKey = () => (Utils.isDarwin() ? '⌘' : 'Ctrl');
+const commandKey = () => (Utils.isDarwin() ? '⌘' : 'Ctrl')
 
-export function Kbd({ variant, children }: { children: string; variant: 'tooltip' | 'menu' }) {
+export function Kbd({ variant, children }: { variant: 'tooltip' | 'menu'; children: string }) {
   return (
     <StyledKbd variant={variant}>
-      {children.split('').map((k, index) => {
-        return <span key={index}>{k.replace('#', commandKey())}</span>;
+      {children.split('').map((k, i) => {
+        return <span key={i}>{k.replace('#', commandKey())}</span>
       })}
     </StyledKbd>
-  );
+  )
 }
 
 export const StyledKbd = styled('kbd', {
@@ -53,4 +53,4 @@ export const StyledKbd = styled('kbd', {
       menu: {},
     },
   },
-});
+})

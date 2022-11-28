@@ -1,147 +1,147 @@
-import { TldrawTestApp, mockDocument } from '@tldr/test';
-import { ArrowShape, SessionType, TDShapeType, TDStatus } from '@tldr/types';
+import { TldrawTestApp, mockDocument } from '@tldr/test'
+import { ArrowShape, SessionType, TDShapeType, TDStatus } from '@tldr/types'
 
 describe('Arrow session', () => {
-  const restoreDocument = new TldrawTestApp()
+  const restoreDoc = new TldrawTestApp()
     .loadDocument(mockDocument)
     .selectAll()
     .delete()
     .createShapes(
       { type: TDShapeType.Rectangle, id: 'target1', point: [0, 0], size: [100, 100] },
-      { type: TDShapeType.Arrow, id: 'arrow1', point: [200, 200] },
-    ).document;
+      { type: TDShapeType.Arrow, id: 'arrow1', point: [200, 200] }
+    ).document
 
   it('begins, updateSession', () => {
     const app = new TldrawTestApp()
-      .loadDocument(restoreDocument)
+      .loadDocument(restoreDoc)
       .select('arrow1')
       .movePointer([200, 200])
       .startSession(SessionType.Arrow, 'arrow1', 'start')
       .movePointer([50, 50])
-      .completeSession();
+      .completeSession()
 
-    const binding = app.bindings[0];
+    const binding = app.bindings[0]
 
-    expect(binding).toBeTruthy();
-    expect(binding.fromId).toBe('arrow1');
-    expect(binding.toId).toBe('target1');
-    expect(binding.handleId).toBe('start');
-    expect(app.appState.status).toBe(TDStatus.Idle);
-    expect(app.getShape('arrow1').handles?.start.bindingId).toBe(binding.id);
+    expect(binding).toBeTruthy()
+    expect(binding.fromId).toBe('arrow1')
+    expect(binding.toId).toBe('target1')
+    expect(binding.handleId).toBe('start')
+    expect(app.appState.status).toBe(TDStatus.Idle)
+    expect(app.getShape('arrow1').handles?.start.bindingId).toBe(binding.id)
 
-    app.undo();
+    app.undo()
 
-    expect(app.bindings[0]).toBe(undefined);
-    expect(app.getShape('arrow1').handles?.start.bindingId).toBe(undefined);
+    expect(app.bindings[0]).toBe(undefined)
+    expect(app.getShape('arrow1').handles?.start.bindingId).toBe(undefined)
 
-    app.redo();
+    app.redo()
 
-    expect(app.bindings[0]).toBeTruthy();
-    expect(app.getShape('arrow1').handles?.start.bindingId).toBe(binding.id);
-  });
+    expect(app.bindings[0]).toBeTruthy()
+    expect(app.getShape('arrow1').handles?.start.bindingId).toBe(binding.id)
+  })
 
   it('cancels session', () => {
     const app = new TldrawTestApp()
-      .loadDocument(restoreDocument)
+      .loadDocument(restoreDoc)
       .select('arrow1')
       .movePointer([200, 200])
       .startSession(SessionType.Arrow, 'arrow1', 'start')
       .movePointer([50, 50])
-      .cancelSession();
+      .cancelSession()
 
-    expect(app.bindings[0]).toBe(undefined);
-    expect(app.getShape('arrow1').handles?.start.bindingId).toBe(undefined);
-  });
+    expect(app.bindings[0]).toBe(undefined)
+    expect(app.getShape('arrow1').handles?.start.bindingId).toBe(undefined)
+  })
 
   describe('arrow binding', () => {
     it('ignores locked shapes', () => {
       const app = new TldrawTestApp()
-        .loadDocument(restoreDocument)
+        .loadDocument(restoreDoc)
         .select('target1')
         .toggleLocked() // set target 1 to locked
         .select('arrow1')
         .movePointer([200, 200])
         .startSession(SessionType.Arrow, 'arrow1', 'start')
-        .movePointer([50, 50]);
-      expect(app.bindings.length).toBe(0);
-    });
+        .movePointer([50, 50])
+      expect(app.bindings.length).toBe(0)
+    })
 
     it('points to the center', () => {
       const app = new TldrawTestApp()
-        .loadDocument(restoreDocument)
+        .loadDocument(restoreDoc)
         .select('arrow1')
         .movePointer([200, 200])
         .startSession(SessionType.Arrow, 'arrow1', 'start')
-        .movePointer([50, 50]);
-      expect(app.bindings[0].point).toStrictEqual([0.5, 0.5]);
-    });
+        .movePointer([50, 50])
+      expect(app.bindings[0].point).toStrictEqual([0.5, 0.5])
+    })
 
     it('Snaps to the center', () => {
       const app = new TldrawTestApp()
-        .loadDocument(restoreDocument)
+        .loadDocument(restoreDoc)
         .select('arrow1')
         .movePointer([200, 200])
         .startSession(SessionType.Arrow, 'arrow1', 'start')
-        .movePointer([55, 55]);
-      expect(app.bindings[0].point).toStrictEqual([0.5, 0.5]);
-    });
+        .movePointer([55, 55])
+      expect(app.bindings[0].point).toStrictEqual([0.5, 0.5])
+    })
 
     it('Binds at the bottom left', () => {
       const app = new TldrawTestApp()
-        .loadDocument(restoreDocument)
+        .loadDocument(restoreDoc)
         .select('arrow1')
         .movePointer([200, 200])
         .startSession(SessionType.Arrow, 'arrow1', 'start')
-        .movePointer([116, -16]);
-      expect(app.bindings[0].point).toStrictEqual([1, 0]);
-    });
+        .movePointer([116, -16])
+      expect(app.bindings[0].point).toStrictEqual([1, 0])
+    })
 
     it('Cancels the bind when off of the expanded bounds', () => {
       const app = new TldrawTestApp()
-        .loadDocument(restoreDocument)
+        .loadDocument(restoreDoc)
         .select('arrow1')
         .movePointer([200, 200])
         .startSession(SessionType.Arrow, 'arrow1', 'start')
-        .movePointer([133, 133]);
+        .movePointer([133, 133])
 
-      expect(app.bindings[0]).toBe(undefined);
-    });
+      expect(app.bindings[0]).toBe(undefined)
+    })
 
     it('binds on the inside of a shape while alt is held', () => {
       const app = new TldrawTestApp()
-        .loadDocument(restoreDocument)
+        .loadDocument(restoreDoc)
         .select('arrow1')
         .movePointer([200, 200])
         .startSession(SessionType.Arrow, 'arrow1', 'start')
-        .movePointer([91, 9]);
+        .movePointer([91, 9])
 
-      expect(app.bindings[0].point).toMatchSnapshot();
+      expect(app.bindings[0].point).toMatchSnapshot()
 
-      app.movePointer({ x: 91, y: 9, altKey: true });
-    });
+      app.movePointer({ x: 91, y: 9, altKey: true })
+    })
 
     it('snaps to the inside center when the point is close to the center', () => {
       const app = new TldrawTestApp()
-        .loadDocument(restoreDocument)
+        .loadDocument(restoreDoc)
         .select('arrow1')
         .movePointer([200, 200])
         .startSession(SessionType.Arrow, 'arrow1', 'start')
-        .movePointer({ x: 91, y: 9, altKey: true });
+        .movePointer({ x: 91, y: 9, altKey: true })
 
-      expect(app.bindings[0].point).toMatchSnapshot();
-    });
+      expect(app.bindings[0].point).toMatchSnapshot()
+    })
 
     it('ignores binding when meta is held', () => {
       const app = new TldrawTestApp()
-        .loadDocument(restoreDocument)
+        .loadDocument(restoreDoc)
         .select('arrow1')
         .movePointer([200, 200])
         .startSession(SessionType.Arrow, 'arrow1', 'start')
-        .movePointer({ x: 55, y: 45, ctrlKey: true });
+        .movePointer({ x: 55, y: 45, ctrlKey: true })
 
-      expect(app.bindings.length).toBe(0);
-    });
-  });
+      expect(app.bindings.length).toBe(0)
+    })
+  })
 
   describe('when dragging a bound shape', () => {
     it('updates the arrow', () => {
@@ -149,15 +149,15 @@ describe('Arrow session', () => {
         .reset()
         .createShapes(
           { type: TDShapeType.Rectangle, id: 'target1', point: [0, 0], size: [100, 100] },
-          { type: TDShapeType.Arrow, id: 'arrow1', point: [200, 200] },
-        );
-      expect(app.bindings.length).toBe(0);
-      expect(app.getShape<ArrowShape>('arrow1').point).toStrictEqual([200, 200]);
-      expect(app.getShape<ArrowShape>('arrow1').handles.start.point).toStrictEqual([0, 0]);
-      expect(app.getShape<ArrowShape>('arrow1').handles.end.point).toStrictEqual([1, 1]);
+          { type: TDShapeType.Arrow, id: 'arrow1', point: [200, 200] }
+        )
+      expect(app.bindings.length).toBe(0)
+      expect(app.getShape<ArrowShape>('arrow1').point).toStrictEqual([200, 200])
+      expect(app.getShape<ArrowShape>('arrow1').handles.start.point).toStrictEqual([0, 0])
+      expect(app.getShape<ArrowShape>('arrow1').handles.end.point).toStrictEqual([1, 1])
       // Select the arrow at [200,200] and begin a session on the handle's start handle
-      app.movePointer([200, 200]);
-      app.startSession(SessionType.Arrow, 'arrow1', 'start');
+      app.movePointer([200, 200])
+      app.startSession(SessionType.Arrow, 'arrow1', 'start')
       // expect(app.getShape<ArrowShape>('arrow1').point).toStrictEqual([200, 200])
       // expect(app.bindings.length).toBe(0)
       // Move the pointer to update the session...
@@ -165,23 +165,23 @@ describe('Arrow session', () => {
       // expect(app.getShape<ArrowShape>('arrow1').point).toStrictEqual([190, 190])
       // expect(app.bindings.length).toBe(0)
       // Move the pointer over another shape to create a binding...
-      app.movePointer([50, 50]);
-      expect(app.getShape<ArrowShape>('arrow1').point).toStrictEqual([100, 100]);
-      expect(app.bindings.length).toBe(1);
+      app.movePointer([50, 50])
+      expect(app.getShape<ArrowShape>('arrow1').point).toStrictEqual([100, 100])
+      expect(app.bindings.length).toBe(1)
 
-      const shape = app.getShape<ArrowShape>('arrow1');
-      expect(shape.handles.start.bindingId).toBe(app.bindings[0].id);
+      const shape = app.getShape<ArrowShape>('arrow1')
+      expect(shape.handles.start.bindingId).toBe(app.bindings[0].id)
 
       // Both handles will keep the same screen positions, but their points will have changed.
-      expect(app.getShape<ArrowShape>('arrow1').handles.start.point).toStrictEqual([0, 0]);
-      expect(app.getShape<ArrowShape>('arrow1').handles.end.point).toStrictEqual([101, 101]);
-      expect(app.getShape<ArrowShape>('arrow1').point).toStrictEqual([100, 100]);
-    });
+      expect(app.getShape<ArrowShape>('arrow1').handles.start.point).toStrictEqual([0, 0])
+      expect(app.getShape<ArrowShape>('arrow1').handles.end.point).toStrictEqual([101, 101])
+      expect(app.getShape<ArrowShape>('arrow1').point).toStrictEqual([100, 100])
+    })
 
-    it.todo('updates the arrow when bound on both sides');
-    it.todo('snaps the bend to zero when dragging the bend handle toward the center');
-  });
-});
+    it.todo('updates the arrow when bound on both sides')
+    it.todo('snaps the bend to zero when dragging the bend handle toward the center')
+  })
+})
 
 describe('When creating with an arrow session', () => {
   it('Deletes the shape on undo', () => {
@@ -192,43 +192,43 @@ describe('When creating with an arrow session', () => {
       .startSession(SessionType.Arrow, 'arrow1', 'start', true)
       .movePointer([55, 45])
       .completeSession()
-      .undo();
+      .undo()
 
-    expect(app.getShape('arrow1')).toBe(undefined);
-  });
+    expect(app.getShape('arrow1')).toBe(undefined)
+  })
 
   it("Doesn't corrupt a shape after undoing", () => {
-    const app = new TldrawTestApp().reset();
+    const app = new TldrawTestApp().reset()
 
-    expect(app.bindings.length).toBe(0);
+    expect(app.bindings.length).toBe(0)
 
     app
       .createShapes(
         { type: TDShapeType.Rectangle, id: 'rect1', point: [200, 200], size: [100, 100] },
-        { type: TDShapeType.Rectangle, id: 'rect2', point: [400, 400], size: [100, 100] },
+        { type: TDShapeType.Rectangle, id: 'rect2', point: [400, 400], size: [100, 100] }
       )
       .selectTool(TDShapeType.Arrow)
-      .pointShape('rect1', { x: 210, y: 210 });
-    app.movePointer([350, 200]);
+      .pointShape('rect1', { x: 210, y: 210 })
+    app.movePointer([350, 200])
 
-    expect(app.bindings.length).toBe(1); // Start
+    expect(app.bindings.length).toBe(1) // Start
 
-    app.movePointer([450, 450]);
+    app.movePointer([450, 450])
 
-    expect(app.bindings.length).toBe(2); // Start and end
+    expect(app.bindings.length).toBe(2) // Start and end
 
-    app.stopPointing();
+    app.stopPointing()
 
-    expect(app.bindings.length).toBe(2);
+    expect(app.bindings.length).toBe(2)
 
-    app.undo();
+    app.undo()
 
-    expect(app.bindings.length).toBe(0);
+    expect(app.bindings.length).toBe(0)
 
-    app.select('rect1').pointShape('rect1', [210, 210]).movePointer([275, 275]).completeSession();
+    app.select('rect1').pointShape('rect1', [210, 210]).movePointer([275, 275]).completeSession()
 
-    expect(app.bindings.length).toBe(0);
-  });
+    expect(app.bindings.length).toBe(0)
+  })
 
   it('Creates a start binding if possible', () => {
     const app = new TldrawTestApp()
@@ -236,20 +236,20 @@ describe('When creating with an arrow session', () => {
       .delete()
       .createShapes(
         { type: TDShapeType.Rectangle, id: 'rect1', point: [200, 200], size: [100, 100] },
-        { type: TDShapeType.Rectangle, id: 'rect2', point: [400, 400], size: [100, 100] },
+        { type: TDShapeType.Rectangle, id: 'rect2', point: [400, 400], size: [100, 100] }
       )
       .selectTool(TDShapeType.Arrow)
       .pointShape('rect1', { x: 251, y: 251 })
       .movePointer([450, 450])
-      .completeSession();
+      .completeSession()
 
-    const arrow = app.shapes.find((shape) => shape.type === TDShapeType.Arrow) as ArrowShape;
+    const arrow = app.shapes.find((shape) => shape.type === TDShapeType.Arrow) as ArrowShape
 
-    expect(arrow).toBeTruthy();
-    expect(arrow.handles.start.bindingId).not.toBe(undefined);
-    expect(arrow.handles.end.bindingId).not.toBe(undefined);
-    expect(app.bindings.length).toBe(2);
-  });
+    expect(arrow).toBeTruthy()
+    expect(arrow.handles.start.bindingId).not.toBe(undefined)
+    expect(arrow.handles.end.bindingId).not.toBe(undefined)
+    expect(app.bindings.length).toBe(2)
+  })
 
   it('Does not creat a start binding inside of a locked shape', () => {
     const app = new TldrawTestApp()
@@ -263,20 +263,20 @@ describe('When creating with an arrow session', () => {
           size: [100, 100],
           isLocked: true,
         },
-        { type: TDShapeType.Rectangle, id: 'rect2', point: [400, 400], size: [100, 100] },
+        { type: TDShapeType.Rectangle, id: 'rect2', point: [400, 400], size: [100, 100] }
       )
       .selectTool(TDShapeType.Arrow)
       .pointShape('rect1', { x: 251, y: 251 })
       .movePointer([450, 450])
-      .completeSession();
+      .completeSession()
 
-    const arrow = app.shapes.find((shape) => shape.type === TDShapeType.Arrow) as ArrowShape;
+    const arrow = app.shapes.find((shape) => shape.type === TDShapeType.Arrow) as ArrowShape
 
-    expect(arrow).toBeTruthy();
-    expect(arrow.handles.start.bindingId).toBe(undefined);
-    expect(arrow.handles.end.bindingId).toBeTruthy();
-    expect(app.bindings.length).toBe(1);
-  });
+    expect(arrow).toBeTruthy()
+    expect(arrow.handles.start.bindingId).toBe(undefined)
+    expect(arrow.handles.end.bindingId).toBeTruthy()
+    expect(app.bindings.length).toBe(1)
+  })
 
   it('Creates a start binding if started in dead center', () => {
     const app = new TldrawTestApp()
@@ -284,71 +284,83 @@ describe('When creating with an arrow session', () => {
       .delete()
       .createShapes(
         { type: TDShapeType.Rectangle, id: 'rect1', point: [200, 200], size: [100, 100] },
-        { type: TDShapeType.Rectangle, id: 'rect2', point: [400, 400], size: [100, 100] },
+        { type: TDShapeType.Rectangle, id: 'rect2', point: [400, 400], size: [100, 100] }
       )
       .selectTool(TDShapeType.Arrow)
       .pointShape('rect1', { x: 250, y: 250 })
       .movePointer([350, 350])
       .movePointer([450, 450])
-      .completeSession();
+      .completeSession()
 
-    const arrow = app.shapes.find((shape) => shape.type === TDShapeType.Arrow) as ArrowShape;
+    const arrow = app.shapes.find((shape) => shape.type === TDShapeType.Arrow) as ArrowShape
 
-    expect(arrow).toBeTruthy();
-    expect(arrow.handles.start.bindingId).not.toBe(undefined);
-    expect(arrow.handles.end.bindingId).not.toBe(undefined);
-    expect(app.bindings.length).toBe(2);
-  });
+    expect(arrow).toBeTruthy()
+    expect(arrow.handles.start.bindingId).not.toBe(undefined)
+    expect(arrow.handles.end.bindingId).not.toBe(undefined)
+    expect(app.bindings.length).toBe(2)
+  })
 
   it('Removes a binding when dragged away', () => {
     const app = new TldrawTestApp()
       .reset()
       .createShapes(
         { type: TDShapeType.Rectangle, id: 'rect1', point: [0, 0], size: [100, 100] },
-        { type: TDShapeType.Arrow, id: 'arrow1', point: [200, 200] },
-      );
+        { type: TDShapeType.Arrow, id: 'arrow1', point: [200, 200] }
+      )
 
-    expect(app.bindings.length).toBe(0);
-    expect(app.getShape('arrow1').handles?.end.bindingId).toBeUndefined();
+    expect(app.bindings.length).toBe(0)
+    expect(app.getShape('arrow1').handles?.end.bindingId).toBeUndefined()
 
     // Select the arrow and create a binding from its end handle to rect1
-    app.movePointer([201, 201]).startSession(SessionType.Arrow, 'arrow1', 'end', false).movePointer([50, 50]).completeSession();
+    app
+      .movePointer([201, 201])
+      .startSession(SessionType.Arrow, 'arrow1', 'end', false)
+      .movePointer([50, 50])
+      .completeSession()
 
     // Expect a binding to exist on the shape's end handle
-    expect(app.bindings.length).toBe(1);
-    let arrow = app.getShape<ArrowShape>('arrow1');
-    expect(arrow.handles?.end.bindingId).toBeDefined();
-    expect(arrow.point).toStrictEqual([116, 116]);
-    expect(arrow.handles.start.point).toStrictEqual([84, 84]);
-    expect(arrow.handles.end.point).toStrictEqual([-0, -0]);
+    expect(app.bindings.length).toBe(1)
+    let arrow = app.getShape<ArrowShape>('arrow1')
+    expect(arrow.handles?.end.bindingId).toBeDefined()
+    expect(arrow.point).toStrictEqual([116, 116])
+    expect(arrow.handles.start.point).toStrictEqual([84, 84])
+    expect(arrow.handles.end.point).toStrictEqual([-0, -0])
 
     // Drag the shape away by [10,10]
-    app.movePointer([50, 50]).pointShape('arrow1', [50, 50]).movePointer([60, 60]).stopPointing();
-    arrow = app.getShape<ArrowShape>('arrow1');
+    app.movePointer([50, 50]).pointShape('arrow1', [50, 50]).movePointer([60, 60]).stopPointing()
+    arrow = app.getShape<ArrowShape>('arrow1')
     // The shape should have moved
-    expect(arrow.point).toStrictEqual([126, 126]);
+    expect(arrow.point).toStrictEqual([126, 126])
     // The handles should be in the same place
-    expect(arrow.handles.start.point).toStrictEqual([84, 84]);
-    expect(arrow.handles.end.point).toStrictEqual([-0, -0]);
+    expect(arrow.handles.start.point).toStrictEqual([84, 84])
+    expect(arrow.handles.end.point).toStrictEqual([-0, -0])
     // The bindings should have been removed
-    expect(app.bindings.length).toBe(0);
-    expect(arrow.handles.start.bindingId).toBe(undefined);
-    expect(arrow.handles.end.bindingId).toBe(undefined);
-  });
-});
+    expect(app.bindings.length).toBe(0)
+    expect(arrow.handles.start.bindingId).toBe(undefined)
+    expect(arrow.handles.end.bindingId).toBe(undefined)
+  })
+})
 
 describe('When drawing an arrow', () => {
   it('does not create an arrow less than 4 points long', () => {
-    const app = new TldrawTestApp().selectTool(TDShapeType.Arrow).pointCanvas([100, 100]).movePointer([100, 103]).stopPointing();
+    const app = new TldrawTestApp()
+      .selectTool(TDShapeType.Arrow)
+      .pointCanvas([100, 100])
+      .movePointer([100, 103])
+      .stopPointing()
 
-    expect(app.shapes.length).toBe(0);
-  });
+    expect(app.shapes.length).toBe(0)
+  })
 
   it('creates an arrow 4 points long or more', () => {
-    const app = new TldrawTestApp().selectTool(TDShapeType.Arrow).pointCanvas([100, 100]).movePointer([100, 104]).stopPointing();
+    const app = new TldrawTestApp()
+      .selectTool(TDShapeType.Arrow)
+      .pointCanvas([100, 100])
+      .movePointer([100, 104])
+      .stopPointing()
 
-    expect(app.shapes.length).toBe(1);
-  });
+    expect(app.shapes.length).toBe(1)
+  })
 
   it('create a short arrow if at least one handle is bound to a shape', () => {
     const app = new TldrawTestApp()
@@ -361,10 +373,10 @@ describe('When drawing an arrow', () => {
       .selectTool(TDShapeType.Arrow)
       .pointCanvas([84, 100])
       .movePointer([85, 100]) // One pixel right, into binding area
-      .stopPointing();
+      .stopPointing()
 
-    expect(app.shapes.length).toBe(2);
-  });
+    expect(app.shapes.length).toBe(2)
+  })
 
   it('does not create a short arrow if no handles are bound', () => {
     const app = new TldrawTestApp()
@@ -377,10 +389,10 @@ describe('When drawing an arrow', () => {
       .selectTool(TDShapeType.Arrow)
       .pointCanvas([84, 100])
       .movePointer([83, 100]) // One pixel left, not in binding area
-      .stopPointing();
+      .stopPointing()
 
-    expect(app.shapes.length).toBe(1);
-  });
+    expect(app.shapes.length).toBe(1)
+  })
 
   it('create a short arrow if start handle is bound', () => {
     const app = new TldrawTestApp()
@@ -394,11 +406,11 @@ describe('When drawing an arrow', () => {
       .selectTool(TDShapeType.Arrow)
       .pointCanvas([101, 100]) // Inside of shape
       .movePointer([50, 100])
-      .stopPointing();
+      .stopPointing()
 
-    expect(app.shapes.length).toBe(2);
-  });
-});
+    expect(app.shapes.length).toBe(2)
+  })
+})
 
 describe('When creating arrows inside of other shapes...', () => {
   it('does not bind an arrow to shapes that contain the whole arrow', () => {
@@ -413,14 +425,14 @@ describe('When creating arrows inside of other shapes...', () => {
       })
       .pointCanvas([50, 50])
       .movePointer([150, 150])
-      .stopPointing();
+      .stopPointing()
 
-    const arrow = app.shapes[1] as ArrowShape;
-    expect(arrow.type).toBe(TDShapeType.Arrow);
-    expect(app.bindings.length).toBe(0);
-    expect(app.shapes.length).toBe(2);
-  });
-});
+    const arrow = app.shapes[1] as ArrowShape
+    expect(arrow.type).toBe(TDShapeType.Arrow)
+    expect(app.bindings.length).toBe(0)
+    expect(app.shapes.length).toBe(2)
+  })
+})
 
 // describe('When holding alt and dragging a handle', () => {
 //   it('Applies a delta to both handles', () => {

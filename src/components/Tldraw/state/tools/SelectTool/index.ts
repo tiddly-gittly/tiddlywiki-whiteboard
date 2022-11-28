@@ -1,1 +1,1 @@
-export * from './SelectTool';
+export * from './SelectTool'

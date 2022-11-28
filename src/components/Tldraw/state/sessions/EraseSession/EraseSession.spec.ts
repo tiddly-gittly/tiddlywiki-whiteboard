@@ -1,36 +1,41 @@
-import { TldrawTestApp, mockDocument } from '@tldr/test';
-import { TDStatus } from '@tldr/types';
+import { TldrawTestApp, mockDocument } from '@tldr/test'
+import { TDStatus } from '@tldr/types'
 
 describe('Draw session', () => {
   it('begins, updates, completes session', () => {
-    const app = new TldrawTestApp().loadDocument(mockDocument);
+    const app = new TldrawTestApp().loadDocument(mockDocument)
 
-    app.selectTool('erase').pointCanvas([300, 300]);
+    app.selectTool('erase').pointCanvas([300, 300])
 
-    expect(app.status).toBe('pointing');
+    expect(app.status).toBe('pointing')
 
-    app.movePointer([0, 0]);
+    app.movePointer([0, 0])
 
-    expect(app.status).toBe('erasing');
+    expect(app.status).toBe('erasing')
 
-    app.stopPointing();
+    app.stopPointing()
 
-    expect(app.appState.status).toBe(TDStatus.Idle);
+    expect(app.appState.status).toBe(TDStatus.Idle)
 
-    expect(app.shapes.length).toBe(0);
-  });
+    expect(app.shapes.length).toBe(0)
+  })
 
   it('does, undoes and redoes', () => {
-    const app = new TldrawTestApp().loadDocument(mockDocument).selectTool('erase').pointCanvas([300, 300]).movePointer([0, 0]).stopPointing();
+    const app = new TldrawTestApp()
+      .loadDocument(mockDocument)
+      .selectTool('erase')
+      .pointCanvas([300, 300])
+      .movePointer([0, 0])
+      .stopPointing()
 
-    expect(app.shapes.length).toBe(0);
+    expect(app.shapes.length).toBe(0)
 
-    app.undo();
+    app.undo()
 
-    expect(app.shapes.length).toBe(3);
+    expect(app.shapes.length).toBe(3)
 
-    app.redo();
+    app.redo()
 
-    expect(app.shapes.length).toBe(0);
-  });
-});
+    expect(app.shapes.length).toBe(0)
+  })
+})

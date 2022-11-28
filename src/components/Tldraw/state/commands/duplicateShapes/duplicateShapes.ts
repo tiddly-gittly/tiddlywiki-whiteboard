@@ -1,80 +1,82 @@
-import { Utils } from '@tldraw/core';
-import { Vec } from '@tldraw/vec';
-import { TLDR } from '@tldr/state/TLDR';
-import type { TldrawApp } from '@tldr/state/TldrawApp';
-import type { PagePartial, TDShape, TldrawCommand } from '@tldr/types';
+import { Utils } from '@tldraw/core'
+import { Vec } from '@tldraw/vec'
+import { TLDR } from '@tldr/state/TLDR'
+import type { TldrawApp } from '@tldr/state/TldrawApp'
+import type { PagePartial, TDShape, TldrawCommand } from '@tldr/types'
 
 export function duplicateShapes(app: TldrawApp, ids: string[], point?: number[]): TldrawCommand {
-  const { selectedIds, currentPageId, page, shapes } = app;
+  const { selectedIds, currentPageId, page, shapes } = app
 
   const before: PagePartial = {
     shapes: {},
     bindings: {},
-  };
+  }
 
   const after: PagePartial = {
     shapes: {},
     bindings: {},
-  };
+  }
 
-  const duplicateMap: Record<string, string> = {};
+  const duplicateMap: Record<string, string> = {}
 
-  const shapesToDuplicate = ids.map((id) => app.getShape(id)).filter((shape) => !ids.includes(shape.parentId));
+  const shapesToDuplicate = ids
+    .map((id) => app.getShape(id))
+    .filter((shape) => !ids.includes(shape.parentId))
 
   // Create duplicates
   shapesToDuplicate.forEach((shape) => {
-    const duplicatedId = Utils.uniqueId();
-    before.shapes[duplicatedId] = undefined;
+    const duplicatedId = Utils.uniqueId()
+    before.shapes[duplicatedId] = undefined
 
     after.shapes[duplicatedId] = {
       ...Utils.deepClone(shape),
       id: duplicatedId,
       childIndex: TLDR.getChildIndexAbove(app.state, shape.id, currentPageId),
-    };
+    }
 
-    if (shape.children != undefined) {
-      after.shapes[duplicatedId]!.children = [];
+    if (shape.children) {
+      after.shapes[duplicatedId]!.children = []
     }
 
     if (shape.parentId !== currentPageId) {
-      const parent = app.getShape(shape.parentId);
+      const parent = app.getShape(shape.parentId)
 
       before.shapes[parent.id] = {
         ...before.shapes[parent.id],
         children: parent.children,
-      };
+      }
 
       after.shapes[parent.id] = {
         ...after.shapes[parent.id],
-        children: [...(after.shapes[parent.id] != undefined || parent).children!, duplicatedId],
-      };
+        children: [...(after.shapes[parent.id] || parent).children!, duplicatedId],
+      }
     }
 
-    duplicateMap[shape.id] = duplicatedId;
-  });
+    duplicateMap[shape.id] = duplicatedId
+  })
 
   // If the shapes have children, then duplicate those too
   shapesToDuplicate.forEach((shape) => {
-    if (shape.children != undefined) {
+    if (shape.children) {
       shape.children.forEach((childId) => {
-        const child = app.getShape(childId);
-        const duplicatedId = Utils.uniqueId();
-        const duplicatedParentId = duplicateMap[shape.id];
-        before.shapes[duplicatedId] = undefined;
+        const child = app.getShape(childId)
+        const duplicatedId = Utils.uniqueId()
+        const duplicatedParentId = duplicateMap[shape.id]
+        before.shapes[duplicatedId] = undefined
         after.shapes[duplicatedId] = {
           ...Utils.deepClone(child),
           id: duplicatedId,
           parentId: duplicatedParentId,
           childIndex: TLDR.getChildIndexAbove(app.state, child.id, currentPageId),
-        };
-        duplicateMap[childId] = duplicatedId;
-        after.shapes[duplicateMap[shape.id]]?.children?.push(duplicatedId);
-      });
+        }
+        duplicateMap[childId] = duplicatedId
+        after.shapes[duplicateMap[shape.id]]?.children?.push(duplicatedId)
+      })
     }
-  });
+  })
 
   // Which ids did we end up duplicating?
-  const dupedShapeIds = new Set(Object.keys(duplicateMap));
+  const dupedShapeIds = new Set(Object.keys(duplicateMap))
 
   // Handle bindings that effect duplicated shapes
   Object.values(page.bindings)
@@ -84,66 +86,66 @@ export function duplicateShapes(app: TldrawApp, ids: string[], point?: number[])
         if (dupedShapeIds.has(binding.toId)) {
           // If the binding is between two duplicating shapes then
           // duplicate the binding, too
-          const duplicatedBindingId = Utils.uniqueId();
+          const duplicatedBindingId = Utils.uniqueId()
 
           const duplicatedBinding = {
             ...Utils.deepClone(binding),
             id: duplicatedBindingId,
             fromId: duplicateMap[binding.fromId],
             toId: duplicateMap[binding.toId],
-          };
+          }
 
-          before.bindings[duplicatedBindingId] = undefined;
-          after.bindings[duplicatedBindingId] = duplicatedBinding;
+          before.bindings[duplicatedBindingId] = undefined
+          after.bindings[duplicatedBindingId] = duplicatedBinding
 
           // Change the duplicated shape's handle so that it reference
           // the duplicated binding
-          const boundShape = after.shapes[duplicatedBinding.fromId];
+          const boundShape = after.shapes[duplicatedBinding.fromId]
           Object.values(boundShape!.handles!).forEach((handle) => {
             if (handle!.bindingId === binding.id) {
-              handle!.bindingId = duplicatedBindingId;
+              handle!.bindingId = duplicatedBindingId
             }
-          });
+          })
         } else {
           // If only the fromId is selected, delete the binding on
           // the duplicated shape's handles
-          const boundShape = after.shapes[duplicateMap[binding.fromId]];
+          const boundShape = after.shapes[duplicateMap[binding.fromId]]
           Object.values(boundShape!.handles!).forEach((handle) => {
             if (handle!.bindingId === binding.id) {
-              handle!.bindingId = undefined;
+              handle!.bindingId = undefined
             }
-          });
+          })
         }
       }
-    });
+    })
 
   // Now move the shapes
 
-  const shapesToMove = Object.values(after.shapes) as TDShape[];
+  const shapesToMove = Object.values(after.shapes) as TDShape[]
 
-  if (point == undefined) {
-    const offset = [16, 16];
+  if (point) {
+    const commonBounds = Utils.getCommonBounds(shapesToMove.map((shape) => TLDR.getBounds(shape)))
+    const center = Utils.getBoundsCenter(commonBounds)
     shapesToMove.forEach((shape) => {
       // Could be a group
-      if (!shape.point) return;
-      shape.point = Vec.add(shape.point, offset);
-    });
+      if (!shape.point) return
+      shape.point = Vec.sub(point, Vec.sub(center, shape.point))
+    })
   } else {
-    const commonBounds = Utils.getCommonBounds(shapesToMove.map((shape) => TLDR.getBounds(shape)));
-    const center = Utils.getBoundsCenter(commonBounds);
+    const offset = [16, 16]
     shapesToMove.forEach((shape) => {
       // Could be a group
-      if (!shape.point) return;
-      shape.point = Vec.sub(point, Vec.sub(center, shape.point));
-    });
+      if (!shape.point) return
+      shape.point = Vec.add(shape.point, offset)
+    })
   }
 
   // Unlock any locked shapes
   shapesToMove.forEach((shape) => {
     if (shape.isLocked) {
-      shape.isLocked = false;
+      shape.isLocked = false
     }
-  });
+  })
 
   return {
     id: 'duplicate',
@@ -164,10 +166,10 @@ export function duplicateShapes(app: TldrawApp, ids: string[], point?: number[])
         },
         pageStates: {
           [currentPageId]: {
-            selectedIds: [...dupedShapeIds.values()].map((id) => duplicateMap[id]),
+            selectedIds: Array.from(dupedShapeIds.values()).map((id) => duplicateMap[id]),
           },
         },
       },
     },
-  };
+  }
 }

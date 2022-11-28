@@ -1,10 +1,15 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { TextAlignCenterIcon, TextAlignJustifyIcon, TextAlignLeftIcon, TextAlignRightIcon } from '@radix-ui/react-icons';
-import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { Divider } from '@tldr/components/Primitives/Divider';
-import { DMCheckboxItem, DMContent, DMRadioItem } from '@tldr/components/Primitives/DropdownMenu';
-import { ToolButton } from '@tldr/components/Primitives/ToolButton';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import {
+  TextAlignCenterIcon,
+  TextAlignJustifyIcon,
+  TextAlignLeftIcon,
+  TextAlignRightIcon,
+} from '@radix-ui/react-icons'
+import * as React from 'react'
+import { FormattedMessage } from 'react-intl'
+import { Divider } from '@tldr/components/Primitives/Divider'
+import { DMCheckboxItem, DMContent, DMRadioItem } from '@tldr/components/Primitives/DropdownMenu'
+import { ToolButton } from '@tldr/components/Primitives/ToolButton'
 import {
   CircleIcon,
   DashDashedIcon,
@@ -14,173 +19,195 @@ import {
   SizeLargeIcon,
   SizeMediumIcon,
   SizeSmallIcon,
-} from '@tldr/components/Primitives/icons';
-import { breakpoints } from '@tldr/components/breakpoints';
-import { preventEvent } from '@tldr/components/preventEvent';
-import { useTldrawApp } from '@tldr/hooks';
-import { defaultTextStyle, fills, strokes } from '@tldr/state/shapes/shared';
-import { styled } from '@tldr/styles';
-import { AlignStyle, ColorStyle, DashStyle, FontStyle, ShapeStyles, SizeStyle, TDShapeType, TDSnapshot } from '@tldr/types';
+} from '@tldr/components/Primitives/icons'
+import { breakpoints } from '@tldr/components/breakpoints'
+import { preventEvent } from '@tldr/components/preventEvent'
+import { useTldrawApp } from '@tldr/hooks'
+import { defaultTextStyle, fills, strokes } from '@tldr/state/shapes/shared'
+import { styled } from '@tldr/styles'
+import {
+  AlignStyle,
+  ColorStyle,
+  DashStyle,
+  FontStyle,
+  ShapeStyles,
+  SizeStyle,
+  TDShapeType,
+  TDSnapshot,
+} from '@tldr/types'
 
-const currentStyleSelector = (s: TDSnapshot) => s.appState.currentStyle;
-const selectedIdsSelector = (s: TDSnapshot) => s.document.pageStates[s.appState.currentPageId].selectedIds;
+const currentStyleSelector = (s: TDSnapshot) => s.appState.currentStyle
+const selectedIdsSelector = (s: TDSnapshot) =>
+  s.document.pageStates[s.appState.currentPageId].selectedIds
 
-const STYLE_KEYS = Object.keys(defaultTextStyle) as Array<keyof ShapeStyles>;
+const STYLE_KEYS = Object.keys(defaultTextStyle) as (keyof ShapeStyles)[]
 
 const DASH_ICONS = {
   [DashStyle.Draw]: <DashDrawIcon />,
   [DashStyle.Solid]: <DashSolidIcon />,
   [DashStyle.Dashed]: <DashDashedIcon />,
   [DashStyle.Dotted]: <DashDottedIcon />,
-};
+}
 
 const SIZE_ICONS = {
   [SizeStyle.Small]: <SizeSmallIcon />,
   [SizeStyle.Medium]: <SizeMediumIcon />,
   [SizeStyle.Large]: <SizeLargeIcon />,
-};
+}
 
 const ALIGN_ICONS = {
   [AlignStyle.Start]: <TextAlignLeftIcon />,
   [AlignStyle.Middle]: <TextAlignCenterIcon />,
   [AlignStyle.End]: <TextAlignRightIcon />,
   [AlignStyle.Justify]: <TextAlignJustifyIcon />,
-};
+}
 
-const themeSelector = (s: TDSnapshot) => (s.settings.isDarkMode ? 'dark' : 'light');
+const themeSelector = (s: TDSnapshot) => (s.settings.isDarkMode ? 'dark' : 'light')
 
-const keepOpenSelector = (s: TDSnapshot) => s.settings.keepStyleMenuOpen;
+const keepOpenSelector = (s: TDSnapshot) => s.settings.keepStyleMenuOpen
 
 const optionsSelector = (s: TDSnapshot) => {
-  const { activeTool, currentPageId: pageId } = s.appState;
+  const { activeTool, currentPageId: pageId } = s.appState
   switch (activeTool) {
     case 'select': {
-      const page = s.document.pages[pageId];
-      let hasText = false;
-      let hasLabel = false;
+      const page = s.document.pages[pageId]
+      let hasText = false
+      let hasLabel = false
       for (const id of s.document.pageStates[pageId].selectedIds) {
-        if ('text' in page.shapes[id]) hasText = true;
-        if ('label' in page.shapes[id]) hasLabel = true;
+        if ('text' in page.shapes[id]) hasText = true
+        if ('label' in page.shapes[id]) hasLabel = true
       }
-      return hasText ? 'text' : hasLabel ? 'label' : '';
+      return hasText ? 'text' : hasLabel ? 'label' : ''
     }
     case TDShapeType.Text: {
-      return 'text';
+      return 'text'
     }
     case TDShapeType.Rectangle: {
-      return 'label';
+      return 'label'
     }
     case TDShapeType.Ellipse: {
-      return 'label';
+      return 'label'
     }
     case TDShapeType.Triangle: {
-      return 'label';
+      return 'label'
     }
     case TDShapeType.Arrow: {
-      return 'label';
+      return 'label'
     }
     case TDShapeType.Line: {
-      return 'label';
+      return 'label'
     }
   }
 
-  return false;
-};
+  return false
+}
 
 export const StyleMenu = React.memo(function ColorMenu() {
-  const app = useTldrawApp();
+  const app = useTldrawApp()
 
-  const theme = app.useStore(themeSelector);
+  const theme = app.useStore(themeSelector)
 
-  const keepOpen = app.useStore(keepOpenSelector);
+  const keepOpen = app.useStore(keepOpenSelector)
 
-  const options = app.useStore(optionsSelector);
+  const options = app.useStore(optionsSelector)
 
-  const currentStyle = app.useStore(currentStyleSelector);
+  const currentStyle = app.useStore(currentStyleSelector)
 
-  const selectedIds = app.useStore(selectedIdsSelector);
+  const selectedIds = app.useStore(selectedIdsSelector)
 
-  const [displayedStyle, setDisplayedStyle] = React.useState(currentStyle);
+  const [displayedStyle, setDisplayedStyle] = React.useState(currentStyle)
 
-  const rDisplayedStyle = React.useRef(currentStyle);
+  const rDisplayedStyle = React.useRef(currentStyle)
 
   React.useEffect(() => {
     const {
       appState: { currentStyle },
       page,
       selectedIds,
-    } = app;
-    let commonStyle = {} as ShapeStyles;
+    } = app
+    let commonStyle = {} as ShapeStyles
     if (selectedIds.length <= 0) {
-      commonStyle = currentStyle;
+      commonStyle = currentStyle
     } else {
-      const overrides = new Set<string>([]);
+      const overrides = new Set<string>([])
       app.selectedIds
         .map((id) => page.shapes[id])
         .forEach((shape) => {
           STYLE_KEYS.forEach((key) => {
-            if (overrides.has(key)) return;
+            if (overrides.has(key)) return
             if (commonStyle[key] === undefined) {
-              // @ts-expect-error
-              commonStyle[key] = shape.style[key];
+              // @ts-ignore
+              commonStyle[key] = shape.style[key]
             } else {
-              if (commonStyle[key] === shape.style[key]) return;
-              // @ts-expect-error
-              commonStyle[key] = shape.style[key];
-              overrides.add(key);
+              if (commonStyle[key] === shape.style[key]) return
+              // @ts-ignore
+              commonStyle[key] = shape.style[key]
+              overrides.add(key)
             }
-          });
-        });
+          })
+        })
     }
     // Until we can work out the correct logic for deciding whether or not to
     // update the selected style, do a string comparison. Yuck!
     if (JSON.stringify(commonStyle) !== JSON.stringify(rDisplayedStyle.current)) {
-      rDisplayedStyle.current = commonStyle;
-      setDisplayedStyle(commonStyle);
+      rDisplayedStyle.current = commonStyle
+      setDisplayedStyle(commonStyle)
     }
-  }, [currentStyle, selectedIds]);
+  }, [currentStyle, selectedIds])
 
   const handleToggleKeepOpen = React.useCallback((checked: boolean) => {
-    app.setSetting('keepStyleMenuOpen', checked);
-  }, []);
+    app.setSetting('keepStyleMenuOpen', checked)
+  }, [])
 
   const handleToggleFilled = React.useCallback((checked: boolean) => {
-    app.style({ isFilled: checked });
-  }, []);
+    app.style({ isFilled: checked })
+  }, [])
 
   const handleDashChange = React.useCallback((value: string) => {
-    app.style({ dash: value as DashStyle });
-  }, []);
+    app.style({ dash: value as DashStyle })
+  }, [])
 
   const handleSizeChange = React.useCallback((value: string) => {
-    app.style({ size: value as SizeStyle });
-  }, []);
+    app.style({ size: value as SizeStyle })
+  }, [])
 
   const handleFontChange = React.useCallback((value: string) => {
-    app.style({ font: value as FontStyle });
-  }, []);
+    app.style({ font: value as FontStyle })
+  }, [])
 
   const handleTextAlignChange = React.useCallback((value: string) => {
-    app.style({ textAlign: value as AlignStyle });
-  }, []);
+    app.style({ textAlign: value as AlignStyle })
+  }, [])
 
   const handleMenuOpenChange = React.useCallback(
     (open: boolean) => {
-      app.setMenuOpen(open);
+      app.setMenuOpen(open)
     },
-    [app],
-  );
+    [app]
+  )
 
   return (
-    <DropdownMenu.Root dir="ltr" onOpenChange={handleMenuOpenChange} open={keepOpen ? true : undefined} modal={false}>
+    <DropdownMenu.Root
+      dir="ltr"
+      onOpenChange={handleMenuOpenChange}
+      open={keepOpen ? true : undefined}
+      modal={false}
+    >
       <DropdownMenu.Trigger asChild id="TD-Styles">
         <ToolButton variant="text">
           <FormattedMessage id="styles" />
           <OverlapIcons
             style={{
-              color: strokes[theme][displayedStyle.color],
-            }}>
-            {displayedStyle.isFilled && <CircleIcon size={16} stroke="none" fill={fills[theme][displayedStyle.color]} />}
+              color: strokes[theme][displayedStyle.color as ColorStyle],
+            }}
+          >
+            {displayedStyle.isFilled && (
+              <CircleIcon
+                size={16}
+                stroke="none"
+                fill={fills[theme][displayedStyle.color as ColorStyle]}
+              />
+            )}
             {DASH_ICONS[displayedStyle.dash]}
           </OverlapIcons>
         </ToolButton>
@@ -192,12 +219,23 @@ export const StyleMenu = React.memo(function ColorMenu() {
           </span>
           <ColorGrid>
             {Object.keys(strokes.light).map((style: string) => (
-              <DropdownMenu.Item key={style} onSelect={preventEvent} asChild id={`TD-Styles-Color-Swatch-${style}`}>
-                <ToolButton variant="icon" isActive={displayedStyle.color === style} onClick={() => app.style({ color: style as ColorStyle })}>
+              <DropdownMenu.Item
+                key={style}
+                onSelect={preventEvent}
+                asChild
+                id={`TD-Styles-Color-Swatch-${style}`}
+              >
+                <ToolButton
+                  variant="icon"
+                  isActive={displayedStyle.color === style}
+                  onClick={() => app.style({ color: style as ColorStyle })}
+                >
                   <CircleIcon
                     size={18}
                     strokeWidth={2.5}
-                    fill={displayedStyle.isFilled ? fills[theme][style as ColorStyle] : 'transparent'}
+                    fill={
+                      displayedStyle.isFilled ? fills[theme][style as ColorStyle] : 'transparent'
+                    }
                     stroke={strokes.light[style as ColorStyle]}
                   />
                 </ToolButton>
@@ -205,7 +243,12 @@ export const StyleMenu = React.memo(function ColorMenu() {
             ))}
           </ColorGrid>
         </StyledRow>
-        <DMCheckboxItem variant="styleMenu" checked={!!displayedStyle.isFilled} onCheckedChange={handleToggleFilled} id="TD-Styles-Fill">
+        <DMCheckboxItem
+          variant="styleMenu"
+          checked={!!displayedStyle.isFilled}
+          onCheckedChange={handleToggleFilled}
+          id="TD-Styles-Fill"
+        >
           <FormattedMessage id="style.menu.fill" />
         </DMCheckboxItem>
         <StyledRow id="TD-Styles-Dash-Container">
@@ -218,7 +261,8 @@ export const StyleMenu = React.memo(function ColorMenu() {
                 value={style}
                 onSelect={preventEvent}
                 bp={breakpoints}
-                id={`TD-Styles-Dash-${style}`}>
+                id={`TD-Styles-Dash-${style}`}
+              >
                 {DASH_ICONS[style as DashStyle]}
               </DMRadioItem>
             ))}
@@ -234,7 +278,8 @@ export const StyleMenu = React.memo(function ColorMenu() {
                 value={sizeStyle}
                 onSelect={preventEvent}
                 bp={breakpoints}
-                id={`TD-Styles-Dash-${sizeStyle}`}>
+                id={`TD-Styles-Dash-${sizeStyle}`}
+              >
                 {SIZE_ICONS[sizeStyle as SizeStyle]}
               </DMRadioItem>
             ))}
@@ -253,7 +298,8 @@ export const StyleMenu = React.memo(function ColorMenu() {
                     value={fontStyle}
                     onSelect={preventEvent}
                     bp={breakpoints}
-                    id={`TD-Styles-Font-${fontStyle}`}>
+                    id={`TD-Styles-Font-${fontStyle}`}
+                  >
                     <FontIcon fontStyle={fontStyle}>Aa</FontIcon>
                   </DMRadioItem>
                 ))}
@@ -262,7 +308,11 @@ export const StyleMenu = React.memo(function ColorMenu() {
             {options === 'text' && (
               <StyledRow id="TD-Styles-Align-Container">
                 <FormattedMessage id="style.menu.align" />
-                <StyledGroup dir="ltr" value={displayedStyle.textAlign} onValueChange={handleTextAlignChange}>
+                <StyledGroup
+                  dir="ltr"
+                  value={displayedStyle.textAlign}
+                  onValueChange={handleTextAlignChange}
+                >
                   {Object.values(AlignStyle).map((style) => (
                     <DMRadioItem
                       key={style}
@@ -270,7 +320,8 @@ export const StyleMenu = React.memo(function ColorMenu() {
                       value={style}
                       onSelect={preventEvent}
                       bp={breakpoints}
-                      id={`TD-Styles-Align-${style}`}>
+                      id={`TD-Styles-Align-${style}`}
+                    >
                       {ALIGN_ICONS[style]}
                     </DMRadioItem>
                   ))}
@@ -280,19 +331,24 @@ export const StyleMenu = React.memo(function ColorMenu() {
           </>
         )}
         <Divider />
-        <DMCheckboxItem variant="styleMenu" checked={keepOpen} onCheckedChange={handleToggleKeepOpen} id="TD-Styles-Keep-Open">
+        <DMCheckboxItem
+          variant="styleMenu"
+          checked={keepOpen}
+          onCheckedChange={handleToggleKeepOpen}
+          id="TD-Styles-Keep-Open"
+        >
           <FormattedMessage id="style.menu.keep.open" />
         </DMCheckboxItem>
       </DMContent>
     </DropdownMenu.Root>
-  );
-});
+  )
+})
 
 const ColorGrid = styled('div', {
   display: 'grid',
   gridTemplateColumns: 'repeat(4, auto)',
   gap: 0,
-});
+})
 
 export const StyledRow = styled('div', {
   position: 'relative',
@@ -326,13 +382,13 @@ export const StyledRow = styled('div', {
       },
     },
   },
-});
+})
 
 const StyledGroup = styled(DropdownMenu.DropdownMenuRadioGroup, {
   display: 'flex',
   flexDirection: 'row',
   gap: '$1',
-});
+})
 
 const OverlapIcons = styled('div', {
   display: 'grid',
@@ -340,7 +396,7 @@ const OverlapIcons = styled('div', {
     gridColumn: 1,
     gridRow: 1,
   },
-});
+})
 
 const FontIcon = styled('div', {
   width: 32,
@@ -365,4 +421,4 @@ const FontIcon = styled('div', {
       },
     },
   },
-});
+})

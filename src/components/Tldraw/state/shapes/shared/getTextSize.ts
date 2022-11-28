@@ -1,14 +1,14 @@
-import { LETTER_SPACING } from '@tldr/constants';
-import { FontStyle } from '@tldr/types';
+import { LETTER_SPACING } from '@tldr/constants'
+import { FontStyle } from '@tldr/types'
 
-let melm: any;
+let melm: any
 
 function getMeasurementDiv() {
   // A div used for measurement
-  document.querySelector('#__textLabelMeasure')?.remove();
+  document.getElementById('__textLabelMeasure')?.remove()
 
-  const pre = document.createElement('pre');
-  pre.id = '__textLabelMeasure';
+  const pre = document.createElement('pre')
+  pre.id = '__textLabelMeasure'
 
   Object.assign(pre.style, {
     whiteSpace: 'pre',
@@ -26,52 +26,52 @@ function getMeasurementDiv() {
     userSelect: 'none',
     alignmentBaseline: 'mathematical',
     dominantBaseline: 'mathematical',
-  });
+  })
 
-  pre.tabIndex = -1;
+  pre.tabIndex = -1
 
-  document.body.appendChild(pre);
-  return pre;
+  document.body.appendChild(pre)
+  return pre
 }
 
 if (typeof window !== 'undefined') {
-  melm = getMeasurementDiv();
+  melm = getMeasurementDiv()
 }
 
-let previousText = '';
-let previousFont = '';
-let previousSize = [0, 0];
+let prevText = ''
+let prevFont = ''
+let prevSize = [0, 0]
 
 export function clearPrevSize() {
-  previousText = '';
+  prevText = ''
 }
 
 export function getTextLabelSize(text: string, font: string) {
   if (!text) {
-    return [16, 32];
+    return [16, 32]
   }
 
   if (!melm) {
     // We're in SSR
-    return [10, 10];
+    return [10, 10]
   }
 
-  if (!melm.parent) document.body.appendChild(melm);
+  if (!melm.parent) document.body.appendChild(melm)
 
-  if (text === previousText && font === previousFont) {
-    return previousSize;
+  if (text === prevText && font === prevFont) {
+    return prevSize
   }
 
-  previousText = text;
-  previousFont = font;
+  prevText = text
+  prevFont = font
 
-  melm.textContent = text;
-  melm.style.font = font;
+  melm.textContent = text
+  melm.style.font = font
 
   // In tests, offsetWidth and offsetHeight will be 0
-  const width = melm.offsetWidth || 1;
-  const height = melm.offsetHeight || 1;
+  const width = melm.offsetWidth || 1
+  const height = melm.offsetHeight || 1
 
-  previousSize = [width, height];
-  return previousSize;
+  prevSize = [width, height]
+  return prevSize
 }
