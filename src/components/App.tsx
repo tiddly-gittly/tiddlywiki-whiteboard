@@ -2,7 +2,10 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
 
-import './tldraw.css';
+import './App.css';
+import type { TldrawApp } from './Tldraw/state';
+import type { TDAsset, TDDocument } from './Tldraw/types';
+import { Tldraw } from './Tldraw/Tldraw';
 
 /** every ms to save */
 const debounceSaveTime = 500;
