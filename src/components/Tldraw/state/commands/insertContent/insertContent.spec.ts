@@ -1,75 +1,73 @@
-import { Utils } from '@tldraw/core'
-import { TLDR } from '@tldr/state/TLDR'
-import { TldrawTestApp, mockDocument } from '@tldr/test'
-import { ColorStyle, DashStyle, SessionType, SizeStyle, TDShapeType } from '@tldr/types'
+import { Utils } from '@tldraw/core';
+import { TLDR } from '@tldr/state/TLDR';
+import { TldrawTestApp, mockDocument } from '@tldr/test';
+import { ColorStyle, DashStyle, SessionType, SizeStyle, TDShapeType } from '@tldr/types';
 
-let app: TldrawTestApp
+let app: TldrawTestApp;
 
 beforeEach(() => {
-  app = new TldrawTestApp()
-  app.loadDocument(mockDocument)
-})
+  app = new TldrawTestApp();
+  app.loadDocument(mockDocument);
+});
 
 describe('insert command', () => {
   it('Inserts shapes, bindings, etc. into the current page', () => {
-    const content = app.getContent()!
-    const size = app.shapes.length
-    app.insertContent(content)
-    expect(app.shapes.length).toBe(size * 2)
-  })
+    const content = app.getContent()!;
+    const size = app.shapes.length;
+    app.insertContent(content);
+    expect(app.shapes.length).toBe(size * 2);
+  });
 
   it('Selects content when opts.select is true', () => {
-    const content = app.getContent()!
-    const size = app.shapes.length
-    const prevSelectedIds = [...app.selectedIds]
-    app.insertContent(content, { select: true })
-    expect(app.shapes.length).toBe(size * 2)
-    expect(app.selectedIds).not.toMatchObject(prevSelectedIds)
-  })
+    const content = app.getContent()!;
+    const size = app.shapes.length;
+    const prevSelectedIds = [...app.selectedIds];
+    app.insertContent(content, { select: true });
+    expect(app.shapes.length).toBe(size * 2);
+    expect(app.selectedIds).not.toMatchObject(prevSelectedIds);
+  });
 
   it('Centers inserted content at a point', () => {
-    app.select('rect1')
-    const content = app.getContent()!
+    app.select('rect1');
+    const content = app.getContent()!;
 
-    const before = [...app.shapes]
+    const before = new Set(app.shapes);
 
-    const point = [222, 444]
+    const point = [222, 444];
 
-    app.insertContent(content, { point })
+    app.insertContent(content, { point });
 
-    const inserted = [...app.shapes].filter((s) => !before.includes(s))
+    const inserted = [...app.shapes].filter((s) => !before.has(s));
 
-    expect(
-      Utils.getBoundsCenter(Utils.getCommonBounds(inserted.map(TLDR.getBounds)))
-    ).toMatchObject(point)
-  })
+    expect(Utils.getBoundsCenter(Utils.getCommonBounds(inserted.map(TLDR.getBounds)))).toMatchObject(point);
+  });
 
   it('does nothing when ids are explicitly empty', () => {
-    const content = app.getContent([])
-    expect(content).toBe(undefined)
-  })
+    const content = app.getContent([]);
+    expect(content).toBe(undefined);
+  });
 
   it('uses the selected ids when no ids provided', () => {
-    app.select('rect1')
-    const content = app.getContent()!
-    const size = app.shapes.length
-    app.insertContent(content)
-    expect(app.shapes.length).toBe(size + 1)
-  })
+    app.select('rect1');
+    const content = app.getContent()!;
+    const size = app.shapes.length;
+    app.insertContent(content);
+    expect(app.shapes.length).toBe(size + 1);
+  });
 
   it('uses all shape ids from the page when no selection, either', () => {
-    app.selectNone()
-    const content = app.getContent()!
-    const size = app.shapes.length
-    app.insertContent(content)
-    expect(app.shapes.length).toBe(size * 2)
-  })
+    app.selectNone();
+    const content = app.getContent()!;
+    const size = app.shapes.length;
+    app.insertContent(content);
+    expect(app.shapes.length).toBe(size * 2);
+  });
 
   it('does nothing if the page has no shapes, either', () => {
-    app.deleteAll()
-    const content = app.getContent()
-    expect(content).toBe(undefined)
-  })
+    app.deleteAll();
+    const content = app.getContent();
+    expect(content).toBe(undefined);
+  });
 
   it('includes bindings', () => {
     app
@@ -83,17 +81,17 @@ describe('insert command', () => {
       .startSession(SessionType.Arrow, 'arrow1', 'start')
       .movePointer([50, 50])
       .completeSession()
-      .selectNone()
+      .selectNone();
 
-    expect(app.bindings.length).toBe(1)
+    expect(app.bindings.length).toBe(1);
 
-    const content = app.getContent()!
-    const size = app.shapes.length
+    const content = app.getContent()!;
+    const size = app.shapes.length;
 
-    app.insertContent(content)
-    expect(app.bindings.length).toBe(2)
-    expect(app.shapes.length).toBe(size * 2)
-  })
+    app.insertContent(content);
+    expect(app.bindings.length).toBe(2);
+    expect(app.shapes.length).toBe(size * 2);
+  });
 
   it('removes bindings when only one shape is inserted', () => {
     app
@@ -106,57 +104,57 @@ describe('insert command', () => {
       .movePointer([200, 200])
       .startSession(SessionType.Arrow, 'arrow1', 'start')
       .movePointer([50, 50])
-      .completeSession()
+      .completeSession();
 
-    expect(app.bindings.length).toBe(1) // arrow1 -> rect3
+    expect(app.bindings.length).toBe(1); // arrow1 -> rect3
 
-    app.select('rect3') // select only rect3, not arrow1
+    app.select('rect3'); // select only rect3, not arrow1
 
-    const content = app.getContent()!
+    const content = app.getContent()!;
 
     // getContent DOES include the incomplete binding
-    expect(Object.values(content.bindings).length).toBe(1)
+    expect(Object.values(content.bindings).length).toBe(1);
 
-    app.insertContent(content)
+    app.insertContent(content);
 
     // insertContent does not paste in the discarded binding
-    expect(app.bindings.length).toBe(1)
-  })
+    expect(app.bindings.length).toBe(1);
+  });
 
   it('works with groups', () => {
-    app.select('rect1', 'rect2').group().selectAll()
+    app.select('rect1', 'rect2').group().selectAll();
 
-    const content = app.getContent()!
+    const content = app.getContent()!;
 
-    const size = app.shapes.length
+    const size = app.shapes.length;
 
-    app.insertContent(content)
+    app.insertContent(content);
 
-    expect(app.shapes.length).toBe(size * 2)
-  })
+    expect(app.shapes.length).toBe(size * 2);
+  });
 
   it('if a shapes parent is not inserted, inserts to the page instead', () => {
-    app.select('rect1', 'rect2').group().select('rect1')
+    app.select('rect1', 'rect2').group().select('rect1');
 
-    const content = app.getContent()!
+    const content = app.getContent()!;
 
     // insertContent discards the incomplete binding
-    const size = app.shapes.length
+    const size = app.shapes.length;
 
-    const before = [...app.shapes]
+    const before = new Set(app.shapes);
 
-    app.insertContent(content)
+    app.insertContent(content);
 
-    expect(app.shapes.length).toBe(size + 1)
+    expect(app.shapes.length).toBe(size + 1);
 
-    const inserted = [...app.shapes].filter((s) => !before.includes(s))[0]
+    const inserted = [...app.shapes].find((s) => !before.has(s));
 
-    expect(inserted.parentId).toBe(app.currentPageId)
-  })
+    expect(inserted.parentId).toBe(app.currentPageId);
+  });
 
   it('does not add groups without children', () => {
     // insertContent discards the incomplete binding
-    const size = app.shapes.length
+    const size = app.shapes.length;
 
     app.insertContent({
       shapes: [
@@ -179,26 +177,26 @@ describe('insert command', () => {
           },
         },
       ],
-    })
+    });
 
-    expect(app.shapes.length).toBe(size)
-  })
-})
+    expect(app.shapes.length).toBe(size);
+  });
+});
 
 describe('When opts.overwrite is true', () => {
   it('replaces content', () => {
-    const content = app.getContent()!
-    const size = app.shapes.length
-    const ids = app.shapes.map((s) => s.id)
-    app.insertContent(content, { overwrite: true })
-    expect(app.shapes.length).toBe(size)
-    expect(app.shapes.map((s) => s.id)).toMatchObject(ids)
-  })
+    const content = app.getContent()!;
+    const size = app.shapes.length;
+    const ids = app.shapes.map((s) => s.id);
+    app.insertContent(content, { overwrite: true });
+    expect(app.shapes.length).toBe(size);
+    expect(app.shapes.map((s) => s.id)).toMatchObject(ids);
+  });
 
   it('restores content under the same ids', () => {
-    const content = app.getContent()!
-    const ids = app.shapes.map((s) => s.id)
-    app.deleteAll().insertContent(content, { overwrite: true })
-    expect(app.shapes.map((s) => s.id)).toMatchObject(ids)
-  })
-})
+    const content = app.getContent()!;
+    const ids = app.shapes.map((s) => s.id);
+    app.deleteAll().insertContent(content, { overwrite: true });
+    expect(app.shapes.map((s) => s.id)).toMatchObject(ids);
+  });
+});

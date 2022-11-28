@@ -1,1 +1,1 @@
-export * from './changePage'
+export * from './changePage';

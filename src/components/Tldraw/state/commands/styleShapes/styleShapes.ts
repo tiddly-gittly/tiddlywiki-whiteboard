@@ -1,21 +1,15 @@
-import { Vec } from '@tldraw/vec'
-import { TLDR } from '@tldr/state/TLDR'
-import type { TldrawApp } from '@tldr/state/TldrawApp'
-import { Patch, ShapeStyles, TDShape, TDShapeType, TextShape, TldrawCommand } from '@tldr/types'
+import { Vec } from '@tldraw/vec';
+import { TLDR } from '@tldr/state/TLDR';
+import type { TldrawApp } from '@tldr/state/TldrawApp';
+import { Patch, ShapeStyles, TDShape, TDShapeType, TextShape, TldrawCommand } from '@tldr/types';
 
-export function styleShapes(
-  app: TldrawApp,
-  ids: string[],
-  changes: Partial<ShapeStyles>
-): TldrawCommand {
-  const { currentPageId, selectedIds } = app
+export function styleShapes(app: TldrawApp, ids: string[], changes: Partial<ShapeStyles>): TldrawCommand {
+  const { currentPageId, selectedIds } = app;
 
-  const shapeIdsToMutate = ids
-    .flatMap((id) => TLDR.getDocumentBranch(app.state, id, currentPageId))
-    .filter((id) => !app.getShape(id).isLocked)
+  const shapeIdsToMutate = ids.flatMap((id) => TLDR.getDocumentBranch(app.state, id, currentPageId)).filter((id) => !app.getShape(id).isLocked);
 
-  const beforeShapes: Record<string, Patch<TDShape>> = {}
-  const afterShapes: Record<string, Patch<TDShape>> = {}
+  const beforeShapes: Record<string, Patch<TDShape>> = {};
+  const afterShapes: Record<string, Patch<TDShape>> = {};
 
   shapeIdsToMutate
     .map((id) => app.getShape(id))
@@ -23,18 +17,16 @@ export function styleShapes(
     .forEach((shape) => {
       beforeShapes[shape.id] = {
         style: {
-          ...Object.fromEntries(
-            Object.keys(changes).map((key) => [key, shape.style[key as keyof typeof shape.style]])
-          ),
+          ...Object.fromEntries(Object.keys(changes).map((key) => [key, shape.style[key as keyof typeof shape.style]])),
         },
-      }
+      };
 
       afterShapes[shape.id] = {
         style: changes,
-      }
+      };
 
       if (shape.type === TDShapeType.Text) {
-        beforeShapes[shape.id].point = shape.point
+        beforeShapes[shape.id].point = shape.point;
         afterShapes[shape.id].point = Vec.toFixed(
           Vec.add(
             shape.point,
@@ -43,12 +35,12 @@ export function styleShapes(
               app.getShapeUtil(shape).getCenter({
                 ...shape,
                 style: { ...shape.style, ...changes },
-              } as TextShape)
-            )
-          )
-        )
+              } as TextShape),
+            ),
+          ),
+        );
       }
-    })
+    });
 
   return {
     id: 'style',
@@ -61,7 +53,7 @@ export function styleShapes(
         },
         pageStates: {
           [currentPageId]: {
-            selectedIds: selectedIds,
+            selectedIds,
           },
         },
       },
@@ -86,5 +78,5 @@ export function styleShapes(
         currentStyle: changes,
       },
     },
-  }
+  };
 }

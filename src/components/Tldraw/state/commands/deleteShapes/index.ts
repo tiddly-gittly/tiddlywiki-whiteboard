@@ -1,1 +1,1 @@
-export * from './deleteShapes'
+export * from './deleteShapes';

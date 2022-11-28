@@ -1,11 +1,11 @@
-import * as React from 'react'
+import * as React from 'react';
 
 export interface ArrowheadProps {
-  left: number[]
-  middle: number[]
-  right: number[]
-  stroke: string
-  strokeWidth: number
+  left: number[];
+  middle: number[];
+  right: number[];
+  stroke: string;
+  strokeWidth: number;
 }
 
 export function Arrowhead({ left, middle, right, stroke, strokeWidth }: ArrowheadProps) {
@@ -22,5 +22,5 @@ export function Arrowhead({ left, middle, right, stroke, strokeWidth }: Arrowhea
         pointerEvents="none"
       />
     </g>
-  )
+  );
 }

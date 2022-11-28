@@ -1,22 +1,20 @@
-import type { TldrawApp } from '@tldr/state'
-import type { TDShape, TldrawCommand } from '@tldr/types'
+import type { TldrawApp } from '@tldr/state';
+import type { TDShape, TldrawCommand } from '@tldr/types';
 
 export function toggleShapeProp(app: TldrawApp, ids: string[], prop: keyof TDShape): TldrawCommand {
-  const { currentPageId } = app
+  const { currentPageId } = app;
 
-  const initialShapes = ids
-    .map((id) => app.getShape(id))
-    .filter((shape) => (prop === 'isLocked' ? true : !shape.isLocked))
+  const initialShapes = ids.map((id) => app.getShape(id)).filter((shape) => (prop === 'isLocked' ? true : !shape.isLocked));
 
-  const isAllToggled = initialShapes.every((shape) => shape[prop])
+  const isAllToggled = initialShapes.every((shape) => shape[prop]);
 
-  const before: Record<string, Partial<TDShape>> = {}
-  const after: Record<string, Partial<TDShape>> = {}
+  const before: Record<string, Partial<TDShape>> = {};
+  const after: Record<string, Partial<TDShape>> = {};
 
   initialShapes.forEach((shape) => {
-    before[shape.id] = { [prop]: shape[prop] }
-    after[shape.id] = { [prop]: !isAllToggled }
-  })
+    before[shape.id] = { [prop]: shape[prop] };
+    after[shape.id] = { [prop]: !isAllToggled };
+  });
 
   return {
     id: 'toggle',
@@ -48,5 +46,5 @@ export function toggleShapeProp(app: TldrawApp, ids: string[], prop: keyof TDSha
         },
       },
     },
-  }
+  };
 }

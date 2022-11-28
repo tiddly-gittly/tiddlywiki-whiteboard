@@ -1,1 +1,1 @@
-export * from './GridSession'
+export * from './GridSession';

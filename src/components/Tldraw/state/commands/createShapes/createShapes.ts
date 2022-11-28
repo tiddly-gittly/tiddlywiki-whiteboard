@@ -1,28 +1,24 @@
-import type { TldrawApp } from '@tldr/state/TldrawApp'
-import type { Patch, TDBinding, TDShape, TldrawCommand } from '@tldr/types'
+import type { TldrawApp } from '@tldr/state/TldrawApp';
+import type { Patch, TDBinding, TDShape, TldrawCommand } from '@tldr/types';
 
-export function createShapes(
-  app: TldrawApp,
-  shapes: TDShape[],
-  bindings: TDBinding[] = []
-): TldrawCommand {
-  const { currentPageId } = app
+export function createShapes(app: TldrawApp, shapes: TDShape[], bindings: TDBinding[] = []): TldrawCommand {
+  const { currentPageId } = app;
 
-  const beforeShapes: Record<string, Patch<TDShape> | undefined> = {}
-  const afterShapes: Record<string, Patch<TDShape> | undefined> = {}
+  const beforeShapes: Record<string, Patch<TDShape> | undefined> = {};
+  const afterShapes: Record<string, Patch<TDShape> | undefined> = {};
 
   shapes.forEach((shape) => {
-    beforeShapes[shape.id] = undefined
-    afterShapes[shape.id] = shape
-  })
+    beforeShapes[shape.id] = undefined;
+    afterShapes[shape.id] = shape;
+  });
 
-  const beforeBindings: Record<string, Patch<TDBinding> | undefined> = {}
-  const afterBindings: Record<string, Patch<TDBinding> | undefined> = {}
+  const beforeBindings: Record<string, Patch<TDBinding> | undefined> = {};
+  const afterBindings: Record<string, Patch<TDBinding> | undefined> = {};
 
   bindings.forEach((binding) => {
-    beforeBindings[binding.id] = undefined
-    afterBindings[binding.id] = binding
-  })
+    beforeBindings[binding.id] = undefined;
+    afterBindings[binding.id] = binding;
+  });
 
   return {
     id: 'create',
@@ -56,5 +52,5 @@ export function createShapes(
         },
       },
     },
-  }
+  };
 }

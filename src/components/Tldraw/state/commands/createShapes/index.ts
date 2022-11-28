@@ -1,1 +1,1 @@
-export * from './createShapes'
+export * from './createShapes';

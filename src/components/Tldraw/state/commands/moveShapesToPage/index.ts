@@ -1,1 +1,1 @@
-export * from './moveShapesToPage'
+export * from './moveShapesToPage';

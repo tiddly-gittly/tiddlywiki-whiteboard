@@ -1,1 +1,1 @@
-export * from './StickyTool'
+export * from './StickyTool';

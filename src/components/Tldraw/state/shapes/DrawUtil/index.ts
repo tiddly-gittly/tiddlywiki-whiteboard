@@ -1,1 +1,1 @@
-export * from './DrawUtil'
+export * from './DrawUtil';

@@ -1,30 +1,30 @@
-import { TLBoundsCorner, Utils } from '@tldraw/core'
-import { TLDR } from '@tldr/state/TLDR'
-import type { TldrawApp } from '@tldr/state/TldrawApp'
-import { StretchType, TDShapeType } from '@tldr/types'
-import type { TldrawCommand } from '@tldr/types'
+import { TLBoundsCorner, Utils } from '@tldraw/core';
+import { TLDR } from '@tldr/state/TLDR';
+import type { TldrawApp } from '@tldr/state/TldrawApp';
+import { StretchType, TDShapeType } from '@tldr/types';
+import type { TldrawCommand } from '@tldr/types';
 
 export function stretchShapes(app: TldrawApp, ids: string[], type: StretchType): TldrawCommand {
-  const { currentPageId, selectedIds } = app
+  const { currentPageId, selectedIds } = app;
 
-  const initialShapes = ids.map((id) => app.getShape(id))
+  const initialShapes = ids.map((id) => app.getShape(id));
 
-  const boundsForShapes = initialShapes.map((shape) => TLDR.getBounds(shape))
+  const boundsForShapes = initialShapes.map((shape) => TLDR.getBounds(shape));
 
-  const commonBounds = Utils.getCommonBounds(boundsForShapes)
+  const commonBounds = Utils.getCommonBounds(boundsForShapes);
 
   const idsToMutate = ids
     .flatMap((id) => {
-      const shape = app.getShape(id)
-      return shape.children ? shape.children : shape.id
+      const shape = app.getShape(id);
+      return shape.children ? shape.children : shape.id;
     })
-    .filter((id) => !app.getShape(id).isLocked)
+    .filter((id) => !app.getShape(id).isLocked);
 
   const { before, after } = TLDR.mutateShapes(
     app.state,
     idsToMutate,
     (shape) => {
-      const bounds = TLDR.getBounds(shape)
+      const bounds = TLDR.getBounds(shape);
 
       switch (type) {
         case StretchType.Horizontal: {
@@ -33,7 +33,7 @@ export function stretchShapes(app: TldrawApp, ids: string[], type: StretchType):
             minX: commonBounds.minX,
             maxX: commonBounds.maxX,
             width: commonBounds.width,
-          }
+          };
 
           return TLDR.getShapeUtil(shape).transformSingle(shape, newBounds, {
             type: TLBoundsCorner.TopLeft,
@@ -41,7 +41,7 @@ export function stretchShapes(app: TldrawApp, ids: string[], type: StretchType):
             scaleY: 1,
             initialShape: shape,
             transformOrigin: [0.5, 0.5],
-          })
+          });
         }
         case StretchType.Vertical: {
           const newBounds = {
@@ -49,7 +49,7 @@ export function stretchShapes(app: TldrawApp, ids: string[], type: StretchType):
             minY: commonBounds.minY,
             maxY: commonBounds.maxY,
             height: commonBounds.height,
-          }
+          };
 
           return TLDR.getShapeUtil(shape).transformSingle(shape, newBounds, {
             type: TLBoundsCorner.TopLeft,
@@ -57,19 +57,19 @@ export function stretchShapes(app: TldrawApp, ids: string[], type: StretchType):
             scaleY: newBounds.height / bounds.height,
             initialShape: shape,
             transformOrigin: [0.5, 0.5],
-          })
+          });
         }
       }
     },
-    currentPageId
-  )
+    currentPageId,
+  );
 
   initialShapes.forEach((shape) => {
     if (shape.type === TDShapeType.Group) {
-      delete before[shape.id]
-      delete after[shape.id]
+      delete before[shape.id];
+      delete after[shape.id];
     }
-  })
+  });
 
   return {
     id: 'stretch',
@@ -97,5 +97,5 @@ export function stretchShapes(app: TldrawApp, ids: string[], type: StretchType):
         },
       },
     },
-  }
+  };
 }

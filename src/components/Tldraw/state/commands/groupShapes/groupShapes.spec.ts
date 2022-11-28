@@ -1,45 +1,45 @@
-import { TldrawTestApp, mockDocument } from '@tldr/test'
-import { GroupShape, TDShape, TDShapeType } from '@tldr/types'
+import { TldrawTestApp, mockDocument } from '@tldr/test';
+import { GroupShape, TDShape, TDShapeType } from '@tldr/types';
 
 describe('Group command', () => {
-  const app = new TldrawTestApp()
+  const app = new TldrawTestApp();
 
   beforeEach(() => {
-    app.loadDocument(mockDocument)
-  })
+    app.loadDocument(mockDocument);
+  });
 
   it('does, undoes and redoes command', () => {
-    app.group(['rect1', 'rect2'], 'newGroup')
+    app.group(['rect1', 'rect2'], 'newGroup');
 
-    expect(app.getShape<GroupShape>('newGroup')).toBeTruthy()
+    expect(app.getShape<GroupShape>('newGroup')).toBeTruthy();
 
-    app.undo()
+    app.undo();
 
-    expect(app.getShape<GroupShape>('newGroup')).toBeUndefined()
+    expect(app.getShape<GroupShape>('newGroup')).toBeUndefined();
 
-    app.redo()
+    app.redo();
 
-    expect(app.getShape<GroupShape>('newGroup')).toBeTruthy()
-  })
+    expect(app.getShape<GroupShape>('newGroup')).toBeTruthy();
+  });
 
   describe('when less than two shapes are selected', () => {
     it('does nothing', () => {
-      app.selectNone()
+      app.selectNone();
 
-      // @ts-ignore
-      const stackLength = app.stack.length
+      // @ts-expect-error
+      const stackLength = app.stack.length;
 
-      app.group([], 'newGroup')
-      expect(app.getShape<GroupShape>('newGroup')).toBeUndefined()
-      // @ts-ignore
-      expect(app.stack.length).toBe(stackLength)
+      app.group([], 'newGroup');
+      expect(app.getShape<GroupShape>('newGroup')).toBeUndefined();
+      // @ts-expect-error
+      expect(app.stack.length).toBe(stackLength);
 
-      app.group(['rect1'], 'newGroup')
-      expect(app.getShape<GroupShape>('newGroup')).toBeUndefined()
-      // @ts-ignore
-      expect(app.stack.length).toBe(stackLength)
-    })
-  })
+      app.group(['rect1'], 'newGroup');
+      expect(app.getShape<GroupShape>('newGroup')).toBeUndefined();
+      // @ts-expect-error
+      expect(app.stack.length).toBe(stackLength);
+    });
+  });
 
   describe('when grouping shapes on the page', () => {
     /*
@@ -59,17 +59,17 @@ describe('Group command', () => {
           id: 'rect2',
           point: [20, 20],
           childIndex: 4,
-        }
-      )
+        },
+      );
 
-      app.group(['rect1', 'rect2'], 'newGroup')
-      const group = app.getShape<GroupShape>('newGroup')
-      expect(group).toBeTruthy()
-      expect(group.parentId).toBe('page1')
-      expect(group.childIndex).toBe(3)
-      expect(group.point).toStrictEqual([20, 20])
-      expect(group.children).toStrictEqual(['rect1', 'rect2'])
-    })
+      app.group(['rect1', 'rect2'], 'newGroup');
+      const group = app.getShape<GroupShape>('newGroup');
+      expect(group).toBeTruthy();
+      expect(group.parentId).toBe('page1');
+      expect(group.childIndex).toBe(3);
+      expect(group.point).toStrictEqual([20, 20]);
+      expect(group.children).toStrictEqual(['rect1', 'rect2']);
+    });
 
     it('reparents the grouped shapes', () => {
       app.updateShapes(
@@ -80,35 +80,35 @@ describe('Group command', () => {
         {
           id: 'rect2',
           childIndex: 4.7,
-        }
-      )
+        },
+      );
 
-      app.group(['rect1', 'rect2'], 'newGroup')
+      app.group(['rect1', 'rect2'], 'newGroup');
 
-      let rect1: TDShape
-      let rect2: TDShape
+      let rect1: TDShape;
+      let rect2: TDShape;
 
-      rect1 = app.getShape('rect1')
-      rect2 = app.getShape('rect2')
+      rect1 = app.getShape('rect1');
+      rect2 = app.getShape('rect2');
       // Reparents the shapes
-      expect(rect1.parentId).toBe('newGroup')
-      expect(rect2.parentId).toBe('newGroup')
+      expect(rect1.parentId).toBe('newGroup');
+      expect(rect2.parentId).toBe('newGroup');
       // Sets and preserves the order of the grouped shapes
-      expect(rect1.childIndex).toBe(1)
-      expect(rect2.childIndex).toBe(2)
+      expect(rect1.childIndex).toBe(1);
+      expect(rect2.childIndex).toBe(2);
 
-      app.undo()
+      app.undo();
 
-      rect1 = app.getShape('rect1')
-      rect2 = app.getShape('rect2')
+      rect1 = app.getShape('rect1');
+      rect2 = app.getShape('rect2');
       // Restores the shapes' parentIds
-      expect(rect1.parentId).toBe('page1')
-      expect(rect2.parentId).toBe('page1')
+      expect(rect1.parentId).toBe('page1');
+      expect(rect2.parentId).toBe('page1');
       // Restores the shapes' childIndexs
-      expect(rect1.childIndex).toBe(2.5)
-      expect(rect2.childIndex).toBe(4.7)
-    })
-  })
+      expect(rect1.childIndex).toBe(2.5);
+      expect(rect2.childIndex).toBe(4.7);
+    });
+  });
 
   describe('when grouping shapes that already belong to a group', () => {
     /*
@@ -145,63 +145,53 @@ describe('Group command', () => {
           id: 'rect4',
           type: TDShapeType.Rectangle,
           childIndex: 4,
-        }
-      )
+        },
+      );
 
-      app.group(['rect1', 'rect2', 'rect3', 'rect4'], 'newGroupA')
+      app.group(['rect1', 'rect2', 'rect3', 'rect4'], 'newGroupA');
 
-      expect(app.getShape<GroupShape>('newGroupA')).toBeTruthy()
-      expect(app.getShape('rect1').childIndex).toBe(1)
-      expect(app.getShape('rect2').childIndex).toBe(2)
-      expect(app.getShape('rect3').childIndex).toBe(3)
-      expect(app.getShape('rect4').childIndex).toBe(4)
-      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual([
-        'rect1',
-        'rect2',
-        'rect3',
-        'rect4',
-      ])
+      expect(app.getShape<GroupShape>('newGroupA')).toBeTruthy();
+      expect(app.getShape('rect1').childIndex).toBe(1);
+      expect(app.getShape('rect2').childIndex).toBe(2);
+      expect(app.getShape('rect3').childIndex).toBe(3);
+      expect(app.getShape('rect4').childIndex).toBe(4);
+      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual(['rect1', 'rect2', 'rect3', 'rect4']);
 
-      app.group(['rect1', 'rect3'], 'newGroupB')
+      app.group(['rect1', 'rect3'], 'newGroupB');
 
-      expect(app.getShape<GroupShape>('newGroupA')).toBeTruthy()
-      expect(app.getShape('rect2').childIndex).toBe(2)
-      expect(app.getShape('rect4').childIndex).toBe(4)
-      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual(['rect2', 'rect4'])
+      expect(app.getShape<GroupShape>('newGroupA')).toBeTruthy();
+      expect(app.getShape('rect2').childIndex).toBe(2);
+      expect(app.getShape('rect4').childIndex).toBe(4);
+      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual(['rect2', 'rect4']);
 
-      expect(app.getShape<GroupShape>('newGroupB')).toBeTruthy()
-      expect(app.getShape('rect1').childIndex).toBe(1)
-      expect(app.getShape('rect3').childIndex).toBe(2)
-      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual(['rect1', 'rect3'])
+      expect(app.getShape<GroupShape>('newGroupB')).toBeTruthy();
+      expect(app.getShape('rect1').childIndex).toBe(1);
+      expect(app.getShape('rect3').childIndex).toBe(2);
+      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual(['rect1', 'rect3']);
 
-      app.undo()
+      app.undo();
 
-      expect(app.getShape<GroupShape>('newGroupA')).toBeTruthy()
-      expect(app.getShape('rect1').childIndex).toBe(1)
-      expect(app.getShape('rect2').childIndex).toBe(2)
-      expect(app.getShape('rect3').childIndex).toBe(3)
-      expect(app.getShape('rect4').childIndex).toBe(4)
-      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual([
-        'rect1',
-        'rect2',
-        'rect3',
-        'rect4',
-      ])
+      expect(app.getShape<GroupShape>('newGroupA')).toBeTruthy();
+      expect(app.getShape('rect1').childIndex).toBe(1);
+      expect(app.getShape('rect2').childIndex).toBe(2);
+      expect(app.getShape('rect3').childIndex).toBe(3);
+      expect(app.getShape('rect4').childIndex).toBe(4);
+      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual(['rect1', 'rect2', 'rect3', 'rect4']);
 
-      expect(app.getShape<GroupShape>('newGroupB')).toBeUndefined()
+      expect(app.getShape<GroupShape>('newGroupB')).toBeUndefined();
 
-      app.redo()
+      app.redo();
 
-      expect(app.getShape<GroupShape>('newGroupA')).toBeTruthy()
-      expect(app.getShape('rect2').childIndex).toBe(2)
-      expect(app.getShape('rect4').childIndex).toBe(4)
-      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual(['rect2', 'rect4'])
+      expect(app.getShape<GroupShape>('newGroupA')).toBeTruthy();
+      expect(app.getShape('rect2').childIndex).toBe(2);
+      expect(app.getShape('rect4').childIndex).toBe(4);
+      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual(['rect2', 'rect4']);
 
-      expect(app.getShape<GroupShape>('newGroupB')).toBeTruthy()
-      expect(app.getShape('rect1').childIndex).toBe(1)
-      expect(app.getShape('rect3').childIndex).toBe(2)
-      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual(['rect1', 'rect3'])
-    })
+      expect(app.getShape<GroupShape>('newGroupB')).toBeTruthy();
+      expect(app.getShape('rect1').childIndex).toBe(1);
+      expect(app.getShape('rect3').childIndex).toBe(2);
+      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual(['rect1', 'rect3']);
+    });
 
     it('does nothing if all shapes in the group are selected', () => {
       /*
@@ -223,13 +213,13 @@ describe('Group command', () => {
           id: 'rect3',
           type: TDShapeType.Rectangle,
           childIndex: 3,
-        }
-      )
+        },
+      );
 
-      app.group(['rect1', 'rect2', 'rect3'], 'newGroupA')
-      app.group(['rect1', 'rect2', 'rect3'], 'newGroupB')
-      expect(app.getShape<GroupShape>('newGroupB')).toBeUndefined()
-    })
+      app.group(['rect1', 'rect2', 'rect3'], 'newGroupA');
+      app.group(['rect1', 'rect2', 'rect3'], 'newGroupB');
+      expect(app.getShape<GroupShape>('newGroupB')).toBeUndefined();
+    });
 
     it('deletes any groups that no longer have children', () => {
       /*
@@ -253,18 +243,14 @@ describe('Group command', () => {
           id: 'rect3',
           type: TDShapeType.Rectangle,
           childIndex: 3,
-        }
-      )
+        },
+      );
 
-      app.group(['rect1', 'rect2'], 'newGroupA')
-      app.group(['rect1', 'rect2', 'rect3'], 'newGroupB')
-      expect(app.getShape<GroupShape>('newGroupA')).toBeUndefined()
-      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual([
-        'rect1',
-        'rect2',
-        'rect3',
-      ])
-    })
+      app.group(['rect1', 'rect2'], 'newGroupA');
+      app.group(['rect1', 'rect2', 'rect3'], 'newGroupB');
+      expect(app.getShape<GroupShape>('newGroupA')).toBeUndefined();
+      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual(['rect1', 'rect2', 'rect3']);
+    });
 
     it('merges selected groups that no longer have children', () => {
       /*
@@ -287,34 +273,26 @@ describe('Group command', () => {
           id: 'rect3',
           type: TDShapeType.Rectangle,
           childIndex: 3,
-        }
-      )
+        },
+      );
 
-      app.group(['rect1', 'rect2'], 'newGroupA')
-      app.group(['newGroupA', 'rect3'], 'newGroupB')
-      expect(app.getShape<GroupShape>('newGroupA')).toBeUndefined()
-      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual([
-        'rect1',
-        'rect2',
-        'rect3',
-      ])
+      app.group(['rect1', 'rect2'], 'newGroupA');
+      app.group(['newGroupA', 'rect3'], 'newGroupB');
+      expect(app.getShape<GroupShape>('newGroupA')).toBeUndefined();
+      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual(['rect1', 'rect2', 'rect3']);
 
-      app.undo()
+      app.undo();
 
-      expect(app.getShape<GroupShape>('newGroupB')).toBeUndefined()
-      expect(app.getShape<GroupShape>('newGroupA')).toBeDefined()
-      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual(['rect1', 'rect2'])
+      expect(app.getShape<GroupShape>('newGroupB')).toBeUndefined();
+      expect(app.getShape<GroupShape>('newGroupA')).toBeDefined();
+      expect(app.getShape<GroupShape>('newGroupA').children).toStrictEqual(['rect1', 'rect2']);
 
-      app.redo()
+      app.redo();
 
-      expect(app.getShape<GroupShape>('newGroupA')).toBeUndefined()
-      expect(app.getShape<GroupShape>('newGroupB')).toBeDefined()
-      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual([
-        'rect1',
-        'rect2',
-        'rect3',
-      ])
-    })
+      expect(app.getShape<GroupShape>('newGroupA')).toBeUndefined();
+      expect(app.getShape<GroupShape>('newGroupB')).toBeDefined();
+      expect(app.getShape<GroupShape>('newGroupB').children).toStrictEqual(['rect1', 'rect2', 'rect3']);
+    });
 
     it('Ungroups if the only shape selected is a group', () => {
       app.resetDocument().createShapes(
@@ -332,19 +310,19 @@ describe('Group command', () => {
           id: 'rect3',
           type: TDShapeType.Rectangle,
           childIndex: 3,
-        }
-      )
+        },
+      );
 
-      expect(app.shapes.length).toBe(3)
+      expect(app.shapes.length).toBe(3);
 
-      app.selectAll().group()
+      app.selectAll().group();
 
-      expect(app.shapes.length).toBe(4)
+      expect(app.shapes.length).toBe(4);
 
-      app.selectAll().group()
+      app.selectAll().group();
 
-      expect(app.shapes.length).toBe(3)
-    })
+      expect(app.shapes.length).toBe(3);
+    });
 
     /*
       The layers should be in the same order as the original layers as
@@ -352,7 +330,7 @@ describe('Group command', () => {
       first, parent inclusive).
       */
 
-    it.todo('preserves the child index order')
+    it.todo('preserves the child index order');
 
     /* --------------------- Nesting -------------------- */
 
@@ -367,7 +345,7 @@ describe('Group command', () => {
       should no longer have the selected shapes among their children.
       All of the selected shapes should be assigned the new parent.
       */
-  })
+  });
 
   // describe('when grouping shapes with different parents', () => {
   /* 
@@ -435,4 +413,4 @@ describe('Group command', () => {
   // it.todo('deletes any groups that no longer have children')
 
   // })
-})
+});

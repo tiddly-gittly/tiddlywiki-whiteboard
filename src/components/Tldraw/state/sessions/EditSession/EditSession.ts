@@ -1,27 +1,27 @@
-import type { TldrawApp } from '@tldr/state/TldrawApp'
-import { BaseSession } from '@tldr/state/sessions/BaseSession'
-import { SessionType, TDShape, TldrawCommand, TldrawPatch } from '@tldr/types'
+import type { TldrawApp } from '@tldr/state/TldrawApp';
+import { BaseSession } from '@tldr/state/sessions/BaseSession';
+import { SessionType, TDShape, TldrawCommand, TldrawPatch } from '@tldr/types';
 
 export class EditSession extends BaseSession {
-  type = SessionType.Edit
-  performanceMode = undefined
+  type = SessionType.Edit;
+  performanceMode = undefined;
 
-  initialShape: TDShape
-  initialSelectedIds: string[]
-  currentPageId: string
-  isCreating: boolean
+  initialShape: TDShape;
+  initialSelectedIds: string[];
+  currentPageId: string;
+  isCreating: boolean;
 
   constructor(app: TldrawApp, id: string, isCreating: boolean) {
-    super(app)
-    this.initialShape = app.getShape(id, app.currentPageId)
-    this.currentPageId = app.currentPageId
-    this.isCreating = isCreating
-    this.initialSelectedIds = [...app.selectedIds]
+    super(app);
+    this.initialShape = app.getShape(id, app.currentPageId);
+    this.currentPageId = app.currentPageId;
+    this.isCreating = isCreating;
+    this.initialSelectedIds = [...app.selectedIds];
   }
 
-  start = (): TldrawPatch | undefined => void null
+  start = (): TldrawPatch | undefined => void null;
 
-  update = (): TldrawPatch | undefined => void null
+  update = (): TldrawPatch | undefined => void null;
 
   cancel = (): TldrawPatch | undefined => {
     return {
@@ -40,11 +40,11 @@ export class EditSession extends BaseSession {
           },
         },
       },
-    }
-  }
+    };
+  };
 
   complete = (): TldrawPatch | TldrawCommand | undefined => {
-    const shape = this.app.getShape(this.initialShape.id)
+    const shape = this.app.getShape(this.initialShape.id);
 
     return {
       id: 'edit',
@@ -82,6 +82,6 @@ export class EditSession extends BaseSession {
           },
         },
       },
-    }
-  }
+    };
+  };
 }

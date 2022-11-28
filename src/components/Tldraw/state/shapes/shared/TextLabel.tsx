@@ -1,21 +1,21 @@
-import * as React from 'react'
-import { stopPropagation } from '@tldr/components/stopPropagation'
-import { GHOSTED_OPACITY, LETTER_SPACING } from '@tldr/constants'
-import { TLDR } from '@tldr/state/TLDR'
-import { styled } from '@tldr/styles'
-import { TextAreaUtils } from './TextAreaUtils'
-import { getTextLabelSize } from './getTextSize'
+import * as React from 'react';
+import { stopPropagation } from '@tldr/components/stopPropagation';
+import { GHOSTED_OPACITY, LETTER_SPACING } from '@tldr/constants';
+import { TLDR } from '@tldr/state/TLDR';
+import { styled } from '@tldr/styles';
+import { TextAreaUtils } from './TextAreaUtils';
+import { getTextLabelSize } from './getTextSize';
 
 export interface TextLabelProps {
-  font: string
-  text: string
-  color: string
-  onBlur?: () => void
-  onChange: (text: string) => void
-  offsetY?: number
-  offsetX?: number
-  scale?: number
-  isEditing?: boolean
+  color: string;
+  font: string;
+  isEditing?: boolean;
+  offsetX?: number;
+  offsetY?: number;
+  onBlur?: () => void;
+  onChange: (text: string) => void;
+  scale?: number;
+  text: string;
 }
 
 export const TextLabel = React.memo(function TextLabel({
@@ -29,118 +29,118 @@ export const TextLabel = React.memo(function TextLabel({
   onBlur,
   onChange,
 }: TextLabelProps) {
-  const rInput = React.useRef<HTMLTextAreaElement>(null)
-  const rIsMounted = React.useRef(false)
+  const rInput = React.useRef<HTMLTextAreaElement>(null);
+  const rIsMounted = React.useRef(false);
 
   const handleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange(TLDR.normalizeText(e.currentTarget.value))
+      onChange(TLDR.normalizeText(e.currentTarget.value));
     },
-    [onChange]
-  )
+    [onChange],
+  );
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === 'Escape') {
-        e.preventDefault()
-        e.stopPropagation()
-        onBlur?.()
-        return
+        e.preventDefault();
+        e.stopPropagation();
+        onBlur?.();
+        return;
       }
 
       if (e.key === 'Tab' && text.length === 0) {
-        e.preventDefault()
-        return
+        e.preventDefault();
+        return;
       }
 
       if (!(e.key === 'Meta' || e.metaKey)) {
-        e.stopPropagation()
+        e.stopPropagation();
       } else if (e.key === 'z' && e.metaKey) {
         if (e.shiftKey) {
-          document.execCommand('redo', false)
+          document.execCommand('redo', false);
         } else {
-          document.execCommand('undo', false)
+          document.execCommand('undo', false);
         }
-        e.stopPropagation()
-        e.preventDefault()
-        return
+        e.stopPropagation();
+        e.preventDefault();
+        return;
       }
 
       if ((e.metaKey || e.ctrlKey) && e.key === '=') {
-        e.preventDefault()
+        e.preventDefault();
       }
 
       if (e.key === 'Tab') {
-        e.preventDefault()
+        e.preventDefault();
         if (e.shiftKey) {
-          TextAreaUtils.unindent(e.currentTarget)
+          TextAreaUtils.unindent(e.currentTarget);
         } else {
-          TextAreaUtils.indent(e.currentTarget)
+          TextAreaUtils.indent(e.currentTarget);
         }
 
-        onChange?.(TLDR.normalizeText(e.currentTarget.value))
+        onChange?.(TLDR.normalizeText(e.currentTarget.value));
       }
     },
-    [onChange]
-  )
+    [onChange],
+  );
 
   const handleBlur = React.useCallback(
     (e: React.FocusEvent<HTMLTextAreaElement>) => {
-      e.currentTarget.setSelectionRange(0, 0)
-      onBlur?.()
+      e.currentTarget.setSelectionRange(0, 0);
+      onBlur?.();
     },
-    [onBlur]
-  )
+    [onBlur],
+  );
 
   const handleFocus = React.useCallback(
     (e: React.FocusEvent<HTMLTextAreaElement>) => {
-      if (!isEditing) return
-      if (!rIsMounted.current) return
+      if (!isEditing) return;
+      if (!rIsMounted.current) return;
 
       if (document.activeElement === e.currentTarget) {
-        e.currentTarget.select()
+        e.currentTarget.select();
       }
     },
-    [isEditing]
-  )
+    [isEditing],
+  );
 
   const handlePointerDown = React.useCallback(
     (e: React.PointerEvent<HTMLTextAreaElement | HTMLDivElement>) => {
       if (isEditing) {
-        e.stopPropagation()
+        e.stopPropagation();
       }
     },
-    [isEditing]
-  )
+    [isEditing],
+  );
 
-  const rWasEditing = React.useRef(isEditing)
+  const rWasEditing = React.useRef(isEditing);
 
   React.useEffect(() => {
     if (isEditing) {
-      rWasEditing.current = true
+      rWasEditing.current = true;
       requestAnimationFrame(() => {
-        rIsMounted.current = true
-        const elm = rInput.current
+        rIsMounted.current = true;
+        const elm = rInput.current;
         if (elm) {
-          elm.focus()
-          elm.select()
+          elm.focus();
+          elm.select();
         }
-      })
+      });
     } else if (rWasEditing.current) {
-      onBlur?.()
-      rWasEditing.current = false
+      onBlur?.();
+      rWasEditing.current = false;
     }
-  }, [isEditing, onBlur])
+  }, [isEditing, onBlur]);
 
-  const rInnerWrapper = React.useRef<HTMLDivElement>(null)
+  const rInnerWrapper = React.useRef<HTMLDivElement>(null);
 
   React.useLayoutEffect(() => {
-    const elm = rInnerWrapper.current
-    if (!elm) return
-    const size = getTextLabelSize(text, font)
-    elm.style.transform = `scale(${scale}, ${scale}) translate(${offsetX}px, ${offsetY}px)`
-    elm.style.width = size[0] + 1 + 'px'
-    elm.style.height = size[1] + 1 + 'px'
-  }, [text, font, offsetY, offsetX, scale])
+    const elm = rInnerWrapper.current;
+    if (!elm) return;
+    const size = getTextLabelSize(text, font);
+    elm.style.transform = `scale(${scale}, ${scale}) translate(${offsetX}px, ${offsetY}px)`;
+    elm.style.width = size[0] + 1 + 'px';
+    elm.style.height = size[1] + 1 + 'px';
+  }, [text, font, offsetY, offsetX, scale]);
 
   return (
     <TextWrapper>
@@ -151,8 +151,7 @@ export const TextLabel = React.memo(function TextLabel({
         style={{
           font,
           color,
-        }}
-      >
+        }}>
         {isEditing ? (
           <TextArea
             ref={rInput}
@@ -190,8 +189,8 @@ export const TextLabel = React.memo(function TextLabel({
         &#8203;
       </InnerWrapper>
     </TextWrapper>
-  )
-})
+  );
+});
 
 const TextWrapper = styled('div', {
   position: 'absolute',
@@ -210,13 +209,13 @@ const TextWrapper = styled('div', {
       true: { transition: 'opacity .2s', opacity: GHOSTED_OPACITY },
     },
   },
-})
+});
 
 const commonTextWrapping = {
   whiteSpace: 'pre-wrap',
   overflowWrap: 'break-word',
   letterSpacing: LETTER_SPACING,
-}
+};
 
 const InnerWrapper = styled('div', {
   position: 'absolute',
@@ -253,7 +252,7 @@ const InnerWrapper = styled('div', {
     },
   },
   ...commonTextWrapping,
-})
+});
 
 const TextArea = styled('textarea', {
   position: 'absolute',
@@ -286,4 +285,4 @@ const TextArea = styled('textarea', {
     outline: 'none',
     border: 'none',
   },
-})
+});

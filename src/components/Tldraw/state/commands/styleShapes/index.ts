@@ -1,1 +1,1 @@
-export * from './styleShapes'
+export * from './styleShapes';

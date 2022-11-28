@@ -1,1 +1,1 @@
-export * from './TranslateLabelSession'
+export * from './TranslateLabelSession';
