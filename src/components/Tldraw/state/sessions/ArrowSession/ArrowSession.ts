@@ -144,7 +144,7 @@ export class ArrowSession extends BaseSession {
     const handleChange = utils.onHandleChange?.(initialShape, handleChanges);
 
     // If the handle changed produced no change, bail here
-    if (!handleChange) return;
+    if (handleChange == undefined) return;
 
     // If nothing changes, we want these to be the same object reference as
     // before. If it does change, we'll redefine this later on. And if we've
@@ -194,7 +194,7 @@ export class ArrowSession extends BaseSession {
         nextStartBinding = this.findBindingPoint(shape, startTarget, 'start', this.newStartBindingId, center, rayOrigin, rayDirection, isInsideShape);
       }
 
-      if (nextStartBinding && !hasStartBinding) {
+      if (nextStartBinding != undefined && !hasStartBinding) {
         // Bind the arrow's start handle to the start target
         this.didBind = true;
 
@@ -207,7 +207,7 @@ export class ArrowSession extends BaseSession {
             },
           },
         });
-      } else if (!nextStartBinding && hasStartBinding) {
+      } else if (nextStartBinding == undefined && hasStartBinding) {
         // Remove the start binding
         this.didBind = false;
 
@@ -231,9 +231,9 @@ export class ArrowSession extends BaseSession {
 
       const rayDirection = Vec.uni(Vec.sub(rayPoint, rayOrigin));
 
-      const startPoint = Vec.add(next.shape.point!, next.shape.handles!.start.point!);
+      const startPoint = Vec.add(next.shape.point, next.shape.handles.start.point);
 
-      const endPoint = Vec.add(next.shape.point!, next.shape.handles!.end.point!);
+      const endPoint = Vec.add(next.shape.point, next.shape.handles.end.point);
 
       const targets = this.bindableShapeIds
         .map((id) => this.app.page.shapes[id])
@@ -247,24 +247,11 @@ export class ArrowSession extends BaseSession {
       for (const target of targets) {
         draggedBinding = this.findBindingPoint(shape, target, this.handleId, this.draggedBindingId, rayPoint, rayOrigin, rayDirection, altKey);
 
-        if (draggedBinding) break;
+        if (draggedBinding != undefined) break;
       }
     }
 
-    if (draggedBinding) {
-      // Create the dragged point binding
-      this.didBind = true;
-
-      next.bindings[this.draggedBindingId] = draggedBinding;
-
-      next.shape = Utils.deepMerge(next.shape, {
-        handles: {
-          [this.handleId]: {
-            bindingId: this.draggedBindingId,
-          },
-        },
-      });
-    } else {
+    if (draggedBinding == undefined) {
       // Remove the dragging point binding
       this.didBind = this.didBind || false;
 
@@ -281,6 +268,19 @@ export class ArrowSession extends BaseSession {
           },
         });
       }
+    } else {
+      // Create the dragged point binding
+      this.didBind = true;
+
+      next.bindings[this.draggedBindingId] = draggedBinding;
+
+      next.shape = Utils.deepMerge(next.shape, {
+        handles: {
+          [this.handleId]: {
+            bindingId: this.draggedBindingId,
+          },
+        },
+      });
     }
 
     const change = TLDR.getShapeUtil<ArrowShape>(next.shape).onHandleChange?.(next.shape, next.shape.handles);
@@ -315,7 +315,7 @@ export class ArrowSession extends BaseSession {
 
     afterBindings[draggedBindingId] = undefined;
 
-    if (initialBinding) {
+    if (initialBinding != undefined) {
       afterBindings[initialBinding.id] = isDeleting ? undefined : initialBinding;
     }
 
@@ -354,13 +354,13 @@ export class ArrowSession extends BaseSession {
 
     const length = Vec.dist(currentShape.handles.start.point, currentShape.handles.end.point);
 
-    if (!(currentBindingId || initialBinding) && length < 4) return this.cancel();
+    if (!(currentBindingId || initialBinding != undefined) && length < 4) return this.cancel();
 
     const beforeBindings: Partial<Record<string, TDBinding>> = {};
 
     const afterBindings: Partial<Record<string, TDBinding>> = {};
 
-    if (initialBinding) {
+    if (initialBinding != undefined) {
       beforeBindings[initialBinding.id] = this.isCreate ? undefined : initialBinding;
       afterBindings[initialBinding.id] = undefined;
     }
@@ -442,7 +442,7 @@ export class ArrowSession extends BaseSession {
     );
 
     // Not all shapes will produce a binding point
-    if (!bindingPoint) return;
+    if (bindingPoint == undefined) return;
 
     return {
       id: bindingId,

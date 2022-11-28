@@ -254,10 +254,10 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       e.preventDefault();
       if (!canHandleEvent(true)) return;
 
-      if (app.session) {
-        app.cancelSession();
-      } else {
+      if (app.session == undefined) {
         app.undo();
+      } else {
+        app.cancelSession();
       }
     },
     undefined,
@@ -269,10 +269,10 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     () => {
       if (!canHandleEvent(true)) return;
 
-      if (app.session) {
-        app.cancelSession();
-      } else {
+      if (app.session == undefined) {
         app.redo();
+      } else {
+        app.cancelSession();
       }
     },
     undefined,

@@ -8,7 +8,7 @@ export function useFileSystemHandlers() {
 
   const onNewProject = React.useCallback(
     async (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenProject) e.preventDefault();
+      if (e != undefined && app.callbacks.onOpenProject != undefined) e.preventDefault();
       app.callbacks.onNewProject?.(app, openDialog);
     },
     [app, openDialog],
@@ -16,7 +16,7 @@ export function useFileSystemHandlers() {
 
   const onSaveProject = React.useCallback(
     (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenProject) e.preventDefault();
+      if (e != undefined && app.callbacks.onOpenProject != undefined) e.preventDefault();
       app.callbacks.onSaveProject?.(app);
     },
     [app],
@@ -24,7 +24,7 @@ export function useFileSystemHandlers() {
 
   const onSaveProjectAs = React.useCallback(
     (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenProject) e.preventDefault();
+      if (e != undefined && app.callbacks.onOpenProject != undefined) e.preventDefault();
       app.callbacks.onSaveProjectAs?.(app);
     },
     [app],
@@ -32,7 +32,7 @@ export function useFileSystemHandlers() {
 
   const onOpenProject = React.useCallback(
     async (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenProject) e.preventDefault();
+      if (e != undefined && app.callbacks.onOpenProject != undefined) e.preventDefault();
       app.callbacks.onOpenProject?.(app, openDialog);
     },
     [app, openDialog],
@@ -40,7 +40,7 @@ export function useFileSystemHandlers() {
 
   const onOpenMedia = React.useCallback(
     async (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenMedia) e.preventDefault();
+      if (e != undefined && app.callbacks.onOpenMedia != undefined) e.preventDefault();
       app.callbacks.onOpenMedia?.(app);
     },
     [app],

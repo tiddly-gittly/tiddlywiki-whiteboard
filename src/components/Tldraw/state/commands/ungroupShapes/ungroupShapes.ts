@@ -12,7 +12,7 @@ export function ungroupShapes(app: TldrawApp, selectedIds: string[], groupShapes
   const afterBindings: Record<string, Patch<TDBinding | undefined>> = {};
 
   const beforeSelectedIds = selectedIds;
-  const afterSelectedIds = selectedIds.filter((id) => !groupShapes.find((shape) => shape.id === id));
+  const afterSelectedIds = selectedIds.filter((id) => groupShapes.find((shape) => shape.id === id) == undefined);
 
   // The group shape
   groupShapes
@@ -71,7 +71,7 @@ export function ungroupShapes(app: TldrawApp, selectedIds: string[], groupShapes
               const shape = app.getShape(id, pageId);
 
               // If the bound shape has a handle that references the deleted binding...
-              if (shape.handles) {
+              if (shape.handles != undefined) {
                 Object.values(shape.handles)
                   .filter((handle) => handle.bindingId === binding.id)
                   .forEach((handle) => {

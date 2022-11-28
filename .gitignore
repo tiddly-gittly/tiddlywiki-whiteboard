@@ -106,4 +106,3 @@ public-dist
 tiddlers/$__StoryList.tid
 tiddlers/$__language.tid
 tiddlers/$__Import.tid
-src/components/Tldraw/state/__snapshots__/TldrawApp.spec.ts.snap

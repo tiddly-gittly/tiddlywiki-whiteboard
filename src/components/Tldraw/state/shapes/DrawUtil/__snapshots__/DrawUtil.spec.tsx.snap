@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Draw shape Creates a shape: draw 1`] = `
-Object {
+{
   "childIndex": 1,
   "id": "draw",
   "isComplete": false,
   "name": "Draw",
   "parentId": "page",
-  "point": Array [
+  "point": [
     0,
     0,
   ],
-  "points": Array [],
+  "points": [],
   "rotation": 0,
-  "style": Object {
+  "style": {
     "color": "black",
     "dash": "draw",
     "isFilled": false,

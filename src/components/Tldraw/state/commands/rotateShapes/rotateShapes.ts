@@ -19,7 +19,7 @@ export function rotateShapes(app: TldrawApp, ids: string[], delta = -PI2 / 4): T
   const shapesToRotate = ids
     .flatMap((id) => {
       const shape = app.getShape(id);
-      return shape.children ? shape.children.map((childId) => app.getShape(childId)) : shape;
+      return shape.children == undefined ? shape : shape.children.map((childId) => app.getShape(childId));
     })
     .filter((shape) => !shape.isLocked);
 
@@ -30,7 +30,7 @@ export function rotateShapes(app: TldrawApp, ids: string[], delta = -PI2 / 4): T
   // Find the rotate mutations for each shape
   shapesToRotate.forEach((shape) => {
     const change = TLDR.getRotatedShapeMutation(shape, TLDR.getCenter(shape), origin, delta);
-    if (!change) return;
+    if (change == undefined) return;
     before[shape.id] = TLDR.getBeforeShape(shape, change);
     after[shape.id] = change;
   });

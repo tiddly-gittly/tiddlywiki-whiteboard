@@ -59,13 +59,13 @@ describe('TldrawTestApp', () => {
 
       const afterShapes = app.shapes;
 
-      const newShapes = afterShapes.filter((shape) => !beforeShapes.find(({ id }) => id === shape.id));
+      const newShapes = afterShapes.filter((shape) => beforeShapes.find(({ id }) => id === shape.id) == undefined);
 
       const newGroup = newShapes.find((shape) => shape.type === TDShapeType.Group);
 
       const newChildIds = newShapes.filter((shape) => shape.type !== TDShapeType.Group).map((shape) => shape.id);
 
-      expect(new Set(newGroup.children)).toEqual(new Set(newChildIds));
+      expect(new Set(newGroup!.children)).toEqual(new Set(newChildIds));
     });
 
     it.todo("Pastes in to the top child index of the page's children.");

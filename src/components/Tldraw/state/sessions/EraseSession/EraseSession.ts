@@ -220,7 +220,7 @@ export class EraseSession extends BaseSession {
 
     // Remove references on any shape's handles to any deleted bindings
     this.app.shapes.forEach((shape) => {
-      if (shape.handles && !after.shapes[shape.id]) {
+      if (shape.handles != undefined && after.shapes[shape.id] == undefined) {
         Object.values(shape.handles).forEach((handle) => {
           if (handle.bindingId && erasedBindingIds.has(handle.bindingId)) {
             // Save the binding reference in the before patch

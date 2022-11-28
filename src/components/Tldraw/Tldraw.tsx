@@ -2,21 +2,30 @@ import { CursorComponent, Renderer } from '@tldraw/core';
 import * as React from 'react';
 import { ErrorBoundary as _Errorboundary } from 'react-error-boundary';
 import { IntlProvider } from 'react-intl';
-import { ContextMenu } from './components/ContextMenu';
-import { ErrorFallback } from './components/ErrorFallback';
-import { FocusButton } from './components/FocusButton';
-import { Loading } from './components/Loading';
-import { AlertDialog } from './components/Primitives/AlertDialog';
-import { ToolsPanel } from './components/ToolsPanel';
-import { TopPanel } from './components/TopPanel';
-import { GRID_SIZE } from './constants';
-import { AlertDialogContext, ContainerContext, DialogState, TldrawContext, useKeyboardShortcuts, useStylesheet, useTldrawApp, useTranslation } from './hooks';
-import { useCursor } from './hooks/useCursor';
-import { TDCallbacks, TldrawApp } from './state';
-import { TLDR } from './state/TLDR';
-import { shapeUtils } from './state/shapes';
-import { dark, styled } from './styles';
-import { TDDocument, TDStatus } from './types';
+import { ContextMenu } from '@tldr/components/ContextMenu';
+import { ErrorFallback } from '@tldr/components/ErrorFallback';
+import { FocusButton } from '@tldr/components/FocusButton';
+import { Loading } from '@tldr/components/Loading';
+import { AlertDialog } from '@tldr/components/Primitives/AlertDialog';
+import { ToolsPanel } from '@tldr/components/ToolsPanel';
+import { TopPanel } from '@tldr/components/TopPanel';
+import { GRID_SIZE } from '@tldr/constants';
+import {
+  AlertDialogContext,
+  ContainerContext,
+  DialogState,
+  TldrawContext,
+  useKeyboardShortcuts,
+  useStylesheet,
+  useTldrawApp,
+  useTranslation,
+} from '@tldr/hooks';
+import { useCursor } from '@tldr/hooks/useCursor';
+import { TDCallbacks, TldrawApp } from '@tldr/state';
+import { TLDR } from '@tldr/state/TLDR';
+import { shapeUtils } from '@tldr/state/shapes';
+import { dark, styled } from '@tldr/styles';
+import { TDDocument, TDStatus } from '@tldr/types';
 
 const ErrorBoundary = _Errorboundary as any;
 
@@ -80,6 +89,11 @@ export interface TldrawProps extends TDCallbacks {
   showMenu?: boolean;
 
   /**
+   * (optional) Whether to show the multiplayer menu.
+   */
+  showMultiplayerMenu?: boolean;
+
+  /**
    * (optional) Whether to show the pages UI.
    */
   showPages?: boolean;
@@ -113,6 +127,7 @@ export function Tldraw({
   currentPageId,
   autofocus = true,
   showMenu = true,
+  showMultiplayerMenu = true,
   showPages = true,
   showTools = true,
   showZoom = true,
@@ -325,6 +340,7 @@ export function Tldraw({
           autofocus={autofocus}
           showPages={showPages}
           showMenu={showMenu}
+          showMultiplayerMenu={showMultiplayerMenu}
           showStyles={showStyles}
           showZoom={showZoom}
           showTools={showTools}
@@ -347,6 +363,7 @@ interface InnerTldrawProps {
   id?: string;
   readOnly: boolean;
   showMenu: boolean;
+  showMultiplayerMenu: boolean;
   showPages: boolean;
   showStyles: boolean;
   showTools: boolean;
@@ -359,6 +376,7 @@ const InnerTldraw = React.memo(function InnerTldraw({
   autofocus,
   showPages,
   showMenu,
+  showMultiplayerMenu,
   showZoom,
   showStyles,
   showTools,
@@ -549,6 +567,7 @@ const InnerTldraw = React.memo(function InnerTldraw({
                     readOnly={readOnly}
                     showPages={showPages}
                     showMenu={showMenu}
+                    showMultiplayerMenu={showMultiplayerMenu}
                     showStyles={showStyles}
                     showZoom={showZoom}
                   />

@@ -48,7 +48,7 @@ export class EraseTool extends BaseTool {
         const shapeIdsAtPoint = this.app.shapes
           .filter((shape) => !shape.isLocked)
           .filter((shape) => this.app.getShapeUtil(shape).hitTestPoint(shape, this.app.currentPoint))
-          .flatMap((shape) => (shape.children ? [shape.id, ...shape.children] : shape.id));
+          .flatMap((shape) => (shape.children == undefined ? shape.id : [shape.id, ...shape.children]));
 
         this.app.delete(shapeIdsAtPoint);
 

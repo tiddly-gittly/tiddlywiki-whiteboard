@@ -64,7 +64,7 @@ export function groupShapes(app: TldrawApp, ids: string[], groupId: string, page
   // The childIndex should be the lowest index of the selected shapes
   // with a parent that is the current page; or else the child index
   // of the lowest selected shape.
-  const groupChildIndex = (sortedShapes.find((shape) => shape.parentId === pageId) || sortedShapes[0]).childIndex;
+  const groupChildIndex = (sortedShapes.find((shape) => shape.parentId === pageId) != undefined || sortedShapes[0]).childIndex;
 
   // The shape's point is the min point of its childrens' common bounds
   const groupBounds = Utils.getCommonBounds(shapesToGroup.map((shape) => TLDR.getBounds(shape)));
@@ -105,9 +105,9 @@ export function groupShapes(app: TldrawApp, ids: string[], groupId: string, page
   // Clean up effected parents
   while (otherEffectedGroups.length > 0) {
     const shape = otherEffectedGroups.pop();
-    if (!shape) break;
+    if (shape == undefined) break;
 
-    const nextChildren = (beforeShapes[shape.id]?.children || shape.children)!.filter(
+    const nextChildren = (beforeShapes[shape.id]?.children != undefined || shape.children)!.filter(
       (childId) => childId && !(idsToGroup.includes(childId) || deletedGroupIds.includes(childId)),
     );
 
@@ -154,7 +154,7 @@ export function groupShapes(app: TldrawApp, ids: string[], groupId: string, page
         const shape = app.getShape(id);
 
         // If the bound shape has a handle that references the deleted binding...
-        if (shape.handles) {
+        if (shape.handles != undefined) {
           Object.values(shape.handles)
             .filter((handle) => handle.bindingId === binding.id)
             .forEach((handle) => {

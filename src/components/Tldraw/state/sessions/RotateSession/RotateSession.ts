@@ -85,7 +85,7 @@ export class RotateSession extends BaseSession {
 
       const change = TLDR.getRotatedShapeMutation(shape, center, commonBoundsCenter, shiftKey ? directionDelta + shapeDelta : directionDelta);
 
-      if (change) {
+      if (change != undefined) {
         shapes[shape.id] = change;
       }
     });

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Video shape Creates a shape: video 1`] = `
-Object {
+{
   "assetId": "assetId",
   "childIndex": 1,
   "currentTime": 0,
@@ -9,16 +9,16 @@ Object {
   "isPlaying": true,
   "name": "Video",
   "parentId": "page",
-  "point": Array [
+  "point": [
     0,
     0,
   ],
   "rotation": 0,
-  "size": Array [
+  "size": [
     1,
     1,
   ],
-  "style": Object {
+  "style": {
     "color": "black",
     "dash": "draw",
     "isFilled": false,

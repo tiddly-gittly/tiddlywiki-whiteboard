@@ -178,9 +178,9 @@ export const StyleMenu = React.memo(function ColorMenu() {
           <FormattedMessage id="styles" />
           <OverlapIcons
             style={{
-              color: strokes[theme][displayedStyle.color as ColorStyle],
+              color: strokes[theme][displayedStyle.color],
             }}>
-            {displayedStyle.isFilled && <CircleIcon size={16} stroke="none" fill={fills[theme][displayedStyle.color as ColorStyle]} />}
+            {displayedStyle.isFilled && <CircleIcon size={16} stroke="none" fill={fills[theme][displayedStyle.color]} />}
             {DASH_ICONS[displayedStyle.dash]}
           </OverlapIcons>
         </ToolButton>
