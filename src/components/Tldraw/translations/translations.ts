@@ -1,27 +1,27 @@
-import ar from './ar.json'
-import da from './da.json'
-import de from './de.json'
-import en from './en.json'
-import es from './es.json'
-import fa from './fa.json'
-import fr from './fr.json'
-import he from './he.json'
-import it from './it.json'
-import ja from './ja.json'
-import ko_kr from './ko-kr.json'
-import main from './main.json'
-import ne from './ne.json'
-import no from './no.json'
-import pl from './pl.json'
-import pt_br from './pt-br.json'
-import pt_pt from './pt-pt.json'
-import ru from './ru.json'
-import sv from './sv.json'
-import tr from './tr.json'
-import uk from './uk.json'
-import zh_cn from './zh-cn.json'
-import zh_tw from './zh-tw.json'
-import th from './th.json'
+import ar from './ar.json';
+import da from './da.json';
+import de from './de.json';
+import en from './en.json';
+import es from './es.json';
+import fa from './fa.json';
+import fr from './fr.json';
+import he from './he.json';
+import it from './it.json';
+import ja from './ja.json';
+import ko_kr from './ko-kr.json';
+import main from './main.json';
+import ne from './ne.json';
+import no from './no.json';
+import pl from './pl.json';
+import pt_br from './pt-br.json';
+import pt_pt from './pt-pt.json';
+import ru from './ru.json';
+import sv from './sv.json';
+import tr from './tr.json';
+import uk from './uk.json';
+import zh_cn from './zh-cn.json';
+import zh_tw from './zh-tw.json';
+import th from './th.json';
 
 // The default language (english) must have a value for every message.
 // Other languages may have missing messages. If the application finds
@@ -52,24 +52,24 @@ export const TRANSLATIONS: TDTranslations = [
   { locale: 'zh-ch', label: '简体中文', messages: zh_cn },
   { locale: 'zh-tw', label: '繁體中文 (台灣)', messages: zh_tw },
   { locale: 'th', label: 'ภาษาไทย', messages: th },
-]
+];
 
 /* ----------------- (do not change) ---------------- */
 
-TRANSLATIONS.sort((a, b) => (a.locale < b.locale ? -1 : 1))
+TRANSLATIONS.sort((a, b) => (a.locale < b.locale ? -1 : 1));
 
-export type TDTranslation = {
-  readonly locale: string
-  readonly label: string
-  readonly messages: Partial<typeof main>
+export interface TDTranslation {
+  readonly label: string;
+  readonly locale: string;
+  readonly messages: Partial<typeof main>;
 }
 
-export type TDTranslations = TDTranslation[]
+export type TDTranslations = TDTranslation[];
 
-export type TDLanguage = TDTranslations[number]['locale']
+export type TDLanguage = TDTranslations[number]['locale'];
 
 export function getTranslation(locale: TDLanguage): TDTranslation {
-  const translation = TRANSLATIONS.find((t) => t.locale === locale)
+  const translation = TRANSLATIONS.find((t) => t.locale === locale);
 
   return {
     locale,
@@ -78,5 +78,5 @@ export function getTranslation(locale: TDLanguage): TDTranslation {
       ...main,
       ...translation?.messages,
     },
-  }
+  };
 }

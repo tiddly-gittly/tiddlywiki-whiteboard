@@ -1,4 +1,4 @@
-import { createStitches, defaultThemeMap } from '@stitches/react'
+import { createStitches, defaultThemeMap } from '@stitches/react';
 
 const { styled, createTheme } = createStitches({
   themeMap: {
@@ -85,15 +85,15 @@ const { styled, createTheme } = createStitches({
       if (Array.isArray(value)) {
         return {
           strokeWidth: `calc(${value[0]}px / var(--camera-zoom))`,
-        }
+        };
       }
 
       return {
         strokeWidth: `calc(${value}px / var(--camera-zoom))`,
-      }
+      };
     },
   },
-})
+});
 
 export const dark = createTheme({
   colors: {
@@ -122,6 +122,6 @@ export const dark = createTheme({
       0px 0px 16px -8px rgba(0, 0, 0, 0.09), 
       0px 0px 16px -12px rgba(0, 0, 0, 0.2)`,
   },
-})
+});
 
-export { styled }
+export { styled };

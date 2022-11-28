@@ -1,1 +1,1 @@
-export * from './stitches.config'
+export * from './stitches.config';
