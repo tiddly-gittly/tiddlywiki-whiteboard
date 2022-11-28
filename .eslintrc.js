@@ -13,7 +13,7 @@ module.exports = {
   },
   settings: {
     react: {
-      version: '17.0.2',
+      version: '18.2.0',
     },
     'import/resolver': {
       node: {
@@ -23,10 +23,7 @@ module.exports = {
         alwaysTryTypes: true,
       },
       alias: {
-        map: [
-          ['@', './src'],
-          ['@services', './src/services'],
-        ],
+        map: [['@tldr', './src/components/Tldraw']],
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs'],
       },
     },
