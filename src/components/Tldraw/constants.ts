@@ -1,6 +1,6 @@
 import type { Easing } from '@tldr/types';
 
-export const LETTER_SPACING = '-0.03em';
+export const LETTER_SPACING = '0';
 export const LINE_HEIGHT = 1;
 export const GRID_SIZE = 8;
 export const SVG_EXPORT_PADDING = 16;
