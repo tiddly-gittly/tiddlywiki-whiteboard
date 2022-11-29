@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useFileSystemHandlers, useTldrawApp } from '@tldr/hooks';
 import { AlignStyle, TDShapeType } from '@tldr/types';
+import { STICKY_TEXT_AREA_CLASS_NAME } from '@tldr/state/shapes/StickyUtil/constants';
 
 export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>) {
   const app = useTldrawApp();
@@ -12,6 +13,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     (ignoreMenus = false) => {
       const containerElement = reference.current;
       if (!app.isMouseInBound) return false;
+      if (document.activeElement?.classList?.contains(STICKY_TEXT_AREA_CLASS_NAME)) return false;
       if (ignoreMenus && (app.isMenuOpen || app.settings.keepStyleMenuOpen)) return true;
       // elm?.focus();
       return containerElement !== null && (document.activeElement === containerElement || containerElement.contains(document.activeElement));
