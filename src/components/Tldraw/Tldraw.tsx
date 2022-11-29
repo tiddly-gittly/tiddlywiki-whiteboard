@@ -111,7 +111,6 @@ export function Tldraw({
   components,
   onMount,
   onChange,
-  onChangePresence,
   onOpenMedia,
   onUndo,
   onRedo,
@@ -134,7 +133,6 @@ export function Tldraw({
     const app = new TldrawApp(id, {
       onMount,
       onChange,
-      onChangePresence,
       onOpenMedia,
       onUndo,
       onRedo,
@@ -169,7 +167,6 @@ export function Tldraw({
     const newApp = new TldrawApp(id, {
       onMount,
       onChange,
-      onChangePresence,
       onOpenMedia,
       onUndo,
       onRedo,
@@ -228,7 +225,6 @@ export function Tldraw({
     app.callbacks = {
       onMount,
       onChange,
-      onChangePresence,
       onOpenMedia,
       onUndo,
       onRedo,
@@ -246,7 +242,6 @@ export function Tldraw({
   }, [
     onMount,
     onChange,
-    onChangePresence,
     onOpenMedia,
     onUndo,
     onRedo,
