@@ -12,8 +12,6 @@ import getPort from 'get-port';
 import { WebSocketServer, WebSocket } from 'ws';
 import { findAllEntries, buildEntries, exportPlugins, initTiddlyWiki } from './packup.mjs';
 
-const packageJSON = fs.readJsonSync('package.json');
-
 // WebSocket with TiddlyWiki on broswer
 const developmentWebListenerScriptPath = path.resolve(path.join(process.cwd(), 'scripts', 'dev', 'devweb-listener.js'));
 const developmentWebListenerScript = fs.readFileSync(developmentWebListenerScriptPath).toString('utf8');
