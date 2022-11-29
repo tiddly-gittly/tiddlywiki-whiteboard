@@ -6,7 +6,7 @@ import { AlignStyle, TDShapeType } from '@tldr/types';
 
 export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>) {
   const app = useTldrawApp();
-  const hotKeySetting = { scopes: app.document?.id };
+  const hotKeySetting = {}; // { scopes: app.document?.id };
 
   const canHandleEvent = React.useCallback(
     (ignoreMenus = false) => {
@@ -67,7 +67,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app, reference.current],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'd,p,2',
@@ -77,7 +77,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'e,3',
@@ -87,7 +87,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'r,4',
@@ -97,7 +97,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'o,5',
@@ -107,7 +107,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'g,6',
@@ -117,7 +117,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'l,7',
@@ -127,7 +127,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'a,8',
@@ -137,7 +137,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     't,9',
@@ -147,7 +147,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     's,0',
@@ -157,7 +157,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   /* ---------------------- Misc ---------------------- */
 
@@ -171,7 +171,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'ctrl+shift+g,⌘+shift+g',
@@ -181,7 +181,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // File System
 
@@ -195,7 +195,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Undo Redo
 
@@ -214,7 +214,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'ctrl+shift+z,⌘+shift+z',
@@ -229,7 +229,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Undo Redo
 
@@ -241,7 +241,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'ctrl+shift-u,⌘+shift+u',
@@ -251,7 +251,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   /* -------------------- Commands -------------------- */
 
@@ -267,7 +267,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'ctrl+-,⌘+-,ctrl+num_subtract,⌘+num_subtract',
@@ -280,7 +280,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+0,ctrl+numpad_0,⌘+numpad_0',
@@ -290,7 +290,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+1',
@@ -300,7 +300,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+2',
@@ -310,7 +310,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Duplicate
 
@@ -325,7 +325,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Flip
 
@@ -337,7 +337,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+v',
@@ -347,7 +347,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Cancel
 
@@ -360,7 +360,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Delete
 
@@ -372,7 +372,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Select All
 
@@ -385,7 +385,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Nudge
 
@@ -397,7 +397,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'right',
@@ -407,7 +407,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'down',
@@ -417,7 +417,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'left',
@@ -427,7 +427,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+up',
@@ -437,7 +437,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+right',
@@ -447,7 +447,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+down',
@@ -457,7 +457,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+left',
@@ -467,7 +467,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     '⌘+shift+l,ctrl+shift+l',
@@ -477,7 +477,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Copy, Cut & Paste is done on the top of this file
 
@@ -494,7 +494,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     '⌘+shift+g,ctrl+shift+g',
@@ -507,7 +507,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Move
 
@@ -519,7 +519,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     ']',
@@ -529,7 +529,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+[',
@@ -539,7 +539,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'shift+]',
@@ -549,7 +549,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'ctrl+shift+backspace,⌘+shift+backspace',
@@ -563,7 +563,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   // Text Align
 
@@ -577,7 +577,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'alt+command+t,alt+ctrl+t',
@@ -589,7 +589,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 
   useHotkeys(
     'alt+command+r,alt+ctrl+r',
@@ -601,5 +601,5 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     },
     hotKeySetting,
     [app],
-  );
+  ).current = reference.current;
 }
