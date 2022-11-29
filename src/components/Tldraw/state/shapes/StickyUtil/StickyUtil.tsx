@@ -215,11 +215,10 @@ export class StickyUtil extends TDShapeUtil<T, E> {
         if (clickedElement !== undefined) {
           event.preventDefault();
           event.stopPropagation();
-          const newClickEvent = new MouseEvent(event.type, { ...event.nativeEvent });
-          newClickEvent.stopPropagation();
+          const newClickEvent = new MouseEvent('click', { ...event.nativeEvent });
           clickedElement.dispatchEvent(newClickEvent);
-          return;
         }
+        // always tell tldraw we have pointerup, otherwise it will think we are during a drag
         events.onPointerUp(event);
       },
       [events, getClickedTWElement],
