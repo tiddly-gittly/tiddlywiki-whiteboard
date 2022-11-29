@@ -127,14 +127,6 @@ export interface TDCallbacks {
    */
   onOpenMedia?: (app: TldrawApp) => void;
   /**
-   * (optional) A callback to run when the user opens new project through the menu or through a keyboard shortcut.
-   */
-  onOpenProject?: (
-    app: TldrawApp,
-    openDialog: (dialogState: DialogState, onYes: () => void, onNo: () => void, onCancel: () => void) => void,
-    e?: KeyboardEvent,
-  ) => void;
-  /**
    * (optional) A callback to run when the state is patched.
    */
   onPatch?: (app: TldrawApp, patch: TldrawPatch, reason?: string) => void;
@@ -1165,31 +1157,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       console.error(error.message);
     }
     return this;
-  };
-
-  /**
-   * Load a project from the filesystem.
-   * @todo
-   */
-  openProject = async () => {
-    if (!this.isLocal) return;
-
-    try {
-      const result = await openFromFileSystem();
-      if (!result) {
-        throw new Error();
-      }
-
-      const { fileHandle, document } = result;
-      this.loadDocument(document);
-      this.fileSystemHandle = fileHandle;
-      this.zoomToFit();
-      this.persist({});
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.persist({});
-    }
   };
 
   /**

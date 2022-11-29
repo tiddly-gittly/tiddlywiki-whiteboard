@@ -49,41 +49,6 @@ export async function saveToFileSystem(document: TDDocument, fileHandle: FileSys
   return newFileHandle;
 }
 
-export async function openFromFileSystem(): Promise<null | {
-  document: TDDocument;
-  fileHandle: FileSystemFileHandle | null;
-}> {
-  // Get the blob
-  const blob = await fileOpen({
-    description: 'Tldraw File',
-    extensions: [`${FILE_EXTENSION}`],
-    multiple: false,
-  });
-
-  if (!blob) return null;
-
-  // Get JSON from blob
-  const json: string = await new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      if (reader.readyState === FileReader.DONE) {
-        resolve(reader.result as string);
-      }
-    };
-    reader.readAsText(blob, 'utf8');
-  });
-
-  // Parse
-  const file: TDFile = JSON.parse(json);
-
-  const fileHandle = blob.handle ?? null;
-
-  return {
-    fileHandle,
-    document: file.document,
-  };
-}
-
 export async function openAssetsFromFileSystem() {
   return await fileOpen({
     description: 'Image',

@@ -475,7 +475,6 @@ TldrawTestApp {
   "onUnhoverShape": [Function],
   "onZoom": [Function],
   "openAsset": [Function],
-  "openProject": [Function],
   "originPoint": [
     0,
     0,

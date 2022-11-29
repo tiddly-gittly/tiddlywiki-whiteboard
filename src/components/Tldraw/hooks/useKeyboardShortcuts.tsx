@@ -180,7 +180,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
   // File System
 
-  const { onNewProject, onOpenProject, onSaveProject, onSaveProjectAs, onOpenMedia } = useFileSystemHandlers();
+  const { onNewProject, onSaveProject, onSaveProjectAs, onOpenMedia } = useFileSystemHandlers();
 
   useHotkeys(
     'ctrl+n,⌘+n',
@@ -209,16 +209,6 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
 
       onSaveProjectAs(e);
-    },
-    undefined,
-    [app],
-  );
-  useHotkeys(
-    'ctrl+o,⌘+o',
-    (e) => {
-      if (!canHandleEvent()) return;
-
-      onOpenProject(e);
     },
     undefined,
     [app],
