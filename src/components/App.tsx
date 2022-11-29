@@ -60,7 +60,7 @@ export function App(props: IAppProps): JSX.Element {
   const [tldrawDocument, tldrawDocumentSetter] = useState<TDDocument | undefined>(initialTiddlerJSONContent);
   const debouncedSaveOnChange = useDebouncedCallback(
     (app: TldrawApp) => {
-      const exportedTldrJSON = { document: app.document, assets: app.assets };
+      const exportedTldrJSON = { document: app.document };
       const newTiddlerText = JSON.stringify(exportedTldrJSON);
       onSave(newTiddlerText);
     },
