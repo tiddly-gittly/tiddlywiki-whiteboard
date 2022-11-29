@@ -44,8 +44,6 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       if (app.readOnly) return;
 
-      // DEBUG: console
-      console.log(`app.paste`, app.paste);
       void app.paste(undefined, event);
     };
 
