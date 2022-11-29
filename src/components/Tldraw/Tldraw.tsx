@@ -1,5 +1,7 @@
-import { CursorComponent, Renderer } from '@tldraw/core';
+/* eslint-disable unicorn/no-null */
 import * as React from 'react';
+import { HotkeysProvider, useHotkeysContext } from 'react-hotkeys-hook';
+import { CursorComponent, Renderer } from '@tldraw/core';
 import { ContextMenu } from '@tldr/components/ContextMenu';
 import { FocusButton } from '@tldr/components/FocusButton';
 import { Loading } from '@tldr/components/Loading';
@@ -274,20 +276,22 @@ export function Tldraw({
   return (
     <TldrawContext.Provider value={app}>
       <AlertDialogContext.Provider value={{ onYes, onCancel, onNo, dialogState, setDialogState, openDialog }}>
-        <InnerTldraw
-          key={sId || 'Tldraw'}
-          id={sId}
-          autofocus={autofocus}
-          showPages={showPages}
-          showMenu={showMenu}
-          showStyles={showStyles}
-          showZoom={showZoom}
-          showTools={showTools}
-          showUI={showUI}
-          readOnly={readOnly}
-          components={components}
-          hideCursors={hideCursors}
-        />
+        <HotkeysProvider initiallyActiveScopes={[app.document?.id]}>
+          <InnerTldraw
+            key={sId || 'Tldraw'}
+            id={sId}
+            autofocus={autofocus}
+            showPages={showPages}
+            showMenu={showMenu}
+            showStyles={showStyles}
+            showZoom={showZoom}
+            showTools={showTools}
+            showUI={showUI}
+            readOnly={readOnly}
+            components={components}
+            hideCursors={hideCursors}
+          />
+        </HotkeysProvider>
       </AlertDialogContext.Provider>
     </TldrawContext.Provider>
   );
@@ -373,10 +377,20 @@ const InnerTldraw = React.memo(function InnerTldraw({
 
   useCursor(rWrapper);
 
+  const { enableScope, disableScope } = useHotkeysContext();
+  const onMouseEnter = React.useCallback(() => {
+    app.setMouseInBound(true);
+    enableScope(app.document?.id);
+  }, [app]);
+  const onMouseLeave = React.useCallback(() => {
+    app.setMouseInBound(false);
+    disableScope(app.document?.id);
+  }, [app]);
+
   return (
     <ContainerContext.Provider value={rWrapper}>
       <AlertDialog container={dialogContainer} />
-      <StyledLayout ref={rWrapper} tabIndex={-0}>
+      <StyledLayout ref={rWrapper} tabIndex={-0} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         <Loading />
         <OneOff focusableRef={rWrapper} autofocus={autofocus} />
         <ContextMenu>
