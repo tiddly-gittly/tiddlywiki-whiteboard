@@ -6,6 +6,7 @@ import './App.css';
 import type { TldrawApp } from './Tldraw/state';
 import type { TDAsset, TDDocument } from './Tldraw/types';
 import { Tldraw } from './Tldraw/Tldraw';
+import { IDefaultWidgetProps, ParentWidgetContext } from 'tw-react';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -29,13 +30,14 @@ export interface TDExportJSON {
   document: TDDocument;
 }
 
-export function App(props: IAppProps): JSX.Element {
+export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
   const {
     height,
     width,
     currentTiddler,
     initialTiddlerText,
     saver: { onSave },
+    parentWidget,
   } = props;
   const getTiddlerJSONContent = useCallback(() => {
     if (initialTiddlerText) {
@@ -74,8 +76,10 @@ export function App(props: IAppProps): JSX.Element {
     debouncedSaveOnChange(app);
   };
   return (
-    <div className="tw-whiteboard-tldraw-container" style={{ height, width }}>
-      <Tldraw onPersist={onChange} document={tldrawDocument} autofocus={false} />
-    </div>
+    <ParentWidgetContext.Provider value={parentWidget}>
+      <div className="tw-whiteboard-tldraw-container" style={{ height, width }}>
+        <Tldraw onPersist={onChange} document={tldrawDocument} autofocus={false} />
+      </div>
+    </ParentWidgetContext.Provider>
   );
 }
