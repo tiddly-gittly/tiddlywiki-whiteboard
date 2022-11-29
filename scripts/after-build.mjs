@@ -13,15 +13,34 @@ const repoDir = path.join(__dirname, '..');
 const distDir = path.join(__dirname, '..', 'dist');
 const nodejsPluginOutDir = path.join(distDir, 'plugins', author, name);
 // cross platform cp -r ${repoDir}/src/ ${nodejsPluginOutDir}/
+const ignoredExtensions = ['.ts', '.tsx', '.snap', '.tldr', '.md', '.json'];
 const copyOptions = {
   filter: (src, dest) => {
-    if (!(src.endsWith('.ts') || src.endsWith('.tsx'))) {
+    if (!ignoredExtensions.some((extension) => src.endsWith(extension))) {
       // Return true to copy the item
       return true;
     }
   },
 };
 await fs.copy(path.join(repoDir, 'src'), nodejsPluginOutDir, copyOptions);
+
+// https://gist.github.com/arnoson/3237697e8c61dfaf0356f814b1500d7b
+async function cleanupEmptyFolders(folder) {
+  if (!(await fs.stat(folder)).isDirectory()) return;
+  let files = await fs.readdir(folder);
+
+  if (files.length > 0) {
+    await Promise.all(files.map((file) => cleanupEmptyFolders(path.join(folder, file))));
+    // Re-evaluate files; after deleting subfolders we may have an empty parent
+    // folder now.
+    files = await fs.readdir(folder);
+  }
+
+  if (files.length == 0) {
+    await fs.rmdir(folder);
+  }
+}
+await cleanupEmptyFolders(nodejsPluginOutDir);
 
 // zip folder for nodejs wiki
 /**
