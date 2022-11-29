@@ -1906,10 +1906,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     return this;
   };
 
-  getSvg = async (
-    ids = this.selectedIds.length > 0 ? this.selectedIds : Object.keys(this.page.shapes),
-    opts = {} as Partial<{ includeFonts: boolean }>,
-  ): Promise<SVGElement | undefined> => {
+  getSvg = async (ids = this.selectedIds.length > 0 ? this.selectedIds : Object.keys(this.page.shapes)): Promise<SVGElement | undefined> => {
     if (ids.length === 0) return;
 
     // Embed our custom fonts
@@ -1919,43 +1916,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
 
     if (typeof window !== 'undefined') {
       window.focus(); // weird but necessary
-    }
-
-    if (opts.includeFonts) {
-      try {
-        const { fonts } = await fetch(TldrawApp.assetSrc, { mode: 'no-cors' }).then(async (d) => await d.json());
-
-        style.textContent = `
-          @font-face {
-            font-family: 'Caveat Brush';
-            src: url(data:application/x-font-woff;charset=utf-8;base64,${fonts.caveat}) format('woff');
-            font-weight: 500;
-            font-style: normal;
-          }
-          @font-face {
-            font-family: 'Source Code Pro';
-            src: url(data:application/x-font-woff;charset=utf-8;base64,${fonts.source_code_pro}) format('woff');
-            font-weight: 500;
-            font-style: normal;
-          }
-          @font-face {
-            font-family: 'Source Sans Pro';
-            src: url(data:application/x-font-woff;charset=utf-8;base64,${fonts.source_sans_pro}) format('woff');
-            font-weight: 500;
-            font-style: normal;
-          }
-          @font-face {
-            font-family: 'Crimson Pro';
-            src: url(data:application/x-font-woff;charset=utf-8;base64,${fonts.crimson_pro}) format('woff');
-            font-weight: 500;
-            font-style: normal;
-          }
-          `;
-      } catch {
-        TLDR.warn('Could not find tldraw-assets.json file.');
-      }
-    } else {
-      style.textContent = `@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Source+Code+Pro&family=Source+Sans+Pro&family=Crimson+Pro&display=block');`;
     }
 
     defs.append(style);
@@ -2249,9 +2209,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   ): Promise<Blob | undefined> => {
     const { ids = this.selectedIds.length > 0 ? this.selectedIds : Object.keys(this.page.shapes) } = opts;
 
-    const svg = await this.getSvg(ids, {
-      includeFonts: format !== TDExportType.SVG,
-    });
+    const svg = await this.getSvg(ids);
 
     if (!svg) return;
 
