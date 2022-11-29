@@ -16,7 +16,6 @@ import {
   DialogState,
   TldrawContext,
   useKeyboardShortcuts,
-  useStylesheet,
   useTldrawApp,
   useTranslation,
 } from '@tldr/hooks';
@@ -539,7 +538,6 @@ const InnerTldraw = React.memo(function InnerTldraw({
 
 const OneOff = React.memo(function OneOff({ focusableRef, autofocus }: { autofocus?: boolean; focusableRef: React.RefObject<HTMLDivElement> }) {
   useKeyboardShortcuts(focusableRef);
-  useStylesheet();
 
   React.useEffect(() => {
     if (autofocus) {

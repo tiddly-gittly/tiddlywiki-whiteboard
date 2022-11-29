@@ -112,6 +112,7 @@ export function getStickyFontSize(size: SizeStyle): number {
 
 export function getFontStyle(style: ShapeStyles): string {
   const fontSize = getFontSize(style.size, style.font);
+  // TODO: list tw fonts in the menu, user can only choose fonts listed in this $:/themes/tiddlywiki/vanilla/settings/fontfamily tiddler
   // use font setting in tiddlywiki preferences
   const tiddlywikiFontSetting = $tw.wiki.getTiddlerText('$:/themes/tiddlywiki/vanilla/settings/fontfamily');
   const fontFace = tiddlywikiFontSetting ?? getFontFace(style.font);
