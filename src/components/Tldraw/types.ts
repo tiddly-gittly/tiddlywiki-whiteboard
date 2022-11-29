@@ -290,7 +290,6 @@ export enum TDShapeType {
   Sticky = 'sticky',
   Text = 'text',
   Triangle = 'triangle',
-  Video = 'video',
 }
 
 export enum Decoration {
@@ -369,14 +368,6 @@ export interface ImageShape extends TDBaseShape {
   type: TDShapeType.Image;
 }
 
-export interface VideoShape extends TDBaseShape {
-  assetId: string;
-  currentTime: number;
-  isPlaying: boolean;
-  size: number[];
-  type: TDShapeType.Video;
-}
-
 // The shape created by the text tool
 export interface TextShape extends TDBaseShape {
   text: string;
@@ -398,7 +389,7 @@ export interface GroupShape extends TDBaseShape {
 }
 
 // A union of all shapes
-export type TDShape = RectangleShape | EllipseShape | TriangleShape | DrawShape | ArrowShape | TextShape | GroupShape | StickyShape | ImageShape | VideoShape;
+export type TDShape = RectangleShape | EllipseShape | TriangleShape | DrawShape | ArrowShape | TextShape | GroupShape | StickyShape | ImageShape;
 
 /* ------------------ Shape Styles ------------------ */
 
@@ -463,7 +454,6 @@ export interface ShapeStyles {
 
 export enum TDAssetType {
   Image = 'image',
-  Video = 'video',
 }
 
 export interface TDImageAsset extends TLAsset {
@@ -473,14 +463,7 @@ export interface TDImageAsset extends TLAsset {
   type: TDAssetType.Image;
 }
 
-export interface TDVideoAsset extends TLAsset {
-  fileName: string;
-  size: number[];
-  src: string;
-  type: TDAssetType.Video;
-}
-
-export type TDAsset = TDImageAsset | TDVideoAsset;
+export type TDAsset = TDImageAsset;
 
 export type TDAssets = Record<string, TDAsset>;
 

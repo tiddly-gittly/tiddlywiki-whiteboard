@@ -50,7 +50,7 @@ export interface TldrawProps extends TDCallbacks {
   currentPageId?: string;
 
   /**
-   * (optional) If provided, image/video componnets will be disabled.
+   * (optional) If provided, image componnets will be disabled.
    *
    * Warning: Keeping this enabled for multiplayer applications without provifing a storage
    * bucket based solution will cause massive base64 string to be written to the liveblocks room.

@@ -17,7 +17,7 @@ import {
   Utils,
 } from '@tldraw/core';
 import { Vec } from '@tldraw/vec';
-import { FIT_TO_SCREEN_PADDING, GRID_SIZE, IMAGE_EXTENSIONS, SVG_EXPORT_PADDING, USER_COLORS, VIDEO_EXTENSIONS, isLinux } from '@tldr/constants';
+import { FIT_TO_SCREEN_PADDING, GRID_SIZE, IMAGE_EXTENSIONS, SVG_EXPORT_PADDING, USER_COLORS, isLinux } from '@tldr/constants';
 import { DialogState } from '@tldr/hooks';
 import { shapeUtils } from '@tldr/state/shapes';
 import { defaultStyle } from '@tldr/state/shapes/shared';
@@ -54,16 +54,7 @@ import { StateManager } from './StateManager';
 import { deepCopy } from './StateManager/copy';
 import { TLDR } from './TLDR';
 import * as Commands from './commands';
-import {
-  fileToBase64,
-  fileToText,
-  getImageSizeFromSrc,
-  getVideoSizeFromSrc,
-  migrate,
-  openAssetsFromFileSystem,
-  openFromFileSystem,
-  saveToFileSystem,
-} from './data';
+import { fileToBase64, fileToText, getImageSizeFromSrc, migrate, openAssetsFromFileSystem, openFromFileSystem, saveToFileSystem } from './data';
 import { SessionArgsOfType, TldrawSession, getSession } from './sessions';
 import { clearPrevSize } from './shapes/shared/getTextSize';
 import { ArrowTool } from './tools/ArrowTool';
@@ -82,7 +73,7 @@ const uuid = Utils.uniqueId();
 
 export interface TDCallbacks {
   /**
-   * (optional) A callback to run when an asset will be created. Should return the value for the image/video's `src` property.
+   * (optional) A callback to run when an asset will be created. Should return the value for the image's `src` property.
    */
   onAssetCreate?: (app: TldrawApp, file: File, id: string) => Promise<string | false>;
   /**
@@ -90,7 +81,7 @@ export interface TDCallbacks {
    */
   onAssetDelete?: (app: TldrawApp, assetId: string) => void;
   /**
-   * (optional) A callback to run when an asset will be uploaded. Should return the value for the image/video's `src` property.
+   * (optional) A callback to run when an asset will be uploaded. Should return the value for the image's `src` property.
    */
   onAssetUpload?: (app: TldrawApp, file: File, id: string) => Promise<string | false>;
   /**
@@ -1938,8 +1929,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       // If the element is an image, set the asset src as the xlinkhref
       if (shape.type === TDShapeType.Image) {
         elm.setAttribute('xlink:href', this.document.assets[shape.assetId].src);
-      } else if (shape.type === TDShapeType.Video) {
-        elm.setAttribute('xlink:href', this.serializeVideo(shape.id));
       }
 
       // Put the element in the correct position relative to the common bounds
@@ -2826,7 +2815,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     return this;
   }
 
-  getImageOrVideoShapeAtPoint(id: string, type: TDShapeType.Image | TDShapeType.Video, point: number[], size: number[], assetId: string) {
+  getImageShapeAtPoint(id: string, type: TDShapeType.Image, point: number[], size: number[], assetId: string) {
     const {
       shapes,
       appState: { currentPageId, currentStyle },
@@ -3186,12 +3175,11 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       if (!extension) throw new Error('No extension');
 
       const isImage = IMAGE_EXTENSIONS.includes(extension[0].toLowerCase());
-      const isVideo = VIDEO_EXTENSIONS.includes(extension[0].toLowerCase());
 
-      if (!(isImage || isVideo)) throw new Error('Wrong extension');
+      if (!isImage) throw new Error('Wrong extension');
 
-      const shapeType = isImage ? TDShapeType.Image : TDShapeType.Video;
-      const assetType = isImage ? TDAssetType.Image : TDAssetType.Video;
+      const shapeType = TDShapeType.Image;
+      const assetType = TDAssetType.Image;
 
       let src: string | ArrayBuffer | null;
 
@@ -3225,8 +3213,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             if (Vec.isEqual(size, [0, 0])) {
               size = await getImageSizeFromSrc(src);
             }
-          } else {
-            size = await getVideoSizeFromSrc(src);
           }
 
           const match = Object.values(this.document.assets).find((asset) => asset.type === assetType && asset.src === src);
@@ -3255,7 +3241,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
             });
           }
 
-          shapesToCreate.push(this.getImageOrVideoShapeAtPoint(id, shapeType, point, size, assetId));
+          shapesToCreate.push(this.getImageShapeAtPoint(id, shapeType, point, size, assetId));
         }
       } catch (error) {
         // Even if one shape errors, keep going (we might have had other shapes that didn't error)
@@ -3709,7 +3695,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
 
     const shape = this.getShape(this.selectedIds[0]);
 
-    if (shape.type === TDShapeType.Image || shape.type === TDShapeType.Video) {
+    if (shape.type === TDShapeType.Image) {
       const asset = this.document.assets[shape.assetId];
       const util = TLDR.getShapeUtil(shape);
       const centerA = util.getCenter(shape);
@@ -3858,23 +3844,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   }
 
   /* ----------------- Export ----------------- */
-
-  /**
-   * Get a snapshot of a video at current frame as base64 encoded image
-   * @param id ID of video shape
-   * @returns base64 encoded frame
-   * @throws Error if video shape with given ID does not exist
-   */
-  serializeVideo(id: string): string {
-    const video = document.getElementById(id + '_video') as HTMLVideoElement;
-    if (video) {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext('2d')!.drawImage(video, 0, 0);
-      return canvas.toDataURL('image/png');
-    } else throw new Error('Video with id ' + id + ' not found');
-  }
 
   /**
    * Get a snapshot of a image (e.g. a GIF) as base64 encoded image
