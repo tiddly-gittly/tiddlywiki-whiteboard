@@ -22,6 +22,7 @@ import {
 } from '@tldr/state/shapes/shared';
 import { styled } from '@tldr/styles';
 import { AlignStyle, StickyShape, TDMeta, TDShapeType, TransformInfo } from '@tldr/types';
+import { STICKY_TEXT_AREA_CLASS_NAME } from './constants';
 
 type T = StickyShape;
 type E = HTMLDivElement;
@@ -216,6 +217,7 @@ export class StickyUtil extends TDShapeUtil<T, E> {
           <StyledText ref={rRenderedText} isEditing={isEditing} alignment={shape.style.textAlign}></StyledText>
           {isEditing && (
             <StyledTextArea
+              className={STICKY_TEXT_AREA_CLASS_NAME}
               ref={rTextArea}
               onPointerDown={handlePointerDown}
               value={shape.text}
