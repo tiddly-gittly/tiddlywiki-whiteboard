@@ -1,7 +1,7 @@
 {
   "url": "https://github.com/tiddly-gittly/tiddlywiki-whiteboard",
   "tsFiles": [
-    "src/components/index.ts"
+    "src/widget.ts"
   ],
   "license": "MIT",
   "version": "0.0.1",

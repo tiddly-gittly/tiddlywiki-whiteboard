@@ -70,6 +70,7 @@ module.exports = {
     'no-undef': 'off',
     'unicorn/no-array-for-each': 'off',
     'multiline-ternary': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
     'security/detect-object-injection': 'off',
     'unicorn/prefer-dom-node-append': 'off',
     'unicorn/prefer-modern-dom-apis': 'off',
