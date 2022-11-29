@@ -115,14 +115,6 @@ export interface TDCallbacks {
    */
   onMount?: (app: TldrawApp) => void;
   /**
-   * (optional) A callback to run when the user creates a new project through the menu or through a keyboard shortcut.
-   */
-  onNewProject?: (
-    app: TldrawApp,
-    openDialog: (dialogState: DialogState, onYes: () => void, onNo: () => void, onCancel: () => void) => void,
-    e?: KeyboardEvent,
-  ) => void;
-  /**
    * (optional) A callback to run when the opens a file to upload.
    */
   onOpenMedia?: (app: TldrawApp) => void;
@@ -138,14 +130,6 @@ export interface TDCallbacks {
    * (optional) A callback to run when the user redos.
    */
   onRedo?: (app: TldrawApp) => void;
-  /**
-   * (optional) A callback to run when the user saves a project through the menu or through a keyboard shortcut.
-   */
-  onSaveProject?: (app: TldrawApp, e?: KeyboardEvent) => void;
-  /**
-   * (optional) A callback to run when the user saves a project as a new project through the menu or through a keyboard shortcut.
-   */
-  onSaveProjectAs?: (app: TldrawApp, e?: KeyboardEvent) => void;
   /**
    * (optional) A callback to run when a session ends.
    */
@@ -1077,45 +1061,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     };
     this.loadDocument(nextDocument as TDDocument);
     this.persist({});
-  };
-
-  // Should we move this to the app layer? onSave, onSaveAs, etc?
-
-  /**
-   * Create a new project.
-   */
-  newProject = () => {
-    if (!this.isLocal) return;
-    this.fileSystemHandle = null;
-    this.resetDocument();
-  };
-
-  /**
-   * Save the current project.
-   */
-  saveProject = async () => {
-    if (this.readOnly) return;
-    const fileHandle = await saveToFileSystem(migrate(this.state, TldrawApp.version).document, this.fileSystemHandle);
-    this.fileSystemHandle = fileHandle;
-    this.persist({});
-    this.isDirty = false;
-    return this;
-  };
-
-  /**
-   * Save the current project as a new file.
-   */
-  saveProjectAs = async (filename?: string) => {
-    try {
-      const fileHandle = await saveToFileSystem(this.document, null, filename);
-      this.fileSystemHandle = fileHandle;
-      this.persist({});
-      this.isDirty = false;
-    } catch (error: any) {
-      // Likely cancelled
-      console.error(error.message);
-    }
-    return this;
   };
 
   /**

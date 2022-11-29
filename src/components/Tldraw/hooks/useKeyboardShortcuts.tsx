@@ -180,39 +180,8 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
   // File System
 
-  const { onNewProject, onSaveProject, onSaveProjectAs, onOpenMedia } = useFileSystemHandlers();
+  const { onOpenMedia } = useFileSystemHandlers();
 
-  useHotkeys(
-    'ctrl+n,⌘+n',
-    (e) => {
-      e.preventDefault();
-      if (!canHandleEvent()) return;
-      onNewProject(e);
-    },
-    undefined,
-    [app],
-  );
-  useHotkeys(
-    'ctrl+s,⌘+s',
-    (e) => {
-      if (!canHandleEvent()) return;
-
-      onSaveProject(e);
-    },
-    undefined,
-    [app],
-  );
-
-  useHotkeys(
-    'ctrl+shift+s,⌘+shift+s',
-    (e) => {
-      if (!canHandleEvent()) return;
-
-      onSaveProjectAs(e);
-    },
-    undefined,
-    [app],
-  );
   useHotkeys(
     'ctrl+u,⌘+u',
     (e) => {
