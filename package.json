@@ -3,15 +3,16 @@
   "tsFiles": [
     "src/widget.ts"
   ],
+  "ignoredExtensionsWhenBuildPlugin": [".ts", ".tsx", ".snap", ".tldr", ".md", ".json"],
   "license": "MIT",
   "version": "0.0.1",
   "types": "",
   "files": [],
   "scripts": {
+    "dev": "cross-env NODE_ENV=development npm run make && zx scripts/dev/development.mjs",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --config=jest.config.js",
-    "dev": "npm run clean && zx scripts/dev/development.mjs",
+    "dev-html": "cross-env CI=true NODE_ENV=production npm run make && npm run run-action && zx ./scripts/build-demo-html.mjs && cd ./dist/output && serve .",
     "make": "npm run clean && npm run build",
-    "dev-html": "npm run make && npm run run-action && zx ./scripts/build-demo-html.mjs && cd ./dist/output && serve .",
     "clean": "rimraf dist",
     "build": "zx scripts/build.mjs && zx scripts/after-build.mjs",
     "run-action": "zx scripts/run-action.mjs",
@@ -35,6 +36,7 @@
     "archiver": "5.3.1",
     "browserslist": "4.21.4",
     "chokidar": "^3.5.3",
+    "cross-env": "^7.0.3",
     "esbuild": "0.15.15",
     "esbuild-plugin-alias": "^0.2.1",
     "esbuild-plugin-browserslist": "0.5.2",
