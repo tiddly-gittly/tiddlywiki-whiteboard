@@ -413,7 +413,6 @@ TldrawTestApp {
   "moveToBack": [Function],
   "moveToFront": [Function],
   "moveToPage": [Function],
-  "newProject": [Function],
   "nudge": [Function],
   "onCommand": [Function],
   "onDoubleClickBounds": [Function],
@@ -530,8 +529,6 @@ TldrawTestApp {
     ],
     "selectedIds": [],
   },
-  "saveProject": [Function],
-  "saveProjectAs": [Function],
   "select": [Function],
   "selectAll": [Function],
   "selectHistory": {

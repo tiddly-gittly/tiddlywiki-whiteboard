@@ -3,7 +3,6 @@ import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import { supported } from 'browser-fs-access';
 import * as React from 'react';
 import { FormattedMessage, useIntl } from '@tldr/translations/FormattedMessage';
-import { FilenameDialog } from '@tldr/components/Primitives/AlertDialog';
 import { Divider } from '@tldr/components/Primitives/Divider';
 import { DMContent, DMItem, DMSubMenu, DMTriggerIcon } from '@tldr/components/Primitives/DropdownMenu';
 import { preventEvent } from '@tldr/components/preventEvent';
@@ -35,16 +34,6 @@ export const Menu = React.memo(function Menu({ readOnly }: MenuProps) {
   const [_, setForce] = React.useState(0);
 
   React.useEffect(() => setForce(1), []);
-
-  const { onNewProject, onSaveProject } = useFileSystemHandlers();
-
-  const handleSaveProjectAs = React.useCallback(() => {
-    if (supported) {
-      app.saveProjectAs();
-    } else {
-      setOpenDialog(true);
-    }
-  }, [app]);
 
   const handleDelete = React.useCallback(() => {
     app.delete();
@@ -110,11 +99,7 @@ export const Menu = React.memo(function Menu({ readOnly }: MenuProps) {
     app.zoomTo(1);
   }, [app]);
 
-  const showFileMenu =
-    app.callbacks.onNewProject != undefined ||
-    app.callbacks.onSaveProject != undefined ||
-    app.callbacks.onSaveProjectAs != undefined ||
-    app.callbacks.onExport;
+  const showFileMenu = app.callbacks.onExport;
 
   const hasSelection = numberOfSelectedIds > 0;
 
@@ -127,22 +112,6 @@ export const Menu = React.memo(function Menu({ readOnly }: MenuProps) {
         <DMContent variant="menu" id="TD-Menu" side="bottom" align="start" sideOffset={4} alignOffset={4}>
           {showFileMenu != undefined && (
             <DMSubMenu label={`${intl.formatMessage({ id: 'menu.file' })}...`} id="TD-MenuItem-File">
-              {app.callbacks.onNewProject != undefined && (
-                <DMItem onClick={onNewProject} kbd="#N" id="TD-MenuItem-File-New_Project">
-                  <FormattedMessage id="new.project" />
-                </DMItem>
-              )}
-              {app.callbacks.onSaveProject != undefined && (
-                <DMItem onClick={onSaveProject} kbd="#S" id="TD-MenuItem-File-Save">
-                  <FormattedMessage id="save" />
-                </DMItem>
-              )}
-              {app.callbacks.onSaveProjectAs != undefined && (
-                <DMItem onClick={handleSaveProjectAs} kbd="#⇧S" id="TD-MenuItem-File-Save_As">
-                  <FormattedMessage id="save.as" />
-                  ...
-                </DMItem>
-              )}
               {!disableAssets && (
                 <>
                   <Divider />
@@ -233,7 +202,6 @@ export const Menu = React.memo(function Menu({ readOnly }: MenuProps) {
           <PreferencesMenu />
         </DMContent>
       </DropdownMenu.Root>
-      <FilenameDialog isOpen={openDialog} onClose={() => setOpenDialog(false)} />
     </>
   );
 });
