@@ -112,7 +112,9 @@ export function getStickyFontSize(size: SizeStyle): number {
 
 export function getFontStyle(style: ShapeStyles): string {
   const fontSize = getFontSize(style.size, style.font);
-  const fontFace = getFontFace(style.font);
+  // use font setting in tiddlywiki preferences
+  const tiddlywikiFontSetting = $tw.wiki.getTiddlerText('$:/themes/tiddlywiki/vanilla/settings/fontfamily');
+  const fontFace = tiddlywikiFontSetting ?? getFontFace(style.font);
   const { scale = 1 } = style;
 
   return `${fontSize * scale}px/1 ${fontFace}`;
