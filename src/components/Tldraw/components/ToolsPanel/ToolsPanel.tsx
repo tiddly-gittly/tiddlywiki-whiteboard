@@ -6,7 +6,6 @@ import type { TDSnapshot } from '@tldr/types';
 import { ActionButton } from './ActionButton';
 import { BackToContent } from './BackToContent';
 import { DeleteButton } from './DeleteButton';
-import { HelpPanel } from './HelpPanel';
 import { PrimaryTools } from './PrimaryTools';
 import { StatusBar } from './StatusBar';
 
@@ -34,7 +33,6 @@ export const ToolsPanel = React.memo(function ToolsPanel({ onBlur }: ToolsPanelP
           </StyledPrimaryTools>
         </StyledCenterWrap>
       </StyledToolsPanelContainer>
-      <HelpPanel />
       {isDebugMode && (
         <StyledStatusWrap>
           <StatusBar />
