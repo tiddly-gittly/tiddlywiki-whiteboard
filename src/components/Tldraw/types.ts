@@ -89,6 +89,7 @@ export interface TDSnapshot {
     isLoading: boolean;
     isMenuOpen: boolean;
     isToolLocked: boolean;
+    mouseInBound: boolean;
     selectByContain?: boolean;
     snapLines: TLSnapLine[];
     status: string;

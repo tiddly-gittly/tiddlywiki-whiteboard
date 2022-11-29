@@ -679,6 +679,17 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     return this;
   };
 
+  /**
+   * Toggles the state if mouse move into/out-of the edit area
+   */
+  setMouseInBound = (mouseInBound: boolean): this => {
+    const patch = { appState: { mouseInBound } };
+    this.patchState(patch, 'ui:toggled_mouse_in_bound');
+    // don't need to save because of this.
+    // this.persist(patch);
+    return this;
+  };
+
   setDisableAssets = (disableAssets: boolean): this => {
     this.patchState({ appState: { disableAssets } }, 'ui:toggled_disable_images');
     return this;
@@ -686,6 +697,10 @@ export class TldrawApp extends StateManager<TDSnapshot> {
 
   get isMenuOpen(): boolean {
     return this.appState.isMenuOpen;
+  }
+
+  get isMouseInBound(): boolean {
+    return this.appState.mouseInBound;
   }
 
   get isLoading(): boolean {
@@ -1130,10 +1145,10 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * Cut (copy and delete) one or more shapes to the clipboard.
    * @param ids The ids of the shapes to cut.
    */
-  cut = (ids = this.selectedIds, e?: ClipboardEvent): this => {
-    e?.preventDefault();
+  cut = (ids = this.selectedIds, event?: ClipboardEvent): this => {
+    event?.preventDefault();
 
-    this.copy(ids, e);
+    this.copy(ids, event);
 
     if (!this.readOnly) {
       this.delete(ids);
@@ -1146,10 +1161,11 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * Copy one or more shapes to the clipboard.
    * @param ids The ids of the shapes to copy.
    */
-  copy = (ids = this.selectedIds, e?: ClipboardEvent): this => {
+  copy = (ids = this.selectedIds, event?: ClipboardEvent): this => {
     // Allow when in readOnly mode
 
-    e?.preventDefault();
+    // event?.preventDefault();
+    // event?.stopPropagation();
 
     this.clipboard = this.getContent(ids);
 
@@ -1157,14 +1173,19 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       type: 'tldr/clipboard',
       ...this.clipboard,
     });
-
+// DEBUG: console
+console.log(`jsonString`, jsonString);
     const tldrawString = `<tldraw>${jsonString}</tldraw>`;
 
-    if (e) {
-      e.clipboardData?.setData('text/html', tldrawString);
+    if (event) {
+// DEBUG: console
+console.log(`event.clipboardData?.setData`, event.clipboardData?.setData);
+      event.clipboardData?.setData('text/html', tldrawString);
     }
 
     if (navigator.clipboard && window.ClipboardItem) {
+      // DEBUG: console
+      console.log(`navigator.clipboard.write`, navigator.clipboard.write);
       void navigator.clipboard.write([
         new ClipboardItem({
           'text/html': new Blob([tldrawString], { type: 'text/html' }),
@@ -1179,7 +1200,9 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    * Paste shapes (or text) from clipboard to a certain point.
    * @param point
    */
-  paste = async (point?: number[], e?: ClipboardEvent) => {
+  paste = async (point?: number[], event?: ClipboardEvent) => {
+    event?.preventDefault();
+    event?.stopPropagation();
     if (this.readOnly) return;
 
     const filesToPaste: File[] = [];
@@ -1250,8 +1273,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       }
     };
 
-    if (e !== undefined) {
-      const items = [...(e.clipboardData?.items ?? [])];
+    if (event !== undefined) {
+      const items = [...(event.clipboardData?.items ?? ([] as unknown as DataTransferItemList))];
 
       await Promise.all(
         items.map(async (item) => {
@@ -3367,18 +3390,19 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       exportBackground: TDExportBackground.Transparent,
     },
     appState: {
-      status: TDStatus.Idle,
       activeTool: 'select',
-      hoveredId: undefined,
       currentPageId: 'page',
       currentStyle: defaultStyle,
-      isToolLocked: false,
-      isMenuOpen: false,
-      isEmptyCanvas: false,
-      eraseLine: [],
-      snapLines: [],
-      isLoading: false,
       disableAssets: false,
+      eraseLine: [],
+      hoveredId: undefined,
+      isEmptyCanvas: false,
+      isLoading: false,
+      isMenuOpen: false,
+      isToolLocked: false,
+      mouseInBound: false,
+      snapLines: [],
+      status: TDStatus.Idle,
     },
     document: TldrawApp.defaultDocument,
   };

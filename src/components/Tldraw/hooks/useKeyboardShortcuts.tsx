@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import * as React from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useFileSystemHandlers, useTldrawApp } from '@tldr/hooks';
@@ -5,51 +6,56 @@ import { AlignStyle, TDShapeType } from '@tldr/types';
 
 export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>) {
   const app = useTldrawApp();
+  const hotKeySetting = { scopes: app.document?.id };
 
   const canHandleEvent = React.useCallback(
     (ignoreMenus = false) => {
-      const elm = reference.current;
+      const containerElement = reference.current;
+      if (!app.isMouseInBound) return false;
       if (ignoreMenus && (app.isMenuOpen || app.settings.keepStyleMenuOpen)) return true;
-      elm?.focus();
-      return elm != undefined && (document.activeElement === elm || elm.contains(document.activeElement));
+      // elm?.focus();
+      return containerElement !== null && (document.activeElement === containerElement || containerElement.contains(document.activeElement));
     },
-    [reference],
+    [reference, app],
   );
 
+  // browser don't allow hijack ctrl+c
   React.useEffect(() => {
     if (!app) return;
 
-    const handleCut = (e: ClipboardEvent) => {
+    const handleCut = (event: ClipboardEvent) => {
       if (!canHandleEvent(true)) return;
 
       if (app.readOnly) {
-        app.copy(undefined, e);
+        app.copy(undefined, event);
         return;
       }
 
-      app.cut(undefined, e);
+      app.cut(undefined, event);
     };
 
-    const handleCopy = (e: ClipboardEvent) => {
+    const handleCopy = (event: ClipboardEvent) => {
       if (!canHandleEvent(true)) return;
 
-      app.copy(undefined, e);
+      app.copy(undefined, event);
     };
 
-    const handlePaste = (e: ClipboardEvent) => {
+    const handlePaste = (event: ClipboardEvent) => {
       if (!canHandleEvent(true)) return;
       if (app.readOnly) return;
 
-      app.paste(undefined, e);
+      // DEBUG: console
+      console.log(`app.paste`, app.paste);
+      void app.paste(undefined, event);
     };
 
-    document.addEventListener('cut', handleCut);
-    document.addEventListener('copy', handleCopy);
-    document.addEventListener('paste', handlePaste);
+    reference.current?.addEventListener('cut', handleCut);
+    reference.current?.addEventListener('copy', handleCopy);
+    reference.current?.addEventListener('paste', handlePaste);
     return () => {
-      document.removeEventListener('cut', handleCut);
-      document.removeEventListener('copy', handleCopy);
-      document.removeEventListener('paste', handlePaste);
+      reference.current?.removeEventListener('cut', handleCut);
+      reference.current?.removeEventListener('copy', handleCopy);
+      reference.current?.removeEventListener('paste', handlePaste);
     };
   }, [app]);
 
@@ -61,6 +67,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.selectTool('select');
     },
+    hotKeySetting,
     [app, reference.current],
   );
 
@@ -70,7 +77,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.selectTool(TDShapeType.Draw);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -80,7 +87,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.selectTool('erase');
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -90,7 +97,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.selectTool(TDShapeType.Rectangle);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -100,7 +107,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.selectTool(TDShapeType.Ellipse);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -110,7 +117,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.selectTool(TDShapeType.Triangle);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -120,7 +127,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.selectTool(TDShapeType.Line);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -130,7 +137,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.selectTool(TDShapeType.Arrow);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -140,7 +147,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.selectTool(TDShapeType.Text);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -150,7 +157,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.selectTool(TDShapeType.Sticky);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -164,7 +171,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.toggleFocusMode();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -174,7 +181,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.toggleGrid();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -184,11 +191,11 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
   useHotkeys(
     'ctrl+u,⌘+u',
-    (e) => {
+    (event) => {
       if (!canHandleEvent()) return;
-      onOpenMedia(e);
+      onOpenMedia(event);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -196,17 +203,18 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
   useHotkeys(
     '⌘+z,ctrl+z',
-    (e) => {
-      e.preventDefault();
+    (event) => {
+      event?.preventDefault();
+      event?.stopPropagation();
       if (!canHandleEvent(true)) return;
 
-      if (app.session == undefined) {
+      if (app.session === undefined) {
         app.undo();
       } else {
         app.cancelSession();
       }
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -215,13 +223,13 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
     () => {
       if (!canHandleEvent(true)) return;
 
-      if (app.session == undefined) {
+      if (app.session === undefined) {
         app.redo();
       } else {
         app.cancelSession();
       }
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -233,7 +241,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.undoSelect();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -243,7 +251,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.redoSelect();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -253,24 +261,26 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
   useHotkeys(
     'ctrl+=,⌘+=,ctrl+num_add,⌘+num_add',
-    (e) => {
+    (event) => {
       if (!canHandleEvent(true)) return;
       app.zoomIn();
-      e.preventDefault();
+      event?.preventDefault();
+      event?.stopPropagation();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
   useHotkeys(
     'ctrl+-,⌘+-,ctrl+num_subtract,⌘+num_subtract',
-    (e) => {
+    (event) => {
       if (!canHandleEvent(true)) return;
 
       app.zoomOut();
-      e.preventDefault();
+      event?.preventDefault();
+      event?.stopPropagation();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -280,7 +290,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.resetZoom();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -290,7 +300,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.zoomToFit();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -300,7 +310,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.zoomToSelection();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -308,13 +318,14 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
   useHotkeys(
     'ctrl+d,⌘+d',
-    (e) => {
+    (event) => {
       if (!canHandleEvent()) return;
 
       app.duplicate();
-      e.preventDefault();
+      event?.preventDefault();
+      event?.stopPropagation();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -326,7 +337,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.flipHorizontal();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -336,7 +347,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.flipVertical();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -349,7 +360,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
       app.cancel();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -361,7 +372,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.delete();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -369,11 +380,12 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
   useHotkeys(
     '⌘+a,ctrl+a',
-    () => {
+    (event) => {
       if (!canHandleEvent(true)) return;
+      event.preventDefault();
       app.selectAll();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -385,7 +397,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.nudge([0, -1], false);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -395,7 +407,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.nudge([1, 0], false);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -405,7 +417,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.nudge([0, 1], false);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -415,7 +427,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.nudge([-1, 0], false);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -425,7 +437,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.nudge([0, -1], true);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -435,7 +447,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.nudge([1, 0], true);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -445,7 +457,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.nudge([0, 1], true);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -455,7 +467,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.nudge([-1, 0], true);
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -465,78 +477,37 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent()) return;
       app.toggleLocked();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
-  // Copy, Cut & Paste
-
-  // useHotkeys(
-  //   '⌘+c,ctrl+c',
-  //   () => {
-  //     if (!canHandleEvent()) return
-  //     app.copy()
-  //   },
-  //   undefined,
-  //   [app]
-  // )
-
-  useHotkeys(
-    '⌘+shift+c,ctrl+shift+c',
-    (e) => {
-      if (!canHandleEvent()) return;
-
-      app.copySvg();
-      e.preventDefault();
-    },
-    undefined,
-    [app],
-  );
-
-  // useHotkeys(
-  //   '⌘+x,ctrl+x',
-  //   () => {
-  //     if (!canHandleEvent()) return
-  //     app.cut()
-  //   },
-  //   undefined,
-  //   [app]
-  // )
-
-  // useHotkeys(
-  //   '⌘+v,ctrl+v',
-  //   () => {
-  //     if (!canHandleEvent()) return
-
-  //     app.paste()
-  //   },
-  //   undefined,
-  //   [app]
-  // )
+  // Copy, Cut & Paste is done on the top of this file
 
   // Group & Ungroup
 
   useHotkeys(
     '⌘+g,ctrl+g',
-    (e) => {
+    (event) => {
       if (!canHandleEvent()) return;
+      event?.preventDefault();
+      event?.stopPropagation();
 
       app.group();
-      e.preventDefault();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
   useHotkeys(
     '⌘+shift+g,ctrl+shift+g',
-    (e) => {
+    (event) => {
       if (!canHandleEvent()) return;
+      event?.preventDefault();
+      event?.stopPropagation();
 
       app.ungroup();
-      e.preventDefault();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -548,7 +519,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.moveBackward();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -558,7 +529,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.moveForward();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -568,7 +539,7 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.moveToBack();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -578,20 +549,21 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
       if (!canHandleEvent(true)) return;
       app.moveToFront();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
   useHotkeys(
     'ctrl+shift+backspace,⌘+shift+backspace',
-    (e) => {
+    (event) => {
       if (!canHandleEvent()) return;
       if (app.settings.isDebugMode) {
         app.resetDocument();
       }
-      e.preventDefault();
+      event?.preventDefault();
+      event?.stopPropagation();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
@@ -599,34 +571,37 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
   useHotkeys(
     'alt+command+l,alt+ctrl+l',
-    (e) => {
+    (event) => {
       if (!canHandleEvent(true)) return;
       app.style({ textAlign: AlignStyle.Start });
-      e.preventDefault();
+      event?.preventDefault();
+      event?.stopPropagation();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
   useHotkeys(
     'alt+command+t,alt+ctrl+t',
-    (e) => {
+    (event) => {
       if (!canHandleEvent(true)) return;
       app.style({ textAlign: AlignStyle.Middle });
-      e.preventDefault();
+      event?.preventDefault();
+      event?.stopPropagation();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 
   useHotkeys(
     'alt+command+r,alt+ctrl+r',
-    (e) => {
+    (event) => {
       if (!canHandleEvent(true)) return;
       app.style({ textAlign: AlignStyle.End });
-      e.preventDefault();
+      event?.preventDefault();
+      event?.stopPropagation();
     },
-    undefined,
+    hotKeySetting,
     [app],
   );
 }
