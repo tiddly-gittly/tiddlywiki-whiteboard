@@ -478,45 +478,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     return next;
   };
 
-  private readonly broadcastPatch = (patch: TldrawPatch, addToHistory: boolean) => {
-    const changedShapes: Record<string, TDShape | undefined> = {};
-    const changedBindings: Record<string, TDBinding | undefined> = {};
-    const changedAssets: Record<string, TDAsset | undefined> = {};
-
-    const shapes = patch?.document?.pages?.[this.currentPageId]?.shapes;
-    const bindings = patch?.document?.pages?.[this.currentPageId]?.bindings;
-    const assets = patch?.document?.assets;
-
-    if (shapes) {
-      Object.keys(shapes).forEach((id) => {
-        changedShapes[id] = this.getShape(id, this.currentPageId);
-      });
-    }
-
-    if (bindings) {
-      Object.keys(bindings).forEach((id) => {
-        changedBindings[id] = this.getBinding(id, this.currentPageId);
-      });
-    }
-
-    if (assets) {
-      Object.keys(assets).forEach((id) => {
-        changedAssets[id] = this.document.assets[id];
-      });
-    }
-
-    this.callbacks.onChangePage?.(this, changedShapes, changedBindings, changedAssets, addToHistory);
-  };
-
   onPatch = (state: TDSnapshot, patch: TldrawPatch, id?: string) => {
-    if (
-      ((this.callbacks.onChangePage && patch?.document?.pages?.[this.currentPageId]) || patch?.document?.assets) &&
-      (patch?.document?.assets ||
-        (this.session && this.session.type !== SessionType.Brush && this.session.type !== SessionType.Erase && this.session.type !== SessionType.Draw))
-    ) {
-      this.broadcastPatch(patch, false);
-    }
-
     this.callbacks.onPatch?.(this, patch, id);
   };
 
@@ -542,10 +504,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   };
 
   onPersist = (state: TDSnapshot, patch: TldrawPatch) => {
-    // If we are part of a room, send our changes to the server
-
     this.callbacks.onPersist?.(this);
-    this.broadcastPatch(patch, true);
   };
 
   private prevSelectedIds = this.selectedIds;
