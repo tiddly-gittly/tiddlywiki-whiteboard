@@ -401,9 +401,6 @@ TldrawTestApp {
   "isPaused": false,
   "isPointing": false,
   "loadDocument": [Function],
-  "loadPageFromURL": [Function],
-  "loadRoom": [Function],
-  "mergeDocument": [Function],
   "metaKey": false,
   "migrate": [Function],
   "moveBackward": [Function],
@@ -503,7 +500,6 @@ TldrawTestApp {
   "refreshBoundingBoxes": [Function],
   "releaseEraser": [Function],
   "releaseKey": [Function],
-  "removeUser": [Function],
   "renamePage": [Function],
   "rendererBounds": {
     "height": 100,
@@ -557,7 +553,6 @@ TldrawTestApp {
   "setSnapshot": [Function],
   "setState": [Function],
   "shiftKey": false,
-  "signOut": [Function],
   "spaceKey": false,
   "stack": [],
   "startSession": [Function],
@@ -791,7 +786,6 @@ TldrawTestApp {
   "updateInputs": [Function],
   "updateSession": [Function],
   "updateShapes": [Function],
-  "updateUsers": [Function],
   "updateViewport": [Function],
   "useStore": [Function],
   "viewport": {

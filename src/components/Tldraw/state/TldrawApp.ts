@@ -99,10 +99,6 @@ export interface TDCallbacks {
     addToHistory: boolean,
   ) => void;
   /**
-   * (optional) A callback to run when the user creates a new project.
-   */
-  onChangePresence?: (app: TldrawApp, user: TDUser) => void;
-  /**
    * (optional) A callback to run when the state is changed with a command.
    */
   onCommand?: (app: TldrawApp, command: TldrawCommand, reason?: string) => void;
@@ -427,30 +423,30 @@ export class TldrawApp extends StateManager<TDSnapshot> {
 
     const currentPageState = next.document.pageStates[currentPageId];
 
-    if (next.room && next.room !== prev.room) {
-      const room = { ...next.room, users: { ...next.room.users } };
+    // if (next.room && next.room !== prev.room) {
+    //   const room = { ...next.room, users: { ...next.room.users } };
 
-      // Remove any exited users
-      if (prev.room) {
-        Object.values(prev.room.users)
-          .filter(Boolean)
-          .forEach((user) => {
-            if (room.users[user.id] === undefined) {
-              delete room.users[user.id];
-            }
-          });
-      }
+    //   // Remove any exited users
+    //   if (prev.room) {
+    //     Object.values(prev.room.users)
+    //       .filter(Boolean)
+    //       .forEach((user) => {
+    //         if (room.users[user.id] === undefined) {
+    //           delete room.users[user.id];
+    //         }
+    //       });
+    //   }
 
-      next.room = room;
-    }
+    //   next.room = room;
+    // }
 
-    if (next.room) {
-      next.room.users[next.room.userId] = {
-        ...next.room.users[next.room.userId],
-        point: this.currentPoint,
-        selectedIds: currentPageState.selectedIds,
-      };
-    }
+    // if (next.room) {
+    //   next.room.users[next.room.userId] = {
+    //     ...next.room.users[next.room.userId],
+    //     point: this.currentPoint,
+    //     selectedIds: currentPageState.selectedIds,
+    //   };
+    // }
 
     // Temporary block on editing pages while in readonly mode.
     // This is a broad solution but not a very good one: the UX
@@ -500,15 +496,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
    */
   protected onStateDidChange = (_state: TDSnapshot, id?: string): void => {
     this.callbacks.onChange?.(this, id);
-
-    if (this.room && this.selectedIds !== this.prevSelectedIds) {
-      this.callbacks.onChangePresence?.(this, {
-        ...this.room.users[this.room.userId],
-        selectedIds: this.selectedIds,
-        session: !!this.session,
-      });
-      this.prevSelectedIds = this.selectedIds;
-    }
   };
 
   private readonly preventPaste = () => {
@@ -823,114 +810,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   };
 
   /**
-   *
-   * @param document
-   */
-  updateUsers = (users: TDUser[], isOwnUpdate = false) => {
-    this.patchState(
-      {
-        room: {
-          users: Object.fromEntries(users.map((user) => [user.id, user])),
-        },
-      },
-      isOwnUpdate ? 'room:self:update' : 'room:user:update',
-    );
-  };
-
-  removeUser = (userId: string) => {
-    this.patchState({
-      room: {
-        users: {
-          [userId]: undefined,
-        },
-      },
-    });
-  };
-
-  /**
-   * Merge a new document patch into the current document.
-   * @param document
-   */
-  mergeDocument = (document: TDDocument): this => {
-    // If it's a new document, do a full change.
-    if (this.document.id !== document.id) {
-      this.replaceState({
-        ...migrate(
-          {
-            ...this.state,
-            document,
-          },
-          TldrawApp.version,
-        ),
-        appState: {
-          ...this.appState,
-          currentPageId: Object.keys(document.pages)[0],
-        },
-      });
-      return this;
-    }
-
-    // Have we deleted any pages? If so, drop everything and change
-    // to the first page. This is an edge case.
-    const currentPageStates = { ...this.document.pageStates };
-
-    // Update the app state's current page id if needed
-    const nextAppState = {
-      ...this.appState,
-      currentPageId: document.pages[this.currentPageId] ? this.currentPageId : Object.keys(document.pages)[0],
-      pages: Object.values(document.pages).map((page, i) => ({
-        id: page.id,
-        name: page.name,
-        childIndex: page.childIndex || i,
-      })),
-    };
-
-    // Reset the history (for now)
-    this.resetHistory();
-
-    Object.keys(this.document.pages).forEach((pageId) => {
-      if (!document.pages[pageId]) {
-        if (pageId === this.appState.currentPageId) {
-          this.cancelSession();
-          this.selectNone();
-        }
-
-        currentPageStates[pageId] = undefined as unknown as TLPageState;
-      }
-    });
-
-    // Don't allow the selected ids to be deleted during a session—if
-    // they've been removed, put them back in the client's document.
-    if (this.session) {
-      this.selectedIds
-        .filter((id) => !document.pages[this.currentPageId].shapes[id])
-        .forEach((id) => (document.pages[this.currentPageId].shapes[id] = this.page.shapes[id]));
-    }
-
-    // For other pages, remove any selected ids that were deleted.
-    Object.entries(currentPageStates).forEach(([pageId, pageState]) => {
-      pageState.selectedIds = pageState.selectedIds.filter((id) => !!document.pages[pageId].shapes[id]);
-    });
-
-    // If the user is currently creating a shape (ie drawing), then put that
-    // shape back onto the page for the client.
-    const { editingId } = this.pageState;
-
-    if (editingId) {
-      document.pages[this.currentPageId].shapes[editingId] = this.page.shapes[editingId];
-      currentPageStates[this.currentPageId].selectedIds = [editingId];
-    }
-
-    return this.replaceState(
-      {
-        ...migrate({ ...this.state, document: { ...document, pageStates: currentPageStates } }, TldrawApp.version),
-        appState: nextAppState,
-      },
-      'merge',
-    );
-  };
-
-  /**
    * Update the current document.
    * @param document
    */
@@ -986,29 +865,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   };
 
   /**
-   * Load a fresh room into the state.
-   * @param roomId
-   */
-  loadRoom = (roomId: string): this => {
-    this.patchState({
-      room: {
-        id: roomId,
-        userId: uuid,
-        users: {
-          [uuid]: {
-            id: uuid,
-            color: USER_COLORS[Math.floor(Math.random() * USER_COLORS.length)],
-            point: [100, 100],
-            selectedIds: [],
-            activeShapes: [],
-          },
-        },
-      },
-    });
-    return this;
-  };
-
-  /**
    * Load a new document.
    * @param document The document to load
    */
@@ -1041,29 +897,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   };
 
   /**
-   * load content from URL
-   * @param page
-   * @param pageState
-   * @returns
-   */
-  loadPageFromURL = (page: TDPage, pageState: Record<string, TLPageState>) => {
-    const pageId = page.id;
-    const nextDocument = {
-      ...this.state.document,
-      pageStates: {
-        ...this.state.document.pageStates,
-        [pageId]: pageState,
-      },
-      pages: {
-        ...this.document.pages,
-        [pageId]: page,
-      },
-    };
-    this.loadDocument(nextDocument as TDDocument);
-    this.persist({});
-  };
-
-  /**
    * Upload media from file
    */
   openAsset = async () => {
@@ -1071,26 +904,18 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       try {
         const file = await openAssetsFromFileSystem();
         if (Array.isArray(file)) {
-          this.addMediaFromFiles(file, this.centerPoint);
+          await this.addMediaFromFiles(file, this.centerPoint);
         } else {
           if (!file) return;
-          this.addMediaFromFiles([file]);
+          await this.addMediaFromFiles([file]);
         }
       } catch (error) {
         console.error(error);
       } finally {
-        this.persist({});
+        await this.persist({});
       }
   };
 
-  /**
-   * Sign out of the current account.
-   * Should move to the www layer.
-   * @todo
-   */
-  signOut = () => {
-    // todo
-  };
   /* -------------------- Getters --------------------- */
 
   /**
@@ -1875,7 +1700,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     }>,
   ) => {
     if (format === TDExportType.SVG) {
-      this.copySvg(opts.ids);
+      await this.copySvg(opts.ids);
       return;
     }
 
@@ -1888,7 +1713,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
 
     if (!blob) return;
 
-    navigator.clipboard.write([
+    await navigator.clipboard.write([
       new ClipboardItem({
         [blob.type]: blob,
       }),
@@ -1913,7 +1738,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     const name = this.document.pages[pageId].name ?? 'export';
 
     if (this.callbacks.onExport) {
-      this.callbacks.onExport(this, {
+      await this.callbacks.onExport(this, {
         name,
         type: format,
         blob,
@@ -3174,17 +2999,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
 
     // Several events (e.g. pan) can trigger the same "pointer move" behavior
     this.currentTool.onPointerMove?.(info, e);
-
-    // Move this to an emitted event
-    if (this.state.room) {
-      const { users, userId } = this.state.room;
-
-      this.callbacks.onChangePresence?.(this, {
-        ...users[userId],
-        point: this.getPagePoint(info.point),
-        session: !!this.session,
-      });
-    }
   };
 
   onPointerDown: TLPointerEventHandler = (info, e) => {
