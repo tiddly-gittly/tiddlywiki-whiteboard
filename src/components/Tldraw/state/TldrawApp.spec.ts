@@ -600,42 +600,6 @@ describe('TldrawTestApp', () => {
     });
   });
 
-  describe('When replacing the page content', () => {
-    it('Should update the page with the correct shapes and bindings.', async () => {
-      const shapes = deepCopy(mockDocument.pages.page1.shapes);
-      const bindings = deepCopy(mockDocument.pages.page1.bindings);
-      const app = new TldrawTestApp('multiplayer', {
-        onChangePage: () => {
-          //
-        },
-      });
-      await app.ready;
-      app.createPage('page2');
-      expect(app.currentPageId).toBe('page2');
-      app.replacePageContent(shapes, bindings, {});
-      expect(app.shapes).toMatchObject(Object.values(shapes).map((s) => ({ ...s, parentId: 'page2' })));
-      expect(app.bindings).toMatchObject(Object.values(bindings));
-    });
-
-    it('should update the page shapes after the settings have been updated', async () => {
-      const shapes = deepCopy(mockDocument.pages.page1.shapes);
-      const bindings = deepCopy(mockDocument.pages.page1.bindings);
-      const app = new TldrawTestApp('multiplayer', {
-        onChangePage: () => {
-          //
-        },
-      });
-      await app.ready;
-      app.createPage('page2');
-      expect(app.currentPageId).toBe('page2');
-      expect(shapes.rect1.parentId).toBe('page1');
-      app.setSetting('isDebugMode', true);
-      app.replacePageContent(shapes, bindings, {});
-      expect(app.shapes).toMatchObject(Object.values(shapes).map((s) => ({ ...s, parentId: 'page2' })));
-      expect(app.bindings).toMatchObject(Object.values(bindings));
-    });
-  });
-
   describe('When selecting a box', () => {
     const app = new TldrawTestApp();
     app
