@@ -2,7 +2,6 @@
 
 exports[`TldrawTestApp Copies to JSON: copied json 1`] = `
 TldrawTestApp {
-  "_idbId": undefined,
   "_snapshot": {
     "appState": {
       "activeTool": "select",

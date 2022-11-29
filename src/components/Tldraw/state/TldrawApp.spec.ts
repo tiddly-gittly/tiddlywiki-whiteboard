@@ -590,10 +590,12 @@ describe('TldrawTestApp', () => {
         id: 'rect1',
         type: TDShapeType.Rectangle,
       });
+      const state = app.state;
       TldrawTestApp.version = 100;
       TldrawTestApp.defaultState.room = defaultState.room;
       const app2 = new TldrawTestApp('migrate_1');
       await app2.ready;
+      app2.patchState(state);
       expect(app2.getShape('rect1')).toBeTruthy();
     });
   });

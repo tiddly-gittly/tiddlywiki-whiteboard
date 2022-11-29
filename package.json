@@ -90,7 +90,6 @@
     "@tldraw/vec": "^1.8.0",
     "beautiful-react-hooks": "^3.11.2",
     "browser-fs-access": "^0.31.1",
-    "idb-keyval": "^6.2.0",
     "perfect-freehand": "^1.2.0",
     "react-error-boundary": "^3.1.4",
     "react-hotkeys-hook": "^3.4.7",
