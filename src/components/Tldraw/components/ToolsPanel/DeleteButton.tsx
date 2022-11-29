@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl } from '@tldr/translations/FormattedMessage';
 import { ToolButton } from '@tldr/components/Primitives/ToolButton';
 import { Tooltip } from '@tldr/components/Primitives/Tooltip';
 import { TrashIcon } from '@tldr/components/Primitives/icons';

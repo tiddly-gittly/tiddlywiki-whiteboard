@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '@tldr/translations/FormattedMessage';
 import { useTldrawApp } from '@tldr/hooks';
 import { styled } from '@tldr/styles';
 import type { TDSnapshot } from '@tldr/types';

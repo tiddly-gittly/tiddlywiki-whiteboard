@@ -19,7 +19,6 @@ import type {
   TLUser,
   TLWheelEventHandler,
 } from '@tldraw/core';
-import { TDLanguage } from '@tldr/translations';
 
 /* -------------------------------------------------- */
 /*                         App                        */
@@ -111,7 +110,6 @@ export interface TDSnapshot {
     isSnapping: boolean;
     isZoomSnap: boolean;
     keepStyleMenuOpen: boolean;
-    language: TDLanguage;
     nudgeDistanceLarge: number;
     nudgeDistanceSmall: number;
     showBindingHandles: boolean;

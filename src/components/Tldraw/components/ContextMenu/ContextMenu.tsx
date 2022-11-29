@@ -12,7 +12,7 @@ import {
   StretchVerticallyIcon,
 } from '@radix-ui/react-icons';
 import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from '@tldr/translations/FormattedMessage';
 import { Divider } from '@tldr/components/Primitives/Divider';
 import { MenuContent } from '@tldr/components/Primitives/MenuContent';
 import { RowButton, RowButtonProps } from '@tldr/components/Primitives/RowButton';

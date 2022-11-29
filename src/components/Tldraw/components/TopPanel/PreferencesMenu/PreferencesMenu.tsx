@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from '@tldr/translations/FormattedMessage';
 import { Divider } from '@tldr/components/Primitives/Divider';
 import { DMCheckboxItem, DMSubMenu } from '@tldr/components/Primitives/DropdownMenu';
 import { useTldrawApp } from '@tldr/hooks';

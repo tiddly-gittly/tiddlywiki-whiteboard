@@ -1,6 +1,6 @@
 import { ArrowTopRightIcon, CursorArrowIcon, ImageIcon, Pencil1Icon, Pencil2Icon, TextIcon } from '@radix-ui/react-icons';
 import * as React from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl } from '@tldr/translations/FormattedMessage';
 import { Panel } from '@tldr/components/Primitives/Panel';
 import { ToolButtonWithTooltip } from '@tldr/components/Primitives/ToolButton';
 import { EraserIcon } from '@tldr/components/Primitives/icons';
