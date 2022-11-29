@@ -675,11 +675,6 @@ describe('When adding an image', () => {
   it.todo('Does not add the image if that image already exists as an asset');
 });
 
-describe('When adding a video', () => {
-  it.todo('Adds the video to the assets table');
-  it.todo('Does not add the video if that video already exists as an asset');
-});
-
 describe('When space panning', () => {
   it('pans camera when spacebar is down', () => {
     // global.console.warn = jest.fn()

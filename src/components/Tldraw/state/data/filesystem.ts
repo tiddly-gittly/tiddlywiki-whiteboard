@@ -1,6 +1,6 @@
 import { fileOpen, fileSave, supported } from 'browser-fs-access';
 import type { FileSystemHandle } from 'browser-fs-access';
-import { FILE_EXTENSION, IMAGE_EXTENSIONS, VIDEO_EXTENSIONS } from '@tldr/constants';
+import { FILE_EXTENSION, IMAGE_EXTENSIONS } from '@tldr/constants';
 import type { TDDocument, TDFile } from '@tldr/types';
 
 const options = { mode: 'readwrite' as const };
@@ -86,8 +86,8 @@ export async function openFromFileSystem(): Promise<null | {
 
 export async function openAssetsFromFileSystem() {
   return await fileOpen({
-    description: 'Image or Video',
-    extensions: [...IMAGE_EXTENSIONS, ...VIDEO_EXTENSIONS],
+    description: 'Image',
+    extensions: [...IMAGE_EXTENSIONS],
     multiple: true,
   });
 }
@@ -122,14 +122,5 @@ export async function getImageSizeFromSrc(src: string): Promise<number[]> {
     img.onload = () => resolve([img.width, img.height]);
     img.onerror = () => reject(new Error('Could not get image size'));
     img.src = src;
-  });
-}
-
-export async function getVideoSizeFromSrc(src: string): Promise<number[]> {
-  return await new Promise((resolve, reject) => {
-    const video = document.createElement('video');
-    video.onloadedmetadata = () => resolve([video.videoWidth, video.videoHeight]);
-    video.onerror = () => reject(new Error('Could not get video size'));
-    video.src = src;
   });
 }

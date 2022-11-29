@@ -93,7 +93,7 @@ export function migrate(state: TDSnapshot, newVersion: number): TDSnapshot {
 
     Object.values(document.pages).forEach((page) => {
       Object.values(page.shapes).forEach((shape) => {
-        if (version < 15.2 && (shape.type === TDShapeType.Image || shape.type === TDShapeType.Video)) {
+        if (version < 15.2 && (shape.type === TDShapeType.Image)) {
           shape.style.isFilled = true;
         }
 

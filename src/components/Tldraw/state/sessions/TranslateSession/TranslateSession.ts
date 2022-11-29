@@ -618,11 +618,6 @@ export class TranslateSession extends BaseSession {
         childIndex: TLDR.getChildIndexAbove(this.app.state, shape.id, currentPageId),
       };
 
-      if (clone.type === TDShapeType.Video) {
-        const element = document.getElementById(shape.id + '_video') as HTMLVideoElement;
-        if (element) clone.currentTime = (element.currentTime + 16) % element.duration;
-      }
-
       clones.push(clone);
     });
 
