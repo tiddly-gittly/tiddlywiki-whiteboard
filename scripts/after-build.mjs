@@ -8,12 +8,13 @@ import archiver from 'archiver';
 const pluginInfo = fs.readJsonSync('src/plugin.info');
 const [_, __, author, name] = pluginInfo.title.split('/');
 const pluginTitle = `${author}/${name}`;
+const packageJSON = fs.readJsonSync('package.json');
 
 const repoDir = path.join(__dirname, '..');
 const distDir = path.join(__dirname, '..', 'dist');
 const nodejsPluginOutDir = path.join(distDir, 'plugins', author, name);
 // cross platform cp -r ${repoDir}/src/ ${nodejsPluginOutDir}/
-const ignoredExtensions = ['.ts', '.tsx', '.snap', '.tldr', '.md', '.json'];
+const ignoredExtensions = packageJSON.ignoredExtensionsWhenBuildPlugin;
 const copyOptions = {
   filter: (src, dest) => {
     if (!ignoredExtensions.some((extension) => src.endsWith(extension))) {
