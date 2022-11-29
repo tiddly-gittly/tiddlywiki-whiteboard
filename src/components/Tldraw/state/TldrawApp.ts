@@ -1164,8 +1164,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   copy = (ids = this.selectedIds, event?: ClipboardEvent): this => {
     // Allow when in readOnly mode
 
-    // event?.preventDefault();
-    // event?.stopPropagation();
+    event?.preventDefault();
+    event?.stopPropagation();
 
     this.clipboard = this.getContent(ids);
 
@@ -1173,19 +1173,13 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       type: 'tldr/clipboard',
       ...this.clipboard,
     });
-// DEBUG: console
-console.log(`jsonString`, jsonString);
     const tldrawString = `<tldraw>${jsonString}</tldraw>`;
 
     if (event) {
-// DEBUG: console
-console.log(`event.clipboardData?.setData`, event.clipboardData?.setData);
       event.clipboardData?.setData('text/html', tldrawString);
     }
 
     if (navigator.clipboard && window.ClipboardItem) {
-      // DEBUG: console
-      console.log(`navigator.clipboard.write`, navigator.clipboard.write);
       void navigator.clipboard.write([
         new ClipboardItem({
           'text/html': new Blob([tldrawString], { type: 'text/html' }),
