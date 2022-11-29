@@ -198,7 +198,7 @@ export class StickyUtil extends TDShapeUtil<T, E> {
       textShadow: `0.5px 0.5px 2px rgba(255, 255, 255,.5)`,
     };
 
-    const onPointerUp = React.useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    const getClickedTWElement = React.useCallback((event: React.PointerEvent<HTMLDivElement>) => {
       // elementsFromPoint can't find it, have to locate it like this
       const buttonOrLinkInWikiText = (event.target as HTMLDivElement).querySelectorAll('a,button');
       // eslint-disable-next-line unicorn/prefer-spread
@@ -206,15 +206,24 @@ export class StickyUtil extends TDShapeUtil<T, E> {
         const rect = element.getBoundingClientRect();
         return event.clientX > rect.x && event.clientX < rect.x + rect.width && event.clientY > rect.y && event.clientY < rect.y + rect.height;
       });
-      if (clickedElement !== undefined) {
-        event.preventDefault();
-        event.stopPropagation();
-        const newClickEvent = new MouseEvent('click', { ...event.nativeEvent });
-        clickedElement.dispatchEvent(newClickEvent);
-        return;
-      }
-      events.onPointerUp(event);
+      return clickedElement;
     }, []);
+    const onPointerUp = React.useCallback(
+      (event: React.PointerEvent<HTMLDivElement>) => {
+        // eslint-disable-next-line unicorn/prefer-spread
+        const clickedElement = getClickedTWElement(event);
+        if (clickedElement !== undefined) {
+          event.preventDefault();
+          event.stopPropagation();
+          const newClickEvent = new MouseEvent(event.type, { ...event.nativeEvent });
+          newClickEvent.stopPropagation();
+          clickedElement.dispatchEvent(newClickEvent);
+          return;
+        }
+        events.onPointerUp(event);
+      },
+      [events, getClickedTWElement],
+    );
 
     return (
       <HTMLContainer ref={reference} {...events} onPointerUp={onPointerUp}>
