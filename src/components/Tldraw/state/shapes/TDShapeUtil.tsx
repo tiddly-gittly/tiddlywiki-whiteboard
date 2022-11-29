@@ -148,7 +148,7 @@ export abstract class TDShapeUtil<T extends TDShape, E extends Element = any> ex
 
   onSessionComplete?: (shape: T) => Partial<T> | void;
 
-  getSvgElement = (shape: T, isDarkMode: boolean): SVGElement | void => {
+  getSvgElement = (shape: T): SVGElement | void => {
     const elm = document.getElementById(shape.id + '_svg')?.cloneNode(true) as SVGElement;
     if (!elm) return; // possibly in test mode
     const hasLabel = shape.label?.trim()?.length ?? 0 > 0;
@@ -166,7 +166,7 @@ export abstract class TDShapeUtil<T extends TDShape, E extends Element = any> ex
       const bounds = this.getBounds(shape);
 
       labelElm.setAttribute('transform', `translate(${bounds.width / 2 - labelSize[0] / 2}, ${bounds.height / 2 - labelSize[1] / 2})`);
-      labelElm.setAttribute('fill', getShapeStyle(shape.style, isDarkMode).stroke);
+      labelElm.setAttribute('fill', getShapeStyle(shape.style).stroke);
       labelElm.setAttribute('transform-origin', 'center center');
       g.setAttribute('text-align', 'center');
       g.setAttribute('text-anchor', 'middle');

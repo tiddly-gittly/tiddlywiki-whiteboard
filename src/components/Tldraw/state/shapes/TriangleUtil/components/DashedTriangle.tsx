@@ -7,14 +7,13 @@ import { getTrianglePoints } from '../triangleHelpers';
 
 interface TriangleSvgProps {
   id: string;
-  isDarkMode: boolean;
   isSelected: boolean;
   size: number[];
   style: ShapeStyles;
 }
 
-export const DashedTriangle = React.memo(function DashedTriangle({ id, size, style, isSelected, isDarkMode }: TriangleSvgProps) {
-  const { stroke, strokeWidth, fill } = getShapeStyle(style, isDarkMode);
+export const DashedTriangle = React.memo(function DashedTriangle({ id, size, style, isSelected }: TriangleSvgProps) {
+  const { stroke, strokeWidth, fill } = getShapeStyle(style);
   const sw = 1 + strokeWidth * 1.618;
   const points = getTrianglePoints(size);
   const sides = Utils.pointsToLineSegments(points, true);

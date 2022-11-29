@@ -95,33 +95,4 @@ const { styled, createTheme } = createStitches({
   },
 });
 
-export const dark = createTheme({
-  colors: {
-    bounds: 'rgba(38, 150, 255, 1.000)',
-    boundsBg: 'rgba(38, 150, 255, 0.05)',
-    hover: '#444A50',
-    overlay: 'rgba(0, 0, 0, 0.15)',
-    overlayContrast: 'rgba(255, 255, 255, 0.15)',
-    panel: '#363D44',
-    panelContrast: '#49555f',
-    selected: 'rgba(38, 150, 255, 1.000)',
-    selectedContrast: '#fefefe',
-    text: '#f8f9fa',
-    tooltip: '#1d1d1d',
-    tooltipContrast: '#ffffff',
-    canvas: '#212529',
-  },
-  shadows: {
-    2: '0px 1px 1px rgba(0, 0, 0, 0.24)',
-    3: '0px 2px 3px rgba(0, 0, 0, 0.24)',
-    4: '0px 4px 5px -1px rgba(0, 0, 0, 0.24)',
-    8: '0px 12px 17px rgba(0, 0, 0, 0.24)',
-    12: '0px 12px 17px rgba(0, 0, 0, 0.24)',
-    24: '0px 24px 38px rgba(0, 0, 0, 0.24)',
-    panel: `0px 0px 16px -1px rgba(0, 0, 0, 0.05), 
-      0px 0px 16px -8px rgba(0, 0, 0, 0.09), 
-      0px 0px 16px -12px rgba(0, 0, 0, 0.2)`,
-  },
-});
-
 export { styled };

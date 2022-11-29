@@ -984,17 +984,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   };
 
   /**
-   * Toggle dark mode.
-   */
-  toggleDarkMode = (): this => {
-    if (this.session) return this;
-    const patch = { settings: { isDarkMode: !this.settings.isDarkMode } };
-    this.patchState(patch, `settings:toggled_dark_mode`);
-    this.persist(patch);
-    return this;
-  };
-
-  /**
    * Toggle zoom snap.
    */
   toggleZoomSnap = () => {
@@ -1982,7 +1971,7 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     const getSvgElementForShape = (shape: TDShape) => {
       const util = TLDR.getShapeUtil(shape);
       const bounds = util.getBounds(shape);
-      const elm = util.getSvgElement(shape, this.settings.isDarkMode);
+      const elm = util.getSvgElement(shape);
 
       if (!elm) return;
 
@@ -2048,14 +2037,11 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     const lightBackground = 'rgb(248, 249, 250)';
 
     switch (exportBackground) {
-      case TDExportBackground.Auto: {
-        svg.style.setProperty('background-color', this.settings.isDarkMode ? darkBackground : lightBackground);
-        break;
-      }
       case TDExportBackground.Dark: {
         svg.style.setProperty('background-color', darkBackground);
         break;
       }
+      case TDExportBackground.Auto:
       case TDExportBackground.Light: {
         svg.style.setProperty('background-color', lightBackground);
         break;
@@ -4024,7 +4010,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     settings: {
       isCadSelectMode: false,
       isPenMode: false,
-      isDarkMode: false,
       isZoomSnap: false,
       isFocusMode: false,
       isSnapping: false,

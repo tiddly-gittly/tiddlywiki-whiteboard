@@ -6,14 +6,13 @@ import type { ShapeStyles } from '@tldr/types';
 
 interface RectangleSvgProps {
   id: string;
-  isDarkMode: boolean;
   isSelected: boolean;
   size: number[];
   style: ShapeStyles;
 }
 
-export const DashedRectangle = React.memo(function DashedRectangle({ id, style, size, isSelected, isDarkMode }: RectangleSvgProps) {
-  const { stroke, strokeWidth, fill } = getShapeStyle(style, isDarkMode);
+export const DashedRectangle = React.memo(function DashedRectangle({ id, style, size, isSelected }: RectangleSvgProps) {
+  const { stroke, strokeWidth, fill } = getShapeStyle(style);
 
   const sw = 1 + strokeWidth * 1.618;
 

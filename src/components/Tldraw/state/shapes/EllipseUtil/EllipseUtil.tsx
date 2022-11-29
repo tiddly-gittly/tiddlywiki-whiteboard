@@ -47,7 +47,7 @@ export class EllipseUtil extends TDShapeUtil<T, E> {
     ({ shape, isGhost, isSelected, isBinding, isEditing, meta, bounds, events, onShapeChange, onShapeBlur }, ref) => {
       const { id, radius, style, label = '', labelPoint = LABEL_POINT } = shape;
       const font = getFontStyle(shape.style);
-      const styles = getShapeStyle(style, meta.isDarkMode);
+      const styles = getShapeStyle(style);
       const strokeWidth = styles.strokeWidth;
       const sw = 1 + strokeWidth * 1.618;
       const rx = Math.max(0, radius[0] - sw / 2);
@@ -68,7 +68,7 @@ export class EllipseUtil extends TDShapeUtil<T, E> {
           />
           <SVGContainer id={shape.id + '_svg'} opacity={isGhost ? GHOSTED_OPACITY : 1}>
             {isBinding && <ellipse className="tl-binding-indicator" cx={radius[0]} cy={radius[1]} rx={rx} ry={ry} strokeWidth={this.bindingDistance} />}
-            <Component id={id} radius={radius} style={style} isSelected={isSelected} isDarkMode={meta.isDarkMode} />
+            <Component id={id} radius={radius} style={style} isSelected={isSelected} />
           </SVGContainer>
         </FullWrapper>
       );

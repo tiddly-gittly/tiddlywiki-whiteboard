@@ -5,14 +5,13 @@ import { getTriangleIndicatorPathTDSnapshot, getTrianglePath } from '../triangle
 
 interface TriangleSvgProps {
   id: string;
-  isDarkMode: boolean;
   isSelected: boolean;
   size: number[];
   style: ShapeStyles;
 }
 
-export const DrawTriangle = React.memo(function DrawTriangle({ id, size, style, isSelected, isDarkMode }: TriangleSvgProps) {
-  const { stroke, strokeWidth, fill } = getShapeStyle(style, isDarkMode);
+export const DrawTriangle = React.memo(function DrawTriangle({ id, size, style, isSelected }: TriangleSvgProps) {
+  const { stroke, strokeWidth, fill } = getShapeStyle(style);
   const pathTDSnapshot = getTrianglePath(id, size, style);
   const indicatorPath = getTriangleIndicatorPathTDSnapshot(id, size, style);
   return (

@@ -5,14 +5,13 @@ import { getEllipseIndicatorPath, getEllipsePath } from '../ellipseHelpers';
 
 interface EllipseSvgProps {
   id: string;
-  isDarkMode: boolean;
   isSelected: boolean;
   radius: number[];
   style: ShapeStyles;
 }
 
-export const DrawEllipse = React.memo(function DrawEllipse({ id, radius, style, isSelected, isDarkMode }: EllipseSvgProps) {
-  const { stroke, strokeWidth, fill } = getShapeStyle(style, isDarkMode);
+export const DrawEllipse = React.memo(function DrawEllipse({ id, radius, style, isSelected }: EllipseSvgProps) {
+  const { stroke, strokeWidth, fill } = getShapeStyle(style);
   const innerPath = getEllipsePath(id, radius, style);
 
   return (

@@ -55,7 +55,7 @@ export class TriangleUtil extends TDShapeUtil<T, E> {
     ({ shape, bounds, isBinding, isEditing, isSelected, isGhost, meta, events, onShapeChange, onShapeBlur }, ref) => {
       const { id, label = '', size, style, labelPoint = LABEL_POINT } = shape;
       const font = getFontStyle(style);
-      const styles = getShapeStyle(style, meta.isDarkMode);
+      const styles = getShapeStyle(style);
       const Component = style.dash === DashStyle.Draw ? DrawTriangle : DashedTriangle;
       const handleLabelChange = React.useCallback((label: string) => onShapeChange?.({ id, label }), [onShapeChange]);
       const offsetY = React.useMemo(() => {
@@ -77,7 +77,7 @@ export class TriangleUtil extends TDShapeUtil<T, E> {
           />
           <SVGContainer id={shape.id + '_svg'} opacity={isGhost ? GHOSTED_OPACITY : 1}>
             {isBinding && <TriangleBindingIndicator size={size} />}
-            <Component id={id} style={style} size={size} isSelected={isSelected} isDarkMode={meta.isDarkMode} />
+            <Component id={id} style={style} size={size} isSelected={isSelected} />
           </SVGContainer>
         </FullWrapper>
       );

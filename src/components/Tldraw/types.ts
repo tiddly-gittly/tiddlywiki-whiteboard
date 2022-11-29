@@ -104,21 +104,20 @@ export interface TDSnapshot {
     dockPosition: TDDockPosition;
     exportBackground: TDExportBackground;
     isCadSelectMode: boolean;
-    isDarkMode: boolean;
     isDebugMode: boolean;
     isFocusMode: boolean;
     isPenMode: boolean;
-    nudgeDistanceSmall: number
-    nudgeDistanceLarge: number
-    isZoomSnap: boolean,
-    isSnapping: boolean;
-    language: TDLanguage,
-    showBindingHandles: boolean
-    showCloneHandles: boolean
-    showGrid: boolean
-    showRotateHandles: boolean,
     isReadonlyMode: boolean;
-    keepStyleMenuOpen: boolean,
+    isSnapping: boolean;
+    isZoomSnap: boolean;
+    keepStyleMenuOpen: boolean;
+    language: TDLanguage;
+    nudgeDistanceLarge: number;
+    nudgeDistanceSmall: number;
+    showBindingHandles: boolean;
+    showCloneHandles: boolean;
+    showGrid: boolean;
+    showRotateHandles: boolean;
   };
 }
 
@@ -154,9 +153,7 @@ export interface PagePartial {
 }
 
 // The meta information passed to TDShapeUtil components
-export interface TDMeta {
-  isDarkMode: boolean;
-}
+export interface TDMeta {}
 
 // The type of info given to shapes when transforming
 export interface TransformInfo<T extends TLShape> {
@@ -211,7 +208,7 @@ export enum TDStatus {
   Transforming = 'transforming',
   Translating = 'translating',
   TranslatingHandle = 'translatingHandle',
-  TranslatingLabel = 'translatingLabel'
+  TranslatingLabel = 'translatingLabel',
 }
 
 export type TDToolType =

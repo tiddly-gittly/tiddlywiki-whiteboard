@@ -98,7 +98,7 @@ export class VideoUtil extends TDShapeUtil<T, E> {
             }}
           />
         )}
-        <Wrapper ref={rWrapper} isDarkMode={meta.isDarkMode} isGhost={isGhost} isFilled={style.isFilled}>
+        <Wrapper ref={rWrapper} isGhost={isGhost} isFilled={style.isFilled}>
           <VideoElement
             ref={rVideo}
             id={shape.id + '_video'}
@@ -174,22 +174,10 @@ const Wrapper = styled('div', {
       true: {},
       false: {},
     },
-    isDarkMode: {
-      true: {},
-      false: {},
-    },
   },
   compoundVariants: [
     {
       isFilled: true,
-      isDarkMode: true,
-      css: {
-        boxShadow: '2px 3px 12px -2px rgba(0,0,0,.3), 1px 1px 4px rgba(0,0,0,.3), 1px 1px 2px rgba(0,0,0,.3)',
-      },
-    },
-    {
-      isFilled: true,
-      isDarkMode: false,
       css: {
         boxShadow: '2px 3px 12px -2px rgba(0,0,0,.2), 1px 1px 4px rgba(0,0,0,.16),  1px 1px 2px rgba(0,0,0,.16)',
       },

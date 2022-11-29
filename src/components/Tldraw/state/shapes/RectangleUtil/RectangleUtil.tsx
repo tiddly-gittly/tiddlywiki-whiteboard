@@ -53,7 +53,7 @@ export class RectangleUtil extends TDShapeUtil<T, E> {
     ({ shape, isEditing, isBinding, isSelected, isGhost, meta, bounds, events, onShapeBlur, onShapeChange }, ref) => {
       const { id, size, style, label = '', labelPoint = LABEL_POINT } = shape;
       const font = getFontStyle(style);
-      const styles = getShapeStyle(style, meta.isDarkMode);
+      const styles = getShapeStyle(style);
       const Component = style.dash === DashStyle.Draw ? DrawRectangle : DashedRectangle;
       const handleLabelChange = React.useCallback((label: string) => onShapeChange?.({ id, label }), [onShapeChange]);
       return (
@@ -70,7 +70,7 @@ export class RectangleUtil extends TDShapeUtil<T, E> {
           />
           <SVGContainer id={shape.id + '_svg'} opacity={isGhost ? GHOSTED_OPACITY : 1}>
             {isBinding && <BindingIndicator strokeWidth={styles.strokeWidth} size={size} />}
-            <Component id={id} style={style} size={size} isSelected={isSelected} isDarkMode={meta.isDarkMode} />
+            <Component id={id} style={style} size={size} isSelected={isSelected} />
           </SVGContainer>
         </FullWrapper>
       );

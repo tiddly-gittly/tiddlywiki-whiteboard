@@ -14,7 +14,6 @@ interface ArrowSvgProps {
   decorationStart: Decoration | undefined;
   end: number[];
   id: string;
-  isDarkMode: boolean;
   isDraw: boolean;
   start: number[];
   style: ShapeStyles;
@@ -30,11 +29,10 @@ export const CurvedArrow = React.memo(function CurvedArrow({
   decorationStart,
   decorationEnd,
   isDraw,
-  isDarkMode,
 }: ArrowSvgProps) {
   const arrowDist = Vec.dist(start, end);
   if (arrowDist < 2) return null;
-  const styles = getShapeStyle(style, isDarkMode);
+  const styles = getShapeStyle(style);
   const { strokeWidth } = styles;
   const sw = 1 + strokeWidth * 1.618;
   // Calculate a path as a segment of a circle passing through the three points start, bend, and end
