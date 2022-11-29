@@ -1,6 +1,5 @@
 import { fileOpen, fileSave, supported } from 'browser-fs-access';
 import type { FileSystemHandle } from 'browser-fs-access';
-import { get as getFromIdb, set as setToIdb } from 'idb-keyval';
 import { FILE_EXTENSION, IMAGE_EXTENSIONS, VIDEO_EXTENSIONS } from '@tldr/constants';
 import type { TDDocument, TDFile } from '@tldr/types';
 
@@ -12,17 +11,6 @@ const checkPermissions = async (handle: FileSystemFileHandle) => {
     (await (handle as unknown as FileSystemHandle).requestPermission(options)) === 'granted'
   );
 };
-
-export async function loadFileHandle() {
-  if (typeof Window === 'undefined' || !('_location' in Window)) return;
-  const fileHandle = await getFromIdb(`Tldraw_file_handle_${window.location.origin}`);
-  if (!fileHandle) return null;
-  return fileHandle;
-}
-
-export async function saveFileHandle(fileHandle: FileSystemFileHandle | null) {
-  return await setToIdb(`Tldraw_file_handle_${window.location.origin}`, fileHandle);
-}
 
 export async function saveToFileSystem(document: TDDocument, fileHandle: FileSystemFileHandle | null, name?: string) {
   // Create the saved file data
@@ -57,8 +45,6 @@ export async function saveToFileSystem(document: TDDocument, fileHandle: FileSys
     fileHandle,
   );
 
-  await saveFileHandle(newFileHandle);
-
   // Return true
   return newFileHandle;
 }
@@ -91,8 +77,6 @@ export async function openFromFileSystem(): Promise<null | {
   const file: TDFile = JSON.parse(json);
 
   const fileHandle = blob.handle ?? null;
-
-  await saveFileHandle(fileHandle);
 
   return {
     fileHandle,

@@ -50,7 +50,6 @@ import {
   TldrawCommand,
   TldrawPatch,
 } from '@tldr/types';
-import { getClipboard, setClipboard } from './IdbClipboard';
 import { StateManager } from './StateManager';
 import { deepCopy } from './StateManager/copy';
 import { TLDR } from './TLDR';
@@ -60,7 +59,6 @@ import {
   fileToText,
   getImageSizeFromSrc,
   getVideoSizeFromSrc,
-  loadFileHandle,
   migrate,
   openAssetsFromFileSystem,
   openFromFileSystem,
@@ -281,10 +279,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
 
   protected onReady = () => {
     this.loadDocument(this.document);
-
-    loadFileHandle().then((fileHandle) => {
-      this.fileSystemHandle = fileHandle;
-    });
 
     try {
       this.patchState({
@@ -1749,14 +1743,12 @@ export class TldrawApp extends StateManager<TDSnapshot> {
 
     const tldrawString = `<tldraw>${jsonString}</tldraw>`;
 
-    setClipboard(tldrawString);
-
     if (e) {
       e.clipboardData?.setData('text/html', tldrawString);
     }
 
     if (navigator.clipboard && window.ClipboardItem) {
-      navigator.clipboard.write([
+      void navigator.clipboard.write([
         new ClipboardItem({
           'text/html': new Blob([tldrawString], { type: 'text/html' }),
         }),
@@ -1920,11 +1912,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     if (this.clipboard) {
       // try to get clipboard data from the scene itself
       this.insertContent(this.clipboard);
-    } else {
-      // last chance to get the clipboard data, is it in storage?
-      getClipboard().then((text) => {
-        if (text) getShapeFromHtml(text);
-      });
     }
 
     return this;

@@ -1,16 +1,10 @@
 import { Utils } from '@tldraw/core';
-import * as idb from 'idb-keyval';
 import create, { UseBoundStore } from 'zustand';
 import createVanilla, { StoreApi } from 'zustand/vanilla';
 import type { Command, Patch } from '@tldr/types';
 import { deepCopy } from './copy';
 
 export class StateManager<T extends Record<string, any>> {
-  /**
-   * An ID used to persist state in indexdb.
-   */
-  protected _idbId?: string;
-
   /**
    * The initial state.
    */
@@ -59,7 +53,6 @@ export class StateManager<T extends Record<string, any>> {
   public isPaused = false;
 
   constructor(initialState: T, id?: string, version?: number, update?: (prev: T, next: T, prevVersion: number) => T) {
-    this._idbId = id;
     this._state = deepCopy(initialState);
     this._snapshot = deepCopy(initialState);
     this.initialState = deepCopy(initialState);
@@ -69,49 +62,9 @@ export class StateManager<T extends Record<string, any>> {
     this.ready = new Promise<'none' | 'restored' | 'migrated'>((resolve) => {
       let message: 'none' | 'restored' | 'migrated' = 'none';
 
-      if (this._idbId) {
-        message = 'restored';
-
-        idb
-          .get(this._idbId)
-          .then(async (saved) => {
-            if (saved) {
-              let next = saved;
-
-              if (version) {
-                const savedVersion = await idb.get<number>(id + '_version');
-
-                if (savedVersion && savedVersion < version) {
-                  next = update ? update(saved, initialState, savedVersion) : initialState;
-
-                  message = 'migrated';
-                }
-              }
-
-              await idb.set(id + '_version', version || -1);
-
-              // why is this necessary? but it is...
-              const prevEmpty = this._state.appState.isEmptyCanvas;
-
-              next = this.migrate(next);
-
-              this._state = deepCopy(next);
-              this._snapshot = deepCopy(next);
-
-              this._state.appState.isEmptyCanvas = prevEmpty;
-              this.store.setState(this._state, true);
-            } else {
-              await idb.set(id + '_version', version || -1);
-            }
-            this._status = 'ready';
-            resolve(message);
-          })
-          .catch((error) => console.error(error));
-      } else {
-        // We need to wait for any override to `onReady` to take effect.
-        this._status = 'ready';
-        resolve(message);
-      }
+      // We need to wait for any override to `onReady` to take effect.
+      this._status = 'ready';
+      resolve(message);
     }).then((message) => {
       if (this.onReady) this.onReady(message);
       return message;
@@ -126,10 +79,6 @@ export class StateManager<T extends Record<string, any>> {
 
     if (this.onPersist) {
       this.onPersist(this._state, patch, id);
-    }
-
-    if (this._idbId) {
-      return idb.set(this._idbId, this._state).catch((error) => console.error(error));
     }
   };
 
