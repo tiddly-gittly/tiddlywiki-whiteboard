@@ -1,6 +1,9 @@
 import { HTMLContainer, TLBounds, Utils } from '@tldraw/core';
 import { Vec } from '@tldraw/vec';
 import * as React from 'react';
+import { useWidget } from 'tw-react';
+import type { ITiddlerParseTreeNode } from 'tiddlywiki';
+
 import { stopPropagation } from '@tldr/components/stopPropagation';
 import { GHOSTED_OPACITY, LETTER_SPACING } from '@tldr/constants';
 import { TLDR } from '@tldr/state/TLDR';
@@ -14,6 +17,8 @@ import {
   getStickyFontStyle,
   getStickyShapeStyle,
   getTextSvgElement,
+  transformSingleRectangle,
+  transformRectangle,
 } from '@tldr/state/shapes/shared';
 import { styled } from '@tldr/styles';
 import { AlignStyle, StickyShape, TDMeta, TDShapeType, TransformInfo } from '@tldr/types';
@@ -30,10 +35,6 @@ export class StickyUtil extends TDShapeUtil<T, E> {
 
   canClone = true;
 
-  hideResizeHandles = true;
-
-  showCloneHandles = true;
-
   getShape = (props: Partial<T>): T => {
     return Utils.deepMerge<T>(
       {
@@ -43,7 +44,7 @@ export class StickyUtil extends TDShapeUtil<T, E> {
         parentId: 'page',
         childIndex: 1,
         point: [0, 0],
-        size: [200, 200],
+        size: [300, 300],
         text: '',
         rotation: 0,
         style: defaultTextStyle,
@@ -52,22 +53,25 @@ export class StickyUtil extends TDShapeUtil<T, E> {
     );
   };
 
-  Component = TDShapeUtil.Component<T, E, TDMeta>(({ shape, meta, events, isGhost, isBinding, isEditing, onShapeBlur, onShapeChange }, ref) => {
+  Component = TDShapeUtil.Component<T, E, TDMeta>(({ shape, meta, events, isGhost, isBinding, isEditing, onShapeBlur, onShapeChange }, reference) => {
     const font = getStickyFontStyle(shape.style);
 
     const { color, fill } = getStickyShapeStyle(shape.style);
 
     const rContainer = React.useRef<HTMLDivElement>(null);
-
     const rTextArea = React.useRef<HTMLTextAreaElement>(null);
-
-    const rText = React.useRef<HTMLDivElement>(null);
-
+    const rRenderedText = React.useRef<HTMLDivElement>(null);
     const rIsMounted = React.useRef(false);
 
-    const handlePointerDown = React.useCallback((e: React.PointerEvent) => {
-      e.stopPropagation();
+    const handlePointerDown = React.useCallback((event: React.PointerEvent) => {
+      event.stopPropagation();
     }, []);
+
+    const astNode = React.useMemo<ITiddlerParseTreeNode>(() => {
+      const childTree = $tw.wiki.parseText('text/vnd.tiddlywiki', shape.text).tree;
+      return { type: 'tiddler', children: childTree };
+    }, [shape.text]);
+    useWidget(astNode, rRenderedText, { skip: isEditing });
 
     const onChange = React.useCallback(
       (text: string) => {
@@ -77,69 +81,72 @@ export class StickyUtil extends TDShapeUtil<T, E> {
           text: TLDR.normalizeText(text),
         });
       },
-      [shape.id],
+      [onShapeChange, shape.id, shape.type],
     );
 
     const handleTextChange = React.useCallback(
-      (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        onChange(e.currentTarget.value);
+      (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        onChange(event.currentTarget.value);
       },
-      [onShapeChange, onChange],
+      [onChange],
     );
 
     const handleKeyDown = React.useCallback(
-      (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Escape') {
-          e.preventDefault();
-          e.stopPropagation();
+      (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          event.stopPropagation();
           onShapeBlur?.();
           return;
         }
 
-        if (e.key === 'Tab' && shape.text.length === 0) {
-          e.preventDefault();
+        if (event.key === 'Tab' && shape.text.length === 0) {
+          event.preventDefault();
           return;
         }
 
-        if (!(e.key === 'Meta' || e.metaKey)) {
-          e.stopPropagation();
-        } else if (e.key === 'z' && e.metaKey) {
-          if (e.shiftKey) {
+        if (!(event.key === 'Meta' || event.metaKey)) {
+          event.stopPropagation();
+        } else if (event.key === 'z' && event.metaKey) {
+          if (event.shiftKey) {
             document.execCommand('redo', false);
           } else {
             document.execCommand('undo', false);
           }
-          e.stopPropagation();
-          e.preventDefault();
+          event.stopPropagation();
+          event.preventDefault();
           return;
         }
-        if ((e.metaKey || e.ctrlKey) && e.key === '=') {
-          e.preventDefault();
+        if ((event.metaKey || event.ctrlKey) && event.key === '=') {
+          event.preventDefault();
         }
-        if (e.key === 'Tab') {
-          e.preventDefault();
-          if (e.shiftKey) {
-            TextAreaUtils.unindent(e.currentTarget);
+        if (event.key === 'Tab') {
+          event.preventDefault();
+          if (event.shiftKey) {
+            TextAreaUtils.unindent(event.currentTarget);
           } else {
-            TextAreaUtils.indent(e.currentTarget);
+            TextAreaUtils.indent(event.currentTarget);
           }
 
-          onShapeChange?.({ ...shape, text: TLDR.normalizeText(e.currentTarget.value) });
+          onShapeChange?.({ ...shape, text: TLDR.normalizeText(event.currentTarget.value) });
         }
       },
-      [shape, onShapeChange],
+      [shape, onShapeBlur, onShapeChange],
     );
 
-    const handleBlur = React.useCallback((e: React.FocusEvent<HTMLTextAreaElement>) => {
-      e.currentTarget.setSelectionRange(0, 0);
-      onShapeBlur?.();
-    }, []);
+    const handleBlur = React.useCallback(
+      (event: React.FocusEvent<HTMLTextAreaElement>) => {
+        event.currentTarget.setSelectionRange(0, 0);
+        onShapeBlur?.();
+      },
+      [onShapeBlur],
+    );
 
     const handleFocus = React.useCallback(
-      (e: React.FocusEvent<HTMLTextAreaElement>) => {
+      (event: React.FocusEvent<HTMLTextAreaElement>) => {
         if (!isEditing) return;
         if (!rIsMounted.current) return;
-        e.currentTarget.select();
+        event.currentTarget.select();
       },
       [isEditing],
     );
@@ -155,34 +162,34 @@ export class StickyUtil extends TDShapeUtil<T, E> {
     }, [isEditing]);
 
     // Resize to fit text
-    React.useEffect(() => {
-      const text = rText.current!;
+    // React.useEffect(() => {
+    //   const text = rText.current!;
 
-      const { size } = shape;
-      const { offsetHeight: currTextHeight } = text;
-      const minTextHeight = MIN_CONTAINER_HEIGHT - PADDING * 2;
-      const prevTextHeight = size[1] - PADDING * 2;
+    //   const { size } = shape;
+    //   const { offsetHeight: currTextHeight } = text;
+    //   const minTextHeight = MIN_CONTAINER_HEIGHT - PADDING * 2;
+    //   const prevTextHeight = size[1] - PADDING * 2;
 
-      // Same size? We can quit here
-      if (currTextHeight === prevTextHeight) return;
+    //   // Same size? We can quit here
+    //   if (currTextHeight === prevTextHeight) return;
 
-      if (currTextHeight > minTextHeight) {
-        // Snap the size to the text content if the text only when the
-        // text is larger than the minimum text height.
-        onShapeChange?.({ id: shape.id, size: [size[0], currTextHeight + PADDING * 2] });
-        return;
-      }
+    //   if (currTextHeight > minTextHeight) {
+    //     // Snap the size to the text content if the text only when the
+    //     // text is larger than the minimum text height.
+    //     onShapeChange?.({ id: shape.id, size: [size[0], currTextHeight + PADDING * 2] });
+    //     return;
+    //   }
 
-      if (currTextHeight < minTextHeight && size[1] > MIN_CONTAINER_HEIGHT) {
-        // If we're smaller than the minimum height and the container
-        // is too tall, snap it down to the minimum container height
-        onShapeChange?.({ id: shape.id, size: [size[0], MIN_CONTAINER_HEIGHT] });
-        return;
-      }
+    //   if (currTextHeight < minTextHeight && size[1] > MIN_CONTAINER_HEIGHT) {
+    //     // If we're smaller than the minimum height and the container
+    //     // is too tall, snap it down to the minimum container height
+    //     onShapeChange?.({ id: shape.id, size: [size[0], MIN_CONTAINER_HEIGHT] });
+    //     return;
+    //   }
 
-      const textarea = rTextArea.current;
-      textarea?.focus();
-    }, [shape.text, shape.size[1], shape.style]);
+    //   const textarea = rTextArea.current;
+    //   textarea?.focus();
+    // }, [shape.text, shape.size[1], shape.style]);
 
     const style = {
       font,
@@ -191,7 +198,7 @@ export class StickyUtil extends TDShapeUtil<T, E> {
     };
 
     return (
-      <HTMLContainer ref={ref} {...events}>
+      <HTMLContainer ref={reference} {...events}>
         <StyledStickyContainer ref={rContainer} isGhost={isGhost} style={{ backgroundColor: fill, ...style }}>
           {isBinding && (
             <div
@@ -206,9 +213,7 @@ export class StickyUtil extends TDShapeUtil<T, E> {
               }}
             />
           )}
-          <StyledText ref={rText} isEditing={isEditing} alignment={shape.style.textAlign}>
-            {shape.text}&#8203;
-          </StyledText>
+          <StyledText ref={rRenderedText} isEditing={isEditing} alignment={shape.style.textAlign}></StyledText>
           {isEditing && (
             <StyledTextArea
               ref={rTextArea}
@@ -249,24 +254,13 @@ export class StickyUtil extends TDShapeUtil<T, E> {
     return getBoundsRectangle(shape, this.boundsCache);
   };
 
-  shouldRender = (prev: T, next: T) => {
-    return next.size !== prev.size || next.style !== prev.style || next.text !== prev.text;
+  shouldRender = (previous: T, next: T) => {
+    return next.size !== previous.size || next.style !== previous.style || next.text !== previous.text;
   };
 
-  transform = (shape: T, bounds: TLBounds, { scaleX, scaleY, transformOrigin }: TransformInfo<T>): Partial<T> => {
-    const point = Vec.toFixed([
-      bounds.minX + (bounds.width - shape.size[0]) * (scaleX < 0 ? 1 - transformOrigin[0] : transformOrigin[0]),
-      bounds.minY + (bounds.height - shape.size[1]) * (scaleY < 0 ? 1 - transformOrigin[1] : transformOrigin[1]),
-    ]);
+  transform = transformRectangle;
 
-    return {
-      point,
-    };
-  };
-
-  transformSingle = (shape: T): Partial<T> => {
-    return shape;
-  };
+  transformSingle = transformSingleRectangle;
 
   getSvgElement = (shape: T): SVGElement | void => {
     const bounds = this.getBounds(shape);
@@ -284,8 +278,8 @@ export class StickyUtil extends TDShapeUtil<T, E> {
 
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('width', bounds.width + '');
-    rect.setAttribute('height', bounds.height + '');
+    rect.setAttribute('width', String(bounds.width));
+    rect.setAttribute('height', String(bounds.height));
     rect.setAttribute('fill', style.fill);
     rect.setAttribute('rx', '3');
     rect.setAttribute('ry', '3');
@@ -302,16 +296,15 @@ export class StickyUtil extends TDShapeUtil<T, E> {
 /* -------------------------------------------------- */
 
 const PADDING = 16;
-const MIN_CONTAINER_HEIGHT = 200;
+const MIN_CONTAINER_HEIGHT = 300;
 
 const StyledStickyContainer = styled('div', {
   pointerEvents: 'all',
   position: 'relative',
-  backgroundColor: 'rgba(255, 220, 100)',
-  fontFamily: 'sans-serif',
+  backgroundColor: 'transparent',
   height: '100%',
   width: '100%',
-  padding: PADDING + 'px',
+  padding: `${PADDING}px`,
   borderRadius: '3px',
   perspective: '800px',
   variants: {
@@ -340,7 +333,7 @@ const StyledText = styled('div', {
   variants: {
     isEditing: {
       true: {
-        opacity: 1,
+        opacity: 0,
       },
       false: {
         opacity: 1,
@@ -374,7 +367,7 @@ const StyledTextArea = styled('textarea', {
   textAlign: 'left',
   font: 'inherit',
   padding: 0,
-  color: 'transparent',
+  color: '#333',
   verticalAlign: 'top',
   resize: 'none',
   caretColor: 'black',
