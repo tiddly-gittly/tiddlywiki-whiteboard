@@ -47,6 +47,7 @@ module.exports = {
     ],
     'unicorn/prefer-node-protocol': 'off',
     'unicorn/no-static-only-class': 'off',
+    '@typescript-eslint/no-extraneous-class': 'off',
     'unicorn/prefer-module': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/method-signature-style': 'off',
