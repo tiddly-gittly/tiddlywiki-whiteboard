@@ -228,7 +228,6 @@ TldrawTestApp {
   "align": [Function],
   "altKey": false,
   "applyPatch": [Function],
-  "broadcastPatch": [Function],
   "callbacks": {},
   "cancel": [Function],
   "cancelSession": [Function],
