@@ -94,7 +94,7 @@ export class ArrowUtil extends TDShapeUtil<T, E> {
 
     const font = getFontStyle(style);
 
-    const styles = getShapeStyle(style, meta.isDarkMode);
+    const styles = getShapeStyle(style);
 
     const labelSize = hasLabel || isEditing ? getTextLabelSize(label, font) : [0, 0];
 
@@ -167,7 +167,6 @@ export class ArrowUtil extends TDShapeUtil<T, E> {
               decorationStart={decorations?.start}
               decorationEnd={decorations?.end}
               isDraw={style.dash === DashStyle.Draw}
-              isDarkMode={meta.isDarkMode}
             />
           </g>
         </SVGContainer>
@@ -460,7 +459,7 @@ export class ArrowUtil extends TDShapeUtil<T, E> {
     return nextShape;
   };
 
-  getSvgElement = (shape: ArrowShape, isDarkMode: boolean): SVGElement | void => {
+  getSvgElement = (shape: ArrowShape): SVGElement | void => {
     const elm = document.getElementById(shape.id + '_svg')?.cloneNode(true) as SVGElement;
     if (!elm) return; // possibly in test mode
     const hasLabel = shape.label?.trim()?.length ?? 0 > 0;
@@ -497,7 +496,7 @@ export class ArrowUtil extends TDShapeUtil<T, E> {
       const y = bounds.height / 2 - (labelSize[1] / 2) * scale + offset[1];
 
       labelElm.setAttribute('transform', `translate(${x}, ${y})`);
-      labelElm.setAttribute('fill', getShapeStyle(shape.style, isDarkMode).stroke);
+      labelElm.setAttribute('fill', getShapeStyle(shape.style).stroke);
       labelElm.setAttribute('transform-origin', 'center center');
       g.setAttribute('text-align', 'center');
       g.setAttribute('text-anchor', 'middle');

@@ -4,14 +4,13 @@ import { getShapeStyle } from '@tldr/state/shapes/shared';
 import type { ShapeStyles } from '@tldr/types';
 
 interface EllipseSvgProps {
-  isDarkMode: boolean;
   isSelected: boolean;
   radius: number[];
   style: ShapeStyles;
 }
 
-export const DashedEllipse = React.memo(function DashedEllipse({ radius, style, isSelected, isDarkMode }: EllipseSvgProps) {
-  const { stroke, strokeWidth, fill } = getShapeStyle(style, isDarkMode);
+export const DashedEllipse = React.memo(function DashedEllipse({ radius, style, isSelected }: EllipseSvgProps) {
+  const { stroke, strokeWidth, fill } = getShapeStyle(style);
   const sw = 1 + strokeWidth * 1.618;
   const rx = Math.max(0, radius[0] - sw / 2);
   const ry = Math.max(0, radius[1] - sw / 2);

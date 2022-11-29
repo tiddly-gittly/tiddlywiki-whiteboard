@@ -55,7 +55,7 @@ export class StickyUtil extends TDShapeUtil<T, E> {
   Component = TDShapeUtil.Component<T, E, TDMeta>(({ shape, meta, events, isGhost, isBinding, isEditing, onShapeBlur, onShapeChange }, ref) => {
     const font = getStickyFontStyle(shape.style);
 
-    const { color, fill } = getStickyShapeStyle(shape.style, meta.isDarkMode);
+    const { color, fill } = getStickyShapeStyle(shape.style);
 
     const rContainer = React.useRef<HTMLDivElement>(null);
 
@@ -187,12 +187,12 @@ export class StickyUtil extends TDShapeUtil<T, E> {
     const style = {
       font,
       color,
-      textShadow: meta.isDarkMode ? `0.5px 0.5px 2px rgba(255, 255, 255,.25)` : `0.5px 0.5px 2px rgba(255, 255, 255,.5)`,
+      textShadow: `0.5px 0.5px 2px rgba(255, 255, 255,.5)`,
     };
 
     return (
       <HTMLContainer ref={ref} {...events}>
-        <StyledStickyContainer ref={rContainer} isDarkMode={meta.isDarkMode} isGhost={isGhost} style={{ backgroundColor: fill, ...style }}>
+        <StyledStickyContainer ref={rContainer} isGhost={isGhost} style={{ backgroundColor: fill, ...style }}>
           {isBinding && (
             <div
               className="tl-binding-indicator"
@@ -268,10 +268,10 @@ export class StickyUtil extends TDShapeUtil<T, E> {
     return shape;
   };
 
-  getSvgElement = (shape: T, isDarkMode: boolean): SVGElement | void => {
+  getSvgElement = (shape: T): SVGElement | void => {
     const bounds = this.getBounds(shape);
 
-    const style = getStickyShapeStyle(shape.style, isDarkMode);
+    const style = getStickyShapeStyle(shape.style);
 
     const fontSize = getStickyFontSize(shape.style.size) * (shape.style.scale ?? 1);
     const fontFamily = getFontFace(shape.style.font).slice(1, -1);
@@ -318,14 +318,6 @@ const StyledStickyContainer = styled('div', {
     isGhost: {
       false: { opacity: 1 },
       true: { transition: 'opacity .2s', opacity: GHOSTED_OPACITY },
-    },
-    isDarkMode: {
-      true: {
-        boxShadow: '2px 3px 12px -2px rgba(0,0,0,.3), 1px 1px 4px rgba(0,0,0,.3), 1px 1px 2px rgba(0,0,0,.3)',
-      },
-      false: {
-        boxShadow: '2px 3px 12px -2px rgba(0,0,0,.2), 1px 1px 4px rgba(0,0,0,.16),  1px 1px 2px rgba(0,0,0,.16)',
-      },
     },
   },
 });

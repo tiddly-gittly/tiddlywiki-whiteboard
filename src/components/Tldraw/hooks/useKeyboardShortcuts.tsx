@@ -156,19 +156,6 @@ export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>)
 
   /* ---------------------- Misc ---------------------- */
 
-  // Dark Mode
-
-  useHotkeys(
-    'ctrl+shift+d,⌘+shift+d',
-    (e) => {
-      if (!canHandleEvent(true)) return;
-      app.toggleDarkMode();
-      e.preventDefault();
-    },
-    undefined,
-    [app],
-  );
-
   // Focus Mode
 
   useHotkeys(

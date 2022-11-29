@@ -55,7 +55,7 @@ export class TextUtil extends TDShapeUtil<T, E> {
 
   Component = TDShapeUtil.Component<T, E, TDMeta>(({ shape, isBinding, isGhost, isEditing, onShapeBlur, onShapeChange, meta, events }, ref) => {
     const { text, style } = shape;
-    const styles = getShapeStyle(style, meta.isDarkMode);
+    const styles = getShapeStyle(style);
     const font = getFontStyle(shape.style);
     const rInput = React.useRef<HTMLTextAreaElement>(null);
     const rIsMounted = React.useRef(false);
@@ -378,9 +378,9 @@ export class TextUtil extends TDShapeUtil<T, E> {
     };
   };
 
-  getSvgElement = (shape: T, isDarkMode: boolean): SVGElement | void => {
+  getSvgElement = (shape: T): SVGElement | void => {
     const bounds = this.getBounds(shape);
-    const style = getShapeStyle(shape.style, isDarkMode);
+    const style = getShapeStyle(shape.style);
 
     const fontSize = getFontSize(shape.style.size, shape.style.font) * (shape.style.scale ?? 1);
     const fontFamily = getFontFace(shape.style.font).slice(1, -1);

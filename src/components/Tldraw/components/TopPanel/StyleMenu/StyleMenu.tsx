@@ -47,7 +47,7 @@ const ALIGN_ICONS = {
   [AlignStyle.Justify]: <TextAlignJustifyIcon />,
 };
 
-const themeSelector = (s: TDSnapshot) => (s.settings.isDarkMode ? 'dark' : 'light');
+const themeSelector = (s: TDSnapshot) => 'light';
 
 const keepOpenSelector = (s: TDSnapshot) => s.settings.keepStyleMenuOpen;
 

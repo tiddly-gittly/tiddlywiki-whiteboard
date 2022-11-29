@@ -24,7 +24,7 @@ import { useCursor } from '@tldr/hooks/useCursor';
 import { TDCallbacks, TldrawApp } from '@tldr/state';
 import { TLDR } from '@tldr/state/TLDR';
 import { shapeUtils } from '@tldr/state/shapes';
-import { dark, styled } from '@tldr/styles';
+import { styled } from '@tldr/styles';
 import { TDDocument, TDStatus } from '@tldr/types';
 
 const ErrorBoundary = _Errorboundary as any;
@@ -49,11 +49,6 @@ export interface TldrawProps extends TDCallbacks {
    * (optional) The current page id.
    */
   currentPageId?: string;
-
-  /**
-   * (optional) Whether to to show the app's dark mode UI.
-   */
-  darkMode?: boolean;
 
   /**
    * (optional) If provided, image/video componnets will be disabled.
@@ -119,8 +114,6 @@ export interface TldrawProps extends TDCallbacks {
   showZoom?: boolean;
 }
 
-const isSystemDarkMode = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
-
 export function Tldraw({
   id,
   document,
@@ -135,7 +128,6 @@ export function Tldraw({
   showUI = true,
   readOnly = false,
   disableAssets = false,
-  darkMode = isSystemDarkMode,
   components,
   onMount,
   onChange,
@@ -262,13 +254,6 @@ export function Tldraw({
       app.setEditingId();
     }
   }, [app, readOnly]);
-
-  // Toggle the app's darkMode when the `darkMode` prop changes.
-  React.useEffect(() => {
-    if (darkMode !== app.settings.isDarkMode) {
-      app.toggleDarkMode();
-    }
-  }, [app, darkMode]);
 
   // Update the app's callbacks when any callback changes.
   React.useEffect(() => {
@@ -405,30 +390,12 @@ const InnerTldraw = React.memo(function InnerTldraw({
   const isHideResizeHandlesShape =
     selectedIds.length === 1 && page.shapes[selectedIds[0]] && TLDR.getShapeUtil(page.shapes[selectedIds[0]].type).hideResizeHandles;
 
-  // Custom rendering meta, with dark mode for shapes
-  const meta = React.useMemo(() => {
-    return { isDarkMode: settings.isDarkMode };
-  }, [settings.isDarkMode]);
-
   const showDashedBrush = settings.isCadSelectMode ? !appState.selectByContain : appState.selectByContain;
 
-  // Custom theme, based on darkmode
+  // TODO: sync theme from wiki palette
   const theme = React.useMemo(() => {
     const { selectByContain } = appState;
-    const { isDarkMode, isCadSelectMode } = settings;
-
-    if (isDarkMode) {
-      const brushBase = isCadSelectMode ? (selectByContain ? '69, 155, 255' : '105, 209, 73') : '180, 180, 180';
-      return {
-        brushFill: `rgba(${brushBase}, ${isCadSelectMode ? 0.08 : 0.05})`,
-        brushStroke: `rgba(${brushBase}, ${isCadSelectMode ? 0.5 : 0.25})`,
-        brushDashStroke: `rgba(${brushBase}, .6)`,
-        selected: 'rgba(38, 150, 255, 1.000)',
-        selectFill: 'rgba(38, 150, 255, 0.05)',
-        background: '#212529',
-        foreground: '#49555f',
-      };
-    }
+    const { isCadSelectMode } = settings;
 
     const brushBase = isCadSelectMode ? (selectByContain ? '0, 89, 242' : '51, 163, 23') : '0,0,0';
 
@@ -437,7 +404,7 @@ const InnerTldraw = React.memo(function InnerTldraw({
       brushStroke: `rgba(${brushBase}, ${isCadSelectMode ? 0.4 : 0.25})`,
       brushDashStroke: `rgba(${brushBase}, .6)`,
     };
-  }, [settings.isDarkMode, settings.isCadSelectMode, appState.selectByContain]);
+  }, [settings.isCadSelectMode, appState.selectByContain]);
 
   const isInSession = app.session !== undefined;
 
@@ -453,18 +420,6 @@ const InnerTldraw = React.memo(function InnerTldraw({
   const hideCloneHandles = isInSession || !isSelecting || pageState.camera.zoom < 0.2;
 
   const translation = useTranslation(settings.language);
-
-  // Put the theme on the body. This means that components with
-  // multiple editors cannot have different themes.
-  React.useLayoutEffect(() => {
-    const elm = rWrapper.current;
-    if (elm == undefined) return;
-    if (settings.isDarkMode) {
-      elm.classList.add(dark);
-    } else {
-      elm.classList.remove(dark);
-    }
-  }, [settings.isDarkMode]);
 
   useCursor(rWrapper);
 
@@ -490,7 +445,6 @@ const InnerTldraw = React.memo(function InnerTldraw({
                 users={room?.users}
                 userId={room?.userId}
                 theme={theme}
-                meta={meta}
                 components={components}
                 hideCursors={hideCursors}
                 hideBounds={hideBounds}

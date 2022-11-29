@@ -53,7 +53,7 @@ export class DrawUtil extends TDShapeUtil<T, E> {
       return style.dash === DashStyle.Draw ? getDrawStrokePathTDSnapshot(shape) : getSolidStrokePathTDSnapshot(shape);
     }, [points, style.size, style.dash, isComplete]);
 
-    const styles = getShapeStyle(style, meta.isDarkMode);
+    const styles = getShapeStyle(style);
     const { stroke, fill, strokeWidth } = styles;
 
     // For very short lines, draw a point instead of a line

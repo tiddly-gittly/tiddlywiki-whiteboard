@@ -20,10 +20,6 @@ export function PreferencesMenu() {
     app.setSetting('isDebugMode', (v) => !v);
   }, [app]);
 
-  const toggleDarkMode = React.useCallback(() => {
-    app.setSetting('isDarkMode', (v) => !v);
-  }, [app]);
-
   const toggleFocusMode = React.useCallback(() => {
     app.setSetting('isFocusMode', (v) => !v);
   }, [app]);
@@ -56,9 +52,6 @@ export function PreferencesMenu() {
 
   return (
     <DMSubMenu label={intl.formatMessage({ id: 'menu.preferences' })} id="TD-MenuItem-Preferences">
-      <DMCheckboxItem checked={settings.isDarkMode} onCheckedChange={toggleDarkMode} kbd="#⇧D" id="TD-MenuItem-Preferences-Dark_Mode">
-        <FormattedMessage id="preferences.dark.mode" />
-      </DMCheckboxItem>
       <DMCheckboxItem checked={settings.isFocusMode} onCheckedChange={toggleFocusMode} kbd="#." id="TD-MenuItem-Preferences-Focus_Mode">
         <FormattedMessage id="preferences.focus.mode" />
       </DMCheckboxItem>

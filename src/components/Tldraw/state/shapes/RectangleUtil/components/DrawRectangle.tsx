@@ -5,15 +5,14 @@ import { getRectangleIndicatorPathTDSnapshot, getRectanglePath } from '../rectan
 
 interface RectangleSvgProps {
   id: string;
-  isDarkMode: boolean;
   isSelected: boolean;
   size: number[];
   style: ShapeStyles;
 }
 
-export const DrawRectangle = React.memo(function DrawRectangle({ id, style, size, isSelected, isDarkMode }: RectangleSvgProps) {
+export const DrawRectangle = React.memo(function DrawRectangle({ id, style, size, isSelected }: RectangleSvgProps) {
   const { isFilled } = style;
-  const { stroke, strokeWidth, fill } = getShapeStyle(style, isDarkMode);
+  const { stroke, strokeWidth, fill } = getShapeStyle(style);
   const pathTDSnapshot = getRectanglePath(id, style, size);
   const innerPath = getRectangleIndicatorPathTDSnapshot(id, style, size);
 

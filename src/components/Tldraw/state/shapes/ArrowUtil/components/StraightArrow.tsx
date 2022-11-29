@@ -13,16 +13,15 @@ interface ArrowSvgProps {
   decorationStart: Decoration | undefined;
   end: number[];
   id: string;
-  isDarkMode: boolean;
   isDraw: boolean;
   start: number[];
   style: ShapeStyles;
 }
 
-export const StraightArrow = React.memo(function StraightArrow({ id, style, start, end, decorationStart, decorationEnd, isDraw, isDarkMode }: ArrowSvgProps) {
+export const StraightArrow = React.memo(function StraightArrow({ id, style, start, end, decorationStart, decorationEnd, isDraw }: ArrowSvgProps) {
   const arrowDist = Vec.dist(start, end);
   if (arrowDist < 2) return null;
-  const styles = getShapeStyle(style, isDarkMode);
+  const styles = getShapeStyle(style);
   const { strokeWidth } = styles;
   const sw = 1 + strokeWidth * 1.618;
   // Path between start and end points

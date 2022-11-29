@@ -126,23 +126,20 @@ export function getStickyFontStyle(style: ShapeStyles): string {
   return `${fontSize * scale}px/1 ${fontFace}`;
 }
 
-export function getStickyShapeStyle(style: ShapeStyles, isDarkMode = false) {
+export function getStickyShapeStyle(style: ShapeStyles) {
   const { color } = style;
 
-  const theme: Theme = isDarkMode ? 'dark' : 'light';
+  const theme: Theme = 'light';
   const adjustedColor = color === ColorStyle.White || color === ColorStyle.Black ? ColorStyle.Yellow : color;
 
   return {
     fill: stickyFills[theme][adjustedColor],
     stroke: strokes[theme][adjustedColor],
-    color: isDarkMode ? '#1d1d1d' : '#0d0d0d',
+    color: '#0d0d0d',
   };
 }
 
-export function getShapeStyle(
-  style: ShapeStyles,
-  isDarkMode?: boolean,
-): {
+export function getShapeStyle(style: ShapeStyles): {
   fill: string;
   stroke: string;
   strokeWidth: number;
@@ -151,7 +148,7 @@ export function getShapeStyle(
 
   const strokeWidth = getStrokeWidth(size);
 
-  const theme: Theme = isDarkMode ? 'dark' : 'light';
+  const theme: Theme = 'light';
 
   return {
     stroke: strokes[theme][color],
