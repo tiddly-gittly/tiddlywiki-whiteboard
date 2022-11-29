@@ -419,35 +419,6 @@ export class TldrawApp extends StateManager<TDSnapshot> {
       }
     });
 
-    const currentPageId = next.appState.currentPageId;
-
-    const currentPageState = next.document.pageStates[currentPageId];
-
-    // if (next.room && next.room !== prev.room) {
-    //   const room = { ...next.room, users: { ...next.room.users } };
-
-    //   // Remove any exited users
-    //   if (prev.room) {
-    //     Object.values(prev.room.users)
-    //       .filter(Boolean)
-    //       .forEach((user) => {
-    //         if (room.users[user.id] === undefined) {
-    //           delete room.users[user.id];
-    //         }
-    //       });
-    //   }
-
-    //   next.room = room;
-    // }
-
-    // if (next.room) {
-    //   next.room.users[next.room.userId] = {
-    //     ...next.room.users[next.room.userId],
-    //     point: this.currentPoint,
-    //     selectedIds: currentPageState.selectedIds,
-    //   };
-    // }
-
     // Temporary block on editing pages while in readonly mode.
     // This is a broad solution but not a very good one: the UX
     // for interacting with a readOnly document will be more nuanced.
@@ -3324,21 +3295,8 @@ export class TldrawApp extends StateManager<TDSnapshot> {
     };
   }
 
-  get room() {
-    return this.state.room;
-  }
-
-  get isLocal() {
-    return this.state.room === undefined || this.state.room.id === 'local';
-  }
-
   get status() {
     return this.appState.status;
-  }
-
-  get currentUser() {
-    if (!this.state.room) return;
-    return this.state.room.users[this.state.room.userId];
   }
 
   // The center of the component (in screen space)

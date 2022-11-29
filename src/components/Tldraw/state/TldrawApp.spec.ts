@@ -592,7 +592,6 @@ describe('TldrawTestApp', () => {
       });
       const state = app.state;
       TldrawTestApp.version = 100;
-      TldrawTestApp.defaultState.room = defaultState.room;
       const app2 = new TldrawTestApp('migrate_1');
       await app2.ready;
       app2.patchState(state);

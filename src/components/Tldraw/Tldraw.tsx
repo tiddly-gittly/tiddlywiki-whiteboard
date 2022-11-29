@@ -328,7 +328,7 @@ const InnerTldraw = React.memo(function InnerTldraw({
 
   const state = app.useStore();
 
-  const { document, settings, appState, room } = state;
+  const { document, settings, appState } = state;
 
   const isSelecting = state.appState.activeTool === 'select';
 
@@ -390,8 +390,6 @@ const InnerTldraw = React.memo(function InnerTldraw({
             snapLines={appState.snapLines}
             eraseLine={appState.eraseLine}
             grid={GRID_SIZE}
-            users={room?.users}
-            userId={room?.userId}
             theme={theme}
             components={components}
             hideCursors={hideCursors}
