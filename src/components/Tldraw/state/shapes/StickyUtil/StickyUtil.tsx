@@ -198,8 +198,26 @@ export class StickyUtil extends TDShapeUtil<T, E> {
       textShadow: `0.5px 0.5px 2px rgba(255, 255, 255,.5)`,
     };
 
+    const onPointerUp = React.useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+      // elementsFromPoint can't find it, have to locate it like this
+      const buttonOrLinkInWikiText = (event.target as HTMLDivElement).querySelectorAll('a,button');
+      // eslint-disable-next-line unicorn/prefer-spread
+      const clickedElement = Array.from(buttonOrLinkInWikiText).find((element) => {
+        const rect = element.getBoundingClientRect();
+        return event.clientX > rect.x && event.clientX < rect.x + rect.width && event.clientY > rect.y && event.clientY < rect.y + rect.height;
+      });
+      if (clickedElement !== undefined) {
+        event.preventDefault();
+        event.stopPropagation();
+        const newClickEvent = new MouseEvent('click', { ...event.nativeEvent });
+        clickedElement.dispatchEvent(newClickEvent);
+        return;
+      }
+      events.onPointerUp(event);
+    }, []);
+
     return (
-      <HTMLContainer ref={reference} {...events}>
+      <HTMLContainer ref={reference} {...events} onPointerUp={onPointerUp}>
         <StyledStickyContainer ref={rContainer} isGhost={isGhost} style={{ backgroundColor: fill, ...style }}>
           {isBinding && (
             <div
