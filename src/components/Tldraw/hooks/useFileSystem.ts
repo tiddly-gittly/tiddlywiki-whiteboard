@@ -31,34 +31,6 @@ export function useFileSystem() {
     [],
   );
 
-  const onOpenProject = React.useCallback(
-    async (
-      app: TldrawApp,
-      openDialog: (dialogState: DialogState, onYes: () => Promise<void>, onNo: () => Promise<void>, onCancel: () => Promise<void>) => void,
-    ) => {
-      openDialog(
-        app.fileSystemHandle == undefined ? 'saveAgain' : 'saveFirstTime',
-        async () => {
-          // user pressed yes
-          try {
-            await app.saveProject();
-            await app.openProject();
-          } catch {
-            // noop
-          }
-        },
-        async () => {
-          // user pressed no
-          app.openProject();
-        },
-        async () => {
-          // user pressed cancel
-        },
-      );
-    },
-    [],
-  );
-
   const onSaveProject = React.useCallback((app: TldrawApp) => {
     app.saveProject();
   }, []);
@@ -75,7 +47,6 @@ export function useFileSystem() {
     onNewProject,
     onSaveProject,
     onSaveProjectAs,
-    onOpenProject,
     onOpenMedia,
   };
 }

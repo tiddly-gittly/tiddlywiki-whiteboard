@@ -36,7 +36,7 @@ export const Menu = React.memo(function Menu({ readOnly }: MenuProps) {
 
   React.useEffect(() => setForce(1), []);
 
-  const { onNewProject, onOpenProject, onSaveProject, onSaveProjectAs } = useFileSystemHandlers();
+  const { onNewProject, onSaveProject } = useFileSystemHandlers();
 
   const handleSaveProjectAs = React.useCallback(() => {
     if (supported) {
@@ -112,7 +112,6 @@ export const Menu = React.memo(function Menu({ readOnly }: MenuProps) {
 
   const showFileMenu =
     app.callbacks.onNewProject != undefined ||
-    app.callbacks.onOpenProject != undefined ||
     app.callbacks.onSaveProject != undefined ||
     app.callbacks.onSaveProjectAs != undefined ||
     app.callbacks.onExport;
@@ -131,12 +130,6 @@ export const Menu = React.memo(function Menu({ readOnly }: MenuProps) {
               {app.callbacks.onNewProject != undefined && (
                 <DMItem onClick={onNewProject} kbd="#N" id="TD-MenuItem-File-New_Project">
                   <FormattedMessage id="new.project" />
-                </DMItem>
-              )}
-              {app.callbacks.onOpenProject != undefined && (
-                <DMItem onClick={onOpenProject} kbd="#O" id="TD-MenuItem-File-Open">
-                  <FormattedMessage id="open" />
-                  ...
                 </DMItem>
               )}
               {app.callbacks.onSaveProject != undefined && (

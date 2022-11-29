@@ -30,14 +30,6 @@ export function useFileSystemHandlers() {
     [app],
   );
 
-  const onOpenProject = React.useCallback(
-    async (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
-      if (e != undefined && app.callbacks.onOpenProject != undefined) e.preventDefault();
-      app.callbacks.onOpenProject?.(app, openDialog);
-    },
-    [app, openDialog],
-  );
-
   const onOpenMedia = React.useCallback(
     async (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
       if (e != undefined && app.callbacks.onOpenMedia != undefined) e.preventDefault();
@@ -50,7 +42,6 @@ export function useFileSystemHandlers() {
     onNewProject,
     onSaveProject,
     onSaveProjectAs,
-    onOpenProject,
     onOpenMedia,
   };
 }
