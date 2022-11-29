@@ -114,7 +114,7 @@ export function getFontStyle(style: ShapeStyles): string {
   const fontSize = getFontSize(style.size, style.font);
   // TODO: list tw fonts in the menu, user can only choose fonts listed in this $:/themes/tiddlywiki/vanilla/settings/fontfamily tiddler
   // use font setting in tiddlywiki preferences
-  const tiddlywikiFontSetting = typeof $tw === 'undefined' ? undefined : '$:/themes/tiddlywiki/vanilla/settings/fontfamily';
+  const tiddlywikiFontSetting = typeof $tw === 'undefined' ? undefined : $tw.wiki.getTiddlerText('$:/themes/tiddlywiki/vanilla/settings/fontfamily');
   const fontFace = tiddlywikiFontSetting ?? getFontFace(style.font);
   const { scale = 1 } = style;
 
