@@ -1,7 +1,7 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { CircleIcon, SquareIcon, VercelLogoIcon } from '@radix-ui/react-icons';
 import * as React from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl } from '@tldr/translations/FormattedMessage';
 import { Panel } from '@tldr/components/Primitives/Panel';
 import { ToolButton } from '@tldr/components/Primitives/ToolButton';
 import { Tooltip } from '@tldr/components/Primitives/Tooltip';

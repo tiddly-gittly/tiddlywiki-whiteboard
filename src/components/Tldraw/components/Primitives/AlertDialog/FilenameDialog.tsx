@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-alert-dialog';
 import { Pencil1Icon } from '@radix-ui/react-icons';
 import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from '@tldr/translations/FormattedMessage';
 import { useContainer, useTldrawApp } from '@tldr/hooks';
 import { styled } from '@tldr/styles';
 import { TextField } from '../TextField';

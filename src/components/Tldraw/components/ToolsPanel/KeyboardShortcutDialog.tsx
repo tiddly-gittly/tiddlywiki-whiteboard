@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from '@tldr/translations/FormattedMessage';
 import { IconButton } from '@tldr/components/Primitives/IconButton';
 import { Kbd } from '@tldr/components/Primitives/Kbd';
 import { RowButton } from '@tldr/components/Primitives/RowButton';

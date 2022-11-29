@@ -2,7 +2,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import { supported } from 'browser-fs-access';
 import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from '@tldr/translations/FormattedMessage';
 import { FilenameDialog } from '@tldr/components/Primitives/AlertDialog';
 import { Divider } from '@tldr/components/Primitives/Divider';
 import { DMContent, DMItem, DMSubMenu, DMTriggerIcon } from '@tldr/components/Primitives/DropdownMenu';

@@ -1,6 +1,6 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '@tldr/translations/FormattedMessage';
 import { DMContent, DMItem } from '@tldr/components/Primitives/DropdownMenu';
 import { ToolButton } from '@tldr/components/Primitives/ToolButton';
 import { preventEvent } from '@tldr/components/preventEvent';

@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-alert-dialog';
 import { MixerVerticalIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from '@tldr/translations/FormattedMessage';
 import { Divider } from '@tldr/components/Primitives/Divider';
 import { IconButton } from '@tldr/components/Primitives/IconButton/IconButton';
 import { RowButton, RowButtonProps } from '@tldr/components/Primitives/RowButton';

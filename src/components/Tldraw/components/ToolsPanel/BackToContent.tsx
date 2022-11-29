@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '@tldr/translations/FormattedMessage';
 import { MenuContent } from '@tldr/components/Primitives/MenuContent';
 import { RowButton } from '@tldr/components/Primitives/RowButton';
 import { useTldrawApp } from '@tldr/hooks';

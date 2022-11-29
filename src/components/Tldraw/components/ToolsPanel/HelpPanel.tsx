@@ -2,13 +2,12 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { GitHubLogoIcon, HeartFilledIcon, QuestionMarkIcon, TwitterLogoIcon } from '@radix-ui/react-icons';
 import * as Popover from '@radix-ui/react-popover';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '@tldr/translations/FormattedMessage';
 import { Divider } from '@tldr/components/Primitives/Divider';
 import { MenuContent } from '@tldr/components/Primitives/MenuContent';
 import { RowButton } from '@tldr/components/Primitives/RowButton';
 import { SmallIcon } from '@tldr/components/Primitives/SmallIcon';
 import { DiscordIcon } from '@tldr/components/Primitives/icons';
-import { LanguageMenu } from '@tldr/components/TopPanel/LanguageMenu/LanguageMenu';
 import { breakpoints } from '@tldr/components/breakpoints';
 import { useTldrawApp } from '@tldr/hooks';
 import { styled } from '@tldr/styles';
@@ -36,7 +35,6 @@ export function HelpPanel() {
       </PopoverAnchor>
       <Popover.Content dir="ltr" align="end" side="top" alignOffset={10} sideOffset={8} asChild>
         <StyledContent style={{ visibility: isKeyboardShortcutsOpen ? 'hidden' : 'visible' }}>
-          <LanguageMenuDropdown />
           <KeyboardShortcutDialog onOpenChange={setIsKeyboardShortcutsOpen} />
           <Divider />
           <Links />
@@ -45,19 +43,6 @@ export function HelpPanel() {
     </Popover.Root>
   );
 }
-
-const LanguageMenuDropdown = () => {
-  return (
-    <DropdownMenu.Root dir="ltr">
-      <DropdownMenu.Trigger asChild>
-        <RowButton variant="wide" hasArrow>
-          <FormattedMessage id="language" />
-        </RowButton>
-      </DropdownMenu.Trigger>
-      <LanguageMenu />
-    </DropdownMenu.Root>
-  );
-};
 
 const linksData = [
   { id: 'github', icon: GitHubLogoIcon, url: 'https://github.com/tldraw/tldraw' },

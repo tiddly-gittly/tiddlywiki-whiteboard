@@ -1,7 +1,7 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { TextAlignCenterIcon, TextAlignJustifyIcon, TextAlignLeftIcon, TextAlignRightIcon } from '@radix-ui/react-icons';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from '@tldr/translations/FormattedMessage';
 import { Divider } from '@tldr/components/Primitives/Divider';
 import { DMCheckboxItem, DMContent, DMRadioItem } from '@tldr/components/Primitives/DropdownMenu';
 import { ToolButton } from '@tldr/components/Primitives/ToolButton';

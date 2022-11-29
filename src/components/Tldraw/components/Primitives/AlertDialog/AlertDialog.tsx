@@ -1,6 +1,6 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from '@tldr/translations/FormattedMessage';
 import { DialogState, useDialog } from '@tldr/hooks';
 import { styled } from '@tldr/styles';
 

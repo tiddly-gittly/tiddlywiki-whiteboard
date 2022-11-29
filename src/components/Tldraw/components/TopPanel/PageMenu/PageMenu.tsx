@@ -1,7 +1,7 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { CheckIcon, PlusIcon } from '@radix-ui/react-icons';
 import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from '@tldr/translations/FormattedMessage';
 import { Divider } from '@tldr/components/Primitives/Divider';
 import { DMContent } from '@tldr/components/Primitives/DropdownMenu';
 import { RowButton } from '@tldr/components/Primitives/RowButton';

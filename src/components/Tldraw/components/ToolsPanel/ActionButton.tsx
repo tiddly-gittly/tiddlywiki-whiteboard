@@ -25,7 +25,7 @@ import {
   StretchVerticallyIcon,
 } from '@radix-ui/react-icons';
 import * as React from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl } from '@tldr/translations/FormattedMessage';
 import { Divider } from '@tldr/components/Primitives/Divider';
 import { DMContent } from '@tldr/components/Primitives/DropdownMenu';
 import { ToolButton } from '@tldr/components/Primitives/ToolButton';
