@@ -1,4 +1,4 @@
-title: Readme
+title: Usage
 type: text/vnd.tiddlywiki
 
 # Provides a whiteboard widget, use it like `<$whiteboard tiddler="tiddlerToStoreData" />`

@@ -1,0 +1,7 @@
+title: Installation
+type: text/vnd.tiddlywiki
+
+# This plugins: You can install it from [[CPL|https://tw-cpl.netlify.app/]] (will auto install dependencies), or drag it from the [[$:/ControlPanel]]
+# If you don't install it from [[CPL|https://tw-cpl.netlify.app/]], You might also need to install its requirement, ReactJS plugin, better install from [[CPL|https://tw-cpl.netlify.app/]] (plugin library, enjoy the one-click-update) or drag it from [[Release v0.4.3 · tiddly-gittly/tw-react · GitHub|https://github.com/tiddly-gittly/tw-react/releases/latest]] to your wiki!
+
+The ReactJS plugin in this whiteboard demo site is of development mode, so size is much larger than the one in the above two websites!

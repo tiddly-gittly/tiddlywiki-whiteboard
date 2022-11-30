@@ -1,0 +1,12 @@
+title: WidgetDemo
+type: text/vnd.tiddlywiki
+
+Use widget:
+
+```tw5
+<$whiteboard />
+```
+
+<$whiteboard />
+
+[[TldrTiddlerExample]]
