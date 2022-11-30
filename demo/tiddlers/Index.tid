@@ -3,14 +3,6 @@ type: text/vnd.tiddlywiki
 
 {{$:/snippets/minilanguageswitcher}}
 
-[[Readme]]
+[[Usage]] [[Installation]]
 
-Use widget:
-
-```tw5
-<$whiteboard />
-```
-
-<$whiteboard />
-
-[[TldrTiddlerExample]]
+{{WidgetDemo}}
