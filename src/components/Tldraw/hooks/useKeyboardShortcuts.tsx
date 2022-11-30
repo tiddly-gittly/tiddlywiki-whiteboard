@@ -7,7 +7,7 @@ import { STICKY_TEXT_AREA_CLASS_NAME } from '@tldr/state/shapes/StickyUtil/const
 
 export function useKeyboardShortcuts(reference: React.RefObject<HTMLDivElement>) {
   const app = useTldrawApp();
-  const hotKeySetting = {}; // { scopes: app.document?.id };
+  const hotKeySetting = { scopes: app.document?.id };
 
   const canHandleEvent = React.useCallback(
     (ignoreMenus = false) => {
