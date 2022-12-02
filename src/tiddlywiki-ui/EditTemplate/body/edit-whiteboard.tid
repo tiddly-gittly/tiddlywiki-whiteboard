@@ -1,0 +1,7 @@
+title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/EditTemplate/body/edit-whiteboard
+
+\define lingo-base() $:/language/EditTemplate/Body/
+
+<div class="tw-whiteboard-edit-body-container">
+<$edit-whiteboard tiddler=<<currentTiddler>> />
+</div>

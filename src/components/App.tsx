@@ -17,6 +17,7 @@ export interface IAppProps {
   currentTiddler: string;
   height?: string;
   initialTiddlerText?: string;
+  readonly?: boolean;
   saver: {
     /** ms about debounce how long between save */
     interval?: number;
@@ -36,6 +37,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     width,
     currentTiddler,
     initialTiddlerText,
+    readonly,
     saver: { onSave },
     parentWidget,
   } = props;
@@ -78,7 +80,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
   return (
     <ParentWidgetContext.Provider value={parentWidget}>
       <div className="tw-whiteboard-tldraw-container" style={{ height, width }}>
-        <Tldraw onPersist={onChange} document={tldrawDocument} autofocus={false} />
+        <Tldraw onPersist={onChange} document={tldrawDocument} autofocus={false} readOnly={readonly} />
       </div>
     </ParentWidgetContext.Provider>
   );
