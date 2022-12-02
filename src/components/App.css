@@ -2,6 +2,8 @@
   width: 100%;
   height: 500px;
   position: relative;
+  /** don't overlap with other dropdown */
+  z-index: 0;
 }
 
 .tw-whiteboard-tldraw-container button:not(.tc-btn-invisible) {
