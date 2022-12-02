@@ -1,5 +1,0 @@
-title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/ViewTemplate/body/edit-whiteboard
-
-\define lingo-base() $:/language/EditTemplate/Body/
-
-<$edit-whiteboard tiddler=<<currentTiddler>> />

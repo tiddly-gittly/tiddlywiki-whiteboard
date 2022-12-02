@@ -1,0 +1,5 @@
+title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/EditTemplate/body/edit-whiteboard-cascade-filter
+tags: $:/tags/EditTemplateBodyFilter
+list-before: $:/config/EditTemplateBodyFilters/default
+
+[field:type[application/tldr]then[$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/EditTemplate/body/edit-whiteboard]]

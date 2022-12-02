@@ -9,4 +9,10 @@ Use widget:
 
 <$whiteboard />
 
+```tw5
+<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" />
+```
+
+<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" />
+
 [[TldrTiddlerExample]]

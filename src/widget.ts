@@ -15,6 +15,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       initialTiddlerText: this.editTitle === undefined ? '' : $tw.wiki.getTiddlerText(this.editTitle),
       height: this.getAttribute('height'),
       width: this.getAttribute('width'),
+      readonly: this.getAttribute('readonly') === 'yes' || this.getAttribute('readonly') === 'true',
       saver: {
         onSave: this.onSave,
         interval: SAVE_DEBOUNCE_INTERVAL,
