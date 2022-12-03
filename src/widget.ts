@@ -17,6 +17,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       width: this.getAttribute('width'),
       readonly: this.getAttribute('readonly') === 'yes' || this.getAttribute('readonly') === 'true',
       saver: {
+        lock: this.lock,
         onSave: this.onSave,
         interval: SAVE_DEBOUNCE_INTERVAL,
       },
@@ -24,6 +25,10 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
   };
 
   public refresh(changedTiddlers: IChangedTiddlers): boolean {
+    // if tiddler change is triggered by react, then skip the update of slate
+    if (this.isUpdatingByUserInput) {
+      return false;
+    }
     const changedAttributes = this.computeAttributes();
     if ($tw.utils.count(changedAttributes) > 0 || (this.editTitle !== undefined && changedTiddlers[this.editTitle] !== undefined)) {
       this.refreshSelf();
@@ -32,32 +37,12 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     return false;
   }
 
-  private readonly currentTiddler: string | undefined;
   editorOperations = {};
   private editTitle: string | undefined;
-  private editField: string | undefined;
-  private editIndex: string | undefined;
-  private editDefault: string | undefined;
-  private editClass: string | undefined;
-  private editMinHeight: string | undefined;
-  private editTabIndex: string | undefined;
-  private isDisabled: string | undefined;
-  private isFileDropEnabled: boolean | undefined;
 
   execute() {
-    // Get our editor parameters, like in slate-write
     /** don't use `this.getVariable('currentTiddler')` otherwise it will overwrite the widget. */
     this.editTitle = this.getAttribute('tiddler');
-    this.editField = this.getAttribute('field', 'text');
-    this.editIndex = this.getAttribute('index');
-    this.editDefault = this.getAttribute('default');
-    this.editClass = this.getAttribute('class');
-    this.editMinHeight = this.getAttribute('minHeight', '100px');
-    this.editTabIndex = this.getAttribute('tabindex');
-    this.isDisabled = this.getAttribute('disabled', 'no');
-    this.isFileDropEnabled = this.getAttribute('fileDrop', 'no') === 'yes';
-    // Get the default editor element tag and type (textarea or div) (not implemented)
-
     // Make the child widgets
     this.makeChildWidgets();
   }
@@ -69,12 +54,33 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     }
     const previousText = $tw.wiki.getTiddlerText(this.editTitle) ?? '';
     // prevent useless call to addTiddler
-    if (previousText === newText) {
-      return;
+    if (previousText !== newText) {
+      $tw.wiki.setText(this.editTitle, undefined, undefined, newText);
+      // set tiddler type
+      $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/tldr');
     }
-    $tw.wiki.setText(this.editTitle, undefined, undefined, newText);
-    // set tiddler type
-    $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/tldr');
+    this.unlock();
+  };
+
+  /** a lock to prevent update from tiddler to slate, when update of tiddler is trigger by slate. */
+  private isUpdatingByUserInput = false;
+  private updatingLockTimeoutHandle: NodeJS.Timeout | undefined;
+  get editIconElement() {
+    const element = (this.parentDomNode as HTMLDivElement).closest('.tc-tiddler-exists')?.querySelector('.tc-image-wysiwyg-edit-button');
+    return element;
+  }
+
+  lock = () => {
+    this.isUpdatingByUserInput = true;
+    if (this.updatingLockTimeoutHandle !== undefined) {
+      clearTimeout(this.updatingLockTimeoutHandle);
+    }
+  };
+
+  unlock = () => {
+    this.updatingLockTimeoutHandle = setTimeout(() => {
+      this.isUpdatingByUserInput = false;
+    }, SAVE_DEBOUNCE_INTERVAL);
   };
 }
 

@@ -22,9 +22,16 @@ import { getTrianglePoints } from './shapes/TriangleUtil/triangleHelpers';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 export class TLDR {
-  static getShapeUtil<T extends TDShape>(type: T['type']): TDShapeUtil<T>;
-  static getShapeUtil<T extends TDShape>(shape: T): TDShapeUtil<T>;
+  /**
+   * @param type incase passed in type is undefined, this will return undefined too
+   */
+  static getShapeUtil<T extends TDShape>(type: T['type']): TDShapeUtil<T> | undefined;
+  static getShapeUtil<T extends TDShape>(shape: T): TDShapeUtil<T> | undefined;
   static getShapeUtil<T extends TDShape>(shape: T | T['type']) {
+    if (shape === undefined) {
+      debugger;
+      throw new Error(`shape is undefined in getShapeUtil`);
+    }
     return getShapeUtil<T>(shape);
   }
 

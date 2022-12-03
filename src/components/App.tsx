@@ -21,6 +21,8 @@ export interface IAppProps {
   saver: {
     /** ms about debounce how long between save */
     interval?: number;
+    /** a lock to prevent update from tiddler to slate, when update of tiddler is trigger by slate. */
+    lock: () => void;
     onSave: (value: string) => void;
   };
   width?: string;
@@ -62,13 +64,29 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     }
   }, [getTiddlerJSONContent]);
   const [tldrawDocument, tldrawDocumentSetter] = useState<TDDocument | undefined>(initialTiddlerJSONContent);
+  const deferSave = useCallback(
+    (app: TldrawApp) => {
+      const saveCallback = () => {
+        const exportedTldrJSON = { document: app.document };
+        const newTiddlerText = JSON.stringify(exportedTldrJSON);
+        props.saver.lock();
+        onSave(newTiddlerText);
+      };
+      if (typeof requestIdleCallback !== 'undefined') {
+        requestIdleCallback(saveCallback, { timeout: 60 });
+      } else if (typeof requestAnimationFrame === 'undefined') {
+        setTimeout(saveCallback, 16.66);
+      } else {
+        requestAnimationFrame(saveCallback);
+      }
+    },
+    [onSave],
+  );
   const debouncedSaveOnChange = useDebouncedCallback(
     (app: TldrawApp) => {
-      const exportedTldrJSON = { document: app.document };
-      const newTiddlerText = JSON.stringify(exportedTldrJSON);
-      onSave(newTiddlerText);
+      deferSave(app);
     },
-    [],
+    [deferSave],
     debounceSaveTime,
   );
   const onChange = (app: TldrawApp) => {
@@ -77,6 +95,15 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     tldrawDocumentSetter(app.document);
     debouncedSaveOnChange(app);
   };
+  useEffect(() => {
+    // this only work as willUnMount
+    return () => {
+      // emergency save on close or switch to other editor (by changing the type field) or readonly
+      const exportedTldrJSON = { document: tldrawDocument };
+      onSave(JSON.stringify(exportedTldrJSON));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <ParentWidgetContext.Provider value={parentWidget}>
       <div className="tw-whiteboard-tldraw-container" style={{ height, width }}>
