@@ -31,7 +31,7 @@ export function _TopPanel({ readOnly, showPages, showMenu, showStyles, showZoom 
       <StyledSpacer />
       {(showStyles || showZoom) && (
         <Panel side="right">
-          {app.readOnly ? (
+          {readOnly ? (
             <ReadOnlyLabel>Read Only</ReadOnlyLabel>
           ) : (
             <>
