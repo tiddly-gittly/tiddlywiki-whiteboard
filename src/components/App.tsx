@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
 
 import './App.css';
@@ -17,6 +17,7 @@ export interface IAppProps {
   currentTiddler: string;
   height?: string;
   initialTiddlerText?: string;
+  isDraft: boolean;
   readonly?: boolean;
   saver: {
     /** ms about debounce how long between save */
@@ -29,8 +30,9 @@ export interface IAppProps {
 }
 
 export interface TDExportJSON {
-  assets: TDAsset[];
+  assets?: TDAsset[];
   document: TDDocument;
+  updatedCount?: number;
 }
 
 export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
@@ -39,14 +41,17 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     width,
     currentTiddler,
     initialTiddlerText,
+    isDraft,
     readonly,
-    saver: { onSave },
+    saver: { onSave, lock },
     parentWidget,
   } = props;
+  const updatedCountReference = useRef(0);
   const getTiddlerJSONContent = useCallback(() => {
     if (initialTiddlerText) {
       try {
         const data = JSON.parse(initialTiddlerText) as TDExportJSON;
+        updatedCountReference.current = data.updatedCount ?? 0;
         // seems assets is discarded, from official tldr repo's example... examples/tldraw-example/src/loading-files.tsx
         return data.document;
       } catch (error) {
@@ -63,13 +68,18 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
       tldrawDocumentSetter(latestUpdatedDocument);
     }
   }, [getTiddlerJSONContent]);
-  const [tldrawDocument, tldrawDocumentSetter] = useState<TDDocument | undefined>(initialTiddlerJSONContent);
+  const [tldrawDocument, tldrawDocumentSetterRaw] = useState<TDDocument | undefined>(initialTiddlerJSONContent);
+  const tldrawDocumentReference = useRef(tldrawDocument);
+  const tldrawDocumentSetter = (newDocument: TDDocument) => {
+    tldrawDocumentSetterRaw(newDocument);
+    tldrawDocumentReference.current = newDocument;
+  };
   const deferSave = useCallback(
     (app: TldrawApp) => {
       const saveCallback = () => {
-        const exportedTldrJSON = { document: app.document };
+        const exportedTldrJSON: TDExportJSON = { document: app.document, updatedCount: ++updatedCountReference.current };
         const newTiddlerText = JSON.stringify(exportedTldrJSON);
-        props.saver.lock();
+        lock();
         onSave(newTiddlerText);
       };
       if (typeof requestIdleCallback !== 'undefined') {
@@ -80,7 +90,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         requestAnimationFrame(saveCallback);
       }
     },
-    [onSave],
+    [onSave, lock],
   );
   const debouncedSaveOnChange = useDebouncedCallback(
     (app: TldrawApp) => {
@@ -93,13 +103,15 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     // set document title
     app.document.name = currentTiddler;
     tldrawDocumentSetter(app.document);
-    debouncedSaveOnChange(app);
+    if (!isDraft) {
+      debouncedSaveOnChange(app);
+    }
   };
   useEffect(() => {
     // this only work as willUnMount
     return () => {
       // emergency save on close or switch to other editor (by changing the type field) or readonly
-      const exportedTldrJSON = { document: tldrawDocument };
+      const exportedTldrJSON = { document: tldrawDocumentReference.current, updatedCount: ++updatedCountReference.current };
       onSave(JSON.stringify(exportedTldrJSON));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

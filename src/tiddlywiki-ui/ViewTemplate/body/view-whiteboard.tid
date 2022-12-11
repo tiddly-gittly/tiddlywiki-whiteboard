@@ -2,4 +2,4 @@ title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/ViewTemplate/body/view-w
 
 \define lingo-base() $:/language/ViewTemplate/Body/
 
-<$whiteboard tiddler=<<currentTiddler>> readonly="yes" />
+<$whiteboard tiddler=<<currentTiddler>> readonly="yes" height="500px" />

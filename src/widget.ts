@@ -1,6 +1,6 @@
 import { IChangedTiddlers } from 'tiddlywiki';
 import type { ReactWidget } from 'tw-react';
-import { App, IAppProps } from './components/App';
+import { App, IAppProps, TDExportJSON } from './components/App';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 const Widget = require('$:/plugins/linonetwo/tw-react/widget.js').widget as typeof ReactWidget;
@@ -16,6 +16,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       height: this.getAttribute('height'),
       width: this.getAttribute('width'),
       readonly: this.getAttribute('readonly') === 'yes' || this.getAttribute('readonly') === 'true',
+      isDraft: this.editTitle === undefined ? false : Boolean(this.getAttribute('draftTitle')),
       saver: {
         lock: this.lock,
         onSave: this.onSave,
@@ -52,12 +53,25 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     if (this.editTitle === '' || this.editTitle === undefined) {
       return;
     }
-    const previousText = $tw.wiki.getTiddlerText(this.editTitle) ?? '';
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    const previousText = $tw.wiki.getTiddlerText(this.editTitle, '{}') || '{}';
     // prevent useless call to addTiddler
     if (previousText !== newText) {
-      $tw.wiki.setText(this.editTitle, undefined, undefined, newText);
-      // set tiddler type
-      $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/tldr');
+      let isSavingNewVersion = false;
+      try {
+        const newTextVersion = (JSON.parse(newText) as TDExportJSON).updatedCount ?? 0;
+        const previousTextVersion = (JSON.parse(previousText) as TDExportJSON).updatedCount ?? 0;
+        if (newTextVersion > previousTextVersion) {
+          isSavingNewVersion = true;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      if (isSavingNewVersion) {
+        $tw.wiki.setText(this.editTitle, undefined, undefined, newText);
+        // set tiddler type
+        $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/tldr');
+      }
     }
     this.unlock();
   };

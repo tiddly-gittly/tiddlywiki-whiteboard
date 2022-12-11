@@ -3,5 +3,8 @@ title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/EditTemplate/body/edit-w
 \define lingo-base() $:/language/EditTemplate/Body/
 
 <div class="tw-whiteboard-edit-body-container">
-<$edit-whiteboard tiddler=<<currentTiddler>> />
+<!-- always get real tiddler title, prevent getting `"Draft of 'AAA'"` from <<currentTiddler>> when in draft mode. -->
+<$set name="tiddler" value={{!!draft.title}} emptyValue=<<currentTiddler>>>
+<$edit-whiteboard tiddler=<<tiddler>> draftTitle={{!!draft.title}} height="500px" />
+</$set>
 </div>
