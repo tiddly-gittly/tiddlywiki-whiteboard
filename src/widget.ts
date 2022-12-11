@@ -26,12 +26,18 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
   };
 
   public refresh(changedTiddlers: IChangedTiddlers): boolean {
+    if (this.editTitle === undefined) return false;
+    if (changedTiddlers[this.editTitle]?.deleted === true) {
+      // this delete operation will trigger the close of the tiddler, so trigger the save, we have to prevent that
+      this.lock();
+      return false;
+    }
     // if tiddler change is triggered by react, then skip the update of slate
     if (this.isUpdatingByUserInput) {
       return false;
     }
     const changedAttributes = this.computeAttributes();
-    if ($tw.utils.count(changedAttributes) > 0 || (this.editTitle !== undefined && changedTiddlers[this.editTitle] !== undefined)) {
+    if ($tw.utils.count(changedAttributes) > 0 || changedTiddlers[this.editTitle]?.modified === true) {
       this.refreshSelf();
       return true;
     }

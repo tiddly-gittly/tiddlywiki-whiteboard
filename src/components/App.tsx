@@ -103,13 +103,14 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     // set document title
     app.document.name = currentTiddler;
     tldrawDocumentSetter(app.document);
-    if (!isDraft) {
+    if (!isDraft && !readonly) {
       debouncedSaveOnChange(app);
     }
   };
   useEffect(() => {
     // this only work as willUnMount
     return () => {
+      if (readonly) return;
       // emergency save on close or switch to other editor (by changing the type field) or readonly
       const exportedTldrJSON = { document: tldrawDocumentReference.current, updatedCount: ++updatedCountReference.current };
       onSave(JSON.stringify(exportedTldrJSON));
