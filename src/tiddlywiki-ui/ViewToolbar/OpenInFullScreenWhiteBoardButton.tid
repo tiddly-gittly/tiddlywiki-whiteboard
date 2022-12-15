@@ -1,6 +1,6 @@
 title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/ViewToolbar/Buttons/OpenInFullScreenWhiteBoardButton
 tags: $:/tags/ViewToolbar
-caption: {{$:/plugins/linonetwo/slate-write/ui/ViewToolbar/images/edit-wysiwyg-button}} {{$:/language/Buttons/Edit/Caption}}
+caption: {{$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/ViewToolbar/images/OpenInFullScreenWhiteBoardButtonImage}} {{$:/language/Buttons/Edit/Caption}}
 description: {{$:/language/Buttons/Edit/Hint}}
 
 \whitespace trim
