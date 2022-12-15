@@ -12,7 +12,7 @@ const packageJSON = fs.readJsonSync('package.json');
 
 const repoDir = path.join(__dirname, '..');
 const distDir = path.join(__dirname, '..', 'dist');
-const nodejsPluginOutDir = path.join(distDir, 'plugins', author, name);
+const nodejsPluginOutDir = path.join(distDir, `${pluginInfo["plugin-type"]}s`, author, name);
 // cross platform cp -r ${repoDir}/src/ ${nodejsPluginOutDir}/
 const ignoredExtensions = packageJSON.ignoredExtensionsWhenBuildPlugin;
 const copyOptions = {
@@ -65,7 +65,7 @@ function zipDirectory(source, out) {
 }
 
 if (process.env.CI) {
-  const outPath = path.join(__dirname, '..', 'plugins.zip');
+  const outPath = path.join(__dirname, '..', `${pluginInfo["plugin-type"]}s.zip`);
   await zipDirectory(path.join(__dirname, '..', 'dist'), outPath);
-  await fs.move(outPath, path.join(distDir, 'out', 'plugins.zip'));
+  await fs.move(outPath, path.join(distDir, 'out', `${pluginInfo["plugin-type"]}s.zip`));
 }
