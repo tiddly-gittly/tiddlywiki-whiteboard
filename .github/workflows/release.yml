@@ -34,6 +34,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - name: Get npm cache directory
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - id: setPluginInfoJSON
         run: |
           content=`cat ./src/plugin.info`
@@ -47,17 +69,8 @@ jobs:
           # end of optional handling for multi line json
           echo "::set-output name=pluginInfoJSON::$content"
 
-      - name: Get npm cache directory
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-            ${{ runner.os }}-node-
-
       - name: Install dependencies
-        run: npm i
+        run: pnpm i
 
       - name: Make Plugins
         run: npm run make
