@@ -42,6 +42,7 @@
     "perfect-freehand": "^1.2.0",
     "react-error-boundary": "^3.1.4",
     "react-hotkeys-hook": "^3.4.7",
+    "requestidlecallback-polyfill": "^1.0.2",
     "tslib": "^2.4.1",
     "tw-react": "^0.4.6",
     "zustand": "^4.1.5"

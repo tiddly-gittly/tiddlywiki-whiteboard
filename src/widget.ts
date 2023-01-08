@@ -1,3 +1,4 @@
+import 'requestidlecallback-polyfill';
 import { IChangedTiddlers } from 'tiddlywiki';
 import type { ReactWidget } from 'tw-react';
 import { App, IAppProps, TDExportJSON } from './components/App';
@@ -79,6 +80,19 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
         $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/tldr');
       }
     }
+    window.requestIdleCallback(
+      () => {
+        this.parentWidget?.dispatchEvent({
+          type: 'tm-save-tiddler',
+          // param: param,
+          paramObject: { suppressNavigation: 'yes' },
+          // event: parameters.event,
+          tiddlerTitle: this.editTitle,
+        });
+        this.parentWidget?.dispatchEvent({ type: 'tm-auto-save-wiki' });
+      },
+      { timeout: 2000 },
+    );
     this.unlock();
   };
 

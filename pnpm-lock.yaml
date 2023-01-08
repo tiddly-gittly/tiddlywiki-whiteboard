@@ -62,6 +62,7 @@ specifiers:
   prettier: 2.8.1
   react-error-boundary: ^3.1.4
   react-hotkeys-hook: ^3.4.7
+  requestidlecallback-polyfill: ^1.0.2
   resize-observer-polyfill: ^1.5.1
   rimraf: ^3.0.2
   serve: 14.1.2
@@ -91,6 +92,7 @@ dependencies:
   perfect-freehand: 1.2.0
   react-error-boundary: 3.1.4
   react-hotkeys-hook: 3.4.7
+  requestidlecallback-polyfill: 1.0.2
   tslib: 2.4.1
   tw-react: 0.4.6
   zustand: 4.1.5
@@ -6136,6 +6138,10 @@ packages:
     dependencies:
       jsesc: 0.5.0
     dev: true
+
+  /requestidlecallback-polyfill/1.0.2:
+    resolution: {integrity: sha512-zzkRzvMe7UdV0M7AIU70vl2fh4rFnNYDL8U0ISwWiOX/5MowBV1ESYCWSQP/KsgJNUOC/AS6X3DApOmxoyE6MA==}
+    dev: false
 
   /require-directory/2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
