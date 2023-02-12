@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-(function slateWriteWidgetIIFE() {
+(function whiteboardWidgetIIFE() {
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!$tw.browser) {
     return;
