@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { cd } from 'zx';
+import { execSync } from 'child_process';
 
 /**
  * Put plugin into demo folder
@@ -25,4 +26,4 @@ await fs.copy(path.join(distDirectory, 'out', jsonPluginFileName), path.join(dis
  * Make demo html file
  */
 cd(distDirectory);
-await $`tiddlywiki ${distDirectory} --build index`;
+execSync(`npx tiddlywiki ${distDirectory} --build index`);
