@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import './App.css';
+import { type IDefaultWidgetProps, ParentWidgetContext } from 'tw-react';
 import type { TldrawApp } from './Tldraw/state';
-import type { TDAsset, TDDocument } from './Tldraw/types';
 import { Tldraw } from './Tldraw/Tldraw';
-import { IDefaultWidgetProps, ParentWidgetContext } from 'tw-react';
+import type { TDAsset, TDDocument } from './Tldraw/types';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -27,6 +27,8 @@ export interface IAppProps {
     onSave: (value: string) => void;
   };
   width?: string;
+  zoom?: string;
+  zoomToFit?: boolean;
 }
 
 export interface TDExportJSON {
@@ -43,6 +45,8 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     initialTiddlerText,
     isDraft,
     readonly,
+    zoomToFit,
+    zoom,
     saver: { onSave, lock },
     parentWidget,
   } = props;
@@ -117,10 +121,17 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const onMount = useCallback((app: TldrawApp) => {
+    if (typeof zoom === 'string') {
+      app.zoomTo(Number(zoom));
+    } else if (zoomToFit === true) {
+      app.zoomToFit();
+    }
+  }, [zoom, zoomToFit]);
   return (
     <ParentWidgetContext.Provider value={parentWidget}>
-      <div className="tw-whiteboard-tldraw-container" style={{ height, width }}>
-        <Tldraw onPersist={onChange} document={tldrawDocument} autofocus={false} readOnly={readonly} />
+      <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
+        <Tldraw onPersist={onChange} onLoaded={onMount} document={tldrawDocument} autofocus={false} readOnly={readonly} />
       </div>
     </ParentWidgetContext.Provider>
   );

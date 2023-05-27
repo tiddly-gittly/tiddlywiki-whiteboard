@@ -127,6 +127,7 @@ export function Tldraw({
   onSessionEnd,
   onExport,
   hideCursors,
+  onLoaded,
 }: TldrawProps) {
   const [sId, setSId] = React.useState(id);
 
@@ -271,6 +272,9 @@ export function Tldraw({
       window.document.fonts.removeEventListener('loadingdone', refreshBoundingBoxes);
     };
   }, [app]);
+  React.useEffect(() => {
+    onLoaded?.(app);
+  }, [app, onLoaded]);
 
   // Use the `key` to ensure that new selector hooks are made when the id changes
   return (

@@ -17,6 +17,8 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       height: this.getAttribute('height'),
       width: this.getAttribute('width'),
       readonly: this.getAttribute('readonly') === 'yes' || this.getAttribute('readonly') === 'true',
+      zoomToFit: this.getAttribute('zoomToFit') === 'yes' || this.getAttribute('zoomToFit') === 'true',
+      zoom: this.getAttribute('zoom'),
       isDraft: this.editTitle === undefined ? false : Boolean(this.getAttribute('draftTitle')),
       saver: {
         lock: this.lock,

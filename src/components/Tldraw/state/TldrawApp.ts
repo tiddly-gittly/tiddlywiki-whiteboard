@@ -110,6 +110,7 @@ export interface TDCallbacks {
    * (optional) A callback to run when the component mounts.
    */
   onMount?: (app: TldrawApp) => void;
+  onLoaded?: (app: TldrawApp) => void;
   /**
    * (optional) A callback to run when the opens a file to upload.
    */
