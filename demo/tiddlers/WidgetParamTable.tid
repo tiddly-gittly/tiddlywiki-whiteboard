@@ -1,0 +1,14 @@
+created: 20230527044951986
+creator: 林一二
+modified: 20230527045616906
+modifier: 林一二
+tags: 
+title: WidgetParamTable
+type: text/vnd.tiddlywiki
+
+| !Attribute | !Description | !Values | !DefaultValues | !Example |
+|tiddler|tiddler to render or edit|tiddler title with type `application/tldr`|`currentTiddler`|`tiddler="TldrTiddlerExample"`|
+|readonly|make widget content non-editable, so you can use it in public-facing wikis for display.|"yes" or "true"|`no`|`readonly="yes"`|
+|zoomToFit|make widget content fit to widget size for display.|"yes" or "true"|`no`|`zoomToFit="yes"`|
+|height|widget height|number end with "px" or "%"|`100%`|`height="350px"`|
+|width|widget width|number end with "px" or "%"|`100%`|`width="50%"`|
