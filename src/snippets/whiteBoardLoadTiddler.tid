@@ -1,0 +1,5 @@
+title: $:/plugins/linonetwo/tw-whiteboard/Snippets/whiteBoardLoadTiddler
+tags: $:/tags/TextEditor/Snippet
+caption: WhiteBoard Load Tiddler readonly
+
+<$whiteboard tiddler="tldrTiddler" readonly="yes" zoomToFit="yes" width="30%" height="300px" />
