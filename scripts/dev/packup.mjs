@@ -71,7 +71,7 @@ export const buildEntries = async (entries, metaMap) => {
   const buildResult = await esbuild.build({
     ...config,
     entryPoints: entries,
-    incremental: true,
+    // incremental: true,
   });
   buildResult.outputFiles.forEach((out) => {
     const outKey = out.path.replace(path.resolve(DISTNATION_DIRECTORY), SOURCE_DIRECTORY).replace(`/plugins/${pluginTitle}`, '');
@@ -105,8 +105,10 @@ const ignoredExtString =
   packageJSON.ignoredExtensionsWhenBuildPlugin?.length > 0
     ? `|${packageJSON.ignoredExtensionsWhenBuildPlugin.map((ext) => ext.replace('.', '')).join('|')}`
     : '';
+
+// ignoredExtensionsWhenBuildPlugin
 // eslint-disable-next-line security/detect-non-literal-regexp, security-node/non-literal-reg-expr
-const excludeFiles = /^.*\.(tsx?|jsx|meta|swp|mjs)$|^\.(git|hg|lock-wscript|svn|DS_Store|(wafpickle-|_).*)$|^CVS$|^npm-debug\.log$/;
+const excludeFiles = /^.*\.(tsx?|jsx|snap|tldr|md|json|meta|swp|mjs)$|^\.(git|hg|lock-wscript|svn|DS_Store|(wafpickle-|_).*)$|^CVS$|^npm-debug\.log$/;
 
 export const exportPlugins = ($tw, minify, exportToDistribution, exportToWiki) => {
   // Ignore ts, tsx, jsm and jsx
@@ -116,7 +118,7 @@ export const exportPlugins = ($tw, minify, exportToDistribution, exportToWiki) =
     const directoryStat = fs.statSync(directory);
     if (!directoryStat.isDirectory()) return;
   }
-  const pluginInfo = $tw.loadPluginFolder(SOURCE_DIRECTORY, excludeFiles);
+  const pluginInfo = $tw.loadPluginFolder(DIST_PLUGIN_DIRECTORY, excludeFiles);
   const pluginTiddlerName = `${path.basename($tw.utils.generateTiddlerFilepath(pluginInfo.title, {}))}.json`;
   if (exportToWiki) fs.writeJSONSync(path.join(DIST_WIKI_TIDDLERS_DIRECTORY, `${pluginTiddlerName}.dist.json`), pluginInfo);
   if (exportToDistribution) fs.writeJSONSync(path.join('dist', 'tiddlers', pluginTiddlerName), pluginInfo);
