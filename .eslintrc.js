@@ -13,7 +13,7 @@ module.exports = {
   },
   settings: {
     react: {
-      version: '18.2.0',
+      version: '17.0.2',
     },
     'import/resolver': {
       node: {
@@ -23,7 +23,10 @@ module.exports = {
         alwaysTryTypes: true,
       },
       alias: {
-        map: [['@tldr', './src/components/Tldraw']],
+        map: [
+          ['@', './src'],
+          ['@services', './src/services'],
+        ],
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs'],
       },
     },
@@ -46,12 +49,9 @@ module.exports = {
       },
     ],
     'unicorn/prefer-node-protocol': 'off',
-    'unicorn/no-static-only-class': 'off',
-    '@typescript-eslint/no-extraneous-class': 'off',
     'unicorn/prefer-module': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/method-signature-style': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
     'unicorn/prefer-string-slice': 'off',
     'unicorn/no-array-reduce': 'off',
     '@typescript-eslint/member-delimiter-style': [
@@ -71,10 +71,10 @@ module.exports = {
     'no-undef': 'off',
     'unicorn/no-array-for-each': 'off',
     'multiline-ternary': 'off',
-    '@typescript-eslint/consistent-type-assertions': 'off',
     'security/detect-object-injection': 'off',
     'unicorn/prefer-dom-node-append': 'off',
     'unicorn/prefer-modern-dom-apis': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
     'unicorn/prefer-add-event-listener': 'off',
     'security/detect-non-literal-fs-filename': 'off',
     'unicorn/filename-case': [
@@ -99,6 +99,17 @@ module.exports = {
         caughtErrorsIgnorePattern: '^_',
       },
     ],
+    'dprint-integration/dprint': [
+      'warn',
+      // Global Config (will pass to the dprint formatter directly): Available at https://dprint.dev/config/
+      {
+        useDprintJson: true,
+      },
+      // Plugin Specific Config (will pass to the dprint plugins): Available at https://dprint.dev/plugins/
+      {
+        useDprintJson: true,
+      },
+    ],
   },
   extends: [
     'eslint:recommended',
@@ -107,7 +118,6 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:unicorn/recommended',
-    'plugin:prettier/recommended',
     'standard-with-typescript',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
@@ -116,13 +126,14 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
     'plugin:react-hooks/recommended',
-    'prettier',
+    'plugin:dprint-integration/recommended',
+    'plugin:dprint-integration/disable-conflict',
     'plugin:security-node/recommended',
     'plugin:typescript-sort-keys/recommended',
   ],
   plugins: [
     '@typescript-eslint/eslint-plugin',
-    'prettier',
+    'dprint-integration',
     'react',
     'html',
     'typescript-sort-keys',
