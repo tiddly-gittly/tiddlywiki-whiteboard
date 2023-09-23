@@ -3,8 +3,9 @@ import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import './App.css';
+import { ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
 import { type TDAsset, type TDDocument, Tldraw, type TldrawApp } from '@tldraw/tldraw';
-import { type IDefaultWidgetProps, ParentWidgetContext } from 'tw-react';
+import type { IDefaultWidgetProps } from 'tw-react';
 
 /** every ms to save */
 const debounceSaveTime = 500;
