@@ -3,12 +3,14 @@ import { StrictMode, useCallback, useEffect, useState } from 'react';
 
 import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
 import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord, transact } from '@tldraw/tldraw';
+
 // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
 // @ts-expect-error Module '"@tldraw/editor"' has no exported member 'partition'.ts(2305)
 import { partition } from '@tldraw/editor';
 
 import './App.css';
 import '@tldraw/tldraw/tldraw.css';
+import { getAssetUrlsByMetaUrl } from '../tldraw/assets/urls';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -39,6 +41,16 @@ export interface TDExportJSON {
 }
 
 const extraShapeUtils: TLAnyShapeUtilConstructor[] = [];
+const assetUrls = getAssetUrlsByMetaUrl((assetUrl: string) => {
+  const assetData = $tw.wiki.getTiddler(`$:/plugins/linonetwo/tw-whiteboard/assets/${assetUrl}`);
+  if (assetData) {
+    // https://github.com/tldraw/tldraw/issues/1941
+    // data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' fill='none'%3E%3Cpath stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 5H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6M19 5h6m0 0v6m0-6L13 17'/%3E%3C/svg%3E
+    return `data:${assetData.fields.type};utf8,${encodeURIComponent(assetData.fields.text)}`;
+  }
+  // <div class="tlui-icon tlui-icon__small" style="mask: url(&quot;https://unpkg.com/@tldraw/assets@2.0.0-alpha.12/icons/icon/duplicate.svg&quot;) center 100% / 100% no-repeat;"></div>
+  return `https://unpkg.com/@tldraw/assets@2.0.0-alpha.12/${assetUrl}`;
+});
 
 export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
   const {
@@ -164,7 +176,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     <StrictMode>
       <ParentWidgetContext.Provider value={parentWidget}>
         <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
-          <Tldraw persistenceKey={currentTiddler} onMount={onMount} shapeUtils={extraShapeUtils} autoFocus={false} />
+          <Tldraw persistenceKey={currentTiddler} onMount={onMount} shapeUtils={extraShapeUtils} autoFocus={false} assetUrls={assetUrls} />
         </div>
       </ParentWidgetContext.Provider>
     </StrictMode>

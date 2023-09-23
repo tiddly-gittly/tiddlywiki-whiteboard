@@ -50,8 +50,8 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@tldraw/tldraw": "2.0.0-canary.b6ebe1e2749e",
     "@tldraw/editor": "2.0.0-canary.b6ebe1e2749e",
+    "@tldraw/tldraw": "2.0.0-canary.b6ebe1e2749e",
     "npm-check-updates": "^16.14.4",
     "tiddlywiki": "^5.3.1",
     "tiddlywiki-plugin-dev": "^0.0.39"

@@ -7,7 +7,7 @@
 }
 
 .tw-whiteboard-tldraw-container button:not(.tc-btn-invisible) {
-  padding: unset;
+  /* padding: unset; */
   margin: unset;
   border-radius: unset;
   background-color: unset;
