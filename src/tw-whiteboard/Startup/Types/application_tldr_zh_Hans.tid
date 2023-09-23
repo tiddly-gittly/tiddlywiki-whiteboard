@@ -1,4 +1,4 @@
-title: $:/language/Docs/Types/application/tldr
+title: $:/language/Docs/Types/application/vnd.tldraw+json
 description: Tldraw白板
-name: application/tldr
+name: application/vnd.tldraw+json
 group: 图像

@@ -4,7 +4,7 @@ title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTidd
   <$edit-text focus="yes" tiddler="$:/state/Whiteboard/PageLayout/create-tiddler" default="" rows=1 />
   <$button>
     Create
-    <$action-createtiddler $basetitle={{$:/state/Whiteboard/PageLayout/create-tiddler}} type="application/tldr" />
+    <$action-createtiddler $basetitle={{$:/state/Whiteboard/PageLayout/create-tiddler}} type="application/vnd.tldraw+json" />
     <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/create-tiddler" text=""/>
   </$button>
 </div>

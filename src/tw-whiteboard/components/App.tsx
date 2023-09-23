@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { StrictMode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import './App.css';
-import { ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
-import { type TDAsset, type TDDocument, Tldraw, type TldrawApp } from '@tldraw/tldraw';
-import type { IDefaultWidgetProps } from 'tw-react';
+import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
+import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord } from '@tldraw/tldraw';
+import '@tldraw/tldraw/tldraw.css';
+import '@tldraw/editor/editor.css';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -31,10 +31,11 @@ export interface IAppProps {
 }
 
 export interface TDExportJSON {
-  assets?: TDAsset[];
-  document: TDDocument;
+  document?: StoreSnapshot<TLRecord>;
   updatedCount?: number;
 }
+
+const extraShapeUtils: TLAnyShapeUtilConstructor[] = [];
 
 export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
   const {
@@ -49,39 +50,49 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     saver: { onSave, lock },
     parentWidget,
   } = props;
-  const updatedCountReference = useRef(0);
-  const getTiddlerJSONContent = useCallback(() => {
+
+  const [editor, setEditor] = useState<Editor | undefined>(undefined);
+
+  const onMount = useCallback((newEditor: Editor) => {
+    setEditor(newEditor);
     if (initialTiddlerText) {
-      try {
-        const data = JSON.parse(initialTiddlerText) as TDExportJSON;
-        updatedCountReference.current = data.updatedCount ?? 0;
-        // seems assets is discarded, from official tldr repo's example... examples/tldraw-example/src/loading-files.tsx
-        return data.document;
-      } catch (error) {
-        console.error(`$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, text:\n${initialTiddlerText}\n${(error as Error).message}`);
+      const parseFileResult = parseTldrawJsonFile({
+        schema: newEditor.store.schema,
+        json: initialTiddlerText,
+      });
+      if (!parseFileResult.ok) {
+        console.error(`$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, text:\n${initialTiddlerText}\n${parseFileResult.error.type}`);
       }
     }
-  }, [initialTiddlerText, currentTiddler]);
-  // this initialTiddlerJSONContent should only execute on mount once
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initialTiddlerJSONContent = useMemo(getTiddlerJSONContent, []);
-  useEffect(() => {
-    const latestUpdatedDocument = getTiddlerJSONContent();
-    if (latestUpdatedDocument !== undefined) {
-      tldrawDocumentSetter(latestUpdatedDocument);
+    newEditor.updateInstanceState({ isReadonly: Boolean(readonly) });
+    if (zoomToFit === true) {
+      newEditor.zoomToFit();
+    } else if (Number.isFinite(Number(zoom))) {
+      const bounds = newEditor.selectionPageBounds ?? newEditor.currentPageBounds;
+      if (bounds) {
+        newEditor.zoomToBounds(bounds, Math.min(1, Number(zoom)), { duration: 220 });
+      }
     }
-  }, [getTiddlerJSONContent]);
-  const [tldrawDocument, tldrawDocumentSetterRaw] = useState<TDDocument | undefined>(initialTiddlerJSONContent);
-  const tldrawDocumentReference = useRef(tldrawDocument);
-  const tldrawDocumentSetter = (newDocument: TDDocument) => {
-    tldrawDocumentSetterRaw(newDocument);
-    tldrawDocumentReference.current = newDocument;
-  };
+  }, [initialTiddlerText, readonly, zoomToFit, zoom, currentTiddler]);
+
+  // emergency save on close or switch to other editor (by changing the type field) or readonly
+  // this only work as willUnMount
+  useEffect(() => {
+    return () => {
+      if (readonly) return;
+      void (async () => {
+        if (!editor) return;
+        onSave(await serializeTldrawJson(editor.store));
+      })();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
+
   const deferSave = useCallback(
-    (app: TldrawApp) => {
-      const saveCallback = () => {
-        const exportedTldrJSON: TDExportJSON = { document: app.document, updatedCount: ++updatedCountReference.current };
-        const newTiddlerText = JSON.stringify(exportedTldrJSON);
+    () => {
+      const saveCallback = async () => {
+        if (editor === undefined) return;
+        const newTiddlerText = await serializeTldrawJson(editor.store);
         lock();
         onSave(newTiddlerText);
       };
@@ -93,45 +104,29 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         requestAnimationFrame(saveCallback);
       }
     },
-    [onSave, lock],
+    [editor, lock, onSave],
   );
-  const debouncedSaveOnChange = useDebouncedCallback(
-    (app: TldrawApp) => {
-      deferSave(app);
-    },
-    [deferSave],
-    debounceSaveTime,
-  );
-  const onChange = (app: TldrawApp) => {
-    // set document title
-    app.document.name = currentTiddler;
-    tldrawDocumentSetter(app.document);
-    if (!isDraft && !readonly) {
-      debouncedSaveOnChange(app);
-    }
-  };
+
+  /**
+   * @url https://github.com/tldraw/tldraw/blob/main/apps/vscode/editor/src/ChangeResponder.tsx
+   */
   useEffect(() => {
-    // this only work as willUnMount
+    if (!editor) return;
+    const handleChange = debounce(deferSave, debounceSaveTime);
+    editor.on('change-history', handleChange);
     return () => {
-      if (readonly) return;
-      // emergency save on close or switch to other editor (by changing the type field) or readonly
-      const exportedTldrJSON = { document: tldrawDocumentReference.current, updatedCount: ++updatedCountReference.current };
-      onSave(JSON.stringify(exportedTldrJSON));
+      if (!editor) return;
+      editor.off('change-history', handleChange);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const onMount = useCallback((app: TldrawApp) => {
-    if (typeof zoom === 'string') {
-      app.zoomTo(Number(zoom));
-    } else if (zoomToFit === true) {
-      app.zoomToFit();
-    }
-  }, [zoom, zoomToFit]);
+  }, [deferSave, editor]);
+
   return (
-    <ParentWidgetContext.Provider value={parentWidget}>
-      <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
-        <Tldraw onPersist={onChange} onMount={onMount} document={tldrawDocument} autofocus={false} readOnly={readonly} />
-      </div>
-    </ParentWidgetContext.Provider>
+    <StrictMode>
+      <ParentWidgetContext.Provider value={parentWidget}>
+        <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
+          <Tldraw persistenceKey={currentTiddler} onMount={onMount} shapeUtils={extraShapeUtils} autoFocus={false} />
+        </div>
+      </ParentWidgetContext.Provider>
+    </StrictMode>
   );
 }

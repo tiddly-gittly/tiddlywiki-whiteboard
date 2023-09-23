@@ -6,7 +6,7 @@ title: Usage
 type: text/vnd.tiddlywiki
 
 # Provides a whiteboard widget, use it like `<$whiteboard tiddler="tiddlerToStoreData" />`
-# Tiddler with type `application/tldr` will be parsed as whiteboard, showing whiteboard in tiddler's ViewTemplate
-# Provides a whiteboard view, use `ctrl+shift+L` to switch to this view, you can choose a tiddler with type `application/tldr`, and edit it in full screen.
+# Tiddler with type `application/vnd.tldraw+json` will be parsed as whiteboard, showing whiteboard in tiddler's ViewTemplate
+# Provides a whiteboard view, use `ctrl+shift+L` to switch to this view, you can choose a tiddler with type `application/vnd.tldraw+json`, and edit it in full screen.
 
 [[WidgetParamTable]]

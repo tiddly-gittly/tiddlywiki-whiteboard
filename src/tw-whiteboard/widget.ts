@@ -1,10 +1,9 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import 'requestidlecallback-polyfill';
+import { widget as Widget } from '$:/plugins/linonetwo/tw-react/widget.js';
 import { IChangedTiddlers } from 'tiddlywiki';
-import type { ReactWidget } from 'tw-react';
-import { App, IAppProps, TDExportJSON } from './components/App';
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-const Widget = require('$:/plugins/linonetwo/tw-react/widget.js').widget as typeof ReactWidget;
+import { App, IAppProps } from './components/App';
 
 const SAVE_DEBOUNCE_INTERVAL = 1000;
 
@@ -63,38 +62,11 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       return;
     }
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    const previousText = $tw.wiki.getTiddlerText(this.editTitle, '{}') || '{}';
+    const previousTiddler = $tw.wiki.getTiddler(this.editTitle);
     // prevent useless call to addTiddler
-    if (previousText !== newText) {
-      let isSavingNewVersion = false;
-      try {
-        const newTextVersion = (JSON.parse(newText) as TDExportJSON).updatedCount ?? 0;
-        const previousTextVersion = (JSON.parse(previousText) as TDExportJSON).updatedCount ?? 0;
-        if (newTextVersion > previousTextVersion) {
-          isSavingNewVersion = true;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      if (isSavingNewVersion) {
-        $tw.wiki.setText(this.editTitle, undefined, undefined, newText);
-        // set tiddler type
-        $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/tldr');
-      }
+    if (previousTiddler?.fields.text !== newText) {
+      $tw.wiki.addTiddler({ title: this.editTitle, text: newText, type: 'application/vnd.tldraw+json' });
     }
-    window.requestIdleCallback(
-      () => {
-        this.parentWidget?.dispatchEvent({
-          type: 'tm-save-tiddler',
-          // param: param,
-          paramObject: { suppressNavigation: 'yes' },
-          // event: parameters.event,
-          tiddlerTitle: this.editTitle,
-        });
-        this.parentWidget?.dispatchEvent({ type: 'tm-auto-save-wiki' });
-      },
-      { timeout: 2000 },
-    );
     this.unlock();
   };
 

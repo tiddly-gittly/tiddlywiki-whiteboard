@@ -2,4 +2,4 @@ title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/ViewTemplate/body/view-w
 tags: $:/tags/ViewTemplateBodyFilter
 list-before: $:/config/ViewTemplateBodyFilters/system
 
-[field:type[application/tldr]then[$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/ViewTemplate/body/view-whiteboard]]
+[field:type[application/vnd.tldraw+json]then[$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/ViewTemplate/body/view-whiteboard]]

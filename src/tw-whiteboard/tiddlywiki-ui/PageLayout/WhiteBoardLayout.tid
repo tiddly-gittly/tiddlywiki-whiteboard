@@ -1,6 +1,6 @@
 title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard
 name: White Board
-description: show `application/tldr` type tiddlers in full screen whiteboard
+description: show `application/vnd.tldraw+json` type tiddlers in full screen whiteboard
 tags: $:/tags/Layout
 
 \whitespace trim
@@ -27,8 +27,8 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 	</$reveal>
 	<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
 	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="match" text="">
-		<$list filter='[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]'>
-			<$whiteboard tiddler={{{[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]}}} height="calc(100vh - 35px)" />
+		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
+			<$whiteboard tiddler={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} height="calc(100vh - 35px)" />
 		</$list>
 	</$reveal>
 </main>
@@ -37,8 +37,8 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 <nav class="tw-whiteboard-layout-top-bar">
 	Select board: 
 	<!-- default to recently used whiteboard tiddler -->
-	<$select tiddler="$:/state/Whiteboard/PageLayout/tiddler" default={{{[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]}}}>
-		<$list filter='[all[shadows+tiddlers]field:type[application/tldr]sort[modified]]'>
+	<$select tiddler="$:/state/Whiteboard/PageLayout/tiddler" default={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}}>
+		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]]'>
 			<option value=<<currentTiddler>>><$view field='title'/></option>
 		</$list>
 	</$select>
@@ -57,11 +57,11 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 	</$reveal>
 	<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
 	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="match" text="">
-		<$list filter='[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]'>
+		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
 			<$button tooltip="Open In StoryView">
 				{{$:/core/images/home-button}}
 				<$action-setfield $tiddler="$:/layout" text="$:/core/ui/PageTemplate"/>
-				<$action-navigate $to={{{[all[shadows+tiddlers]field:type[application/tldr]sort[modified]first[]]}}} />
+				<$action-navigate $to={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} />
 			</$button>
 		</$list>
 	</$reveal>
