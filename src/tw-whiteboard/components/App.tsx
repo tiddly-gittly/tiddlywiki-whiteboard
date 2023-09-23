@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { StrictMode, useCallback, useEffect, useMemo, useState } from 'react';
+import { StrictMode, useCallback, useEffect, useState } from 'react';
+
+import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
+import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord, transact } from '@tldraw/tldraw';
+// FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
+// @ts-expect-error Module '"@tldraw/editor"' has no exported member 'partition'.ts(2305)
+import { partition } from '@tldraw/editor';
 
 import './App.css';
-import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
-import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord } from '@tldraw/tldraw';
 import '@tldraw/tldraw/tldraw.css';
-import '@tldraw/editor/editor.css';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -63,7 +66,44 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
       if (!parseFileResult.ok) {
         console.error(`$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, text:\n${initialTiddlerText}\n${parseFileResult.error.type}`);
       }
+      // tldraw file contain the full state of the app,
+      // including ephemeral data. it up to the opener to
+      // decide what to restore and what to retain. Here, we
+      // just restore everything, so if the user has opened
+      // this file before they'll get their camera etc.
+      // restored. we could change this in the future.
+      transact(() => {
+        newEditor.store.clear();
+        // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
+        /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+        /* eslint-disable @typescript-eslint/no-unsafe-argument */
+        /* eslint-disable @typescript-eslint/no-unsafe-call */
+        /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+        const [shapes, nonShapes] = partition(
+          // @ts-expect-error Property 'value' does not exist on type 'Result<TLStore, TldrawFileParseError>'.
+          parseFileResult.value.allRecords(),
+          // @ts-expect-error Parameter 'record' implicitly has an 'any' type.ts(7006)
+          (record) => record.typeName === 'shape',
+        );
+        newEditor.store.put(nonShapes, 'initialize');
+        // @ts-expect-error Property 'ensureStoreIsUsable' does not exist on type 'TLStore'.ts(2339)
+        newEditor.store.ensureStoreIsUsable();
+        newEditor.store.put(shapes, 'initialize');
+        newEditor.history.clear();
+        newEditor.updateViewportScreenBounds();
+        // @ts-expect-error Property 'updateRenderingBounds' does not exist on type 'Editor'. Did you mean 'renderingBounds'?ts(2551)
+        newEditor.updateRenderingBounds();
+        /* eslint-enable @typescript-eslint/no-unsafe-member-access */
+        /* eslint-enable @typescript-eslint/no-unsafe-argument */
+        /* eslint-enable @typescript-eslint/no-unsafe-call */
+        /* eslint-enable @typescript-eslint/no-unsafe-assignment */
+        const bounds = newEditor.currentPageBounds;
+        if (bounds) {
+          newEditor.zoomToBounds(bounds, 1);
+        }
+      });
     }
+    if ($tw.wiki.getTiddlerText('$:/info/darkmode') === 'yes') newEditor.user.updateUserPreferences({ isDarkMode: true });
     newEditor.updateInstanceState({ isReadonly: Boolean(readonly) });
     if (zoomToFit === true) {
       newEditor.zoomToFit();

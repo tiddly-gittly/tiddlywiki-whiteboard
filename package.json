@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "@modern-js/tsconfig": "^2.35.1",
-    "@tldraw/tldraw": "2.0.0-canary.b6ebe1e2749e",
     "@types/lodash": "^4.14.199",
     "@types/node": "^20.6.3",
     "@types/react": "^18.2.22",
@@ -51,6 +50,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@tldraw/tldraw": "2.0.0-canary.b6ebe1e2749e",
     "@tldraw/editor": "2.0.0-canary.b6ebe1e2749e",
     "npm-check-updates": "^16.14.4",
     "tiddlywiki": "^5.3.1",
