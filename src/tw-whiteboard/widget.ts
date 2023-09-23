@@ -65,7 +65,10 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     const previousTiddler = $tw.wiki.getTiddler(this.editTitle);
     // prevent useless call to addTiddler
     if (previousTiddler?.fields.text !== newText) {
-      $tw.wiki.addTiddler({ title: this.editTitle, text: newText, type: 'application/vnd.tldraw+json' });
+      // use setText for DraftTiddler, otherwise if use addTiddler we will make it a real tiddler immediately.
+      $tw.wiki.setText(this.editTitle, 'text', undefined, newText);
+      // set tiddler type
+      $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/vnd.tldraw+json');
     }
     this.unlock();
   };
