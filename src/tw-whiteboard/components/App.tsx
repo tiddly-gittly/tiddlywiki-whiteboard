@@ -116,7 +116,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
       });
     }
     if ($tw.wiki.getTiddlerText('$:/info/darkmode') === 'yes') newEditor.user.updateUserPreferences({ isDarkMode: true });
-    newEditor.updateInstanceState({ isReadonly: Boolean(readonly) });
+    newEditor.updateInstanceState({ isReadonly: Boolean(readonly), isDebugMode: false });
     if (zoomToFit === true) {
       newEditor.zoomToFit();
     } else if (Number.isFinite(Number(zoom))) {
