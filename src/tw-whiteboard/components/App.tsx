@@ -6,11 +6,13 @@ import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapsh
 
 // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
 // @ts-expect-error Module '"@tldraw/editor"' has no exported member 'partition'.ts(2305)
-import { partition } from '@tldraw/editor';
+import { partition, TLStateNodeConstructor } from '@tldraw/editor';
 
 import './App.css';
 import '@tldraw/tldraw/tldraw.css';
 import { getAssetUrlsByMetaUrl } from '../tldraw/assets/urls';
+import { WikiTextShapeTool } from '../tldraw/shapes/wikitext/WikiTextShapeTool';
+import { WikiTextShapeUtil } from '../tldraw/shapes/wikitext/WikiTextShapeUtil';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -40,7 +42,9 @@ export interface TDExportJSON {
   updatedCount?: number;
 }
 
-const extraShapeUtils: TLAnyShapeUtilConstructor[] = [];
+const extraShapeUtils: TLAnyShapeUtilConstructor[] = [WikiTextShapeUtil];
+const extraTools: TLStateNodeConstructor[] = [WikiTextShapeTool];
+
 const assetUrls = getAssetUrlsByMetaUrl((assetUrl: string) => {
   const assetData = $tw.wiki.getTiddler(`$:/plugins/linonetwo/tw-whiteboard/assets/${assetUrl}`);
   if (assetData) {
@@ -176,7 +180,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     <StrictMode>
       <ParentWidgetContext.Provider value={parentWidget}>
         <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
-          <Tldraw persistenceKey={currentTiddler} onMount={onMount} shapeUtils={extraShapeUtils} autoFocus={false} assetUrls={assetUrls} />
+          <Tldraw persistenceKey={currentTiddler} onMount={onMount} shapeUtils={extraShapeUtils} tools={extraTools} autoFocus={false} assetUrls={assetUrls} />
         </div>
       </ParentWidgetContext.Provider>
     </StrictMode>
