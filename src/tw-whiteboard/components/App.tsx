@@ -48,9 +48,10 @@ const extraTools: TLStateNodeConstructor[] = [WikiTextShapeTool];
 const assetUrls = getAssetUrlsByMetaUrl((assetUrl: string) => {
   const assetData = $tw.wiki.getTiddler(`$:/plugins/linonetwo/tw-whiteboard/assets/${assetUrl}`);
   if (assetData) {
+    const typeInfo = $tw.config.contentTypeInfo[assetData.fields.type];
     // https://github.com/tldraw/tldraw/issues/1941
     // data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' fill='none'%3E%3Cpath stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 5H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6M19 5h6m0 0v6m0-6L13 17'/%3E%3C/svg%3E
-    return `data:${assetData.fields.type};utf8,${encodeURIComponent(assetData.fields.text)}`;
+    return `data:${assetData.fields.type};${typeInfo.encoding ?? 'utf8'},${encodeURIComponent(assetData.fields.text)}`;
   }
   // <div class="tlui-icon tlui-icon__small" style="mask: url(&quot;https://unpkg.com/@tldraw/assets@2.0.0-alpha.12/icons/icon/duplicate.svg&quot;) center 100% / 100% no-repeat;"></div>
   return `https://unpkg.com/@tldraw/assets@2.0.0-alpha.12/${assetUrl}`;

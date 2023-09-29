@@ -1,6 +1,34 @@
 {
   "tiddlers": [
     {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexMono-Medium.woff2",
+      "fields": {
+				"type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexMono-Medium.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSans-Medium.woff2",
+      "fields": {
+				"type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSans-Medium.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSerif-Medium.woff2",
+      "fields": {
+				"type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSerif-Medium.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Normal-SemiBold.woff2",
+      "fields": {
+				"type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Normal-SemiBold.woff2"
+      }
+    },
+    {
       "file": "translations/languages.json",
       "fields": {
 				"type": "application/json",

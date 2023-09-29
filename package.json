@@ -50,6 +50,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@tldraw/assets": "2.0.0-canary.8c0e6abbeba9",
     "@tldraw/editor": "2.0.0-canary.b6ebe1e2749e",
     "@tldraw/tldraw": "2.0.0-canary.b6ebe1e2749e",
     "npm-check-updates": "^16.14.4",

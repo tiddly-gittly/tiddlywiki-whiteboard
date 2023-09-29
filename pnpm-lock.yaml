@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@tldraw/assets':
+    specifier: 2.0.0-canary.8c0e6abbeba9
+    version: 2.0.0-canary.8c0e6abbeba9
   '@tldraw/editor':
     specifier: 2.0.0-canary.b6ebe1e2749e
     version: 2.0.0-canary.b6ebe1e2749e(react-dom@18.2.0)(react@18.2.0)
@@ -1502,6 +1505,12 @@ packages:
       defer-to-connect: 2.0.1
     dev: false
 
+  /@tldraw/assets@2.0.0-canary.8c0e6abbeba9:
+    resolution: {integrity: sha512-LpNrBgn1KUH71YRKtMSEN3htC99w/kTEHREKlhNfNnbJIq6NcVIS5mRbavrgBMGzoBZ3H096G/txFMhhynVRWw==}
+    dependencies:
+      '@tldraw/utils': 2.0.0-canary.8c0e6abbeba9
+    dev: false
+
   /@tldraw/editor@2.0.0-canary.b6ebe1e2749e(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-WxV+Yp2Dpei2qB8aUmt3QCLeAvajpLtKuapk3U9KzsdA6dM6T7acrvyEFy19XzB5GRqjcaRAjygi4cxru+9jmA==}
     peerDependencies:
@@ -1582,6 +1591,10 @@ packages:
       nanoid: 3.3.6
     transitivePeerDependencies:
       - react
+    dev: false
+
+  /@tldraw/utils@2.0.0-canary.8c0e6abbeba9:
+    resolution: {integrity: sha512-rxfYEiSa8MjOpVdQIX1GWbqLYdAIGB98qWc/yg6UA85HurTIhhmjAkCrFcKjF9K+/neHHavete/0U9VFCFsueA==}
     dev: false
 
   /@tldraw/utils@2.0.0-canary.b6ebe1e2749e:
