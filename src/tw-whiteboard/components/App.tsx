@@ -181,7 +181,44 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     <StrictMode>
       <ParentWidgetContext.Provider value={parentWidget}>
         <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
-          <Tldraw persistenceKey={currentTiddler} onMount={onMount} shapeUtils={extraShapeUtils} tools={extraTools} autoFocus={false} assetUrls={assetUrls} />
+          <Tldraw
+            persistenceKey={currentTiddler}
+            onMount={onMount}
+            shapeUtils={extraShapeUtils}
+            tools={extraTools}
+            autoFocus={false}
+            assetUrls={assetUrls}
+            overrides={{
+              toolbar: (editor, schema, _helpers) => {
+                // remove built-in note that can't render wikitext
+                const withoutDefaultNote = schema.filter(item => item.id !== 'note');
+                // insert wikitext note tool before arrow tool, which is first one of the shapes.
+                const arrowToolIndex = withoutDefaultNote.findIndex((item) => item.id === 'arrow');
+                const withWikiTextNote: typeof schema = [
+                  ...withoutDefaultNote.slice(0, arrowToolIndex),
+                  {
+                    id: WikiTextShapeTool.id,
+                    toolItem: {
+                      id: WikiTextShapeTool.id,
+                      label: 'tool.note',
+                      readonlyOk: false,
+                      icon: 'tool-note',
+                      kbd: 'n',
+                      onSelect(source) {
+                        editor.setCurrentTool('note');
+                        // FIXME: is not a function. Maybe has to be inside a provider, but we can't here
+                        // trackEvent('select-tool', { source, id: 'note' });
+                      },
+                    },
+                    type: 'item',
+                    readonlyOk: false,
+                  },
+                  ...withoutDefaultNote.slice(arrowToolIndex),
+                ];
+                return withWikiTextNote;
+              },
+            }}
+          />
         </div>
       </ParentWidgetContext.Provider>
     </StrictMode>
