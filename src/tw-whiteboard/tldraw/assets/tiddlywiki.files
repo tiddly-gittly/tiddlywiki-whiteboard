@@ -29,1155 +29,1155 @@
       }
     },
     {
-      "file": "translations/languages.json",
+      "file": "../../../../node_modules/@tldraw/assets/translations/languages.json",
       "fields": {
 				"type": "application/json",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/languages.json"
       }
     },
     {
-      "file": "translations/en.json",
+      "file": "../../../../node_modules/@tldraw/assets/translations/en.json",
       "fields": {
 				"type": "application/json",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/en.json"
       }
     },
     {
-      "file": "translations/zh-cn.json",
+      "file": "../../../../node_modules/@tldraw/assets/translations/zh-cn.json",
       "fields": {
 				"type": "application/json",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/zh-cn.json"
       }
     },
     {
-      "file": "icons/icon/align-bottom-center.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-bottom-center.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-bottom-center.svg"
       }
     },
     {
-      "file": "icons/icon/arrowhead-diamond.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrowhead-diamond.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrowhead-diamond.svg"
       }
     },
     {
-      "file": "icons/icon/chevrons-ne.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/chevrons-ne.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/chevrons-ne.svg"
       }
     },
     {
-      "file": "icons/icon/dots-horizontal.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/dots-horizontal.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/dots-horizontal.svg"
       }
     },
     {
-      "file": "icons/icon/geo-arrow-left.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-arrow-left.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-arrow-left.svg"
       }
     },
     {
-      "file": "icons/icon/github.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/github.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/github.svg"
       }
     },
     {
-      "file": "icons/icon/reset-zoom.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/reset-zoom.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/reset-zoom.svg"
       }
     },
     {
-      "file": "icons/icon/stack-horizontal.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/stack-horizontal.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/stack-horizontal.svg"
       }
     },
     {
-      "file": "icons/icon/tool-pencil.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-pencil.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-pencil.svg"
       }
     },
     {
-      "file": "icons/icon/align-bottom-left.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-bottom-left.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-bottom-left.svg"
       }
     },
     {
-      "file": "icons/icon/arrowhead-dot.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrowhead-dot.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrowhead-dot.svg"
       }
     },
     {
-      "file": "icons/icon/chevrons-sw.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/chevrons-sw.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/chevrons-sw.svg"
       }
     },
     {
-      "file": "icons/icon/dots-vertical.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/dots-vertical.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/dots-vertical.svg"
       }
     },
     {
-      "file": "icons/icon/geo-arrow-right.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-arrow-right.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-arrow-right.svg"
       }
     },
     {
-      "file": "icons/icon/group.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/group.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/group.svg"
       }
     },
     {
-      "file": "icons/icon/rotate-ccw.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/rotate-ccw.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/rotate-ccw.svg"
       }
     },
     {
-      "file": "icons/icon/stack-vertical.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/stack-vertical.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/stack-vertical.svg"
       }
     },
     {
-      "file": "icons/icon/tool-pointer.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-pointer.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-pointer.svg"
       }
     },
     {
-      "file": "icons/icon/align-bottom-right.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-bottom-right.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-bottom-right.svg"
       }
     },
     {
-      "file": "icons/icon/arrowhead-none.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrowhead-none.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrowhead-none.svg"
       }
     },
     {
-      "file": "icons/icon/clipboard-copied.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/clipboard-copied.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/clipboard-copied.svg"
       }
     },
     {
-      "file": "icons/icon/drag-handle-dots.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/drag-handle-dots.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/drag-handle-dots.svg"
       }
     },
     {
-      "file": "icons/icon/geo-arrow-up.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-arrow-up.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-arrow-up.svg"
       }
     },
     {
-      "file": "icons/icon/hidden.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/hidden.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/hidden.svg"
       }
     },
     {
-      "file": "icons/icon/rotate-cw.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/rotate-cw.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/rotate-cw.svg"
       }
     },
     {
-      "file": "icons/icon/stretch-horizontal.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/stretch-horizontal.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/stretch-horizontal.svg"
       }
     },
     {
-      "file": "icons/icon/tool-text.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-text.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-text.svg"
       }
     },
     {
-      "file": "icons/icon/align-bottom.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-bottom.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-bottom.svg"
       }
     },
     {
-      "file": "icons/icon/arrowhead-square.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrowhead-square.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrowhead-square.svg"
       }
     },
     {
-      "file": "icons/icon/clipboard-copy.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/clipboard-copy.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/clipboard-copy.svg"
       }
     },
     {
-      "file": "icons/icon/duplicate.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/duplicate.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/duplicate.svg"
       }
     },
     {
-      "file": "icons/icon/geo-check-box.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-check-box.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-check-box.svg"
       }
     },
     {
-      "file": "icons/icon/image.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/image.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/image.svg"
       }
     },
     {
-      "file": "icons/icon/ruler.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/ruler.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/ruler.svg"
       }
     },
     {
-      "file": "icons/icon/stretch-vertical.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/stretch-vertical.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/stretch-vertical.svg"
       }
     },
     {
-      "file": "icons/icon/trash.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/trash.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/trash.svg"
       }
     },
     {
-      "file": "icons/icon/align-center-center.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-center-center.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-center-center.svg"
       }
     },
     {
-      "file": "icons/icon/arrowhead-triangle-inverted.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrowhead-triangle-inverted.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrowhead-triangle-inverted.svg"
       }
     },
     {
-      "file": "icons/icon/code.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/code.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/code.svg"
       }
     },
     {
-      "file": "icons/icon/edit.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/edit.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/edit.svg"
       }
     },
     {
-      "file": "icons/icon/geo-cloud.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-cloud.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-cloud.svg"
       }
     },
     {
-      "file": "icons/icon/info-circle.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/info-circle.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/info-circle.svg"
       }
     },
     {
-      "file": "icons/icon/search.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/search.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/search.svg"
       }
     },
     {
-      "file": "icons/icon/text-align-center.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/text-align-center.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/text-align-center.svg"
       }
     },
     {
-      "file": "icons/icon/triangle-down.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/triangle-down.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/triangle-down.svg"
       }
     },
     {
-      "file": "icons/icon/align-center-horizontal.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-center-horizontal.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-center-horizontal.svg"
       }
     },
     {
-      "file": "icons/icon/arrowhead-triangle.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrowhead-triangle.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrowhead-triangle.svg"
       }
     },
     {
-      "file": "icons/icon/collab.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/collab.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/collab.svg"
       }
     },
     {
-      "file": "icons/icon/external-link.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/external-link.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/external-link.svg"
       }
     },
     {
-      "file": "icons/icon/geo-diamond.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-diamond.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-diamond.svg"
       }
     },
     {
-      "file": "icons/icon/leading.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/leading.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/leading.svg"
       }
     },
     {
-      "file": "icons/icon/send-backward.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/send-backward.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/send-backward.svg"
       }
     },
     {
-      "file": "icons/icon/text-align-justify.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/text-align-justify.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/text-align-justify.svg"
       }
     },
     {
-      "file": "icons/icon/triangle-up.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/triangle-up.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/triangle-up.svg"
       }
     },
     {
-      "file": "icons/icon/align-center-left.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-center-left.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-center-left.svg"
       }
     },
     {
-      "file": "icons/icon/aspect-ratio.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/aspect-ratio.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/aspect-ratio.svg"
       }
     },
     {
-      "file": "icons/icon/color.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/color.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/color.svg"
       }
     },
     {
-      "file": "icons/icon/file.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/file.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/file.svg"
       }
     },
     {
-      "file": "icons/icon/geo-ellipse.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-ellipse.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-ellipse.svg"
       }
     },
     {
-      "file": "icons/icon/link.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/link.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/link.svg"
       }
     },
     {
-      "file": "icons/icon/send-to-back.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/send-to-back.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/send-to-back.svg"
       }
     },
     {
-      "file": "icons/icon/text-align-left.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/text-align-left.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/text-align-left.svg"
       }
     },
     {
-      "file": "icons/icon/twitter.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/twitter.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/twitter.svg"
       }
     },
     {
-      "file": "icons/icon/align-center-right.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-center-right.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-center-right.svg"
       }
     },
     {
-      "file": "icons/icon/avatar.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/avatar.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/avatar.svg"
       }
     },
     {
-      "file": "icons/icon/comment.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/comment.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/comment.svg"
       }
     },
     {
-      "file": "icons/icon/fill-none.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/fill-none.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/fill-none.svg"
       }
     },
     {
-      "file": "icons/icon/geo-hexagon.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-hexagon.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-hexagon.svg"
       }
     },
     {
-      "file": "icons/icon/lock-small.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/lock-small.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/lock-small.svg"
       }
     },
     {
-      "file": "icons/icon/settings-horizontal.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/settings-horizontal.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/settings-horizontal.svg"
       }
     },
     {
-      "file": "icons/icon/text-align-right.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/text-align-right.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/text-align-right.svg"
       }
     },
     {
-      "file": "icons/icon/undo.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/undo.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/undo.svg"
       }
     },
     {
-      "file": "icons/icon/align-center-vertical.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-center-vertical.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-center-vertical.svg"
       }
     },
     {
-      "file": "icons/icon/blob.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/blob.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/blob.svg"
       }
     },
     {
-      "file": "icons/icon/cross-2.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/cross-2.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/cross-2.svg"
       }
     },
     {
-      "file": "icons/icon/fill-pattern.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/fill-pattern.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/fill-pattern.svg"
       }
     },
     {
-      "file": "icons/icon/geo-octagon.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-octagon.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-octagon.svg"
       }
     },
     {
-      "file": "icons/icon/lock.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/lock.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/lock.svg"
       }
     },
     {
-      "file": "icons/icon/settings-vertical-1.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/settings-vertical-1.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/settings-vertical-1.svg"
       }
     },
     {
-      "file": "icons/icon/tool-arrow.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-arrow.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-arrow.svg"
       }
     },
     {
-      "file": "icons/icon/ungroup.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/ungroup.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/ungroup.svg"
       }
     },
     {
-      "file": "icons/icon/align-left.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-left.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-left.svg"
       }
     },
     {
-      "file": "icons/icon/bring-forward.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/bring-forward.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/bring-forward.svg"
       }
     },
     {
-      "file": "icons/icon/cross.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/cross.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/cross.svg"
       }
     },
     {
-      "file": "icons/icon/fill-semi.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/fill-semi.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/fill-semi.svg"
       }
     },
     {
-      "file": "icons/icon/geo-oval.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-oval.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-oval.svg"
       }
     },
     {
-      "file": "icons/icon/menu.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/menu.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/menu.svg"
       }
     },
     {
-      "file": "icons/icon/settings-vertical.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/settings-vertical.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/settings-vertical.svg"
       }
     },
     {
-      "file": "icons/icon/tool-embed.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-embed.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-embed.svg"
       }
     },
     {
-      "file": "icons/icon/unlock-small.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/unlock-small.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/unlock-small.svg"
       }
     },
     {
-      "file": "icons/icon/align-right.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-right.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-right.svg"
       }
     },
     {
-      "file": "icons/icon/bring-to-front.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/bring-to-front.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/bring-to-front.svg"
       }
     },
     {
-      "file": "icons/icon/dash-dashed.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/dash-dashed.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/dash-dashed.svg"
       }
     },
     {
-      "file": "icons/icon/fill-solid.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/fill-solid.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/fill-solid.svg"
       }
     },
     {
-      "file": "icons/icon/geo-pentagon.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-pentagon.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-pentagon.svg"
       }
     },
     {
-      "file": "icons/icon/minus.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/minus.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/minus.svg"
       }
     },
     {
-      "file": "icons/icon/share-1.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/share-1.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/share-1.svg"
       }
     },
     {
-      "file": "icons/icon/tool-eraser.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-eraser.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-eraser.svg"
       }
     },
     {
-      "file": "icons/icon/unlock.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/unlock.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/unlock.svg"
       }
     },
     {
-      "file": "icons/icon/align-top-center.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-top-center.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-top-center.svg"
       }
     },
     {
-      "file": "icons/icon/check.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/check.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/check.svg"
       }
     },
     {
-      "file": "icons/icon/dash-dotted.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/dash-dotted.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/dash-dotted.svg"
       }
     },
     {
-      "file": "icons/icon/follow.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/follow.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/follow.svg"
       }
     },
     {
-      "file": "icons/icon/geo-rectangle.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-rectangle.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-rectangle.svg"
       }
     },
     {
-      "file": "icons/icon/mixed.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/mixed.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/mixed.svg"
       }
     },
     {
-      "file": "icons/icon/share-2.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/share-2.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/share-2.svg"
       }
     },
     {
-      "file": "icons/icon/tool-frame.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-frame.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-frame.svg"
       }
     },
     {
-      "file": "icons/icon/vertical-align-center.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/vertical-align-center.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/vertical-align-center.svg"
       }
     },
     {
-      "file": "icons/icon/align-top-left.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-top-left.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-top-left.svg"
       }
     },
     {
-      "file": "icons/icon/checkbox-checked.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/checkbox-checked.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/checkbox-checked.svg"
       }
     },
     {
-      "file": "icons/icon/dash-draw.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/dash-draw.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/dash-draw.svg"
       }
     },
     {
-      "file": "icons/icon/following.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/following.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/following.svg"
       }
     },
     {
-      "file": "icons/icon/geo-rhombus-2.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-rhombus-2.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-rhombus-2.svg"
       }
     },
     {
-      "file": "icons/icon/pack.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/pack.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/pack.svg"
       }
     },
     {
-      "file": "icons/icon/size-extra-large.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/size-extra-large.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/size-extra-large.svg"
       }
     },
     {
-      "file": "icons/icon/tool-hand.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-hand.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-hand.svg"
       }
     },
     {
-      "file": "icons/icon/vertical-align-end.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/vertical-align-end.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/vertical-align-end.svg"
       }
     },
     {
-      "file": "icons/icon/align-top-right.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-top-right.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-top-right.svg"
       }
     },
     {
-      "file": "icons/icon/checkbox-empty.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/checkbox-empty.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/checkbox-empty.svg"
       }
     },
     {
-      "file": "icons/icon/dash-solid.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/dash-solid.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/dash-solid.svg"
       }
     },
     {
-      "file": "icons/icon/font-draw.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/font-draw.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/font-draw.svg"
       }
     },
     {
-      "file": "icons/icon/geo-rhombus.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-rhombus.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-rhombus.svg"
       }
     },
     {
-      "file": "icons/icon/page.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/page.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/page.svg"
       }
     },
     {
-      "file": "icons/icon/size-large.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/size-large.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/size-large.svg"
       }
     },
     {
-      "file": "icons/icon/tool-highlight.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-highlight.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-highlight.svg"
       }
     },
     {
-      "file": "icons/icon/vertical-align-start.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/vertical-align-start.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/vertical-align-start.svg"
       }
     },
     {
-      "file": "icons/icon/align-top.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/align-top.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-top.svg"
       }
     },
     {
-      "file": "icons/icon/chevron-down.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/chevron-down.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/chevron-down.svg"
       }
     },
     {
-      "file": "icons/icon/discord.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/discord.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/discord.svg"
       }
     },
     {
-      "file": "icons/icon/font-mono.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/font-mono.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/font-mono.svg"
       }
     },
     {
-      "file": "icons/icon/geo-star.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-star.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-star.svg"
       }
     },
     {
-      "file": "icons/icon/plus.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/plus.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/plus.svg"
       }
     },
     {
-      "file": "icons/icon/size-medium.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/size-medium.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/size-medium.svg"
       }
     },
     {
-      "file": "icons/icon/tool-laser.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-laser.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-laser.svg"
       }
     },
     {
-      "file": "icons/icon/visible.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/visible.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/visible.svg"
       }
     },
     {
-      "file": "icons/icon/arrow-left.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrow-left.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrow-left.svg"
       }
     },
     {
-      "file": "icons/icon/chevron-left.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/chevron-left.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/chevron-left.svg"
       }
     },
     {
-      "file": "icons/icon/distribute-horizontal.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/distribute-horizontal.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/distribute-horizontal.svg"
       }
     },
     {
-      "file": "icons/icon/font-sans.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/font-sans.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/font-sans.svg"
       }
     },
     {
-      "file": "icons/icon/geo-trapezoid.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-trapezoid.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-trapezoid.svg"
       }
     },
     {
-      "file": "icons/icon/question-mark-circle.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/question-mark-circle.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/question-mark-circle.svg"
       }
     },
     {
-      "file": "icons/icon/size-small.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/size-small.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/size-small.svg"
       }
     },
     {
-      "file": "icons/icon/tool-line.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-line.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-line.svg"
       }
     },
     {
-      "file": "icons/icon/warning-triangle.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/warning-triangle.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/warning-triangle.svg"
       }
     },
     {
-      "file": "icons/icon/arrowhead-arrow.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrowhead-arrow.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrowhead-arrow.svg"
       }
     },
     {
-      "file": "icons/icon/chevron-right.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/chevron-right.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/chevron-right.svg"
       }
     },
     {
-      "file": "icons/icon/distribute-vertical.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/distribute-vertical.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/distribute-vertical.svg"
       }
     },
     {
-      "file": "icons/icon/font-serif.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/font-serif.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/font-serif.svg"
       }
     },
     {
-      "file": "icons/icon/geo-triangle.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-triangle.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-triangle.svg"
       }
     },
     {
-      "file": "icons/icon/question-mark.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/question-mark.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/question-mark.svg"
       }
     },
     {
-      "file": "icons/icon/spline-cubic.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/spline-cubic.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/spline-cubic.svg"
       }
     },
     {
-      "file": "icons/icon/tool-media.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-media.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-media.svg"
       }
     },
     {
-      "file": "icons/icon/zoom-in.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/zoom-in.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/zoom-in.svg"
       }
     },
     {
-      "file": "icons/icon/arrowhead-bar.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrowhead-bar.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrowhead-bar.svg"
       }
     },
     {
-      "file": "icons/icon/chevron-up.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/chevron-up.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/chevron-up.svg"
       }
     },
     {
-      "file": "icons/icon/dot.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/dot.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/dot.svg"
       }
     },
     {
-      "file": "icons/icon/geo-arrow-down.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-arrow-down.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-arrow-down.svg"
       }
     },
     {
-      "file": "icons/icon/geo-x-box.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/geo-x-box.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/geo-x-box.svg"
       }
     },
     {
-      "file": "icons/icon/redo.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/redo.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/redo.svg"
       }
     },
     {
-      "file": "icons/icon/spline-line.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/spline-line.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/spline-line.svg"
       }
     },
     {
-      "file": "icons/icon/tool-note.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/tool-note.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/tool-note.svg"
       }
     },
     {
-      "file": "icons/icon/zoom-out.svg",
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/zoom-out.svg",
       "fields": {
 				"type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/zoom-out.svg"
