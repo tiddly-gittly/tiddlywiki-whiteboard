@@ -13,6 +13,7 @@ import '@tldraw/tldraw/tldraw.css';
 import { getAssetUrlsByMetaUrl } from '../tldraw/assets/urls';
 import { WikiTextShapeTool } from '../tldraw/shapes/wikitext/WikiTextShapeTool';
 import { WikiTextShapeUtil } from '../tldraw/shapes/wikitext/WikiTextShapeUtil';
+import { uiOverrides } from '../tldraw/ui-overrides';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -188,36 +189,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
             tools={extraTools}
             autoFocus={false}
             assetUrls={assetUrls}
-            overrides={{
-              toolbar: (editor, schema, _helpers) => {
-                // remove built-in note that can't render wikitext
-                const withoutDefaultNote = schema.filter(item => item.id !== 'note');
-                // insert wikitext note tool before arrow tool, which is first one of the shapes.
-                const arrowToolIndex = withoutDefaultNote.findIndex((item) => item.id === 'arrow');
-                const withWikiTextNote: typeof schema = [
-                  ...withoutDefaultNote.slice(0, arrowToolIndex),
-                  {
-                    id: WikiTextShapeTool.id,
-                    toolItem: {
-                      id: WikiTextShapeTool.id,
-                      label: 'tool.note',
-                      readonlyOk: false,
-                      icon: 'tool-note',
-                      kbd: 'n',
-                      onSelect(source) {
-                        editor.setCurrentTool('note');
-                        // FIXME: is not a function. Maybe has to be inside a provider, but we can't here
-                        // trackEvent('select-tool', { source, id: 'note' });
-                      },
-                    },
-                    type: 'item',
-                    readonlyOk: false,
-                  },
-                  ...withoutDefaultNote.slice(arrowToolIndex),
-                ];
-                return withWikiTextNote;
-              },
-            }}
+            overrides={uiOverrides}
           />
         </div>
       </ParentWidgetContext.Provider>
