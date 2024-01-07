@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/no-null */
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import {
   Editor,
   getDefaultColorTheme,
@@ -10,7 +12,6 @@ import {
   TLNoteShape,
   TLOnEditEndHandler,
   toDomPrecision,
-  useIsDarkMode,
 } from '@tldraw/editor';
 
 const NOTE_SIZE = 200;
@@ -77,7 +78,7 @@ export class WikiTextShapeUtil extends ShapeUtil<TLNoteShape> {
       props: { color, font, size, align, text, verticalAlign },
     } = shape;
 
-    const theme = getDefaultColorTheme({ isDarkMode: useIsDarkMode() });
+    const theme = getDefaultColorTheme({ isDarkMode: this.editor.user.getIsDarkMode() });
     const adjustedColor = color === 'black' ? 'yellow' : color;
 
     return (
@@ -116,7 +117,7 @@ export class WikiTextShapeUtil extends ShapeUtil<TLNoteShape> {
 
   override toSvg(shape: TLNoteShape, context: SvgExportContext) {
     // context.addExportDef(getFontDefForExport(shape.props.font));
-    const theme = getDefaultColorTheme({ isDarkMode: this.editor.user.isDarkMode });
+    const theme = getDefaultColorTheme({ isDarkMode: this.editor.user.getIsDarkMode() });
     const bounds = this.editor.getShapeGeometry(shape).bounds;
 
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -178,7 +179,7 @@ export class WikiTextShapeUtil extends ShapeUtil<TLNoteShape> {
       props: { text },
     } = shape;
 
-    if (text.trimEnd() !== shape.props.text) {
+    if (text.trimEnd() !== text) {
       this.editor.updateShapes([
         {
           id,
@@ -199,7 +200,7 @@ function getGrowY(editor: Editor, shape: TLNoteShape, previousGrowY = 0) {
     ...TEXT_PROPS,
     fontFamily: FONT_FAMILIES[shape.props.font],
     fontSize: LABEL_FONT_SIZES[shape.props.size],
-    width: NOTE_SIZE - PADDING * 2 + 'px',
+    maxWidth: NOTE_SIZE - PADDING * 2,
   });
 
   const nextHeight = nextTextSize.h + PADDING * 2;
