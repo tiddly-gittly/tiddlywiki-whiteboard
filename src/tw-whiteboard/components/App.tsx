@@ -82,7 +82,11 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         json: initialTiddlerText,
       });
       if (!parseFileResult.ok) {
-        console.error(`$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, text:\n${initialTiddlerText}\n${parseFileResult.error.type}`);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
+        const errorMessage = `$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, type: ${parseFileResult.error.type}, cause ${(parseFileResult.error as any)
+          ?.cause},\ntext:\n${initialTiddlerText}`;
+        $tw.utils.error(errorMessage);
+        return;
       }
       // tldraw file contain the full state of the app,
       // including ephemeral data. it up to the opener to
@@ -98,7 +102,6 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         /* eslint-disable @typescript-eslint/no-unsafe-call */
         /* eslint-disable @typescript-eslint/no-unsafe-assignment */
         const [shapes, nonShapes] = partition(
-          // @ts-expect-error Property 'value' does not exist on type 'Result<TLStore, TldrawFileParseError>'.
           parseFileResult.value.allRecords(),
           // @ts-expect-error Parameter 'record' implicitly has an 'any' type.ts(7006)
           (record) => record.typeName === 'shape',
@@ -115,7 +118,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         /* eslint-enable @typescript-eslint/no-unsafe-argument */
         /* eslint-enable @typescript-eslint/no-unsafe-call */
         /* eslint-enable @typescript-eslint/no-unsafe-assignment */
-        const bounds = newEditor.currentPageBounds;
+        const bounds = newEditor.getCurrentPageBounds();
         if (bounds) {
           newEditor.zoomToBounds(bounds, 1);
         }
@@ -126,7 +129,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     if (zoomToFit === true) {
       newEditor.zoomToFit();
     } else if (Number.isFinite(Number(zoom))) {
-      const bounds = newEditor.selectionPageBounds ?? newEditor.currentPageBounds;
+      const bounds = newEditor.getSelectionPageBounds() ?? newEditor.getCurrentPageBounds();
       if (bounds) {
         newEditor.zoomToBounds(bounds, Math.min(1, Number(zoom)), { duration: 220 });
       }

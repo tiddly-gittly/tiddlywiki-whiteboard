@@ -12,7 +12,7 @@ export function getAssetUrlsByMetaUrl(fn: (item: string) => string) {
       monospace: fn('fonts/IBMPlexMono-Medium.woff2'),
       sansSerif: fn('fonts/IBMPlexSans-Medium.woff2'),
       serif: fn('fonts/IBMPlexSerif-Medium.woff2'),
-      draw: fn('fonts/Shantell_Sans-Normal-SemiBold.woff2'),
+      draw: fn('fonts/Shantell_Sans-Tldrawish.woff2'),
     },
     icons: {
       'align-bottom-center': fn('icons/icon/align-bottom-center.svg'),
