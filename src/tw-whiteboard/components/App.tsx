@@ -2,7 +2,7 @@
 import { StrictMode, useCallback, useEffect, useState } from 'react';
 
 import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
-import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord, transact } from '@tldraw/tldraw';
+import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord, TLUiToolItem, transact } from '@tldraw/tldraw';
 
 // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
 // @ts-expect-error Module '"@tldraw/editor"' has no exported member 'partition'.ts(2305)
@@ -181,6 +181,18 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     };
   }, [deferSave, editor]);
 
+  const getToolItem = (editor: Editor) => ({
+    id: WikiTextShapeTool.id,
+    label: 'tool.note',
+    readonlyOk: false,
+    icon: 'tool-note',
+    kbd: 'n',
+    onSelect(source) {
+      editor.setCurrentTool(WikiTextShapeTool.id);
+      // FIXME: is not a function. Maybe has to be inside a provider, but we can't here
+      // trackEvent('select-tool', { source, id: 'note' });
+    },
+  });
   return (
     <StrictMode>
       <ParentWidgetContext.Provider value={parentWidget}>

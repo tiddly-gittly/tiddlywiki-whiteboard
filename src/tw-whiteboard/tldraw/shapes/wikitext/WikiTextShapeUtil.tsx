@@ -40,18 +40,19 @@ const FONT_FAMILIES: Record<TLDefaultFontStyle, string> = {
   mono: 'var(--tl-font-mono)',
 };
 
-/** @public */
 export class WikiTextShapeUtil extends ShapeUtil<TLNoteShape> {
   static override type = 'wikitext' as const;
   static override props = noteShapeProps;
 
   override canEdit = () => true;
-  override hideResizeHandles = () => true;
+  // override hideResizeHandles = () => true;
   override hideSelectionBoundsFg = () => true;
 
   getDefaultProps(): TLNoteShape['props'] {
+    // DEBUG: console
+    console.log(`getDefaultProps`);
     return {
-      color: 'black',
+      color: 'grey',
       size: 'm',
       text: '',
       font: 'draw',
@@ -80,6 +81,8 @@ export class WikiTextShapeUtil extends ShapeUtil<TLNoteShape> {
 
     const theme = getDefaultColorTheme({ isDarkMode: this.editor.user.getIsDarkMode() });
     const adjustedColor = color === 'black' ? 'yellow' : color;
+    // DEBUG: console theme
+    console.log(`theme`, theme);
 
     return (
       <>
@@ -156,9 +159,9 @@ export class WikiTextShapeUtil extends ShapeUtil<TLNoteShape> {
     return g;
   }
 
-  override onBeforeCreate = (next: TLNoteShape) => {
-    return getGrowY(this.editor, next, next.props.growY);
-  };
+  // override onBeforeCreate = (next: TLNoteShape) => {
+  //   return getGrowY(this.editor, next, next.props.growY);
+  // };
 
   override onBeforeUpdate = (previous: TLNoteShape, next: TLNoteShape) => {
     if (
