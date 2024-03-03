@@ -2,6 +2,7 @@ title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard
 name: White Board
 description: show `application/vnd.tldraw+json` type tiddlers in full screen whiteboard
 tags: $:/tags/Layout
+icon: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/whiteboard-icon
 
 \whitespace trim
 \define containerClasses()
