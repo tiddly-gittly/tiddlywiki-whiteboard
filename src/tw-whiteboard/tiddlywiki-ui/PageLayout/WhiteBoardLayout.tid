@@ -1,6 +1,6 @@
 title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard
-name: White Board
-description: show `application/vnd.tldraw+json` type tiddlers in full screen whiteboard
+name: <<lingo Name $:/plugins/linonetwo/tw-whiteboard/language/>>
+description: <<lingo Description $:/plugins/linonetwo/tw-whiteboard/language/>>
 tags: $:/tags/Layout
 icon: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/whiteboard-icon
 
