@@ -1,0 +1,5 @@
+title: $:/plugins/your-name/plugin-name/language/en-GB/
+
+Name: Whiteboard
+Description: Tiny little drawing app in TW, using tldraw. Providing diagram widget and whiteboard view.
+Configs/Description: These settings let you customise the behaviour of "Whiteboard" plugin.

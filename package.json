@@ -4,6 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "tiddlywiki-plugin-dev dev",
+    "dev:wiki": "tiddlywiki-plugin-dev dev --write-wiki",
+    "test": "tiddlywiki-plugin-dev test",
     "build": "npm run clean && tiddlywiki-plugin-dev build",
     "publish": "npm run clean && tiddlywiki-plugin-dev publish",
     "reset": "rimraf ./**/node_modules",
@@ -31,30 +33,30 @@
     ]
   },
   "devDependencies": {
-    "@modern-js/tsconfig": "^2.45.0",
-    "@types/lodash": "^4.14.202",
-    "@types/node": "^20.10.6",
-    "@types/react": "^18.2.47",
-    "@types/react-dom": "^18.2.18",
+    "@modern-js/tsconfig": "^2.48.4",
+    "@types/lodash": "^4.17.0",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.22",
     "beautiful-react-hooks": "^5.0.1",
     "dprint": "^0.45.0",
-    "eslint-config-tidgi": "1.1.5",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "postcss": "^8.4.33",
+    "eslint-config-tidgi": "1.2.2",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "postcss": "^8.4.38",
     "requestidlecallback-polyfill": "^1.0.2",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "tw-react": "^0.6.2",
-    "tw5-typed": "^0.4.3",
-    "typescript": "^5.3.3"
+    "tw5-typed": "^0.5.7",
+    "typescript": "^5.4.3"
   },
   "dependencies": {
-    "@tldraw/assets": "2.0.0-canary.d47152d864e1",
-    "@tldraw/editor": "2.0.0-canary.8cd8117acf4e",
-    "@tldraw/tldraw": "2.0.0-canary.8cd8117acf4e",
-    "npm-check-updates": "^16.14.4",
+    "@tldraw/assets": "2.0.2",
+    "@tldraw/editor": "2.0.2",
+    "@tldraw/tldraw": "2.0.2",
+    "npm-check-updates": "^16.14.18",
     "tiddlywiki": "^5.3.3",
-    "tiddlywiki-plugin-dev": "^0.0.39"
+    "tiddlywiki-plugin-dev": "^0.1.3"
   }
 }

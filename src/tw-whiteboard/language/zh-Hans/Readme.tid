@@ -1,0 +1,11 @@
+title: $:/plugins/your-name/plugin-name/language/zh-Hans/Readme
+
+\define lingo-base() $:/plugins/your-name/plugin-name/language/
+
+! <<lingo Name>>
+
+<<lingo Description>>
+
+!! 常见问题
+
+V0.4.0+ 使用 Tldraw 2.0.0，该版本与旧版本不兼容。因此，如果你的 wiki 有一些旧图，你需要重新绘制，或者使用此插件的旧版本，或者用 tldraw vscode 插件或其官方网站打开旧文件，让它升级你的文件。

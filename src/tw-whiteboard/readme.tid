@@ -2,6 +2,6 @@ title: $:/plugins/linonetwo/tw-whiteboard/readme
 creator: LinOnetwo
 type: text/vnd.tiddlywiki
 
-Tiny little drawing app in TW, using tldraw. Providing diagram widget and whiteboard view. 
+\define lingo-base() $:/plugins/your-name/plugin-name/language/
 
-V0.4.0 use Tldraw 2.0.0-beta.1, which is not compatible with previous version. So if your wiki have some old drawings, you need to re-draw them, or use previous version of this plugin.
+<<lingo "Readme">>

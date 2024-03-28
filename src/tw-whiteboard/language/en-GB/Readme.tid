@@ -1,0 +1,11 @@
+title: $:/plugins/your-name/plugin-name/language/en-GB/Readme
+
+\define lingo-base() $:/plugins/your-name/plugin-name/language/
+
+! <<lingo Name>>
+
+<<lingo Description>>
+
+!! FAQ
+
+V0.4.0+ use Tldraw 2.0.0, which is not compatible with previous version. So if your wiki have some old drawings, you need to re-draw them, or use previous version of this plugin, or open old file with tldraw vscode plugin or its official website, to let it upgrade your file.
