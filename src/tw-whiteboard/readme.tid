@@ -2,6 +2,6 @@ title: $:/plugins/linonetwo/tw-whiteboard/readme
 creator: LinOnetwo
 type: text/vnd.tiddlywiki
 
-\define lingo-base() $:/plugins/your-name/plugin-name/language/
+\define lingo-base() $:/plugins/linonetwo/tw-whiteboard/language/
 
-<<lingo "Readme">>
+<<lingo Readme>>

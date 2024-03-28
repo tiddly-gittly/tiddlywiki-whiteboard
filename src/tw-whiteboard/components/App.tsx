@@ -2,7 +2,7 @@
 import { StrictMode, useCallback, useEffect, useState } from 'react';
 
 import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
-import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord, TLUiToolItem, transact } from '@tldraw/tldraw';
+import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord, transact } from '@tldraw/tldraw';
 
 // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
 // @ts-expect-error Module '"@tldraw/editor"' has no exported member 'partition'.ts(2305)
@@ -55,7 +55,7 @@ const assetUrls = getAssetUrlsByMetaUrl((assetUrl: string) => {
     return `data:${assetData.fields.type};${typeInfo.encoding ?? 'utf8'},${encodeURIComponent(assetData.fields.text)}`;
   }
   // <div class="tlui-icon tlui-icon__small" style="mask: url(&quot;https://unpkg.com/@tldraw/assets@2.0.0-alpha.12/icons/icon/duplicate.svg&quot;) center 100% / 100% no-repeat;"></div>
-  return `https://unpkg.com/@tldraw/assets@2.0.0-alpha.12/${assetUrl}`;
+  return `https://unpkg.com/@tldraw/assets@2.0.2/${assetUrl}`;
 });
 
 export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
@@ -83,8 +83,9 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
       });
       if (!parseFileResult.ok) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
-        const errorMessage = `$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, type: ${parseFileResult.error.type}, cause ${(parseFileResult.error as any)
-          ?.cause},\ntext:\n${initialTiddlerText}`;
+        const errorMessage = `$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, type: ${parseFileResult.error.type}, cause ${
+          JSON.stringify(parseFileResult.error)
+        },\ntext:\n${initialTiddlerText}`;
         $tw.utils.error(errorMessage);
         return;
       }
@@ -111,7 +112,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         newEditor.store.ensureStoreIsUsable();
         newEditor.store.put(shapes, 'initialize');
         newEditor.history.clear();
-        newEditor.updateViewportScreenBounds();
+        newEditor.updateViewportScreenBounds(newEditor.getViewportScreenBounds().clone());
         // @ts-expect-error Property 'updateRenderingBounds' does not exist on type 'Editor'. Did you mean 'renderingBounds'?ts(2551)
         newEditor.updateRenderingBounds();
         /* eslint-enable @typescript-eslint/no-unsafe-member-access */
@@ -120,7 +121,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         /* eslint-enable @typescript-eslint/no-unsafe-assignment */
         const bounds = newEditor.getCurrentPageBounds();
         if (bounds) {
-          newEditor.zoomToBounds(bounds, 1);
+          newEditor.zoomToBounds(bounds);
         }
       });
     }
@@ -131,7 +132,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     } else if (Number.isFinite(Number(zoom))) {
       const bounds = newEditor.getSelectionPageBounds() ?? newEditor.getCurrentPageBounds();
       if (bounds) {
-        newEditor.zoomToBounds(bounds, Math.min(1, Number(zoom)), { duration: 220 });
+        newEditor.zoomToBounds(bounds, { targetZoom: Math.min(1, Number(zoom)), duration: 220 });
       }
     }
   }, [initialTiddlerText, readonly, zoomToFit, zoom, currentTiddler]);
@@ -181,18 +182,6 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     };
   }, [deferSave, editor]);
 
-  const getToolItem = (editor: Editor) => ({
-    id: WikiTextShapeTool.id,
-    label: 'tool.note',
-    readonlyOk: false,
-    icon: 'tool-note',
-    kbd: 'n',
-    onSelect(source) {
-      editor.setCurrentTool(WikiTextShapeTool.id);
-      // FIXME: is not a function. Maybe has to be inside a provider, but we can't here
-      // trackEvent('select-tool', { source, id: 'note' });
-    },
-  });
   return (
     <StrictMode>
       <ParentWidgetContext.Provider value={parentWidget}>
@@ -203,6 +192,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
             shapeUtils={extraShapeUtils}
             tools={extraTools}
             autoFocus={false}
+            inferDarkMode={false}
             assetUrls={assetUrls}
             overrides={uiOverrides}
           />

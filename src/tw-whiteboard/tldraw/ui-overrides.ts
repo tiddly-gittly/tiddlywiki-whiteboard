@@ -1,4 +1,4 @@
-import { menuItem, TLUiMenuGroup, TLUiOverrides, toolbarItem } from '@tldraw/tldraw';
+import { TLUiOverrides, toolbarItem } from '@tldraw/tldraw';
 import { WikiTextShapeTool } from './shapes/wikitext/WikiTextShapeTool';
 
 // There's a guide at the bottom of this file!
@@ -43,14 +43,14 @@ export const uiOverrides: TLUiOverrides = {
     ];
     return withWikiTextNote;
   },
-  keyboardShortcutsMenu(_app, keyboardShortcutsMenu, { tools }) {
-    // Add the tool item from the context to the keyboard shortcuts dialog.
-    const toolsGroup = keyboardShortcutsMenu.find(
-      (group) => group.id === 'shortcuts-dialog.tools',
-    ) as TLUiMenuGroup;
-    toolsGroup.children.push(menuItem(tools.wikitext));
-    return keyboardShortcutsMenu;
-  },
+  // keyboardShortcutsMenu(_app, keyboardShortcutsMenu, { tools }) {
+  //   // Add the tool item from the context to the keyboard shortcuts dialog.
+  //   const toolsGroup = keyboardShortcutsMenu.find(
+  //     (group) => group.id === 'shortcuts-dialog.tools',
+  //   ) as TLUiMenuGroup;
+  //   toolsGroup.children.push(menuItem(tools.wikitext));
+  //   return keyboardShortcutsMenu;
+  // },
 };
 
 /*

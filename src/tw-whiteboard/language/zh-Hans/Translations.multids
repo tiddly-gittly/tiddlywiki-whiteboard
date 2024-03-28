@@ -1,5 +1,5 @@
-title: $:/plugins/your-name/plugin-name/language/zh-Hans/
+title: $:/plugins/linonetwo/tw-whiteboard/language/zh-Hans/
 
-Name: 未命名插件
-Description: 使用太微白板灰度应用，提供图表微件和白板视图。基于 tldraw。
-Configs/Description: 通过这些设置，您可以自定义「未命名插件」插件的行为。
+Name: 白板
+Description: 太微白板应用，提供图表微件和白板视图。基于 tldraw。
+Configs/Description: 通过这些设置，您可以自定义「白板」插件的行为。

@@ -1,5 +1,5 @@
 title: $:/language/Docs/Types/application/vnd.tldraw+json
-description: Tldraw Whiteboard
+description: 白板
 name: application/vnd.tldraw+json
-group: Developer
-group-sort: 2
+group: 图像
+group-sort: 1

@@ -1,6 +1,6 @@
-title: $:/plugins/your-name/plugin-name/language/zh-Hans/Readme
+title: $:/plugins/linonetwo/tw-whiteboard/language/zh-Hans/Readme
 
-\define lingo-base() $:/plugins/your-name/plugin-name/language/
+\define lingo-base() $:/plugins/linonetwo/tw-whiteboard/language/
 
 ! <<lingo Name>>
 
