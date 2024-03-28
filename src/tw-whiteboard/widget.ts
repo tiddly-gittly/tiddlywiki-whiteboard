@@ -29,6 +29,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
 
   public refresh(changedTiddlers: IChangedTiddlers): boolean {
     if (this.editTitle === undefined) return false;
+    if (changedTiddlers['$:/state/Whiteboard/PageLayout/tiddler']) return true;
     if (changedTiddlers[this.editTitle]?.deleted === true) {
       // this delete operation will trigger the close of the tiddler, so trigger the save, we have to prevent that
       this.lock();
