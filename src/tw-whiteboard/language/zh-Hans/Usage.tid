@@ -1,0 +1,8 @@
+title: $:/plugins/linonetwo/tw-whiteboard/language/zh-Hans/Usage
+type: text/vnd.tiddlywiki
+
+# 提供一个白板微件，使用方式类似于 `<$whiteboard tiddler="存储白板数据的条目名" />` 。
+# 类型为 `application/vnd.tldraw+json` 的条目将被解析为白板，在条目视图模板中显示白板
+# 提供白板视图，使用 `ctrl+shift+L` 切换到该视图，你可以选择类型为 `application/vnd.tldraw+json` 的条目，并全屏编辑。
+
+[[微件参数表|$:/plugins/linonetwo/tw-whiteboard/WidgetParamTable]]

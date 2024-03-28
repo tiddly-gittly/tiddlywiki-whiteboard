@@ -1,9 +1,4 @@
-created: 20230527044951986
-creator: 林一二
-modified: 20230527045616906
-modifier: 林一二
-tags: 
-title: WidgetParamTable
+title: $:/plugins/linonetwo/tw-whiteboard/language/en-GB/WidgetParamTable
 type: text/vnd.tiddlywiki
 
 | !Attribute | !Description | !Values | !DefaultValues | !Example |
@@ -11,5 +6,5 @@ type: text/vnd.tiddlywiki
 |readonly|make widget content non-editable, so you can use it in public-facing wikis for display.|"yes" or "true"|`no`|`readonly="yes"`|
 |zoomToFit|make widget content fit to widget size for display. This usually gives a smaller zoom, you might use `zoom` param to give your custom value.|"yes" or "true"|`no`|`zoomToFit="yes"`|
 |zoom|This will disable `zoomToFit`, and only apply when widget loads. You can use mouse wheel to zoom later.|number between 0 and 1|`1`|`zoom="0.25"`|
-|height|widget height|number end with "px"|``|`height="350px"`|
+|height|widget height|number end with "px"||`height="350px"`|
 |width|widget width|number end with "px" or "%"|`100%`|`width="50%"`|

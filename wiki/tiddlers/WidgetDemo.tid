@@ -1,33 +1,18 @@
 title: WidgetDemo
 type: text/vnd.tiddlywiki
 
-Use widget:
+\define lingo-base() language/
 
-```tw5
-<$whiteboard />
-```
+<<lingo UseWidget>>
 
-<$whiteboard />
+<<wikitext-example """<$whiteboard />""">>
 
-```tw5
-<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" />
-```
-
-<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" />
+<<wikitext-example """<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" />""">>
 
 [[TldrTiddlerExample]]
 
-!!! Zoom
+!!! <<lingo Zoom>>
 
-```tw5
-<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" zoomToFit="yes" width="30%" height="300px" />
-```
+<<wikitext-example """<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" zoomToFit="yes" width="30%" height="300px" />""">>
 
-<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" zoomToFit="yes" width="30%" height="300px" />
-
-
-```tw5
-<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" zoom="0.25" width="30%" height="300px" />
-```
-
-<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" zoom="0.25" width="30%" height="300px" />
+<<wikitext-example """<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" zoom="0.25" width="30%" height="300px" />""">>

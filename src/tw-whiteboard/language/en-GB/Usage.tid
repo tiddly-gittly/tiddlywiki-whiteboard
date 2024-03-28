@@ -1,12 +1,8 @@
-created: 20230527045626379
-creator: 林一二
-modified: 20230527045629152
-modifier: 林一二
-title: Usage
+title: $:/plugins/linonetwo/tw-whiteboard/language/en-GB/Usage
 type: text/vnd.tiddlywiki
 
 # Provides a whiteboard widget, use it like `<$whiteboard tiddler="tiddlerToStoreData" />`
 # Tiddler with type `application/vnd.tldraw+json` will be parsed as whiteboard, showing whiteboard in tiddler's ViewTemplate
 # Provides a whiteboard view, use `ctrl+shift+L` to switch to this view, you can choose a tiddler with type `application/vnd.tldraw+json`, and edit it in full screen.
 
-[[WidgetParamTable]]
+[[Widget Params Table|$:/plugins/linonetwo/tw-whiteboard/WidgetParamTable]]

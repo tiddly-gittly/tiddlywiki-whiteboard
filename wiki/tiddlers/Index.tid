@@ -1,8 +1,10 @@
 title: Index
 type: text/vnd.tiddlywiki
 
+\define lingo-base() language/
+
 {{$:/snippets/minilanguageswitcher}}
 
-[[Usage]] [[Installation]]
+[[Github|https://github.com/tiddly-gittly/tiddlywiki-whiteboard]] <$link to="Installation"><<lingo Installation/Caption>></$link>
 
 {{WidgetDemo}}
