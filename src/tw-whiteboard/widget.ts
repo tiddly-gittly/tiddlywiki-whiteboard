@@ -47,7 +47,6 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     return false;
   }
 
-  editorOperations = {};
   private editTitle: string | undefined;
 
   execute() {
@@ -77,10 +76,6 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
   /** a lock to prevent update from tiddler to slate, when update of tiddler is trigger by slate. */
   private isUpdatingByUserInput = false;
   private updatingLockTimeoutHandle: NodeJS.Timeout | undefined;
-  get editIconElement() {
-    const element = (this.parentDomNode as HTMLDivElement).closest('.tc-tiddler-exists')?.querySelector('.tc-image-wysiwyg-edit-button');
-    return element;
-  }
 
   lock = () => {
     this.isUpdatingByUserInput = true;
