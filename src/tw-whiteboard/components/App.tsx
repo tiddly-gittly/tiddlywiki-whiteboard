@@ -11,8 +11,8 @@ import { partition, TLStateNodeConstructor } from '@tldraw/editor';
 import './App.css';
 import '@tldraw/tldraw/tldraw.css';
 import { getAssetUrlsByMetaUrl } from '../tldraw/assets/urls';
-import { WikiTextShapeTool } from '../tldraw/shapes/wikitext/WikiTextShapeTool';
-import { WikiTextShapeUtil } from '../tldraw/shapes/wikitext/WikiTextShapeUtil';
+import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
+import { TranscludeShapeUtil } from '../tldraw/shapes/transclude/util';
 import { uiOverrides } from '../tldraw/ui-overrides';
 
 /** every ms to save */
@@ -43,8 +43,8 @@ export interface TDExportJSON {
   updatedCount?: number;
 }
 
-const extraShapeUtils: TLAnyShapeUtilConstructor[] = [WikiTextShapeUtil];
-const extraTools: TLStateNodeConstructor[] = [WikiTextShapeTool];
+const extraShapeUtils: TLAnyShapeUtilConstructor[] = [TranscludeShapeUtil];
+const extraTools: TLStateNodeConstructor[] = [TranscludeTool];
 
 const assetUrls = getAssetUrlsByMetaUrl((assetUrl: string) => {
   const assetData = $tw.wiki.getTiddler(`$:/plugins/linonetwo/tw-whiteboard/assets/${assetUrl}`);

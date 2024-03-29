@@ -1,0 +1,13 @@
+.transclusion-shape-component-outer {
+  width: 100%;
+  height: 100%;
+}
+.transclusion-shape-component-inner {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12), 0px 1px 3px rgba(0, 0, 0, 0.04);
+  pointer-events: all;
+  position: relative;
+  padding: 1em;
+}
