@@ -8,14 +8,14 @@ import { IParseTreeNode } from 'tiddlywiki';
 import { TranscludeShape } from './type';
 import './style.css';
 
-export function TranscludeComponent({ shape }: { shape: TranscludeShape }) {
+export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean; shape: TranscludeShape }) {
   const editor = useEditor();
-  const theme = getDefaultColorTheme({
-    isDarkMode: editor.user.getIsDarkMode(),
-  });
+  const theme = getDefaultColorTheme({ isDarkMode });
   const isEditing = useIsEditing(shape.id);
   const tiddlerTitle = shape.props.title;
   const tiddlerField = shape.props.field ?? 'text';
+  const adjustedColor = shape.props.color === 'black' ? 'grey' : shape.props.color;
+
   const astNode = useMemo<IParseTreeNode>(() => {
     if (tiddlerTitle === undefined) return { type: 'string', text: 'No tiddler title' };
     const fields = $tw.wiki.getTiddler(tiddlerTitle)?.fields;
@@ -43,7 +43,8 @@ export function TranscludeComponent({ shape }: { shape: TranscludeShape }) {
   }, []);
 
   const sharedStyle: CSSProperties = {
-    backgroundColor: theme[shape.props.color].solid,
+    backgroundColor: theme[adjustedColor].solid,
+    color: theme.black.solid,
   };
 
   return (

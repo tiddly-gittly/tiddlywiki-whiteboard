@@ -34,7 +34,7 @@ export class TranscludeShapeUtil extends ShapeUtil<TranscludeShape> {
   }
 
   component(shape: TranscludeShape) {
-    return <TranscludeComponent shape={shape} />;
+    return <TranscludeComponent shape={shape} isDarkMode={this.editor.user.getIsDarkMode()} />;
   }
 
   indicator(shape: TranscludeShape) {
