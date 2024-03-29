@@ -9,7 +9,7 @@ export const uiOverrides: TLUiOverrides = {
       id: TranscludeTool.id,
       label: 'tool.note',
       readonlyOk: false,
-      icon: 'tool-note',
+      icon: 'transcludify',
       kbd: 't',
       onSelect(_source) {
         editor.setCurrentTool(TranscludeTool.id);
