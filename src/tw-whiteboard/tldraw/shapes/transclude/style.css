@@ -11,3 +11,14 @@
   position: relative;
   padding: 1em;
 }
+.transclusion-shape-component-inner.transclusion-shape-edit-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.transclusion-shape-component-inner.transclusion-shape-edit-mode > input {
+  background: transparent;
+  border: none;
+  overflow-wrap: break-word;
+  font-size: 2em;
+}

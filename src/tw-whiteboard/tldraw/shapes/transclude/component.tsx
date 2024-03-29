@@ -1,7 +1,7 @@
 import { useWidget } from '$:/plugins/linonetwo/tw-react/index.js';
 import { getDefaultColorTheme, useEditor, useIsEditing } from '@tldraw/editor';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
-import { ChangeEvent, CSSProperties, useMemo, useRef } from 'react';
+import { ChangeEvent, CSSProperties, useCallback, useMemo, useRef } from 'react';
 import { IParseTreeNode } from 'tiddlywiki';
 
 import { TranscludeShape } from './type';
@@ -22,9 +22,10 @@ export function TranscludeComponent({ shape }: { shape: TranscludeShape }) {
     const childTree = $tw.wiki.parseText('text/vnd.tiddlywiki', text).tree;
     return { type: 'tiddler', children: childTree };
   }, [tiddlerField, tiddlerTitle]);
-  const containerReference = useRef<HTMLDivElement>(null);
-  useWidget(astNode, containerReference, { skip: isEditing });
+  const transcludeRenderContainerReference = useRef<HTMLDivElement>(null);
+  useWidget(astNode, transcludeRenderContainerReference, { skip: isEditing });
 
+  const editTitleInputContainerReference = useRef<HTMLInputElement>(null);
   const onTitleInputChange = useDebouncedCallback((event: ChangeEvent<HTMLInputElement>) => {
     editor?.store.update(shape.id, (record) => ({
       ...record,
@@ -34,6 +35,9 @@ export function TranscludeComponent({ shape }: { shape: TranscludeShape }) {
       },
     }));
   }, []);
+  const editTitleContainerOnClick = useCallback(() => {
+    editTitleInputContainerReference.current?.focus?.();
+  }, []);
 
   const sharedStyle: CSSProperties = {
     backgroundColor: theme[shape.props.color].solid,
@@ -41,12 +45,17 @@ export function TranscludeComponent({ shape }: { shape: TranscludeShape }) {
 
   return (
     <div className='transclusion-shape-component-outer'>
-      <div className='transclusion-shape-component-inner' key='edit-title' style={{ display: isEditing ? 'block' : 'none', ...sharedStyle }}>
-        <input type='text' onChange={onTitleInputChange} />
+      <div
+        className='transclusion-shape-component-inner transclusion-shape-edit-mode'
+        key='edit-title'
+        style={{ display: isEditing ? undefined : 'none', ...sharedStyle }}
+        onClick={editTitleContainerOnClick}
+      >
+        <input tabIndex={1} autoFocus type='text' ref={editTitleInputContainerReference} onChange={onTitleInputChange} />
       </div>
-      <div className='transclusion-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : 'block', ...sharedStyle }}>
+      <div className='transclusion-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
         <h2>{tiddlerTitle}</h2>
-        <div ref={containerReference}>Transclusion loading...</div>
+        <div ref={transcludeRenderContainerReference}>Transclusion loading...</div>
       </div>
     </div>
   );
