@@ -10,6 +10,7 @@
   pointer-events: all;
   position: relative;
   padding: 1em;
+  overflow-y: auto;
 }
 .transclusion-shape-component-inner.transclusion-shape-edit-mode {
   display: flex;
@@ -21,4 +22,5 @@
   border: none;
   overflow-wrap: break-word;
   font-size: 2em;
+  width: 100%;
 }

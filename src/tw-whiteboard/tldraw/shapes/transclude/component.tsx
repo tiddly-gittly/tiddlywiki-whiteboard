@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useWidget } from '$:/plugins/linonetwo/tw-react/index.js';
 import { getDefaultColorTheme, useEditor, useIsEditing } from '@tldraw/editor';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
@@ -16,10 +17,12 @@ export function TranscludeComponent({ shape }: { shape: TranscludeShape }) {
   const tiddlerTitle = shape.props.title;
   const tiddlerField = shape.props.field ?? 'text';
   const astNode = useMemo<IParseTreeNode>(() => {
-    if (tiddlerTitle === undefined) return { type: 'text', text: 'No tiddler title' };
-    const text = $tw.wiki.getTiddler(tiddlerTitle)?.fields?.[tiddlerField];
-    if (typeof text !== 'string') return { type: 'text', text: `No text on field ${tiddlerField}` };
-    const childTree = $tw.wiki.parseText('text/vnd.tiddlywiki', text).tree;
+    if (tiddlerTitle === undefined) return { type: 'string', text: 'No tiddler title' };
+    const fields = $tw.wiki.getTiddler(tiddlerTitle)?.fields;
+    if (fields === undefined) return { type: 'string', text: `No tiddler ${tiddlerTitle}` };
+    const text = fields?.[tiddlerField];
+    if (typeof text !== 'string') return { type: 'string', text: `No text on field ${tiddlerField}` };
+    const childTree = $tw.wiki.parseText(fields.type || 'text/vnd.tiddlywiki', text).tree;
     return { type: 'tiddler', children: childTree };
   }, [tiddlerField, tiddlerTitle]);
   const transcludeRenderContainerReference = useRef<HTMLDivElement>(null);
