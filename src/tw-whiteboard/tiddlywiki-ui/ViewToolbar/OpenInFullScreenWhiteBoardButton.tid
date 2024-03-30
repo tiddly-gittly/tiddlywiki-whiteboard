@@ -10,7 +10,7 @@ description: <<lingo OpenInLayout $:/plugins/linonetwo/tw-whiteboard/language/>>
   <$list filter="[<currentTiddler>field:type[application/vnd.tldraw+json]]" variable="ignore">
     <$button tooltip=<<OpenInLayout>> aria-label=<<OpenInLayout>> class=<<tv-config-toolbar-class>> >
       <$action-setfield $tiddler="$:/layout" text="$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard"/>
-      <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/tiddler" text=<<currentTiddler>> />
+      <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/focusedTiddler" text=<<currentTiddler>> />
 
       <$list filter="[<tv-config-toolbar-icons>match[yes]]">
         {{$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/whiteboard-icon}}

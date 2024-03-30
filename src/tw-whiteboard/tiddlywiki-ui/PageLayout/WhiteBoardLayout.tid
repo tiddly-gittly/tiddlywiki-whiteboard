@@ -23,11 +23,11 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 <$navigator story="$:/StoryList" history="$:/HistoryList" openLinkFromInsideRiver={{$:/config/Navigation/openLinkFromInsideRiver}} openLinkFromOutsideRiver={{$:/config/Navigation/openLinkFromOutsideRiver}} relinkOnRename={{$:/config/RelinkOnRename}}>
 
 <main class="tw-whiteboard-layout-main-area">
-	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="nomatch" text="">
-		<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/tiddler}} height="calc(100vh - 35px)" />
+	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
+		<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/focusedTiddler}} height="calc(100vh - 35px)" />
 	</$reveal>
 	<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
-	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="match" text="">
+	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="match" text="">
 		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
 			<$whiteboard tiddler={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} height="calc(100vh - 35px)" />
 		</$list>
@@ -38,7 +38,7 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 <nav class="tw-whiteboard-layout-top-bar">
 	Select board: 
 	<!-- default to recently used whiteboard tiddler -->
-	<$select tiddler="$:/state/Whiteboard/PageLayout/tiddler" default={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}}>
+	<$select tiddler="$:/state/Whiteboard/PageLayout/focusedTiddler" default={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}}>
 		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]]'>
 			<option value=<<currentTiddler>>><$view field='title'/></option>
 		</$list>
@@ -49,15 +49,15 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 		{{$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerPopup}}
 	</$reveal>
 
-	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="nomatch" text="">
+	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
 		<$button tooltip="Open In StoryView">
 			{{$:/core/images/home-button}}
 			<$action-setfield $tiddler="$:/layout" text="$:/core/ui/PageTemplate"/>
-			<$action-navigate $to={{$:/state/Whiteboard/PageLayout/tiddler}}/>
+			<$action-navigate $to={{$:/state/Whiteboard/PageLayout/focusedTiddler}}/>
 		</$button>
 	</$reveal>
 	<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
-	<$reveal state="$:/state/Whiteboard/PageLayout/tiddler" type="match" text="">
+	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="match" text="">
 		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
 			<$button tooltip="Open In StoryView">
 				{{$:/core/images/home-button}}

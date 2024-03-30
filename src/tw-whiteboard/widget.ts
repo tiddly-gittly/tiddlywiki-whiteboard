@@ -11,7 +11,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
   public reactComponent = App;
   public getProps = () => {
     return {
-      currentTiddler: this.editTitle ?? this.getVariable('currentTiddler'),
+      currentTiddler: this.editTitle,
       initialTiddlerText: this.editTitle === undefined ? '' : $tw.wiki.getTiddlerText(this.editTitle),
       height: this.getAttribute('height'),
       width: this.getAttribute('width'),
@@ -38,7 +38,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
 
   public refresh(changedTiddlers: IChangedTiddlers): boolean {
     if (!this.ready) return false;
-    if (changedTiddlers['$:/state/Whiteboard/PageLayout/tiddler'] || changedTiddlers['$:/palette'] || changedTiddlers['$:/language']) {
+    if (changedTiddlers['$:/state/Whiteboard/PageLayout/focusedTiddler'] || changedTiddlers['$:/palette'] || changedTiddlers['$:/language']) {
       this.refreshSelf();
       return true;
     }
