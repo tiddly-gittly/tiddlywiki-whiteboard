@@ -12,6 +12,8 @@ import './App.css';
 import '@tldraw/tldraw/tldraw.css';
 import { assetUrls } from '../tldraw/assets/formatedAssets';
 import { overrides } from '../tldraw/overrides';
+import { NoteTool } from '../tldraw/shapes/note/tool';
+import { NoteShapeUtil } from '../tldraw/shapes/note/util';
 import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
 import { TranscludeShapeUtil } from '../tldraw/shapes/transclude/util';
 
@@ -46,8 +48,8 @@ export interface TDExportJSON {
   updatedCount?: number;
 }
 
-const extraShapeUtils: TLAnyShapeUtilConstructor[] = [TranscludeShapeUtil];
-const extraTools: TLStateNodeConstructor[] = [TranscludeTool];
+const extraTools: TLStateNodeConstructor[] = [NoteTool, TranscludeTool];
+const extraShapeUtils: TLAnyShapeUtilConstructor[] = [NoteShapeUtil, TranscludeShapeUtil];
 
 export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
   const {

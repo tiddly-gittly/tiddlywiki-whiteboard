@@ -30,7 +30,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   const transcludeRenderContainerReference = useRef<HTMLDivElement>(null);
   useWidget(astNode, transcludeRenderContainerReference, { skip: isEditing });
 
-  const editTitleInputContainerReference = useRef<HTMLInputElement>(null);
+  const editTitleInputReference = useRef<HTMLInputElement>(null);
   const onTitleInputChange = useDebouncedCallback((event: ChangeEvent<HTMLInputElement>) => {
     editor?.store.update(shape.id, (record) => ({
       ...record,
@@ -41,7 +41,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
     }));
   }, []);
   const editTitleContainerOnClick = useCallback(() => {
-    editTitleInputContainerReference.current?.focus?.();
+    editTitleInputReference.current?.focus?.();
   }, []);
 
   const sharedStyle: CSSProperties = {
@@ -63,7 +63,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
           type='text'
           placeholder={lingo('Tools/Transclude/PlaceHolder')}
           defaultValue={tiddlerTitle}
-          ref={editTitleInputContainerReference}
+          ref={editTitleInputReference}
           onChange={onTitleInputChange}
         />
       </div>

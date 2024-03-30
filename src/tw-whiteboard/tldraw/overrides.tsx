@@ -1,4 +1,5 @@
 import { DefaultKeyboardShortcutsDialog, DefaultKeyboardShortcutsDialogContent, TLComponents, TldrawUiMenuItem, TLUiOverrides, toolbarItem, useTools } from '@tldraw/tldraw';
+import { NoteTool } from './shapes/note/tool';
 import { TranscludeTool } from './shapes/transclude/tool';
 
 // There's a guide at the bottom of this file!
@@ -15,10 +16,20 @@ export const overrides: TLUiOverrides = {
         editor.setCurrentTool(TranscludeTool.id);
       },
     };
+    tools.note = {
+      id: NoteTool.id,
+      label: 'tool.note',
+      readonlyOk: false,
+      icon: 'tool-note',
+      kbd: 'n',
+      onSelect(_source) {
+        editor.setCurrentTool(NoteTool.id);
+      },
+    };
     return tools;
   },
   toolbar(_app, toolbar, { tools }) {
-    toolbar.splice(4, 0, toolbarItem(tools[TranscludeTool.id]));
+    toolbar.splice(6, 0, toolbarItem(tools[TranscludeTool.id]));
     return toolbar;
   },
   translations: {
