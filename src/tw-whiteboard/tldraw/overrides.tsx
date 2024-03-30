@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { DefaultKeyboardShortcutsDialog, DefaultKeyboardShortcutsDialogContent, TLComponents, TldrawUiMenuItem, TLUiOverrides, toolbarItem, useTools } from '@tldraw/tldraw';
 import type { IAppProps } from '../components/App';
+import { CustomQuickActions } from './quickactions';
 import { NoteTool } from './shapes/note/tool';
 import { TranscludeTool } from './shapes/transclude/tool';
 
@@ -73,6 +74,7 @@ export const components: TLComponents = {
       </DefaultKeyboardShortcutsDialog>
     );
   },
+  QuickActions: CustomQuickActions,
 };
 
 /*

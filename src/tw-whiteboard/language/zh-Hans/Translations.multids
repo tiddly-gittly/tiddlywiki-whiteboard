@@ -12,3 +12,4 @@ Tools/Transclude/TiddlerMissing: 条目不存在
 Tools/Transclude/NoTextOnField: 条目此字段无文本内容
 Tools/Note/DbClickEdit: 双击以编辑
 Tools/Note/PlaceHolder: 输入维基文本…
+QuickActions/CopyWidgetSnippet: 复制微件代码

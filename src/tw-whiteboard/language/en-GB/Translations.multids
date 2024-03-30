@@ -12,3 +12,4 @@ Tools/Transclude/TiddlerMissing: Tiddler missing
 Tools/Transclude/NoTextOnField: No text on field
 Tools/Note/DbClickEdit: Double click to edit
 Tools/Note/PlaceHolder: Input wikitext here...
+QuickActions/CopyWidgetSnippet: Copy widget snippet

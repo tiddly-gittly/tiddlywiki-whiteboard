@@ -11,11 +11,12 @@ import { partition, TLStateNodeConstructor } from '@tldraw/editor';
 import './App.css';
 import '@tldraw/tldraw/tldraw.css';
 import { assetUrls } from '../tldraw/assets/formatedAssets';
-import { getOverrides } from '../tldraw/overrides';
+import { components, getOverrides } from '../tldraw/overrides';
 import { NoteTool } from '../tldraw/shapes/note/tool';
 import { NoteShapeUtil } from '../tldraw/shapes/note/util';
 import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
 import { TranscludeShapeUtil } from '../tldraw/shapes/transclude/util';
+import { PropsContext } from '../utils/context';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -194,20 +195,23 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
 
   return (
     <StrictMode>
-      <ParentWidgetContext.Provider value={parentWidget}>
-        <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
-          <Tldraw
-            persistenceKey={currentTiddler ?? 'temp-without-title'}
-            onMount={onMount}
-            shapeUtils={extraShapeUtils}
-            tools={extraTools}
-            autoFocus={false}
-            inferDarkMode
-            assetUrls={assetUrls}
-            overrides={getOverrides(props)}
-          />
-        </div>
-      </ParentWidgetContext.Provider>
+      <PropsContext.Provider value={props}>
+        <ParentWidgetContext.Provider value={parentWidget}>
+          <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
+            <Tldraw
+              persistenceKey={currentTiddler ?? 'temp-without-title'}
+              onMount={onMount}
+              shapeUtils={extraShapeUtils}
+              tools={extraTools}
+              autoFocus={false}
+              inferDarkMode
+              assetUrls={assetUrls}
+              overrides={getOverrides(props)}
+              components={components}
+            />
+          </div>
+        </ParentWidgetContext.Provider>
+      </PropsContext.Provider>
     </StrictMode>
   );
 }
