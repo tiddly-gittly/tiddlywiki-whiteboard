@@ -13,7 +13,7 @@ import '@tldraw/tldraw/tldraw.css';
 import { assetUrls } from '../tldraw/assets/formatedAssets';
 import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
 import { TranscludeShapeUtil } from '../tldraw/shapes/transclude/util';
-import { uiOverrides } from '../tldraw/ui-overrides';
+import { overrides } from '../tldraw/overrides';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -181,7 +181,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
             autoFocus={false}
             inferDarkMode
             assetUrls={assetUrls}
-            overrides={uiOverrides}
+            overrides={overrides}
           />
         </div>
       </ParentWidgetContext.Provider>
