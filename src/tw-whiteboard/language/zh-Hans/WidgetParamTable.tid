@@ -4,7 +4,7 @@ type: text/vnd.tiddlywiki
 | !参数 | !描述 | !值 | !默认值 | !例子 |
 |tiddler|渲染或编辑的条目|条目标题，条目的类型需要为 `application/vnd.tldraw+json`|`currentTiddler`|`tiddler="TldrTiddlerExample"`|
 |readonly|使白板微件的内容不可编辑，以便在面向公众的站点中显示。|"yes" or "true"|`no`|`readonly="yes"`|
-|zoomToFit|使微件内容适合微件大小以显示。这通常会提供较小的缩放，您可以使用 `zoom` 参数提供自定义值。|"yes" or "true"|`no`|`zoomToFit="yes"`|
+|zoomToFit|使微件内容适合微件大小以显示。这通常会提供较小的缩放，您可以使用 `zoom` 参数提供自定义值。|"yes" or "true"|`yes`|`zoomToFit="no"`|
 |zoom|这将禁用 "zoomToFit"，仅在加载微件时应用。以后可以使用鼠标滚轮缩放。|在 0 和 1 之间的数字|`1`|`zoom="0.25"`|
 |height|微件的高度|以 "px "结尾的数字||`height="350px"`|
 |width|微件宽度|数字以 "px "或"%"结尾|`100%`|`width="50%"`|

@@ -4,7 +4,7 @@ type: text/vnd.tiddlywiki
 | !Attribute | !Description | !Values | !DefaultValues | !Example |
 |tiddler|tiddler to render or edit|tiddler title with type `application/vnd.tldraw+json`|`currentTiddler`|`tiddler="TldrTiddlerExample"`|
 |readonly|make widget content non-editable, so you can use it in public-facing wikis for display.|"yes" or "true"|`no`|`readonly="yes"`|
-|zoomToFit|make widget content fit to widget size for display. This usually gives a smaller zoom, you might use `zoom` param to give your custom value.|"yes" or "true"|`no`|`zoomToFit="yes"`|
+|zoomToFit|make widget content fit to widget size for display. This usually gives a smaller zoom, you might use `zoom` param to give your custom value.|"yes" or "true"|`yes`|`zoomToFit="no"`|
 |zoom|This will disable `zoomToFit`, and only apply when widget loads. You can use mouse wheel to zoom later.|number between 0 and 1|`1`|`zoom="0.25"`|
 |height|widget height|number end with "px"||`height="350px"`|
 |width|widget width|number end with "px" or "%"|`100%`|`width="50%"`|
