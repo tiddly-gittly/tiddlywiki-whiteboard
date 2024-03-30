@@ -29,10 +29,17 @@
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/translations/languages.json",
+      "file": "./overwrite/languages.json",
       "fields": {
 				"type": "application/json",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/languages.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/main.json",
+      "fields": {
+				"type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/main.json"
       }
     },
     {

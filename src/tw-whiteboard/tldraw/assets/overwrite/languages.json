@@ -1,0 +1,10 @@
+[
+  {
+		"locale": "en",
+		"label": "English"
+	},
+  {
+		"locale": "zh-cn",
+		"label": "中文"
+	}
+]

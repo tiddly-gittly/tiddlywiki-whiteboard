@@ -3,3 +3,7 @@ title: $:/plugins/linonetwo/tw-whiteboard/language/en-GB/
 Name: Whiteboard
 Description: Tiny little drawing app in TW, based on tldraw. Providing diagram widget and whiteboard view.
 Configs/Description: These settings let you customise the behaviour of "Whiteboard" plugin.
+Tools/Transclusion/PlaceHolder: Tiddler title transclude
+Tools/Transclusion/NoTiddlerTitle: Tiddler title not filled
+Tools/Transclusion/TiddlerMissing: Tiddler missing
+Tools/Transclusion/NoTextOnField: No text on field

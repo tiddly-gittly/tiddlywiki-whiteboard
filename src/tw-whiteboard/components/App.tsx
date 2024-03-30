@@ -10,10 +10,10 @@ import { partition, TLStateNodeConstructor } from '@tldraw/editor';
 
 import './App.css';
 import '@tldraw/tldraw/tldraw.css';
-import { getAssetUrlsByMetaUrl } from '../tldraw/assets/urls';
+import { assetUrls } from '../tldraw/assets/formatedAssets';
+import { overrides } from '../tldraw/overrides';
 import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
 import { TranscludeShapeUtil } from '../tldraw/shapes/transclude/util';
-import { uiOverrides } from '../tldraw/ui-overrides';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -24,7 +24,10 @@ export interface IAppProps {
   currentTiddler: string;
   height?: string;
   initialTiddlerText?: string;
+  isDarkMode: boolean;
   isDraft: boolean;
+  locale: string;
+  onReady: () => void;
   readonly?: boolean;
   saver: {
     /** ms about debounce how long between save */
@@ -46,36 +49,33 @@ export interface TDExportJSON {
 const extraShapeUtils: TLAnyShapeUtilConstructor[] = [TranscludeShapeUtil];
 const extraTools: TLStateNodeConstructor[] = [TranscludeTool];
 
-const assetUrls = getAssetUrlsByMetaUrl((assetUrl: string) => {
-  const assetData = $tw.wiki.getTiddler(`$:/plugins/linonetwo/tw-whiteboard/assets/${assetUrl}`);
-  if (assetData) {
-    const typeInfo = $tw.config.contentTypeInfo[assetData.fields.type];
-    // https://github.com/tldraw/tldraw/issues/1941
-    // data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' fill='none'%3E%3Cpath stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 5H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6M19 5h6m0 0v6m0-6L13 17'/%3E%3C/svg%3E
-    return `data:${assetData.fields.type};${typeInfo.encoding ?? 'utf8'},${encodeURIComponent(assetData.fields.text)}`;
-  }
-  // <div class="tlui-icon tlui-icon__small" style="mask: url(&quot;https://unpkg.com/@tldraw/assets@2.0.0-alpha.12/icons/icon/duplicate.svg&quot;) center 100% / 100% no-repeat;"></div>
-  return `https://unpkg.com/@tldraw/assets@2.0.2/${assetUrl}`;
-});
-
 export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
   const {
     height,
     width,
     currentTiddler,
     initialTiddlerText,
-    isDraft,
     readonly,
     zoomToFit,
     zoom,
     saver: { onSave, lock },
     parentWidget,
+    isDarkMode,
+    locale,
+    onReady,
   } = props;
 
   const [editor, setEditor] = useState<Editor | undefined>(undefined);
 
+  useEffect(() => {
+    if (!editor) return;
+    // set configs
+    editor.user.updateUserPreferences({ isDarkMode, locale });
+  }, [editor, isDarkMode, locale]);
+
   const onMount = useCallback((newEditor: Editor) => {
     setEditor(newEditor);
+    onReady();
     if (initialTiddlerText) {
       const parseFileResult = parseTldrawJsonFile({
         schema: newEditor.store.schema,
@@ -192,9 +192,9 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
             shapeUtils={extraShapeUtils}
             tools={extraTools}
             autoFocus={false}
-            inferDarkMode={false}
+            inferDarkMode
             assetUrls={assetUrls}
-            overrides={uiOverrides}
+            overrides={overrides}
           />
         </div>
       </ParentWidgetContext.Provider>

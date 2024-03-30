@@ -3,14 +3,14 @@ import { TranscludeTool } from './shapes/transclude/tool';
 
 // There's a guide at the bottom of this file!
 
-export const uiOverrides: TLUiOverrides = {
+export const overrides: TLUiOverrides = {
   tools(editor, tools) {
     tools.transclude = {
       id: TranscludeTool.id,
-      label: 'tool.note',
+      label: 'tool.transclude',
       readonlyOk: false,
-      icon: 'tool-note',
-      kbd: 't',
+      icon: 'transcludify',
+      kbd: '{',
       onSelect(_source) {
         editor.setCurrentTool(TranscludeTool.id);
       },
@@ -20,6 +20,14 @@ export const uiOverrides: TLUiOverrides = {
   toolbar(_app, toolbar, { tools }) {
     toolbar.splice(4, 0, toolbarItem(tools[TranscludeTool.id]));
     return toolbar;
+  },
+  translations: {
+    'zh-cn': {
+      'tool.transclude': '嵌入',
+    },
+    en: {
+      'tool.transclude': 'Transclude',
+    },
   },
 };
 

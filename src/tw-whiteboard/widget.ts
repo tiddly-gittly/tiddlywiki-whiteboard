@@ -19,6 +19,9 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       zoomToFit: this.getAttribute('zoomToFit') === 'yes' || this.getAttribute('zoomToFit') === 'true',
       zoom: this.getAttribute('zoom'),
       isDraft: this.editTitle === undefined ? false : Boolean(this.getAttribute('draftTitle')),
+      locale: $tw.wiki.getTiddlerText('$:/language') === '$:/languages/zh-Hans' ? 'zh-cn' : 'en',
+      isDarkMode: $tw.wiki.getTiddler($tw.wiki.getTiddlerText('$:/palette') ?? '')?.fields?.['color-scheme'] === 'dark',
+      onReady: this.onReady,
       saver: {
         lock: this.lock,
         onSave: this.onSave,
@@ -27,9 +30,19 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     };
   };
 
+  private ready = false;
+  private readonly onReady = () => {
+    // refresh the widget when tldraw editor is not init yet will cause error (for example when a script auto switch palette on startup). So we wait here until it is ready.
+    this.ready = true;
+  };
+
   public refresh(changedTiddlers: IChangedTiddlers): boolean {
+    if (!this.ready) return false;
+    if (changedTiddlers['$:/state/Whiteboard/PageLayout/tiddler'] || changedTiddlers['$:/palette'] || changedTiddlers['$:/language']) {
+      this.refreshSelf();
+      return true;
+    }
     if (this.editTitle === undefined) return false;
-    if (changedTiddlers['$:/state/Whiteboard/PageLayout/tiddler']) return true;
     if (changedTiddlers[this.editTitle]?.deleted === true) {
       // this delete operation will trigger the close of the tiddler, so trigger the save, we have to prevent that
       this.lock();
