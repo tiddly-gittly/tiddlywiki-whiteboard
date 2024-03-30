@@ -1,8 +1,8 @@
-.transclusion-shape-component-outer {
+.transclude-shape-component-outer {
   width: 100%;
   height: 100%;
 }
-.transclusion-shape-component-inner {
+.transclude-shape-component-inner {
   width: 100%;
   height: 100%;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -12,12 +12,12 @@
   padding: 1em;
   overflow-y: auto;
 }
-.transclusion-shape-component-inner.transclusion-shape-edit-mode {
+.transclude-shape-component-inner.transclude-shape-edit-mode {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.transclusion-shape-component-inner.transclusion-shape-edit-mode > input {
+.transclude-shape-component-inner.transclude-shape-edit-mode > input {
   background: transparent;
   border: none;
   overflow-wrap: break-word;
