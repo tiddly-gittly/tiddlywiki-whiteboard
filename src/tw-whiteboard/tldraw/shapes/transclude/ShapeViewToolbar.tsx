@@ -1,9 +1,9 @@
 /* eslint-disable unicorn/no-null */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
 import { useCallback, useContext, useMemo } from 'react';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
 import { renderSVGTiddler } from 'src/tw-whiteboard/utils/renderSVGTiddler';
-import { ParentWidgetContext } from 'tw-react/dist/lib/hooks';
 import { TranscludeShape } from './type';
 import { useOnToggleFold } from './useOnToggleFold';
 
