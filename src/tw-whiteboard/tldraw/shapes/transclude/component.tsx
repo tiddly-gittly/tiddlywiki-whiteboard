@@ -8,6 +8,7 @@ import { IParseTreeNode } from 'tiddlywiki';
 import { TranscludeShape } from './type';
 import './style.css';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
+import { wrapTiddlerAst } from 'src/tw-whiteboard/utils/wrapTiddlerAst';
 
 export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean; shape: TranscludeShape }) {
   const editor = useEditor();
@@ -18,12 +19,12 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   const adjustedColor = shape.props.color === 'black' ? 'grey' : shape.props.color;
 
   const astNode = useMemo<IParseTreeNode>(() => {
-    if (tiddlerTitle === undefined) return { type: 'string', text: 'No tiddler title' };
+    if (!tiddlerTitle) return wrapTiddlerAst({ type: 'text', text: `${lingo('Tools/Transclusion/NoTiddlerTitle')}` });
     const fields = $tw.wiki.getTiddler(tiddlerTitle)?.fields;
-    if (fields === undefined) return { type: 'string', text: `No tiddler ${tiddlerTitle}` };
+    if (fields === undefined) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclusion/TiddlerMissing')}` });
     const text = fields?.[tiddlerField];
-    if (typeof text !== 'string') return { type: 'string', text: `No text on field ${tiddlerField}` };
-    const childTree = $tw.wiki.parseText(fields.type || 'text/vnd.tiddlywiki', text).tree;
+    if (!text) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclusion/NoTextOnField')} ${tiddlerField}` });
+    const childTree = $tw.wiki.parseText(fields.type || 'text/vnd.tiddlywiki', String(text)).tree;
     return { type: 'tiddler', children: childTree };
   }, [tiddlerField, tiddlerTitle]);
   const transcludeRenderContainerReference = useRef<HTMLDivElement>(null);
