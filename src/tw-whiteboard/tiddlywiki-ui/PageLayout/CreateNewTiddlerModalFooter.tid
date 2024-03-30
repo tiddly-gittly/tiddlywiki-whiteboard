@@ -1,0 +1,16 @@
+title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerModalFooter
+
+\procedure temp-tiddler() $:/state/Whiteboard/PageLayout/create-tiddler
+\function temp-tiddler-draft-title() [<temp-tiddler>get[draft.title]]
+
+<$button
+  class="tw-whiteboard-layout-create-new-tiddler-modal-button"
+  message="tm-close-tiddler"
+  disabled={{{ [<temp-tiddler>get[draft.title]else[yes]] }}}
+>
+  {{$:/language/Buttons/NewTiddler/Caption}}
+  <$action-createtiddler $basetitle=<<temp-tiddler-draft-title>> type="application/vnd.tldraw+json">
+    <$action-deletetiddler $tiddler=<<temp-tiddler>>/>
+    <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/focusedTiddler" text=<<createTiddler-title>>/>
+  </$action-createtiddler>
+</$button>

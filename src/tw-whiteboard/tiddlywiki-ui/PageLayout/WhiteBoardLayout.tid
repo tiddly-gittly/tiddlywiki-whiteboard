@@ -8,7 +8,8 @@ icon: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/whiteboard-ico
 \define containerClasses()
 tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ tw-whiteboard-layout-container
 \end
-\import [[$:/core/ui/PageMacros]] [all[shadows+tiddlers]tag[$:/tags/Macro]!has[draft.of]]
+\import [subfilter{$:/core/config/GlobalImportFilter}]
+\define lingo-base() $:/plugins/linonetwo/tw-whiteboard/language/
 
 <$vars
 	tv-config-toolbar-icons={{$:/config/Toolbar/Icons}}
@@ -36,7 +37,7 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 
 <!-- put this below main, so nav bar is layered on top of the main. In UI, this nav in on the top of the page. -->
 <nav class="tw-whiteboard-layout-top-bar">
-	Select board: 
+	<<lingo CurrentBoard>>
 	<!-- default to recently used whiteboard tiddler -->
 	<$select tiddler="$:/state/Whiteboard/PageLayout/focusedTiddler" default={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}}>
 		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]]'>
@@ -44,10 +45,14 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 		</$list>
 	</$select>
 
-	<$button tooltip="New" popup="$:/state/Whiteboard/PageLayout/CreateNewTiddlerPopup">{{$:/core/images/new-button}}</$button>
-	<$reveal type="popup" state="$:/state/Whiteboard/PageLayout/CreateNewTiddlerPopup">
-		{{$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerPopup}}
-	</$reveal>
+	<$button
+		tooltip={{$:/language/Buttons/NewTiddler/Caption}}
+		message="tm-modal"
+		param="$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerModal"
+	>
+		<$action-createtiddler $basetitle="$:/state/Whiteboard/PageLayout/create-tiddler" $overwrite="yes" draft.title={{$:/language/DefaultNewTiddlerTitle}}/>
+		{{$:/core/images/new-button}}
+	</$button>
 
 	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
 		<$button tooltip="Open In StoryView">
