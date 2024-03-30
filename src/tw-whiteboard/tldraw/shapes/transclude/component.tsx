@@ -7,6 +7,7 @@ import { IParseTreeNode } from 'tiddlywiki';
 
 import { TranscludeShape } from './type';
 import './style.css';
+import { lingo } from 'src/tw-whiteboard/utils/lingo';
 
 export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean; shape: TranscludeShape }) {
   const editor = useEditor();
@@ -55,7 +56,15 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
         style={{ display: isEditing ? undefined : 'none', ...sharedStyle }}
         onClick={editTitleContainerOnClick}
       >
-        <input tabIndex={1} autoFocus type='text' ref={editTitleInputContainerReference} onChange={onTitleInputChange} />
+        <input
+          tabIndex={1}
+          autoFocus
+          type='text'
+          placeholder={lingo('Tools/Transclusion/PlaceHolder')}
+          defaultValue={tiddlerTitle}
+          ref={editTitleInputContainerReference}
+          onChange={onTitleInputChange}
+        />
       </div>
       <div className='transclusion-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
         <h2>{tiddlerTitle}</h2>

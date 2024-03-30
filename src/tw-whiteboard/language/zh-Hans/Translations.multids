@@ -3,3 +3,4 @@ title: $:/plugins/linonetwo/tw-whiteboard/language/zh-Hans/
 Name: 白板
 Description: 太微白板应用，提供图表微件和白板视图，基于开源白板「TlDraw」
 Configs/Description: 通过这些设置，您可以自定义「白板」插件的行为。
+Tools/Transclusion/PlaceHolder: 条目标题去嵌入
