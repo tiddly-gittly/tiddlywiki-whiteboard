@@ -3,7 +3,12 @@ title: $:/plugins/linonetwo/tw-whiteboard/language/zh-Hans/
 Name: 白板
 Description: 太微白板应用，提供图表微件和白板视图，基于开源白板「TlDraw」
 Configs/Description: 通过这些设置，您可以自定义「白板」插件的行为。
-Tools/Transclusion/PlaceHolder: 条目标题去嵌入
-Tools/Transclusion/NoTiddlerTitle: 未填条目标题
-Tools/Transclusion/TiddlerMissing: 条目不存在
-Tools/Transclusion/NoTextOnField: 条目此字段无文本内容
+OpenInLayout: 在白板布局中开启
+OpenInDefault: 在默认布局中开启
+CurrentBoard: 当前白板
+Tools/Transclude/PlaceHolder: 条目标题去嵌入
+Tools/Transclude/NoTiddlerTitle: 未填条目标题
+Tools/Transclude/TiddlerMissing: 条目不存在
+Tools/Transclude/NoTextOnField: 条目此字段无文本内容
+Tools/Note/DbClickEdit: 双击以编辑
+Tools/Note/PlaceHolder: 输入维基文本…

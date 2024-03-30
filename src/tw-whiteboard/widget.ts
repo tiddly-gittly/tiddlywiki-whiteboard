@@ -11,12 +11,12 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
   public reactComponent = App;
   public getProps = () => {
     return {
-      currentTiddler: this.editTitle ?? this.getVariable('currentTiddler'),
+      currentTiddler: this.editTitle,
       initialTiddlerText: this.editTitle === undefined ? '' : $tw.wiki.getTiddlerText(this.editTitle),
       height: this.getAttribute('height'),
       width: this.getAttribute('width'),
       readonly: this.getAttribute('readonly') === 'yes' || this.getAttribute('readonly') === 'true',
-      zoomToFit: this.getAttribute('zoomToFit') === 'yes' || this.getAttribute('zoomToFit') === 'true',
+      zoomToFit: this.getAttribute('zoomToFit') !== 'no' && this.getAttribute('zoomToFit') === 'false',
       zoom: this.getAttribute('zoom'),
       isDraft: this.editTitle === undefined ? false : Boolean(this.getAttribute('draftTitle')),
       locale: $tw.wiki.getTiddlerText('$:/language') === '$:/languages/zh-Hans' ? 'zh-cn' : 'en',
@@ -38,7 +38,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
 
   public refresh(changedTiddlers: IChangedTiddlers): boolean {
     if (!this.ready) return false;
-    if (changedTiddlers['$:/state/Whiteboard/PageLayout/tiddler'] || changedTiddlers['$:/palette'] || changedTiddlers['$:/language']) {
+    if (changedTiddlers['$:/state/Whiteboard/PageLayout/focusedTiddler'] || changedTiddlers['$:/palette'] || changedTiddlers['$:/language']) {
       this.refreshSelf();
       return true;
     }

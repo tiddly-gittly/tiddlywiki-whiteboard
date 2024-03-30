@@ -11,7 +11,9 @@ import { partition, TLStateNodeConstructor } from '@tldraw/editor';
 import './App.css';
 import '@tldraw/tldraw/tldraw.css';
 import { assetUrls } from '../tldraw/assets/formatedAssets';
-import { overrides } from '../tldraw/overrides';
+import { getOverrides } from '../tldraw/overrides';
+import { NoteTool } from '../tldraw/shapes/note/tool';
+import { NoteShapeUtil } from '../tldraw/shapes/note/util';
 import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
 import { TranscludeShapeUtil } from '../tldraw/shapes/transclude/util';
 
@@ -21,7 +23,7 @@ export interface IAppProps {
   /**
    * Tiddler to contain the serialized JSON component state
    */
-  currentTiddler: string;
+  currentTiddler?: string;
   height?: string;
   initialTiddlerText?: string;
   isDarkMode: boolean;
@@ -46,8 +48,8 @@ export interface TDExportJSON {
   updatedCount?: number;
 }
 
-const extraShapeUtils: TLAnyShapeUtilConstructor[] = [TranscludeShapeUtil];
-const extraTools: TLStateNodeConstructor[] = [TranscludeTool];
+const extraTools: TLStateNodeConstructor[] = [NoteTool, TranscludeTool];
+const extraShapeUtils: TLAnyShapeUtilConstructor[] = [NoteShapeUtil, TranscludeShapeUtil];
 
 export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
   const {
@@ -135,7 +137,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         newEditor.zoomToBounds(bounds, { targetZoom: Math.min(1, Number(zoom)), duration: 220 });
       }
     }
-  }, [initialTiddlerText, readonly, zoomToFit, zoom, currentTiddler]);
+  }, [onReady, initialTiddlerText, readonly, zoomToFit, zoom, currentTiddler]);
 
   // emergency save on close or switch to other editor (by changing the type field) or readonly
   // this only work as willUnMount
@@ -187,14 +189,14 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
       <ParentWidgetContext.Provider value={parentWidget}>
         <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
           <Tldraw
-            persistenceKey={currentTiddler}
+            persistenceKey={currentTiddler ?? 'temp-without-title'}
             onMount={onMount}
             shapeUtils={extraShapeUtils}
             tools={extraTools}
             autoFocus={false}
             inferDarkMode
             assetUrls={assetUrls}
-            overrides={overrides}
+            overrides={getOverrides(props)}
           />
         </div>
       </ParentWidgetContext.Provider>

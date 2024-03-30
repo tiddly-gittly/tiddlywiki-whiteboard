@@ -13,6 +13,6 @@ type: text/vnd.tiddlywiki
 
 !!! <<lingo Zoom>>
 
-<<wikitext-example """<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" zoomToFit="yes" width="30%" height="300px" />""">>
+<<wikitext-example """<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" width="30%" height="300px" />""">>
 
-<<wikitext-example """<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" zoom="0.25" width="30%" height="300px" />""">>
+<<wikitext-example """<$whiteboard tiddler="TldrTiddlerExample" readonly="yes" zoomToFit="no" zoom="0.25" width="30%" height="300px" />""">>

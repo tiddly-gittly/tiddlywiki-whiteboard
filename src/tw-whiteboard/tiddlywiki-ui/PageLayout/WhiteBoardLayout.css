@@ -7,8 +7,10 @@
   left: calc(50% - 400px / 2);
   padding: 5px;
 
-  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12), 0px 1px 3px rgba(0, 0, 0, 0.04);
   backdrop-filter: blur(5px);
+  border-radius: 2em;
 
   display: flex;
   justify-content: center;
@@ -16,6 +18,7 @@
 }
 .tw-whiteboard-layout-top-bar > select {
   max-width: 200px;
+  margin: 0 0.5em;
 }
 
 .tw-whiteboard-layout-main-area {
@@ -28,16 +31,18 @@ div.tw-whiteboard-layout-container {
   margin: 0;
 }
 
-.tw-whiteboard-layout-create-new-tiddler-popup {
+.tw-whiteboard-layout-create-new-tiddler-modal-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  width: 200px;
-}
-.tw-whiteboard-layout-create-new-tiddler-popup button {
+  align-items: flex-start;
   width: 100%;
 }
-.tw-whiteboard-layout-create-new-tiddler-popup textarea {
+.tw-whiteboard-layout-create-new-tiddler-modal-container input {
   width: 100%;
+  font-size: 1.5em;
+  height: 2em;
+}
+.tw-whiteboard-layout-create-new-tiddler-modal-button {
+  font-size: 2em;
 }

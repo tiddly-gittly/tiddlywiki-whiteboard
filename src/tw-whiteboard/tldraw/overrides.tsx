@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { DefaultKeyboardShortcutsDialog, DefaultKeyboardShortcutsDialogContent, TLComponents, TldrawUiMenuItem, TLUiOverrides, toolbarItem, useTools } from '@tldraw/tldraw';
+import type { IAppProps } from '../components/App';
+import { NoteTool } from './shapes/note/tool';
 import { TranscludeTool } from './shapes/transclude/tool';
 
 // There's a guide at the bottom of this file!
 
-export const overrides: TLUiOverrides = {
+export const getOverrides = (props: IAppProps): TLUiOverrides => ({
   tools(editor, tools) {
     tools.transclude = {
       id: TranscludeTool.id,
@@ -15,21 +18,49 @@ export const overrides: TLUiOverrides = {
         editor.setCurrentTool(TranscludeTool.id);
       },
     };
+    tools.note = {
+      id: NoteTool.id,
+      label: 'tool.note',
+      readonlyOk: false,
+      icon: 'tool-note',
+      kbd: 'n',
+      onSelect(_source) {
+        editor.setCurrentTool(NoteTool.id);
+      },
+    };
+    tools['whiteboard.layout'] = {
+      id: 'whiteboard.layout',
+      label: 'tool.openInLayout',
+      readonlyOk: true,
+      icon: 'whiteboard.layout',
+      kbd: 'l',
+      onSelect(_source) {
+        if (props.currentTiddler) {
+          $tw.wiki.setText('$:/state/Whiteboard/PageLayout/focusedTiddler', 'text', undefined, props.currentTiddler);
+          $tw.wiki.setText('$:/layout', 'text', undefined, '$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard');
+        }
+      },
+    };
     return tools;
   },
-  toolbar(_app, toolbar, { tools }) {
-    toolbar.splice(4, 0, toolbarItem(tools[TranscludeTool.id]));
+  toolbar(app, toolbar, { tools }) {
+    toolbar.splice(6, 0, toolbarItem(tools[TranscludeTool.id]));
+    if (props.currentTiddler) {
+      toolbar.splice(10, 0, toolbarItem(tools['whiteboard.layout']));
+    }
     return toolbar;
   },
   translations: {
     'zh-cn': {
-      'tool.transclude': '嵌入',
+      'tool.transclude': $tw.wiki.getTiddlerText('$:/language/Buttons/Transcludify/Caption') ?? '',
+      'tool.openInLayout': $tw.wiki.getTiddlerText('$:/plugins/linonetwo/tw-whiteboard/language/zh-Hans/OpenInLayout') ?? '',
     },
     en: {
-      'tool.transclude': 'Transclude',
+      'tool.transclude': $tw.wiki.getTiddlerText('$:/language/Buttons/Transcludify/Caption') ?? '',
+      'tool.openInLayout': $tw.wiki.getTiddlerText('$:/plugins/linonetwo/tw-whiteboard/language/en-GB/OpenInLayout') ?? '',
     },
   },
-};
+});
 
 export const components: TLComponents = {
   KeyboardShortcutsDialog: (props) => {

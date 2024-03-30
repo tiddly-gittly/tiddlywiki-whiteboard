@@ -1,0 +1,12 @@
+title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerModal
+subtitle: {{$:/language/Buttons/NewTiddler/Caption}}
+footer: {{$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerModalFooter}}
+mask-closable: yes
+
+<div class="tw-whiteboard-layout-create-new-tiddler-modal-container">
+
+  <h2>{{$:/language/ControlPanel/Basics/NewTiddler/Title/Prompt}}</h2>
+
+  {{$:/state/Whiteboard/PageLayout/create-tiddler||$:/core/ui/EditTemplate/title}}
+
+</div>

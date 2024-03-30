@@ -19,18 +19,18 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   const adjustedColor = shape.props.color === 'black' ? 'grey' : shape.props.color;
 
   const astNode = useMemo<IParseTreeNode>(() => {
-    if (!tiddlerTitle) return wrapTiddlerAst({ type: 'text', text: `${lingo('Tools/Transclusion/NoTiddlerTitle')}` });
+    if (!tiddlerTitle) return wrapTiddlerAst({ type: 'text', text: `${lingo('Tools/Transclude/NoTiddlerTitle')}` });
     const fields = $tw.wiki.getTiddler(tiddlerTitle)?.fields;
-    if (fields === undefined) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclusion/TiddlerMissing')}` });
+    if (fields === undefined) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclude/TiddlerMissing')}` });
     const text = fields?.[tiddlerField];
-    if (!text) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclusion/NoTextOnField')} ${tiddlerField}` });
+    if (!text) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclude/NoTextOnField')} ${tiddlerField}` });
     const childTree = $tw.wiki.parseText(fields.type || 'text/vnd.tiddlywiki', String(text)).tree;
     return { type: 'tiddler', children: childTree };
   }, [tiddlerField, tiddlerTitle]);
   const transcludeRenderContainerReference = useRef<HTMLDivElement>(null);
   useWidget(astNode, transcludeRenderContainerReference, { skip: isEditing });
 
-  const editTitleInputContainerReference = useRef<HTMLInputElement>(null);
+  const editTitleInputReference = useRef<HTMLInputElement>(null);
   const onTitleInputChange = useDebouncedCallback((event: ChangeEvent<HTMLInputElement>) => {
     editor?.store.update(shape.id, (record) => ({
       ...record,
@@ -41,7 +41,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
     }));
   }, []);
   const editTitleContainerOnClick = useCallback(() => {
-    editTitleInputContainerReference.current?.focus?.();
+    editTitleInputReference.current?.focus?.();
   }, []);
 
   const sharedStyle: CSSProperties = {
@@ -50,9 +50,9 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   };
 
   return (
-    <div className='transclusion-shape-component-outer'>
+    <div className='transclude-shape-component-outer'>
       <div
-        className='transclusion-shape-component-inner transclusion-shape-edit-mode'
+        className='transclude-shape-component-inner transclude-shape-edit-mode'
         key='edit-title'
         style={{ display: isEditing ? undefined : 'none', ...sharedStyle }}
         onClick={editTitleContainerOnClick}
@@ -61,15 +61,15 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
           tabIndex={1}
           autoFocus
           type='text'
-          placeholder={lingo('Tools/Transclusion/PlaceHolder')}
+          placeholder={lingo('Tools/Transclude/PlaceHolder')}
           defaultValue={tiddlerTitle}
-          ref={editTitleInputContainerReference}
+          ref={editTitleInputReference}
           onChange={onTitleInputChange}
         />
       </div>
-      <div className='transclusion-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
+      <div className='transclude-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
         <h2>{tiddlerTitle}</h2>
-        <div ref={transcludeRenderContainerReference}>Transclusion loading...</div>
+        <div ref={transcludeRenderContainerReference}>Transclude loading...</div>
       </div>
     </div>
   );

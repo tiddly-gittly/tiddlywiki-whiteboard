@@ -1,9 +1,9 @@
-.transclude-shape-component-outer {
+.note-shape-component-outer {
   width: 100%;
   height: 100%;
   position: absolute;
 }
-.transclude-shape-component-inner {
+.note-shape-component-inner {
   width: 100%;
   height: 100%;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -12,16 +12,16 @@
   position: relative;
   padding: 1em;
   overflow-y: auto;
+  border-radius: var(--radius-2);
 }
-.transclude-shape-component-inner.transclude-shape-edit-mode {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.note-shape-component-inner.note-shape-edit-mode {
+  padding: 0.5em;
 }
-.transclude-shape-component-inner.transclude-shape-edit-mode > input {
+.note-shape-component-inner.note-shape-edit-mode > textarea {
   background: transparent;
   border: none;
   overflow-wrap: break-word;
   font-size: 2em;
   width: 100%;
+  height: 100%;
 }
