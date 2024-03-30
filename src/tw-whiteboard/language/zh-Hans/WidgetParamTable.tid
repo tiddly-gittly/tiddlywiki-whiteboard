@@ -8,3 +8,4 @@ type: text/vnd.tiddlywiki
 |zoom|这将禁用 "zoomToFit"，仅在加载微件时应用。以后可以使用鼠标滚轮缩放。|在 0 和 1 之间的数字|`1`|`zoom="0.25"`|
 |height|微件的高度|以 "px "结尾的数字||`height="350px"`|
 |width|微件宽度|数字以 "px "或"%"结尾|`100%`|`width="50%"`|
+|focused|是否聚焦|聚焦时才能使用快捷键|`no`|`focused="yes"`|

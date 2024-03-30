@@ -25,12 +25,12 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 
 <main class="tw-whiteboard-layout-main-area">
 	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
-		<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/focusedTiddler}} height="calc(100vh - 35px)" />
+		<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/focusedTiddler}} height="calc(100vh - 35px)" focused="yes" />
 	</$reveal>
 	<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
 	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="match" text="">
 		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
-			<$whiteboard tiddler={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} height="calc(100vh - 35px)" />
+			<$whiteboard tiddler={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} height="calc(100vh - 35px)" focused="yes" />
 		</$list>
 	</$reveal>
 </main>

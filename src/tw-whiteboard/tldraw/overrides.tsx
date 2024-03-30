@@ -13,7 +13,7 @@ export const getOverrides = (props: IAppProps): TLUiOverrides => ({
       label: 'tool.transclude',
       readonlyOk: false,
       icon: 'transcludify',
-      kbd: '{',
+      kbd: 'c',
       onSelect(_source) {
         editor.setCurrentTool(TranscludeTool.id);
       },

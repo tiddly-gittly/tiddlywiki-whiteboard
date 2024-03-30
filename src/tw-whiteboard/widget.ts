@@ -18,6 +18,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       readonly: this.getAttribute('readonly') === 'yes' || this.getAttribute('readonly') === 'true',
       zoomToFit: this.getAttribute('zoomToFit') !== 'no' && this.getAttribute('zoomToFit') === 'false',
       zoom: this.getAttribute('zoom'),
+      focused: this.getAttribute('focused') === 'yes',
       isDraft: this.isDraft,
       locale: $tw.wiki.getTiddlerText('$:/language') === '$:/languages/zh-Hans' ? 'zh-cn' : 'en',
       isDarkMode: $tw.wiki.getTiddler($tw.wiki.getTiddlerText('$:/palette') ?? '')?.fields?.['color-scheme'] === 'dark',

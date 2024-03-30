@@ -24,6 +24,7 @@ export interface IAppProps {
    * Tiddler to contain the serialized JSON component state
    */
   currentTiddler?: string;
+  focused: boolean;
   height?: string;
   initialTiddlerText?: string;
   isDarkMode: boolean;
@@ -65,6 +66,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     isDarkMode,
     locale,
     isDraft,
+    focused,
     onReady,
   } = props;
 
@@ -75,6 +77,10 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     // set configs
     editor.user.updateUserPreferences({ isDarkMode, locale });
   }, [editor, isDarkMode, locale]);
+  useEffect(() => {
+    if (!editor) return;
+    editor.updateInstanceState({ isFocused: focused });
+  }, [editor, focused]);
 
   const onMount = useCallback((newEditor: Editor) => {
     setEditor(newEditor);

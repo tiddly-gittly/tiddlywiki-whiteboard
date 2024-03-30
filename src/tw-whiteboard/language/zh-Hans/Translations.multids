@@ -6,7 +6,7 @@ Configs/Description: 通过这些设置，您可以自定义「白板」插件�
 OpenInLayout: 在白板布局中开启
 OpenInDefault: 在默认布局中开启
 CurrentBoard: 当前白板
-Tools/Transclude/PlaceHolder: 条目标题去嵌入
+Tools/Transclude/PlaceHolder: 条目标题 - 嵌入
 Tools/Transclude/NoTiddlerTitle: 未填条目标题
 Tools/Transclude/TiddlerMissing: 条目不存在
 Tools/Transclude/NoTextOnField: 条目此字段无文本内容

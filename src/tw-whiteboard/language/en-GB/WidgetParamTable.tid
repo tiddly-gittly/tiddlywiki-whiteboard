@@ -8,3 +8,4 @@ type: text/vnd.tiddlywiki
 |zoom|This will disable `zoomToFit`, and only apply when widget loads. You can use mouse wheel to zoom later.|number between 0 and 1|`1`|`zoom="0.25"`|
 |height|widget height|number end with "px"||`height="350px"`|
 |width|widget width|number end with "px" or "%"|`100%`|`width="50%"`|
+|focused|focused or not|shortcuts can only be used when focused|`no`|`focused="yes"`|
