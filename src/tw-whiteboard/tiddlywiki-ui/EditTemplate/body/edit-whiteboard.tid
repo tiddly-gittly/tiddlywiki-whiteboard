@@ -1,10 +1,8 @@
 title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/EditTemplate/body/edit-whiteboard
 
-\define lingo-base() $:/language/EditTemplate/Body/
+\procedure lingo-base() $:/language/EditTemplate/Body/
 
 <div class="tw-whiteboard-edit-body-container">
-<!-- title is `"Draft of 'AAA'"` from <<currentTiddler>> when in draft mode. -->
-<$set name="tiddler" value={{!!title}} emptyValue=<<currentTiddler>>>
-<$edit-whiteboard tiddler=<<tiddler>> draftTitle={{!!draft.title}} height="500px" />
-</$set>
+  <!-- title is `"Draft of 'AAA'"` from <<currentTiddler>> when in draft mode. -->
+  <$edit-whiteboard tiddler=<<currentTiddler>> draftTitle={{!!draft.title}} height="500px" />
 </div>

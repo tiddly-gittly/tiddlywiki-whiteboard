@@ -64,6 +64,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     parentWidget,
     isDarkMode,
     locale,
+    isDraft,
     onReady,
   } = props;
 
@@ -141,9 +142,10 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
 
   // emergency save on close or switch to other editor (by changing the type field) or readonly
   // this only work as willUnMount
+  // useless since we have edit template
   useEffect(() => {
     return () => {
-      if (readonly) return;
+      if (readonly ?? isDraft) return;
       void (async () => {
         if (!editor) return;
         onSave(await serializeTldrawJson(editor.store));

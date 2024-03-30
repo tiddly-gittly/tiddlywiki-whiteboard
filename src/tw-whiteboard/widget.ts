@@ -18,7 +18,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       readonly: this.getAttribute('readonly') === 'yes' || this.getAttribute('readonly') === 'true',
       zoomToFit: this.getAttribute('zoomToFit') !== 'no' && this.getAttribute('zoomToFit') === 'false',
       zoom: this.getAttribute('zoom'),
-      isDraft: this.editTitle === undefined ? false : Boolean(this.getAttribute('draftTitle')),
+      isDraft: this.isDraft,
       locale: $tw.wiki.getTiddlerText('$:/language') === '$:/languages/zh-Hans' ? 'zh-cn' : 'en',
       isDarkMode: $tw.wiki.getTiddler($tw.wiki.getTiddlerText('$:/palette') ?? '')?.fields?.['color-scheme'] === 'dark',
       onReady: this.onReady,
@@ -35,6 +35,15 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     // refresh the widget when tldraw editor is not init yet will cause error (for example when a script auto switch palette on startup). So we wait here until it is ready.
     this.ready = true;
   };
+
+  private get isDraft() {
+    return this.editTitle === undefined ? false : Boolean(this.getAttribute('draftTitle'));
+  }
+
+  destroy() {
+    super.destroy?.();
+    this.ready = false;
+  }
 
   public refresh(changedTiddlers: IChangedTiddlers): boolean {
     if (!this.ready) return false;
@@ -74,6 +83,8 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     if (this.editTitle === '' || this.editTitle === undefined) {
       return;
     }
+    // prevent save after destroy. On react unmount, emergency save in its willUnmount will try to call onSave. But when in story view and it is draft, this will cause save draft while tw is trying to delete draft. Cause draft not delete after end editing.
+    if (this.isDraft && !this.ready) return;
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     const previousTiddler = $tw.wiki.getTiddler(this.editTitle);
     // prevent useless call to addTiddler
@@ -81,7 +92,9 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       // use setText for DraftTiddler, otherwise if use addTiddler we will make it a real tiddler immediately.
       $tw.wiki.setText(this.editTitle, 'text', undefined, newText);
       // set tiddler type
-      $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/vnd.tldraw+json');
+      if (previousTiddler?.fields.type !== 'application/vnd.tldraw+json') {
+        $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/vnd.tldraw+json');
+      }
     }
     this.unlock();
   };

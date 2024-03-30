@@ -47,7 +47,7 @@
     "requestidlecallback-polyfill": "^1.0.2",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
-    "tw-react": "^0.6.2",
+    "tw-react": "^0.6.3",
     "tw5-typed": "^0.5.7",
     "typescript": "^5.4.3"
   },

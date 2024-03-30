@@ -68,8 +68,8 @@ devDependencies:
     specifier: ^10.9.2
     version: 10.9.2(@types/node@20.11.30)(typescript@5.4.3)
   tw-react:
-    specifier: ^0.6.2
-    version: 0.6.2(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.6.3
+    version: 0.6.3(react-dom@18.2.0)(react@18.2.0)
   tw5-typed:
     specifier: ^0.5.7
     version: 0.5.7
@@ -2058,6 +2058,11 @@ packages:
       '@use-gesture/core': 10.3.0
       react: 18.2.0
     dev: false
+
+  /@wessberg/connection-observer@1.0.5:
+    resolution: {integrity: sha512-QMo1PN81YCl7vNP4fUSF9CYIkQxBmqZW5SNeU3h5ZHtSRMSWVD14GWQqj6I5iWUPLDMTQyM71ElxKSGo8HTcNA==}
+    engines: {node: '>=4.0.0'}
+    dev: true
 
   /abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -7116,12 +7121,13 @@ packages:
       - supports-color
     dev: false
 
-  /tw-react@0.6.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-nmjAymlWkfTilG46fV6cV7LBS4Gu4c+Eff+sm3BjHmbSH2BxLR4J/SLXRHiqUvUhwKw+PwMcYrPWY8ugbi9v1Q==}
+  /tw-react@0.6.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-gNHZv68BzlF+eO/Ym45B37JATCcsHuOlVv//lOGFZfzcJzrZenpMoz3MiAatkyJtJx5+8ftS5Am1M4MDIS4N0A==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
     dependencies:
+      '@wessberg/connection-observer': 1.0.5
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
