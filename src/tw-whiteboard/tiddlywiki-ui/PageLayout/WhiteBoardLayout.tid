@@ -54,23 +54,25 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 		{{$:/core/images/new-button}}
 	</$button>
 
-	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
-		<$button tooltip="Open In StoryView">
-			{{$:/core/images/home-button}}
-			<$action-setfield $tiddler="$:/layout" text="$:/core/ui/PageTemplate"/>
-			<$action-navigate $to={{$:/state/Whiteboard/PageLayout/focusedTiddler}}/>
-		</$button>
-	</$reveal>
-	<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
-	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="match" text="">
-		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
-			<$button tooltip="Open In StoryView">
+	<$wikify name="OpenInDefault" text="<<lingo OpenInDefault>>">
+		<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
+			<$button tooltip=<<OpenInDefault>>>
 				{{$:/core/images/home-button}}
 				<$action-setfield $tiddler="$:/layout" text="$:/core/ui/PageTemplate"/>
-				<$action-navigate $to={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} />
+				<$action-navigate $to={{$:/state/Whiteboard/PageLayout/focusedTiddler}}/>
 			</$button>
-		</$list>
-	</$reveal>
+		</$reveal>
+		<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
+		<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="match" text="">
+			<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
+				<$button tooltip=<<OpenInDefault>>>
+					{{$:/core/images/home-button}}
+					<$action-setfield $tiddler="$:/layout" text="$:/core/ui/PageTemplate"/>
+					<$action-navigate $to={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} />
+				</$button>
+			</$list>
+		</$reveal>
+	</$wikify>
 </nav>
 
 </$navigator>
