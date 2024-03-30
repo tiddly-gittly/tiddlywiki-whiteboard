@@ -179,7 +179,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
             shapeUtils={extraShapeUtils}
             tools={extraTools}
             autoFocus={false}
-            inferDarkMode={false}
+            inferDarkMode
             assetUrls={assetUrls}
             overrides={uiOverrides}
           />
