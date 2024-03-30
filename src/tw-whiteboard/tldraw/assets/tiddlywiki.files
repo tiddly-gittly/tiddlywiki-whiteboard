@@ -36,6 +36,13 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/translations/main.json",
+      "fields": {
+				"type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/main.json"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/translations/en.json",
       "fields": {
 				"type": "application/json",

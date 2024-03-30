@@ -11,9 +11,9 @@ import { partition, TLStateNodeConstructor } from '@tldraw/editor';
 import './App.css';
 import '@tldraw/tldraw/tldraw.css';
 import { assetUrls } from '../tldraw/assets/formatedAssets';
+import { overrides } from '../tldraw/overrides';
 import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
 import { TranscludeShapeUtil } from '../tldraw/shapes/transclude/util';
-import { overrides } from '../tldraw/overrides';
 
 /** every ms to save */
 const debounceSaveTime = 500;
@@ -24,7 +24,10 @@ export interface IAppProps {
   currentTiddler: string;
   height?: string;
   initialTiddlerText?: string;
+  isDarkMode: boolean;
   isDraft: boolean;
+  locale: string;
+  onReady: () => void;
   readonly?: boolean;
   saver: {
     /** ms about debounce how long between save */
@@ -57,12 +60,22 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
     zoom,
     saver: { onSave, lock },
     parentWidget,
+    isDarkMode,
+    locale,
+    onReady,
   } = props;
 
   const [editor, setEditor] = useState<Editor | undefined>(undefined);
 
+  useEffect(() => {
+    if (!editor) return;
+    // set configs
+    editor.user.updateUserPreferences({ isDarkMode, locale });
+  }, [editor, isDarkMode, locale]);
+
   const onMount = useCallback((newEditor: Editor) => {
     setEditor(newEditor);
+    onReady();
     if (initialTiddlerText) {
       const parseFileResult = parseTldrawJsonFile({
         schema: newEditor.store.schema,
