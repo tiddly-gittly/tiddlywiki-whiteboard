@@ -5,6 +5,8 @@ type: text/vnd.tiddlywiki
 
 {{$:/snippets/minilanguageswitcher}}
 
-[[Github|https://github.com/tiddly-gittly/tiddlywiki-whiteboard]] <$link to="Installation"><<lingo Installation/Caption>></$link>
+# [[Github|https://github.com/tiddly-gittly/tiddlywiki-whiteboard]]
+# <$link to="Installation"><<lingo Installation/Caption>></$link>
+# <<lingo PresetInTidGi>>
 
 {{WidgetDemo}}

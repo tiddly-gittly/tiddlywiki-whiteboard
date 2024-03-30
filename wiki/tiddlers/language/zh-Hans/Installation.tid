@@ -1,7 +1,7 @@
 title: language/zh-Hans/Installation
 type: text/vnd.tiddlywiki
 
-# 此插件：您可以从[[CPL|https://tw-cpl.netlify.app/]]安装它（将自动安装依赖项），或者从[[$:/ControlPanel]]拖动它。
-# 如果不从[[CPL|https://tw-cpl.netlify.app/]]安装，可能还需要安装 ReactJS 插件，最好从[[CPL|https://tw-cpl.netlify.app/]]安装（插件库，享受一键更新），或者从[[Release - tiddly-gittly/tw-react - GitHub|https://github.com/tiddly-gittly/tw-react/releases/latest]] 下载后拖动到您的 wiki！
+# 此插件：您可以从[[CPL 插件源|https://tw-cpl.netlify.app/]]安装它（将自动安装依赖项），或者从[[$:/ControlPanel]]拖动它。
+# 如果不从[[CPL 插件源|https://tw-cpl.netlify.app/]]安装，可能还需要安装 ReactJS 插件，最好从[[CPL|https://tw-cpl.netlify.app/]]安装（插件库，享受一键更新），或者从[[Github Release - tiddly-gittly/tw-react|https://github.com/tiddly-gittly/tw-react/releases/latest]] 下载后拖动到您的 wiki！
 
 本白板演示网站中的 ReactJS 插件为开发模式，因此大小远大于从上述两个网站中安装的插件！
