@@ -1,4 +1,6 @@
 .tw-whiteboard-layout-top-bar {
+  -webkit-app-region: drag;
+
   position: absolute;
   z-index: 1;
   top: 0;
