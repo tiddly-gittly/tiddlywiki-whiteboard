@@ -35,16 +35,16 @@ export const getOverrides = (props: IAppProps): TLUiOverrides => ({
       icon: 'whiteboard.layout',
       kbd: 'l',
       onSelect(_source) {
-        $tw.wiki.setText(props.currentTiddler, 'text', undefined, '$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard');
-        $tw.wiki.setText('$:/layout', 'text', undefined, '$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard');
+        if (props.currentTiddler) {
+          $tw.wiki.setText('$:/state/Whiteboard/PageLayout/focusedTiddler', 'text', undefined, props.currentTiddler);
+          $tw.wiki.setText('$:/layout', 'text', undefined, '$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard');
+        }
       },
     };
     return tools;
   },
   toolbar(app, toolbar, { tools }) {
     toolbar.splice(6, 0, toolbarItem(tools[TranscludeTool.id]));
-    // DEBUG: console props.currentTiddler
-    console.log(`props.currentTiddler`, props.currentTiddler);
     if (props.currentTiddler) {
       toolbar.splice(10, 0, toolbarItem(tools['whiteboard.layout']));
     }
