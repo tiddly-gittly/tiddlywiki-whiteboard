@@ -8,7 +8,7 @@ See website [https://tiddly-gittly.github.io/tiddlywiki-whiteboard/](https://tid
 
 This project is based on [TLDraw](https://github.com/tldraw/tldraw), and some of its components are inspired by [toeverything/AFFiNE](https://github.com/toeverything/AFFiNE). I choose TLDraw because it is DOM based, which makes integration with tiddlywiki much easier.
 
-If you like excalidraw, and whould like to implement excalidraw as alternative whiteboard enging for this plugin, please rise an issue about it.
+If you like excalidraw, and whould like to implement excalidraw as alternative whiteboard enging for this plugin, please create a PR about it (not issue).
 
 ## Development
 
