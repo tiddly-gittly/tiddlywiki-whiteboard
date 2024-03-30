@@ -1,4 +1,4 @@
 title: $:/SiteTitle
 type: text/vnd.tiddlywiki
 
-TW Whiteboard
+<<lingo Name $:/plugins/linonetwo/tw-whiteboard/language/>>
