@@ -12,6 +12,7 @@ export class TranscludeShapeUtil extends ShapeUtil<TranscludeShape> {
   static override props: ShapeProps<TranscludeShape> = {
     color: DefaultColorStyle,
     field: T.optional(T.string),
+    folded: T.boolean,
     h: T.number,
     title: T.optional(T.string),
     w: T.number,
@@ -21,6 +22,7 @@ export class TranscludeShapeUtil extends ShapeUtil<TranscludeShape> {
     return {
       w: 100,
       h: 100,
+      folded: false,
       color: 'grey',
     };
   }

@@ -13,6 +13,9 @@
   padding: 1em;
   overflow-y: auto;
 }
+.transclude-shape-component-inner > h2 {
+  cursor: pointer;
+}
 .transclude-shape-component-inner.transclude-shape-edit-mode {
   display: flex;
   justify-content: center;

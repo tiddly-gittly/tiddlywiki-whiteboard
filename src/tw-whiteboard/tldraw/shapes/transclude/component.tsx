@@ -9,6 +9,7 @@ import { TranscludeShape } from './type';
 import './style.css';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
 import { wrapTiddlerAst } from 'src/tw-whiteboard/utils/wrapTiddlerAst';
+import { useOnToggleFold } from './useOnToggleFold';
 
 export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean; shape: TranscludeShape }) {
   const editor = useEditor();
@@ -28,7 +29,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
     return { type: 'tiddler', children: childTree };
   }, [tiddlerField, tiddlerTitle]);
   const transcludeRenderContainerReference = useRef<HTMLDivElement>(null);
-  useWidget(astNode, transcludeRenderContainerReference, { skip: isEditing });
+  useWidget(astNode, transcludeRenderContainerReference, { skip: isEditing || shape.props.folded });
 
   const editTitleInputReference = useRef<HTMLInputElement>(null);
   const onTitleInputChange = useDebouncedCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -43,6 +44,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   const editTitleContainerOnClick = useCallback(() => {
     editTitleInputReference.current?.focus?.();
   }, []);
+  const onToggleFold = useOnToggleFold(shape);
 
   const sharedStyle: CSSProperties = {
     backgroundColor: theme[adjustedColor].solid,
@@ -68,8 +70,8 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
         />
       </div>
       <div className='transclude-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
-        <h2>{tiddlerTitle}</h2>
-        <div ref={transcludeRenderContainerReference}>Transclude loading...</div>
+        <h2 onClick={onToggleFold}>{tiddlerTitle}</h2>
+        <div ref={transcludeRenderContainerReference} style={{ display: shape.props.folded ? 'none' : undefined }}>Transclude loading...</div>
       </div>
     </div>
   );
