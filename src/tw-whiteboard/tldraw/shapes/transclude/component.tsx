@@ -3,7 +3,7 @@
 import { useWidget } from '$:/plugins/linonetwo/tw-react/index.js';
 import { getDefaultColorTheme, useEditor, useIsEditing } from '@tldraw/editor';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
-import { ChangeEvent, CSSProperties, useCallback, useMemo, useRef } from 'react';
+import { CSSProperties, useCallback, useEffect, useMemo, useRef } from 'react';
 import { IParseTreeNode } from 'tiddlywiki';
 
 import { TranscludeShape } from './type';
@@ -12,6 +12,7 @@ import { lingo } from 'src/tw-whiteboard/utils/lingo';
 import { wrapTiddlerAst } from 'src/tw-whiteboard/utils/wrapTiddlerAst';
 import { ShapeViewToolbar } from './ShapeViewToolbar';
 import { TiddlerTitleInput } from './TiddlerTitleInput';
+import { useOnToggleFold } from './useOnToggleFold';
 
 export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean; shape: TranscludeShape }) {
   const editor = useEditor();
@@ -46,6 +47,12 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   const editTitleContainerOnClick = useCallback(() => {
     editTitleInputReference.current?.focus?.();
   }, []);
+  const onToggleFold = useOnToggleFold(shape);
+  useEffect(() => {
+    if (isEditing && shape.props.folded) {
+      onToggleFold();
+    }
+  }, [isEditing, onToggleFold, shape.props.folded]);
 
   const sharedStyle: CSSProperties = {
     backgroundColor: theme[adjustedColor].solid,
@@ -65,7 +72,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
       <div className='transclude-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
         <h2>{tiddlerTitle}</h2>
         <div ref={transcludeRenderContainerReference} style={{ display: shape.props.folded ? 'none' : undefined }}>Transclude loading...</div>
-        <ShapeViewToolbar shape={shape} />
+        <ShapeViewToolbar shape={shape} onToggleFold={onToggleFold} />
       </div>
     </div>
   );

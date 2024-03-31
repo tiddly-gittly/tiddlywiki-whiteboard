@@ -5,14 +5,12 @@ import { lingo } from 'src/tw-whiteboard/utils/lingo';
 import { renderSVGTiddler } from 'src/tw-whiteboard/utils/renderSVGTiddler';
 import { useOpenInStory } from 'src/tw-whiteboard/utils/useOpenInStory';
 import { TranscludeShape } from './type';
-import { useOnToggleFold } from './useOnToggleFold';
 
-export function ShapeViewToolbar({ shape }: { shape: TranscludeShape }) {
+export function ShapeViewToolbar({ shape, onToggleFold }: { onToggleFold: () => void; shape: TranscludeShape }) {
   const foldIcon = useMemo(() => renderSVGTiddler('$:/core/images/fold-button'), []);
   const foldText = useMemo(() => $tw.wiki.getTiddlerText('$:/language/Buttons/Fold/Caption'), []);
   const unfoldIcon = useMemo(() => renderSVGTiddler('$:/core/images/unfold-button'), []);
   const unfoldText = useMemo(() => $tw.wiki.getTiddlerText('$:/language/Buttons/Unfold/Caption'), []);
-  const onToggleFold = useOnToggleFold(shape);
   // TODO: change to default layout icon
   const openInStoryIcon = useMemo(() => renderSVGTiddler('$:/core/images/open-window'), []);
   const openInStoryText = useMemo(() => lingo('OpenInDefault'), []);

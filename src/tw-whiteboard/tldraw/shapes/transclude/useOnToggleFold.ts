@@ -2,6 +2,7 @@ import { useEditor } from '@tldraw/editor';
 import { useCallback } from 'react';
 import { TranscludeShape } from './type';
 
+const DEFAULT_FOLD_HEIGHT = 40;
 export function useOnToggleFold(shape: TranscludeShape) {
   const editor = useEditor();
   const onToggleFold = useCallback(() => {
@@ -13,7 +14,7 @@ export function useOnToggleFold(shape: TranscludeShape) {
         props: {
           ...oldProps,
           folded: !oldProps.folded,
-          h: oldProps.folded ? (oldMeta.unfoldedH ?? oldProps.h) : (oldMeta.foldedH ?? oldProps.h),
+          h: oldProps.folded ? (oldMeta.unfoldedH ?? oldProps.h) : (oldMeta.foldedH ?? DEFAULT_FOLD_HEIGHT),
           w: oldProps.folded ? (oldMeta.unfoldedW ?? oldProps.w) : (oldMeta.foldedW ?? oldProps.w),
         },
         meta: oldProps.folded
