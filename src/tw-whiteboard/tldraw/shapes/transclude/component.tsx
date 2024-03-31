@@ -34,7 +34,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   const transcludeRenderContainerReference = useRef<HTMLDivElement>(null);
   useWidget(astNode, transcludeRenderContainerReference, { skip: isEditing || shape.props.folded });
 
-  const editTitleInputReference = useRef<HTMLInputElement>(null);
+  const editTitleInputReference = useRef<HTMLTextAreaElement>(null);
   const onTitleInputChange = useDebouncedCallback((newValue: string) => {
     editor?.store.update(shape.id, (record) => ({
       ...record,

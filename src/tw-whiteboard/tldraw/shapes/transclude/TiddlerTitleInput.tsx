@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
 
 interface IProps {
-  editTitleInputReference: React.RefObject<HTMLInputElement>;
+  editTitleInputReference: React.RefObject<HTMLTextAreaElement>;
   onTitleInputChange: (newValue: string) => void;
   tiddlerTitle?: string;
 }
@@ -41,6 +41,8 @@ export function TiddlerTitleInput(props: IProps) {
         autoFocus
         autoComplete='off'
         spellCheck={false}
+        tabIndex={1}
+        ref={props.editTitleInputReference}
         {...getInputProps()}
         placeholder={placeHolderText}
       />
