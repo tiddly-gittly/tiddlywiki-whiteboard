@@ -11,6 +11,7 @@ import './style.css';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
 import { wrapTiddlerAst } from 'src/tw-whiteboard/utils/wrapTiddlerAst';
 import { ShapeViewToolbar } from './ShapeViewToolbar';
+import { TiddlerTitleInput } from './TiddlerTitleInput';
 
 export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean; shape: TranscludeShape }) {
   const editor = useEditor();
@@ -33,12 +34,12 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   useWidget(astNode, transcludeRenderContainerReference, { skip: isEditing || shape.props.folded });
 
   const editTitleInputReference = useRef<HTMLInputElement>(null);
-  const onTitleInputChange = useDebouncedCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const onTitleInputChange = useDebouncedCallback((newValue: string) => {
     editor?.store.update(shape.id, (record) => ({
       ...record,
       props: {
         ...record.props,
-        title: event.target.value,
+        title: newValue,
       },
     }));
   }, []);
@@ -59,15 +60,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
         style={{ display: isEditing ? undefined : 'none', ...sharedStyle }}
         onClick={editTitleContainerOnClick}
       >
-        <input
-          tabIndex={1}
-          autoFocus
-          type='text'
-          placeholder={lingo('Tools/Transclude/PlaceHolder')}
-          defaultValue={tiddlerTitle}
-          ref={editTitleInputReference}
-          onChange={onTitleInputChange}
-        />
+        <TiddlerTitleInput editTitleInputReference={editTitleInputReference} onTitleInputChange={onTitleInputChange} tiddlerTitle={tiddlerTitle} />
       </div>
       <div className='transclude-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
         <h2>{tiddlerTitle}</h2>
