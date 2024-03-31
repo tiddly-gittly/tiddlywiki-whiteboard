@@ -8,6 +8,9 @@ div.tw-whiteboard-layout-container {
   margin: 0;
 }
 
+.tc-modal-body:has(.tw-whiteboard-layout-create-new-tiddler-modal-container) {
+  overflow-y: visible;
+}
 .tw-whiteboard-layout-create-new-tiddler-modal-container {
   display: flex;
   flex-direction: column;

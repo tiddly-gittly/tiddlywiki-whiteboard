@@ -9,4 +9,6 @@ mask-closable: yes
 
   {{$:/state/Whiteboard/PageLayout/create-tiddler||$:/core/ui/EditTemplate/title}}
 
+  {{$:/state/Whiteboard/PageLayout/create-tiddler||$:/core/ui/EditTemplate/tags}}
+
 </div>
