@@ -42,12 +42,13 @@
   white-space: nowrap;
   max-width: 100%;
 }
-.transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container > input {
+.transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container > textarea {
   background: transparent;
   border: none;
   overflow-wrap: break-word;
   font-size: 2em;
   width: 100%;
+  resize: none;
 }
 
 .shape-view-toolbar-container {
