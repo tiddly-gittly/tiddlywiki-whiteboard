@@ -18,6 +18,20 @@
   justify-content: center;
   align-items: center;
 }
+@media (max-width: 1200px) {
+  .tw-whiteboard-layout-top-bar {
+    left: unset;
+    right: 165px;
+  }
+}
+@media (max-width: 1000px) {
+  .tw-whiteboard-layout-top-bar {
+    top: unset;
+    bottom: 0px;
+    right: unset;
+    left: calc(50% - 400px / 2);
+  }
+}
 .tw-whiteboard-layout-top-bar > select {
   max-width: 200px;
   margin: 0 0.5em;
