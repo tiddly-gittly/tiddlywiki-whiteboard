@@ -34,47 +34,6 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 		</$list>
 	</$reveal>
 </main>
-
-<!-- put this below main, so nav bar is layered on top of the main. In UI, this nav in on the top of the page. -->
-<nav class="tw-whiteboard-layout-top-bar">
-	<<lingo CurrentBoard>>
-	<!-- default to recently used whiteboard tiddler -->
-	<$select tiddler="$:/state/Whiteboard/PageLayout/focusedTiddler" default={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}}>
-		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]]'>
-			<option value=<<currentTiddler>>><$view field='title'/></option>
-		</$list>
-	</$select>
-
-	<$button
-		tooltip={{$:/language/Buttons/NewTiddler/Caption}}
-		message="tm-modal"
-		param="$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerModal"
-	>
-		<$action-createtiddler $basetitle="$:/state/Whiteboard/PageLayout/create-tiddler" $overwrite="yes" draft.title={{$:/language/DefaultNewTiddlerTitle}}/>
-		{{$:/core/images/new-button}}
-	</$button>
-
-	<$wikify name="OpenInDefault" text="<<lingo OpenInDefault>>">
-		<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
-			<$button tooltip=<<OpenInDefault>>>
-				{{$:/core/images/home-button}}
-				<$action-setfield $tiddler="$:/layout" text="$:/core/ui/PageTemplate"/>
-				<$action-navigate $to={{$:/state/Whiteboard/PageLayout/focusedTiddler}}/>
-			</$button>
-		</$reveal>
-		<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
-		<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="match" text="">
-			<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
-				<$button tooltip=<<OpenInDefault>>>
-					{{$:/core/images/home-button}}
-					<$action-setfield $tiddler="$:/layout" text="$:/core/ui/PageTemplate"/>
-					<$action-navigate $to={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} />
-				</$button>
-			</$list>
-		</$reveal>
-	</$wikify>
-</nav>
-
 </$navigator>
 
 </div>

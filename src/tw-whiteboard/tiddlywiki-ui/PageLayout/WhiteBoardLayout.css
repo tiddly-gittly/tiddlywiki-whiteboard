@@ -1,42 +1,3 @@
-.tw-whiteboard-layout-top-bar {
-  -webkit-app-region: drag;
-
-  position: absolute;
-  z-index: 1;
-  top: 0;
-
-  width: 400px;
-  left: calc(50% - 400px / 2);
-  padding: 5px;
-
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12), 0px 1px 3px rgba(0, 0, 0, 0.04);
-  backdrop-filter: blur(5px);
-  border-radius: 2em;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-@media (max-width: 1200px) {
-  .tw-whiteboard-layout-top-bar {
-    left: unset;
-    right: 165px;
-  }
-}
-@media (max-width: 1000px) {
-  .tw-whiteboard-layout-top-bar {
-    top: unset;
-    bottom: 0px;
-    right: unset;
-    left: calc(50% - 400px / 2);
-  }
-}
-.tw-whiteboard-layout-top-bar > select {
-  max-width: 200px;
-  margin: 0 0.5em;
-}
-
 .tw-whiteboard-layout-main-area {
 }
 
@@ -60,5 +21,10 @@ div.tw-whiteboard-layout-container {
   height: 2em;
 }
 .tw-whiteboard-layout-create-new-tiddler-modal-button {
+  font-size: 2em;
+}
+
+.tw-whiteboard-layout-switch-board-modal-container, .tw-whiteboard-layout-switch-board-modal-container select {
+  width: 100%;
   font-size: 2em;
 }

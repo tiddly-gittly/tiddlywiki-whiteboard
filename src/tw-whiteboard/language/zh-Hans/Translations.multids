@@ -5,7 +5,7 @@ Description: 太微白板应用，提供图表微件和白板视图，基于开�
 Configs/Description: 通过这些设置，您可以自定义「白板」插件的行为。
 OpenInLayout: 在白板布局中开启
 OpenInDefault: 在默认布局中开启
-CurrentBoard: 当前白板
+SwitchBoardTiddler: 切换白板条目
 Tools/Transclude/PlaceHolder: 条目标题 - 嵌入
 Tools/Transclude/NoTiddlerTitle: 未填条目标题
 Tools/Transclude/TiddlerMissing: 条目不存在

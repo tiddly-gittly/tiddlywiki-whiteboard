@@ -1,0 +1,18 @@
+title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/SwitchBoardModal
+subtitle: <<lingo SwitchBoardTiddler $:/plugins/linonetwo/tw-whiteboard/language/>>
+mask-closable: yes
+
+<div class="tw-whiteboard-layout-switch-board-modal-container">
+
+	<!-- default to recently used whiteboard tiddler -->
+	<$select
+    tiddler="$:/state/Whiteboard/PageLayout/focusedTiddler"
+    default={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}}
+    actions='<$action-sendmessage $message="tm-close-tiddler"/>'
+  >
+		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]]'>
+			<option value=<<currentTiddler>>><$view field='title'/></option>
+		</$list>
+	</$select>
+
+</div>
