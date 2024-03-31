@@ -47,7 +47,8 @@ export const getOverrides = (props: IAppProps): TLUiOverrides => ({
   },
   toolbar(app, toolbar, { tools }) {
     toolbar.splice(6, 0, toolbarItem(tools[TranscludeTool.id]));
-    if (props.currentTiddler) {
+    const inLayout = $tw.wiki.getTiddlerText('$:/layout') === '$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard';
+    if (props.currentTiddler && !inLayout) {
       toolbar.splice(10, 0, toolbarItem(tools['whiteboard.layout']));
     }
     return toolbar;
