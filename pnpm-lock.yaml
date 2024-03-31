@@ -4,13 +4,18 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@tldraw/editor@2.0.2':
+    hash: 4nswgind65vvs6xzl2m5mgel2u
+    path: patches/@tldraw__editor@2.0.2.patch
+
 dependencies:
   '@tldraw/assets':
     specifier: 2.0.2
     version: 2.0.2
   '@tldraw/editor':
     specifier: 2.0.2
-    version: 2.0.2(react-dom@18.2.0)(react@18.2.0)
+    version: 2.0.2(patch_hash=4nswgind65vvs6xzl2m5mgel2u)(react-dom@18.2.0)(react@18.2.0)
   '@tldraw/tldraw':
     specifier: 2.0.2
     version: 2.0.2(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0)(react@18.2.0)
@@ -1572,7 +1577,7 @@ packages:
       '@tldraw/utils': 2.0.2
     dev: false
 
-  /@tldraw/editor@2.0.2(react-dom@18.2.0)(react@18.2.0):
+  /@tldraw/editor@2.0.2(patch_hash=4nswgind65vvs6xzl2m5mgel2u)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-ik7JvBQv9AsvkGhBfNkPdM0m+cBiarfPLrzlgyB2dec4lWQOIIL/p9J+28FUWQ4bzDvD6JN0eGXnsGj754ypQg==}
     peerDependencies:
       react: ^18
@@ -1596,6 +1601,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
+    patched: true
 
   /@tldraw/state@2.0.2(react@18.2.0):
     resolution: {integrity: sha512-8736faV/vTDipYa6xpTG2l3XJgwu1lR4wAwobW/AdiflWBoxiejK4GZyVhb1HtSvcb9EV/ZDOG9SAwG2cKUw9A==}
@@ -7015,7 +7021,7 @@ packages:
       '@radix-ui/react-select': 1.2.2(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-slider': 1.1.2(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toast': 1.1.4(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0)(react@18.2.0)
-      '@tldraw/editor': 2.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@tldraw/editor': 2.0.2(patch_hash=4nswgind65vvs6xzl2m5mgel2u)(react-dom@18.2.0)(react@18.2.0)
       canvas-size: 1.2.6
       classnames: 2.3.2
       hotkeys-js: 3.12.0

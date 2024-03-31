@@ -1,0 +1,16 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index dcbca7995ff7c3012d3ff0f138b37dc5b01f1ea6..0000000000000000000000000000000000000000
+diff --git a/dist-esm/lib/hooks/useCanvasEvents.mjs b/dist-esm/lib/hooks/useCanvasEvents.mjs
+index 61e1939a636be9d01a76f04326cebb98ca5ebad1..b439293cb9e5454eb7b0889f545847a9e19c4ddb 100644
+--- a/dist-esm/lib/hooks/useCanvasEvents.mjs
++++ b/dist-esm/lib/hooks/useCanvasEvents.mjs
+@@ -95,7 +95,7 @@ function useCanvasEvents() {
+       function onTouchEnd(e) {
+         ;
+         e.isKilled = true;
+-        if (e.target.tagName !== "A" && e.target.tagName !== "TEXTAREA") {
++        if (e.target.tagName !== "A" && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "LI") {
+           preventDefault(e);
+         }
+       }

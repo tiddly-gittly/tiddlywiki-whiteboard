@@ -60,5 +60,10 @@
     "npm-check-updates": "^16.14.18",
     "tiddlywiki": "^5.3.3",
     "tiddlywiki-plugin-dev": "^0.2.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@tldraw/editor@2.0.2": "patches/@tldraw__editor@2.0.2.patch"
+    }
   }
 }
