@@ -23,11 +23,11 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   const adjustedColor = shape.props.color === 'black' ? 'grey' : shape.props.color;
 
   const astNode = useMemo<IParseTreeNode>(() => {
-    if (!tiddlerTitle) return wrapTiddlerAst({ type: 'text', text: `${lingo('Tools/Transclude/NoTiddlerTitle')}` });
+    if (!tiddlerTitle) return wrapTiddlerAst({ type: 'text', text: `${lingo('Tools/Transclude/NoTiddlerTitle')} ${lingo('Tools/Note/DbClickEdit')}` });
     const fields = $tw.wiki.getTiddler(tiddlerTitle)?.fields;
-    if (fields === undefined) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclude/TiddlerMissing')}` });
+    if (fields === undefined) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclude/TiddlerMissing')} ${lingo('Tools/Note/DbClickEdit')}` });
     const text = fields?.[tiddlerField];
-    if (!text) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclude/NoTextOnField')} ${tiddlerField}` });
+    if (!text) return wrapTiddlerAst({ type: 'text', text: `${tiddlerTitle} ${lingo('Tools/Transclude/NoTextOnField')} ${tiddlerField} ${lingo('Tools/Note/DbClickEdit')}` });
     const childTree = $tw.wiki.parseText(fields.type || 'text/vnd.tiddlywiki', String(text)).tree;
     return { type: 'tiddler', children: childTree };
   }, [tiddlerField, tiddlerTitle]);
