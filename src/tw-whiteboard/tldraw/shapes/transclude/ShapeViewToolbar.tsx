@@ -1,9 +1,9 @@
 /* eslint-disable unicorn/no-null */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
-import { useCallback, useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
 import { renderSVGTiddler } from 'src/tw-whiteboard/utils/renderSVGTiddler';
+import { useOpenInStory } from 'src/tw-whiteboard/utils/useOpenInStory';
 import { TranscludeShape } from './type';
 import { useOnToggleFold } from './useOnToggleFold';
 
@@ -16,14 +16,7 @@ export function ShapeViewToolbar({ shape }: { shape: TranscludeShape }) {
   // TODO: change to default layout icon
   const openInStoryIcon = useMemo(() => renderSVGTiddler('$:/core/images/open-window'), []);
   const openInStoryText = useMemo(() => lingo('OpenInDefault'), []);
-  const parentWidget = useContext(ParentWidgetContext);
-  const onOpenInStory = useCallback(() => {
-    $tw.wiki.setText('$:/layout', 'text', undefined, '');
-    parentWidget?.dispatchEvent({
-      type: 'tm-navigate',
-      navigateTo: shape.props.title,
-    });
-  }, [parentWidget, shape.props.title]);
+  const onOpenInStory = useOpenInStory(shape.props.title);
 
   if (!shape.props.title) {
     return null;
