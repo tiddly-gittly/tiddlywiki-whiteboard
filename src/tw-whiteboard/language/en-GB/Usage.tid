@@ -2,7 +2,11 @@ title: $:/plugins/linonetwo/tw-whiteboard/language/en-GB/Usage
 type: text/vnd.tiddlywiki
 
 # Provides a whiteboard widget, use it like `<$whiteboard tiddler="tiddlerToStoreData" />`
+## There is a {{$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/code.svg}} button in the top menu bar, when clicked, it will copy the above whiteboard widget code to the clipboard, which can be pasted into any tiddler and inserted into the read-only mode of the current whiteboard.
+# Provides a whiteboard layout, use `ctrl+shift+L` to switch to this layout, you can choose a tiddler with type `application/vnd.tldraw+json`, and edit it in full screen.
+## There is a button in the menu at the top left corner to enter the whiteboard layout for full-screen editing, or to return to the default layout when in full-screen mode.
+## Shortcuts only work in fullscreen mode, so as not to interfere with the shortcuts that come with TaiWei.
 # Tiddler with type `application/vnd.tldraw+json` will be parsed as whiteboard, showing whiteboard in tiddler's ViewTemplate
-# Provides a whiteboard view, use `ctrl+shift+L` to switch to this view, you can choose a tiddler with type `application/vnd.tldraw+json`, and edit it in full screen.
+## You can also open a whiteboard layout and then create a new whiteboard tiddler in the upper left menu, or switch between whiteboard tiddlers
 
 [[Widget Params Table|$:/plugins/linonetwo/tw-whiteboard/WidgetParamTable]]

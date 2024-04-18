@@ -2,7 +2,11 @@ title: $:/plugins/linonetwo/tw-whiteboard/language/zh-Hans/Usage
 type: text/vnd.tiddlywiki
 
 # 提供一个白板微件，使用方式类似于 `<$whiteboard tiddler="存储白板数据的条目名" />` 。
+## 顶部菜单栏里有 {{$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/code.svg}} 按钮，点击后会复制上述白板微件代码到剪贴板，可以黏贴到任何条目里，插入当前白板的只读模式
+# 提供白板布局，使用 `ctrl+shift+L` 切换到该视图，你可以选择类型为 `application/vnd.tldraw+json` 的条目，并全屏编辑。
+## 左上角的菜单里有按钮可以进入白板视图全屏编辑，或在全屏模式时返回默认布局
+## 快捷键只有在全屏模式时才生效，以免影响太微自带的快捷键
 # 类型为 `application/vnd.tldraw+json` 的条目将被解析为白板，在条目视图模板中显示白板
-# 提供白板视图，使用 `ctrl+shift+L` 切换到该视图，你可以选择类型为 `application/vnd.tldraw+json` 的条目，并全屏编辑。
+## 也可以打开白板布局后，在左上角菜单里创建新的白板条目，或在各白板条目之间切换
 
 [[微件参数表|$:/plugins/linonetwo/tw-whiteboard/WidgetParamTable]]
