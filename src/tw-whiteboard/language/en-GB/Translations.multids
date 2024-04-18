@@ -4,7 +4,8 @@ Name: Whiteboard
 Description: Tiny little drawing app in TW, based on tldraw. Providing diagram widget and whiteboard view.
 Configs/Description: These settings let you customise the behaviour of "Whiteboard" plugin.
 OpenInLayout: Open In Whiteboard Layout
-OpenInDefault: Open In Default Layout
+OpenInDefault: Open tiddler In Default Layout
+BackToDefaultLayout: Back To Default Layout
 SwitchBoardTiddler: Switch Board Tiddler
 Tools/Transclude/PlaceHolder: Tiddler title transclude
 Tools/Transclude/NoTiddlerTitle: Tiddler title not filled

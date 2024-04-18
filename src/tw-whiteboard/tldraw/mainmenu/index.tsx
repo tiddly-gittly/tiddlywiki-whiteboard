@@ -11,11 +11,12 @@ export function CustomMainMenu() {
   const createTiddlerText = useMemo(() => $tw.wiki.getTiddlerText('$:/language/Buttons/NewTiddler/Caption'), []);
   const props = useContext(PropsContext);
   const onOpenInStory = useOpenInStory(props?.currentTiddler);
+  const backToDefaultLayout = useOpenInStory();
 
   return (
     <DefaultMainMenu>
       <TldrawUiMenuGroup id='example'>
-        {!isInLayout && (
+        {!isInLayout && props?.currentTiddler && (
           <TldrawUiMenuItem
             id='openInLayout'
             label='tool.openInLayout'
@@ -48,6 +49,12 @@ export function CustomMainMenu() {
                 $tw.wiki.addTiddler({ title: '$:/state/Whiteboard/PageLayout/create-tiddler', 'draft.title': $tw.wiki.getTiddlerText('$:/language/DefaultNewTiddlerTitle') });
                 $tw.rootWidget.dispatchEvent({ type: 'tm-modal', param: '$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/CreateNewTiddlerModal' });
               }}
+            />
+            <TldrawUiMenuItem
+              id='BackToDefaultLayout'
+              label={lingo('BackToDefaultLayout')}
+              readonlyOk
+              onSelect={backToDefaultLayout}
             />
             <TldrawUiMenuItem
               id='OpenInDefault'
