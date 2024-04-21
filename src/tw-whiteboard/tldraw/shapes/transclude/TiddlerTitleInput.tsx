@@ -37,7 +37,6 @@ export function TiddlerTitleInput(props: IProps) {
     <div className='transclude-shape-edit-mode-input-container'>
       <label {...getLabelProps()}>{placeHolderText}</label>
       <textarea
-        rows={1}
         autoFocus
         autoComplete='off'
         spellCheck={false}

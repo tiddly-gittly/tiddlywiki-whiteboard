@@ -18,7 +18,7 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
   const editor = useEditor();
   const theme = getDefaultColorTheme({ isDarkMode });
   const isEditing = useIsEditing(shape.id);
-  const tiddlerTitle = shape.props.title;
+  const tiddlerTitle = shape.props.title?.replaceAll('\n', '');
   const tiddlerField = shape.props.field ?? 'text';
   const adjustedColor = shape.props.color === 'black' ? 'grey' : shape.props.color;
 

@@ -45,10 +45,10 @@
 .transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container > textarea {
   background: transparent;
   border: none;
-  overflow-wrap: break-word;
   font-size: 2em;
-  width: 100%;
-  resize: none;
+  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
+  width: 100% !important;
 }
 
 .shape-view-toolbar-container {
@@ -64,16 +64,6 @@
 .shape-view-toolbar-container:hover {
   opacity: 1;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-}
-
-.transclude-shape-component-inner.transclude-shape-edit-mode > textarea {
-  background: transparent;
-  border: none;
-  overflow-wrap: break-word;
-  overflow-wrap: anywhere;
-  width: 100% !important;
-  height: 100% !important;
-  resize: none;
 }
 
 /**
