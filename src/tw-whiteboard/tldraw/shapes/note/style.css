@@ -21,7 +21,25 @@
   background: transparent;
   border: none;
   overflow-wrap: break-word;
-  font-size: 2em;
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  resize: none;
+}
+
+/**
+ * Remove scrollbar
+ */
+.note-shape-component-inner.note-shape-edit-mode > textarea::-webkit-scrollbar {
+	width: 0 !important
+}
+.note-shape-component-inner.note-shape-edit-mode > textarea {
+  overscroll-behavior: contain;
+	overflow: -moz-scrollbars-none;
+}
+.note-shape-component-inner {
+  overscroll-behavior: contain;
+	overflow: -moz-scrollbars-none;
+}
+.note-shape-component-inner::-webkit-scrollbar {
+	width: 0 !important
 }

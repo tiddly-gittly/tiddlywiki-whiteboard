@@ -65,3 +65,38 @@
   opacity: 1;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }
+
+.transclude-shape-component-inner.transclude-shape-edit-mode > textarea {
+  background: transparent;
+  border: none;
+  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
+  width: 100% !important;
+  height: 100% !important;
+  resize: none;
+}
+
+/**
+ * Remove scrollbar
+ */
+.transclude-shape-component-inner.transclude-shape-edit-mode > textarea::-webkit-scrollbar {
+	width: 0 !important
+}
+.transclude-shape-component-inner.transclude-shape-edit-mode > textarea {
+  overscroll-behavior: contain;
+	overflow: -moz-scrollbars-none;
+}
+.transclude-shape-edit-mode-input-container > textarea::-webkit-scrollbar {
+	width: 0 !important
+}
+.transclude-shape-edit-mode-input-container > textarea {
+  overscroll-behavior: contain;
+	overflow: -moz-scrollbars-none;
+}
+.transclude-shape-component-inner {
+  overscroll-behavior: contain;
+	overflow: -moz-scrollbars-none;
+}
+.transclude-shape-component-inner::-webkit-scrollbar {
+	width: 0 !important
+}
