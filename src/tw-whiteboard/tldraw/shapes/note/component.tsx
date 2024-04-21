@@ -60,8 +60,15 @@ export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shap
           onChange={onTextInputChange}
         />
       </div>
-      <div className='note-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
-        <div ref={noteRenderContainerReference}>Note loading...</div>
+      <div className='note-shape-component-inner note-shape-view-mode' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
+        <div
+          ref={noteRenderContainerReference}
+          onPointerDown={(event) => {
+            event.stopPropagation();
+          }}
+        >
+          Note loading...
+        </div>
       </div>
     </div>
   );

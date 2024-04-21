@@ -22,8 +22,22 @@ export function ShapeViewToolbar({ shape, onToggleFold }: { onToggleFold: () => 
 
   return (
     <div className='shape-view-toolbar-container'>
-      <button dangerouslySetInnerHTML={{ __html: shape.props.folded ? unfoldIcon : foldIcon }} onClick={onToggleFold} title={shape.props.folded ? unfoldText : foldText} />
-      <button dangerouslySetInnerHTML={{ __html: openInStoryIcon }} onClick={onOpenInStory} title={openInStoryText} />
+      <button
+        onPointerDown={(event) => {
+          event.stopPropagation();
+        }}
+        dangerouslySetInnerHTML={{ __html: shape.props.folded ? unfoldIcon : foldIcon }}
+        onClick={onToggleFold}
+        title={shape.props.folded ? unfoldText : foldText}
+      />
+      <button
+        onPointerDown={(event) => {
+          event.stopPropagation();
+        }}
+        dangerouslySetInnerHTML={{ __html: openInStoryIcon }}
+        onClick={onOpenInStory}
+        title={openInStoryText}
+      />
     </div>
   );
 }

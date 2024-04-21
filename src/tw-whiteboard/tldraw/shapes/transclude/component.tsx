@@ -66,12 +66,23 @@ export function TranscludeComponent({ shape, isDarkMode }: { isDarkMode: boolean
         key='edit-title'
         style={{ display: isEditing ? undefined : 'none', ...sharedStyle }}
         onClick={editTitleContainerOnClick}
+        onPointerDown={(event) => {
+          event.stopPropagation();
+        }}
       >
         <TiddlerTitleInput editTitleInputReference={editTitleInputReference} onTitleInputChange={onTitleInputChange} tiddlerTitle={tiddlerTitle} />
       </div>
       <div className='transclude-shape-component-inner' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>
         <h2>{tiddlerTitle}</h2>
-        <div ref={transcludeRenderContainerReference} style={{ display: shape.props.folded ? 'none' : undefined }}>Transclude loading...</div>
+        <div
+          ref={transcludeRenderContainerReference}
+          onPointerDown={(event) => {
+            event.stopPropagation();
+          }}
+          style={{ display: shape.props.folded ? 'none' : undefined }}
+        >
+          Transclude loading...
+        </div>
         <ShapeViewToolbar shape={shape} onToggleFold={onToggleFold} />
       </div>
     </div>

@@ -64,6 +64,7 @@
 .shape-view-toolbar-container:hover {
   opacity: 1;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  cursor: move;
 }
 
 /**
