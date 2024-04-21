@@ -34,7 +34,12 @@ export function TiddlerTitleInput(props: IProps) {
     },
   });
   return (
-    <div className='transclude-shape-edit-mode-input-container'>
+    <div
+      className='transclude-shape-edit-mode-input-container'
+      onPointerDown={(event) => {
+        event.stopPropagation();
+      }}
+    >
       <label {...getLabelProps()}>{placeHolderText}</label>
       <textarea
         autoFocus
