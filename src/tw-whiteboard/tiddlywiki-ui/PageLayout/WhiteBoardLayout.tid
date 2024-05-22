@@ -21,19 +21,18 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 	<$navigator story="$:/StoryList" history="$:/HistoryList" openLinkFromInsideRiver={{$:/config/Navigation/openLinkFromInsideRiver}} openLinkFromOutsideRiver={{$:/config/Navigation/openLinkFromOutsideRiver}} relinkOnRename={{$:/config/RelinkOnRename}}>
 		{{$:/core/ui/CommandPaletteTemplate}}
 		<div class=<<containerClasses>>>
-			<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
-				<main class="tw-whiteboard-layout-main-area">
-					<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/focusedTiddler}} height="100vh" focused="yes" />
-				</main>
-			</$reveal>
-			<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
-			<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="match" text="">
+			<% if [{$:/state/Whiteboard/PageLayout/focusedTiddler}match[]] %>
 				<main class="tw-whiteboard-layout-main-area">
 					<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
 						<$whiteboard tiddler={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} height="100vh" focused="yes" />
 					</$list>
 				</main>
-			</$reveal>
+			<% else %>
+				<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
+				<main class="tw-whiteboard-layout-main-area">
+					<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/focusedTiddler}} height="100vh" focused="yes" />
+				</main>
+			<% endif %>
 		</div>
 	</$navigator>
 </$vars>
