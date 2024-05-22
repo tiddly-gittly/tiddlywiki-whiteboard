@@ -18,24 +18,20 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 	tv-show-missing-links={{$:/config/MissingLinks}}
 	storyviewTitle={{$:/view}}
 	languageTitle={{{ [{$:/language}get[name]] }}}>
-
-<div class=<<containerClasses>>>
-
-<$navigator story="$:/StoryList" history="$:/HistoryList" openLinkFromInsideRiver={{$:/config/Navigation/openLinkFromInsideRiver}} openLinkFromOutsideRiver={{$:/config/Navigation/openLinkFromOutsideRiver}} relinkOnRename={{$:/config/RelinkOnRename}}>
-
-<main class="tw-whiteboard-layout-main-area">
-	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
-		<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/focusedTiddler}} height="calc(100vh - 35px)" focused="yes" />
-	</$reveal>
-	<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
-	<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="match" text="">
-		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
-			<$whiteboard tiddler={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} height="calc(100vh - 35px)" focused="yes" />
-		</$list>
-	</$reveal>
-</main>
-</$navigator>
-
-</div>
-
+	<$navigator story="$:/StoryList" history="$:/HistoryList" openLinkFromInsideRiver={{$:/config/Navigation/openLinkFromInsideRiver}} openLinkFromOutsideRiver={{$:/config/Navigation/openLinkFromOutsideRiver}} relinkOnRename={{$:/config/RelinkOnRename}}>
+		{{$:/core/ui/CommandPaletteTemplate}}
+		<div class=<<containerClasses>>>
+			<main class="tw-whiteboard-layout-main-area">
+				<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="nomatch" text="">
+					<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/focusedTiddler}} height="calc(100vh - 35px)" focused="yes" />
+				</$reveal>
+				<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
+				<$reveal state="$:/state/Whiteboard/PageLayout/focusedTiddler" type="match" text="">
+					<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]'>
+						<$whiteboard tiddler={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}} height="calc(100vh - 35px)" focused="yes" />
+					</$list>
+				</$reveal>
+			</main>
+		</div>
+	</$navigator>
 </$vars>
