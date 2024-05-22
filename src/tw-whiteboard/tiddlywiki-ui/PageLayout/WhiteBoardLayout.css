@@ -1,4 +1,6 @@
 .tw-whiteboard-layout-main-area {
+  height: 100vh;
+  width: 100vw;
 }
 
 div.tw-whiteboard-layout-container {
