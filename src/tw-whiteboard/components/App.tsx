@@ -11,7 +11,7 @@ import { partition, TLStateNodeConstructor } from '@tldraw/editor';
 import './App.css';
 import '@tldraw/tldraw/tldraw.css';
 import { assetUrls } from '../tldraw/assets/formatedAssets';
-import { components, getOverrides } from '../tldraw/overrides';
+import { getComponents, getOverrides } from '../tldraw/overrides';
 import { NoteTool } from '../tldraw/shapes/note/tool';
 import { NoteShapeUtil } from '../tldraw/shapes/note/util';
 import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
@@ -207,7 +207,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
               inferDarkMode
               assetUrls={assetUrls}
               overrides={getOverrides(props)}
-              components={components}
+              components={getComponents(props)}
             />
           </div>
         </ParentWidgetContext.Provider>

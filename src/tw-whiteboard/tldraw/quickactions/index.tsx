@@ -13,7 +13,7 @@ export function CustomQuickActions() {
       <TldrawUiMenuItem
         id='code'
         icon='code'
-        title={lingo('QuickActions/CopyWidgetSnippet')}
+        label={lingo('QuickActions/CopyWidgetSnippet')}
         onSelect={() => {
           if (!props?.currentTiddler) return;
           const snippetText = `<$whiteboard tiddler="${props.currentTiddler}" readonly="yes" />`;

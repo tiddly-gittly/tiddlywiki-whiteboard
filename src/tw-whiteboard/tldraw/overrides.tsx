@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { DefaultKeyboardShortcutsDialog, DefaultKeyboardShortcutsDialogContent, TLComponents, TldrawUiMenuItem, TLUiOverrides, toolbarItem, useTools } from '@tldraw/tldraw';
+import {
+  DefaultKeyboardShortcutsDialog,
+  DefaultKeyboardShortcutsDialogContent,
+  DefaultToolbar,
+  DefaultToolbarContent,
+  TLComponents,
+  TldrawUiMenuItem,
+  TLUiOverrides,
+  useIsToolSelected,
+  useTools,
+} from '@tldraw/tldraw';
 import type { IAppProps } from '../components/App';
 import { CustomMainMenu } from './mainmenu';
 import { CustomQuickActions } from './quickactions';
@@ -45,14 +55,6 @@ export const getOverrides = (props: IAppProps): TLUiOverrides => ({
     };
     return tools;
   },
-  toolbar(app, toolbar, { tools }) {
-    toolbar.splice(6, 0, toolbarItem(tools[TranscludeTool.id]));
-    const inLayout = $tw.wiki.getTiddlerText('$:/layout') === '$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard';
-    if (props.currentTiddler && !inLayout) {
-      toolbar.splice(10, 0, toolbarItem(tools['whiteboard.layout']));
-    }
-    return toolbar;
-  },
   translations: {
     'zh-cn': {
       'tool.transclude': $tw.wiki.getTiddlerText('$:/language/Buttons/Transcludify/Caption') ?? '',
@@ -65,19 +67,34 @@ export const getOverrides = (props: IAppProps): TLUiOverrides => ({
   },
 });
 
-export const components: TLComponents = {
-  KeyboardShortcutsDialog: (props) => {
-    const tools = useTools();
-    return (
-      <DefaultKeyboardShortcutsDialog {...props}>
-        <DefaultKeyboardShortcutsDialogContent />
-        {/* Ideally, we'd interleave this into the tools group */}
-        <TldrawUiMenuItem {...tools[TranscludeTool.id]} />
-      </DefaultKeyboardShortcutsDialog>
-    );
-  },
-  QuickActions: CustomQuickActions,
-  MainMenu: CustomMainMenu,
+export const getComponents = (appProps: IAppProps) => {
+  const components: TLComponents = {
+    Toolbar: (props) => {
+      const inLayout = $tw.wiki.getTiddlerText('$:/layout') === '$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard';
+      const tools = useTools();
+      const isStickerSelected = useIsToolSelected(tools[TranscludeTool.id]);
+      return (
+        <DefaultToolbar {...props}>
+          <TldrawUiMenuItem {...tools[TranscludeTool.id]} isSelected={isStickerSelected} />
+          {appProps.currentTiddler && !inLayout && <TldrawUiMenuItem {...tools['whiteboard.layout']} />}
+          <DefaultToolbarContent />
+        </DefaultToolbar>
+      );
+    },
+    KeyboardShortcutsDialog: (props) => {
+      const tools = useTools();
+      return (
+        <DefaultKeyboardShortcutsDialog {...props}>
+          <DefaultKeyboardShortcutsDialogContent />
+          {/* Ideally, we'd interleave this into the tools group */}
+          <TldrawUiMenuItem {...tools[TranscludeTool.id]} />
+        </DefaultKeyboardShortcutsDialog>
+      );
+    },
+    QuickActions: CustomQuickActions,
+    MainMenu: CustomMainMenu,
+  };
+  return components;
 };
 
 /*
