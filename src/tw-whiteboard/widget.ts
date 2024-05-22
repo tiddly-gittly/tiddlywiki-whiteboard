@@ -13,8 +13,8 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     return {
       currentTiddler: this.editTitle,
       initialTiddlerText: this.editTitle === undefined ? '' : $tw.wiki.getTiddlerText(this.editTitle),
-      height: this.getAttribute('height'),
-      width: this.getAttribute('width'),
+      height: this.getAttribute('height', '400px'),
+      width: this.getAttribute('width', '100%'),
       readonly: this.getAttribute('readonly') === 'yes' || this.getAttribute('readonly') === 'true',
       zoomToFit: this.getAttribute('zoomToFit') !== 'no' && this.getAttribute('zoomToFit') === 'false',
       zoom: this.getAttribute('zoom'),
