@@ -38,7 +38,7 @@ export interface IAppProps {
     interval?: number;
     /** a lock to prevent update from tiddler to slate, when update of tiddler is trigger by slate. */
     lock: () => void;
-    onSave: (value: string) => void;
+    onSave: (title: string, value: string) => void;
   };
   width?: string;
   zoom?: string;
@@ -155,11 +155,11 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
       if (readonly ?? isDraft) return;
       void (async () => {
         if (!editor) return;
-        onSave(await serializeTldrawJson(editor.store));
+        onSave(currentTiddler!, await serializeTldrawJson(editor.store));
       })();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor]);
+  }, [currentTiddler, editor]);
 
   const deferSave = useCallback(
     () => {
@@ -167,7 +167,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         if (editor === undefined) return;
         const newTiddlerText = await serializeTldrawJson(editor.store);
         lock();
-        onSave(newTiddlerText);
+        onSave(currentTiddler!, newTiddlerText);
       };
       if (typeof requestIdleCallback !== 'undefined') {
         requestIdleCallback(saveCallback, { timeout: 60 });
@@ -177,7 +177,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         requestAnimationFrame(saveCallback);
       }
     },
-    [editor, lock, onSave],
+    [currentTiddler, editor, lock, onSave],
   );
 
   /**

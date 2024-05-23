@@ -10,9 +10,10 @@ const SAVE_DEBOUNCE_INTERVAL = 1000;
 class TldrawWhiteBoardWidget extends Widget<IAppProps> {
   public reactComponent = App;
   public getProps = () => {
+    const editTitle = this.getAttribute('tiddler');
     return {
-      currentTiddler: this.editTitle,
-      initialTiddlerText: this.editTitle === undefined ? '' : $tw.wiki.getTiddlerText(this.editTitle),
+      currentTiddler: editTitle,
+      initialTiddlerText: editTitle === undefined ? '' : $tw.wiki.getTiddlerText(editTitle),
       height: this.getAttribute('height', '400px'),
       width: this.getAttribute('width', '100%'),
       readonly: this.getAttribute('readonly') === 'yes' || this.getAttribute('readonly') === 'true',
@@ -38,7 +39,8 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
   };
 
   private get isDraft() {
-    return this.editTitle === undefined ? false : Boolean(this.getAttribute('draftTitle'));
+    const editTitle = this.getAttribute('tiddler');
+    return editTitle === undefined ? false : Boolean(this.getAttribute('draftTitle'));
   }
 
   destroy() {
@@ -52,8 +54,9 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       this.refreshSelf();
       return true;
     }
-    if (this.editTitle === undefined) return false;
-    if (changedTiddlers[this.editTitle]?.deleted === true) {
+    const editTitle = this.getAttribute('tiddler');
+    if (editTitle === undefined) return false;
+    if (changedTiddlers[editTitle]?.deleted === true) {
       // this delete operation will trigger the close of the tiddler, so trigger the save, we have to prevent that
       this.lock();
       return false;
@@ -63,38 +66,40 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
       return false;
     }
     const changedAttributes = this.computeAttributes();
-    if ($tw.utils.count(changedAttributes) > 0 || changedTiddlers[this.editTitle]?.modified === true) {
+    if ($tw.utils.count(changedAttributes) > 0 || changedTiddlers[editTitle]?.modified === true) {
       this.refreshSelf();
       return true;
     }
     return false;
   }
 
-  private editTitle: string | undefined;
+  refreshSelf() {
+    this.destroy?.();
+    this.root = undefined;
+    super.refreshSelf();
+  }
 
   execute() {
-    /** don't use `this.getVariable('currentTiddler')` otherwise it will overwrite the widget. */
-    this.editTitle = this.getAttribute('tiddler');
     // Make the child widgets
     this.makeChildWidgets();
   }
 
-  private readonly onSave = (newText: string): void => {
+  private readonly onSave = (title: string, newText: string): void => {
     /** if tiddler field is not filled in, just edit in the memory, don't save */
-    if (this.editTitle === '' || this.editTitle === undefined) {
+    if (title === '' || title === undefined) {
       return;
     }
     // prevent save after destroy. On react unmount, emergency save in its willUnmount will try to call onSave. But when in story view and it is draft, this will cause save draft while tw is trying to delete draft. Cause draft not delete after end editing.
     if (this.isDraft && !this.ready) return;
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    const previousTiddler = $tw.wiki.getTiddler(this.editTitle);
+    const previousTiddler = $tw.wiki.getTiddler(title);
     // prevent useless call to addTiddler
     if (previousTiddler?.fields.text !== newText) {
       // use setText for DraftTiddler, otherwise if use addTiddler we will make it a real tiddler immediately.
-      $tw.wiki.setText(this.editTitle, 'text', undefined, newText);
+      $tw.wiki.setText(title, 'text', undefined, newText);
       // set tiddler type
       if (previousTiddler?.fields.type !== 'application/vnd.tldraw+json') {
-        $tw.wiki.setText(this.editTitle, 'type', undefined, 'application/vnd.tldraw+json');
+        $tw.wiki.setText(title, 'type', undefined, 'application/vnd.tldraw+json');
       }
     }
     this.unlock();
