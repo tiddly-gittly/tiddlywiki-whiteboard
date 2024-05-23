@@ -23,7 +23,7 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 		<div class=<<containerClasses>>>
 			<% if [{$:/state/Whiteboard/PageLayout/focusedTiddler}match[]] %>
 				<main class="tw-whiteboard-layout-main-area">
-					<$whiteboard tiddler="WhiteBoardTutorial" height="100vh" focused="yes" readonly="yes" />
+					<$whiteboard tiddler="$:/plugins/linonetwo/tw-whiteboard/examples/WhiteBoardTutorial" height="100vh" focused="yes" readonly="yes" />
 				</main>
 			<% else %>
 				<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
