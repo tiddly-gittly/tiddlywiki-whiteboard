@@ -7,6 +7,7 @@ OpenInLayout: 在白板布局中开启
 OpenInDefault: 在默认布局中开启此白板条目
 BackToDefaultLayout: 返回默认布局
 SwitchBoardTiddler: 切换白板条目
+WhiteBoardTutorial: 白板使用教程
 Tools/Transclude/PlaceHolder: 条目标题 - 嵌入
 Tools/Transclude/NoTiddlerTitle: 未填条目标题
 Tools/Transclude/TiddlerMissing: 条目不存在

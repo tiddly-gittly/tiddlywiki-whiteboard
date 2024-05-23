@@ -7,11 +7,15 @@ mask-closable: yes
 	<!-- default to recently used whiteboard tiddler -->
 	<$select
     tiddler="$:/state/Whiteboard/PageLayout/focusedTiddler"
-    default={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]]}}}
+    default={{{[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]first[]] -[[$:/plugins/linonetwo/tw-whiteboard/examples/WhiteBoardTutorial]]}}}
     actions='<$action-sendmessage $message="tm-close-tiddler"/>'
   >
-		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]]'>
-			<option value=<<currentTiddler>>><$view field='title'/></option>
+		<$list filter='[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]] -[[$:/plugins/linonetwo/tw-whiteboard/examples/WhiteBoardTutorial]]'>
+			<option value=<<currentTiddler>>>
+				<$transclude field="caption">
+					<$view field="title"/>
+				</$transclude>
+			</option>
 		</$list>
 	</$select>
 
