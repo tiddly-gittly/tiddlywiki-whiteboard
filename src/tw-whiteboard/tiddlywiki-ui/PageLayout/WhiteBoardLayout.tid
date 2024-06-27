@@ -10,6 +10,10 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 \end
 \import [subfilter{$:/core/config/GlobalImportFilter}]
 \define lingo-base() $:/plugins/linonetwo/tw-whiteboard/language/
+\procedure redirected-navigate-actions()
+  <$action-setfield $tiddler="$:/layout" text="" />
+  <$action-navigate $to=<<event-navigateTo>> />
+\end
 
 <$vars
 	tv-config-toolbar-icons={{$:/config/Toolbar/Icons}}
@@ -19,18 +23,20 @@ tc-page-container tc-page-view-$(storyviewTitle)$ tc-language-$(languageTitle)$ 
 	storyviewTitle={{$:/view}}
 	languageTitle={{{ [{$:/language}get[name]] }}}>
 	<$navigator story="$:/StoryList" history="$:/HistoryList" openLinkFromInsideRiver={{$:/config/Navigation/openLinkFromInsideRiver}} openLinkFromOutsideRiver={{$:/config/Navigation/openLinkFromOutsideRiver}} relinkOnRename={{$:/config/RelinkOnRename}}>
-		{{$:/core/ui/CommandPaletteTemplate}}
-		<div class=<<containerClasses>>>
-			<% if [{$:/state/Whiteboard/PageLayout/focusedTiddler}match[]] %>
-				<main class="tw-whiteboard-layout-main-area">
-					<$whiteboard tiddler="$:/plugins/linonetwo/tw-whiteboard/examples/WhiteBoardTutorial" height="100vh" focused="yes" readonly="yes" />
-				</main>
-			<% else %>
-				<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
-				<main class="tw-whiteboard-layout-main-area">
-					<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/focusedTiddler}} height="100vh" focused="yes" />
-				</main>
-			<% endif %>
-		</div>
+		<$messagecatcher $tm-navigate=<<redirected-navigate-actions>>>
+			{{$:/core/ui/CommandPaletteTemplate}}
+			<div class=<<containerClasses>>>
+				<% if [{$:/state/Whiteboard/PageLayout/focusedTiddler}match[]] %>
+					<main class="tw-whiteboard-layout-main-area">
+						<$whiteboard tiddler="$:/plugins/linonetwo/tw-whiteboard/examples/WhiteBoardTutorial" height="100vh" focused="yes" readonly="yes" />
+					</main>
+				<% else %>
+					<!-- default value, when first opened, select widget's state tiddler is empty, but default value filter gives a value, we show that tiddler -->
+					<main class="tw-whiteboard-layout-main-area">
+						<$whiteboard tiddler={{$:/state/Whiteboard/PageLayout/focusedTiddler}} height="100vh" focused="yes" />
+					</main>
+				<% endif %>
+			</div>
+		</$messagecatcher>
 	</$navigator>
 </$vars>

@@ -5,12 +5,13 @@ import { useCallback, useContext } from 'react';
 export function useOpenInStory(title?: string) {
   const parentWidget = useContext(ParentWidgetContext);
   const onOpenInStory = useCallback(() => {
-    $tw.wiki.setText('$:/layout', 'text', undefined, '');
     if (title) {
       parentWidget?.dispatchEvent({
         type: 'tm-navigate',
         navigateTo: title,
       });
+    } else {
+      $tw.wiki.setText('$:/layout', 'text', undefined, '');
     }
   }, [parentWidget, title]);
   return onOpenInStory;
