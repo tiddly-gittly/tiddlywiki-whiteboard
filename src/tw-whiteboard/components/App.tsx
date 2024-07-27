@@ -2,7 +2,7 @@
 import { StrictMode, useCallback, useEffect, useState } from 'react';
 
 import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
-import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord, transact } from '@tldraw/tldraw';
+import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord } from '@tldraw/tldraw';
 
 // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
 // @ts-expect-error Module '"@tldraw/editor"' has no exported member 'partition'.ts(2305)
@@ -99,34 +99,44 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         $tw.utils.error(errorMessage);
         return;
       }
+      // https://github.com/tldraw/tldraw/blob/main/packages/tldraw/src/lib/utils/tldr/file.ts
       // tldraw file contain the full state of the app,
       // including ephemeral data. it up to the opener to
       // decide what to restore and what to retain. Here, we
       // just restore everything, so if the user has opened
       // this file before they'll get their camera etc.
       // restored. we could change this in the future.
-      transact(() => {
+      // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
+      /* eslint-disable @typescript-eslint/no-unsafe-call */
+      /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+      /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+      /* eslint-disable @typescript-eslint/no-unsafe-argument */
+      // @ts-expect-error Property 'atomic' does not exist on type 'TLStore'.ts(2339)
+      newEditor.store.atomic(() => {
+        const initialBounds = newEditor.getViewportScreenBounds().clone();
+        const isFocused = newEditor.getInstanceState().isFocused;
         newEditor.store.clear();
-        // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
-        /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-        /* eslint-disable @typescript-eslint/no-unsafe-argument */
-        /* eslint-disable @typescript-eslint/no-unsafe-call */
-        /* eslint-disable @typescript-eslint/no-unsafe-assignment */
         const [shapes, nonShapes] = partition(
           parseFileResult.value.allRecords(),
-          // @ts-expect-error Parameter 'record' implicitly has an 'any' type.ts(7006)
-          (record) => record.typeName === 'shape',
+          (record: { typeName: string }) => record.typeName === 'shape',
         );
         newEditor.store.put(nonShapes, 'initialize');
         // @ts-expect-error Property 'ensureStoreIsUsable' does not exist on type 'TLStore'.ts(2339)
         newEditor.store.ensureStoreIsUsable();
         newEditor.store.put(shapes, 'initialize');
         newEditor.clearHistory();
-        newEditor.updateViewportScreenBounds(newEditor.getViewportScreenBounds().clone());
+        // Put the old bounds back in place
+        newEditor.updateViewportScreenBounds(initialBounds);
+
         const bounds = newEditor.getCurrentPageBounds();
         if (bounds) {
-          newEditor.zoomToBounds(bounds);
+          newEditor.zoomToBounds(bounds, { targetZoom: 1 });
         }
+        newEditor.updateInstanceState({ isFocused });
+        /* eslint-enable @typescript-eslint/no-unsafe-call */
+        /* eslint-enable @typescript-eslint/no-unsafe-assignment */
+        /* eslint-enable @typescript-eslint/no-unsafe-member-access */
+        /* eslint-enable @typescript-eslint/no-unsafe-argument */
       });
     }
     if ($tw.wiki.getTiddlerText('$:/info/darkmode') === 'yes') newEditor.user.updateUserPreferences({ colorScheme: isDarkMode ? 'dark' : 'light' });
