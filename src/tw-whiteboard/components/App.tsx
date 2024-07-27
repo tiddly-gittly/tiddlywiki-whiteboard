@@ -157,8 +157,6 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
 
   const deferSave = useCallback(
     () => {
-      // DEBUG: console
-      console.log(`deferSave`);
       const saveCallback = async () => {
         if (editor === undefined) return;
         lock();

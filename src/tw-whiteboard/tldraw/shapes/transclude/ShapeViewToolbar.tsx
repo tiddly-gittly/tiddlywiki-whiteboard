@@ -11,8 +11,7 @@ export function ShapeViewToolbar({ shape, onToggleFold }: { onToggleFold: () => 
   const foldText = useMemo(() => $tw.wiki.getTiddlerText('$:/language/Buttons/Fold/Caption'), []);
   const unfoldIcon = useMemo(() => renderSVGTiddler('$:/core/images/unfold-button'), []);
   const unfoldText = useMemo(() => $tw.wiki.getTiddlerText('$:/language/Buttons/Unfold/Caption'), []);
-  // TODO: change to default layout icon
-  const openInStoryIcon = useMemo(() => renderSVGTiddler('$:/core/images/open-window'), []);
+  const openInStoryIcon = useMemo(() => renderSVGTiddler('$:/core/images/standard-layout'), []);
   const openInStoryText = useMemo(() => lingo('OpenInDefault'), []);
   const onOpenInStory = useOpenInStory(shape.props.title);
 
