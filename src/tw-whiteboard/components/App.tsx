@@ -76,7 +76,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
   useEffect(() => {
     if (!editor) return;
     // set configs
-    editor.user.updateUserPreferences({ isDarkMode, locale });
+    editor.user.updateUserPreferences({ colorScheme: isDarkMode ? 'dark' : 'light', locale });
   }, [editor, isDarkMode, locale]);
   useEffect(() => {
     if (!editor) return;
@@ -121,28 +121,22 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
         // @ts-expect-error Property 'ensureStoreIsUsable' does not exist on type 'TLStore'.ts(2339)
         newEditor.store.ensureStoreIsUsable();
         newEditor.store.put(shapes, 'initialize');
-        newEditor.history.clear();
+        newEditor.clearHistory();
         newEditor.updateViewportScreenBounds(newEditor.getViewportScreenBounds().clone());
-        // @ts-expect-error Property 'updateRenderingBounds' does not exist on type 'Editor'. Did you mean 'renderingBounds'?ts(2551)
-        newEditor.updateRenderingBounds();
-        /* eslint-enable @typescript-eslint/no-unsafe-member-access */
-        /* eslint-enable @typescript-eslint/no-unsafe-argument */
-        /* eslint-enable @typescript-eslint/no-unsafe-call */
-        /* eslint-enable @typescript-eslint/no-unsafe-assignment */
         const bounds = newEditor.getCurrentPageBounds();
         if (bounds) {
           newEditor.zoomToBounds(bounds);
         }
       });
     }
-    if ($tw.wiki.getTiddlerText('$:/info/darkmode') === 'yes') newEditor.user.updateUserPreferences({ isDarkMode: true });
+    if ($tw.wiki.getTiddlerText('$:/info/darkmode') === 'yes') newEditor.user.updateUserPreferences({ colorScheme: isDarkMode ? 'dark' : 'light' });
     newEditor.updateInstanceState({ isReadonly: Boolean(readonly), isDebugMode: false });
     if (zoomToFit === true) {
       newEditor.zoomToFit();
     } else if (Number.isFinite(Number(zoom))) {
       const bounds = newEditor.getSelectionPageBounds() ?? newEditor.getCurrentPageBounds();
       if (bounds) {
-        newEditor.zoomToBounds(bounds, { targetZoom: Math.min(1, Number(zoom)), duration: 220 });
+        newEditor.zoomToBounds(bounds, { targetZoom: Math.min(1, Number(zoom)) });
       }
     }
   }, [onReady, initialTiddlerText, readonly, zoomToFit, zoom, currentTiddler]);
@@ -155,7 +149,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
       if (readonly ?? isDraft) return;
       void (async () => {
         if (!editor) return;
-        onSave(currentTiddler!, await serializeTldrawJson(editor.store));
+        onSave(currentTiddler!, await serializeTldrawJson(editor));
       })();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -163,10 +157,12 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
 
   const deferSave = useCallback(
     () => {
+      // DEBUG: console
+      console.log(`deferSave`);
       const saveCallback = async () => {
         if (editor === undefined) return;
-        const newTiddlerText = await serializeTldrawJson(editor.store);
         lock();
+        const newTiddlerText = await serializeTldrawJson(editor);
         onSave(currentTiddler!, newTiddlerText);
       };
       if (typeof requestIdleCallback !== 'undefined') {
@@ -186,10 +182,11 @@ export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
   useEffect(() => {
     if (!editor) return;
     const handleChange = debounce(deferSave, debounceSaveTime);
-    editor.on('change-history', handleChange);
+    const dispose = editor.store.listen(handleChange, { scope: 'document' });
     return () => {
       if (!editor) return;
-      editor.off('change-history', handleChange);
+      deferSave();
+      dispose();
     };
   }, [deferSave, editor]);
 

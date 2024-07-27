@@ -1,15 +1,15 @@
-import { DefaultColorStyle, Rectangle2d, resizeBox, ShapeProps, ShapeUtil, T, TLOnResizeHandler } from '@tldraw/tldraw';
+import { DefaultColorStyle, RecordProps, Rectangle2d, resizeBox, ShapeUtil, T, TLOnResizeHandler } from '@tldraw/tldraw';
 import { TranscludeComponent } from './component';
 import { TranscludeShape } from './type';
 
 export class TranscludeShapeUtil extends ShapeUtil<TranscludeShape> {
   static override type = 'transclude' as const;
-  override isAspectRatioLocked = (_shape: TranscludeShape) => false;
-  override canResize = (_shape: TranscludeShape) => true;
-  override canBind = (_shape: TranscludeShape) => true;
+  override isAspectRatioLocked = () => false;
+  override canResize = () => true;
+  override canBind = () => true;
   override canEdit = () => true;
 
-  static override props: ShapeProps<TranscludeShape> = {
+  static override props: RecordProps<TranscludeShape> = {
     color: DefaultColorStyle,
     field: T.optional(T.string),
     folded: T.boolean,

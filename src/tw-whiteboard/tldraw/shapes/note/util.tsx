@@ -1,15 +1,15 @@
-import { DefaultColorStyle, Rectangle2d, resizeBox, ShapeProps, ShapeUtil, T, TLOnResizeHandler } from '@tldraw/tldraw';
+import { DefaultColorStyle, RecordProps, Rectangle2d, resizeBox, ShapeUtil, T, TLOnResizeHandler } from '@tldraw/tldraw';
 import { NoteComponent } from './component';
 import { NoteShape } from './type';
 
 export class NoteShapeUtil extends ShapeUtil<NoteShape> {
   static override type = 'wikitext-note' as const;
-  override isAspectRatioLocked = (_shape: NoteShape) => false;
-  override canResize = (_shape: NoteShape) => true;
-  override canBind = (_shape: NoteShape) => true;
+  override isAspectRatioLocked = () => false;
+  override canResize = () => true;
+  override canBind = () => true;
   override canEdit = () => true;
 
-  static override props: ShapeProps<NoteShape> = {
+  static override props: RecordProps<NoteShape> = {
     color: DefaultColorStyle,
     text: T.optional(T.string),
     h: T.number,
