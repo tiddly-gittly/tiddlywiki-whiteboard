@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useWidget } from '$:/plugins/linonetwo/tw-react/index.js';
-import { getDefaultColorTheme, useEditor, useIsEditing } from '@tldraw/editor';
+import { getDefaultColorTheme, TLNoteShape, useEditor, useIsEditing } from '@tldraw/editor';
 import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
 import { ChangeEvent, CSSProperties, useCallback, useMemo, useRef } from 'react';
 import { IParseTreeNode } from 'tiddlywiki';
 
-import { NoteShape } from './type';
 import './style.css';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
 import { wrapTiddlerAst } from 'src/tw-whiteboard/utils/wrapTiddlerAst';
 
-export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shape: NoteShape }) {
+export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shape: TLNoteShape }) {
   const editor = useEditor();
   const theme = getDefaultColorTheme({ isDarkMode });
   const isEditing = useIsEditing(shape.id);

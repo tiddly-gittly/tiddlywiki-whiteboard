@@ -2,7 +2,7 @@
 import { StrictMode, useCallback, useEffect, useState } from 'react';
 
 import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
-import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, TLAnyShapeUtilConstructor, Tldraw, TLRecord } from '@tldraw/tldraw';
+import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, Tldraw, TLRecord } from '@tldraw/tldraw';
 
 // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
 // @ts-expect-error Module '"@tldraw/editor"' has no exported member 'partition'.ts(2305)
@@ -13,7 +13,7 @@ import '@tldraw/tldraw/tldraw.css';
 import { assetUrls } from '../tldraw/assets/formatedAssets';
 import { getComponents, getOverrides } from '../tldraw/overrides';
 import { NoteTool } from '../tldraw/shapes/note/tool';
-import { NoteShapeUtil } from '../tldraw/shapes/note/util';
+import { WIkiTextTLNoteShapeUtil as NoteShapeUtil } from '../tldraw/shapes/note/util';
 import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
 import { TranscludeShapeUtil } from '../tldraw/shapes/transclude/util';
 import { PropsContext } from '../utils/context';
@@ -51,9 +51,9 @@ export interface TDExportJSON {
 }
 
 const extraTools: TLStateNodeConstructor[] = [NoteTool, TranscludeTool];
-const extraShapeUtils: TLAnyShapeUtilConstructor[] = [NoteShapeUtil, TranscludeShapeUtil];
+const extraShapeUtils = [NoteShapeUtil, TranscludeShapeUtil];
 
-export function App(props: IAppProps & IDefaultWidgetProps): JSX.Element {
+export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
   const {
     height,
     width,
