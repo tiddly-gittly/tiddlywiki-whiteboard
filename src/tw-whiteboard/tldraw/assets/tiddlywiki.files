@@ -22,10 +22,31 @@
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Tldrawish.woff2",
+      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Regular.woff2",
       "fields": {
         "type": "application/font-woff2",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Tldrawish.woff2"
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Regular.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Bold.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Bold.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Regular_Italic.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Regular_Italic.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Bold_Italic.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Bold_Italic.woff2"
       }
     },
     {
@@ -43,6 +64,27 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexMono-Bold.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexMono-Bold.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexMono-BoldItalic.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexMono-BoldItalic.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexMono-MediumItalic.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexMono-MediumItalic.woff2"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/translations/en.json",
       "fields": {
         "type": "application/json",
@@ -50,10 +92,52 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSans-Bold.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSans-Bold.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSans-BoldItalic.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSans-BoldItalic.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSans-MediumItalic.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSans-MediumItalic.woff2"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/translations/zh-cn.json",
       "fields": {
         "type": "application/json",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/zh-cn.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSerif-Bold.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSerif-Bold.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSerif-BoldItalic.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSerif-BoldItalic.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSerif-MediumItalic.woff2",
+      "fields": {
+        "type": "application/font-woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSerif-MediumItalic.woff2"
       }
     },
     {
@@ -1055,6 +1139,134 @@
       "fields": {
         "type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/zoom-out.svg"
+      }
+    }
+    ,
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/0_merged.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/0_merged.svg"
+      }
+    }
+    ,
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/codepen.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/codepen.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/codesandbox.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/codesandbox.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/excalidraw.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/excalidraw.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/felt.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/felt.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/figma.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/figma.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/github_gist.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/github_gist.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/google_calendar.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/google_calendar.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/google_maps.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/google_maps.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/google_slides.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/google_slides.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/observable.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/observable.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/replit.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/replit.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/scratch.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/scratch.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/spotify.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/spotify.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/tldraw.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/tldraw.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/val_town.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/val_town.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/vimeo.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/vimeo.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/youtube.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/youtube.png"
       }
     }
   ]

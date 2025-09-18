@@ -26,5 +26,5 @@ export const assetUrls = getAssetUrlsByMetaUrl((assetUrl: string) => {
     return `data:${contentType};${encoding},${encodeURIComponent(text)}`;
   }
   // <div class="tlui-icon tlui-icon__small" style="mask: url(&quot;https://unpkg.com/@tldraw/assets@2.0.0-alpha.12/icons/icon/duplicate.svg&quot;) center 100% / 100% no-repeat;"></div>
-  return `https://unpkg.com/@tldraw/assets@2.0.2/${assetUrl}`;
+  return `https://unpkg.com/@tldraw/assets@3.15.4/${assetUrl}`;
 });
