@@ -1,12 +1,12 @@
 import { createShapePropsMigrationIds, createShapePropsMigrationSequence, noteShapeProps as rawNoteShapeProps, T } from '@tldraw/editor';
 
 export const noteShapeProps = {
+  // Use the built-in note props as-is to fully replace the built-in note
   ...rawNoteShapeProps,
-  w: T.number,
-  h: T.number,
 };
 
-const Versions = createShapePropsMigrationIds('wikitext-note', {
+// Use the same id prefix as the built-in note when replacing it
+const Versions = createShapePropsMigrationIds('note', {
   AddUrlProp: 1,
   RemoveJustify: 2,
   MigrateLegacyAlign: 3,

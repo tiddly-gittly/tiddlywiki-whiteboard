@@ -87,9 +87,11 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
     setEditor(newEditor);
     onReady();
     if (initialTiddlerText) {
+      // Backward-compat: migrate legacy shape type 'wikitext-note' -> 'note' before parsing
+      const migratedText = initialTiddlerText.replace(/"wikitext-note"/g, '"note"');
       const parseFileResult = parseTldrawJsonFile({
         schema: newEditor.store.schema,
-        json: initialTiddlerText,
+        json: migratedText,
       });
       if (!parseFileResult.ok) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
