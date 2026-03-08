@@ -1,157 +1,248 @@
 {
   "tiddlers": [
     {
-      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexMono-Medium.woff2",
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/codepen.png",
       "fields": {
-        "type": "application/font-woff2",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexMono-Medium.woff2"
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/codepen.png"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSans-Medium.woff2",
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/codesandbox.png",
       "fields": {
-        "type": "application/font-woff2",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSans-Medium.woff2"
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/codesandbox.png"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSerif-Medium.woff2",
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/desmos.png",
       "fields": {
-        "type": "application/font-woff2",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSerif-Medium.woff2"
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/desmos.png"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Regular.woff2",
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/excalidraw.png",
       "fields": {
-        "type": "application/font-woff2",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Regular.woff2"
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/excalidraw.png"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Bold.woff2",
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/felt.png",
       "fields": {
-        "type": "application/font-woff2",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Bold.woff2"
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/felt.png"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Regular_Italic.woff2",
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/figma.png",
       "fields": {
-        "type": "application/font-woff2",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Regular_Italic.woff2"
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/figma.png"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Bold_Italic.woff2",
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/github_gist.png",
       "fields": {
-        "type": "application/font-woff2",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Bold_Italic.woff2"
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/github_gist.png"
       }
     },
     {
-      "file": "./overwrite/languages.json",
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/google_calendar.png",
       "fields": {
-        "type": "application/json",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/languages.json"
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/google_calendar.png"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/translations/main.json",
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/google_maps.png",
       "fields": {
-        "type": "application/json",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/main.json"
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/google_maps.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/google_slides.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/google_slides.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/observable.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/observable.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/replit.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/replit.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/scratch.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/scratch.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/spotify.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/spotify.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/tldraw.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/tldraw.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/val_town.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/val_town.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/vimeo.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/vimeo.png"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/embed-icons/youtube.png",
+      "fields": {
+        "type": "image/png",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/youtube.png"
       }
     },
     {
       "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexMono-Bold.woff2",
       "fields": {
-        "type": "application/font-woff2",
+        "type": "font/woff2",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexMono-Bold.woff2"
       }
     },
     {
       "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexMono-BoldItalic.woff2",
       "fields": {
-        "type": "application/font-woff2",
+        "type": "font/woff2",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexMono-BoldItalic.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexMono-Medium.woff2",
+      "fields": {
+        "type": "font/woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexMono-Medium.woff2"
       }
     },
     {
       "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexMono-MediumItalic.woff2",
       "fields": {
-        "type": "application/font-woff2",
+        "type": "font/woff2",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexMono-MediumItalic.woff2"
-      }
-    },
-    {
-      "file": "../../../../node_modules/@tldraw/assets/translations/en.json",
-      "fields": {
-        "type": "application/json",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/en.json"
       }
     },
     {
       "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSans-Bold.woff2",
       "fields": {
-        "type": "application/font-woff2",
+        "type": "font/woff2",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSans-Bold.woff2"
       }
     },
     {
       "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSans-BoldItalic.woff2",
       "fields": {
-        "type": "application/font-woff2",
+        "type": "font/woff2",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSans-BoldItalic.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSans-Medium.woff2",
+      "fields": {
+        "type": "font/woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSans-Medium.woff2"
       }
     },
     {
       "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSans-MediumItalic.woff2",
       "fields": {
-        "type": "application/font-woff2",
+        "type": "font/woff2",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSans-MediumItalic.woff2"
-      }
-    },
-    {
-      "file": "../../../../node_modules/@tldraw/assets/translations/zh-cn.json",
-      "fields": {
-        "type": "application/json",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/zh-cn.json"
       }
     },
     {
       "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSerif-Bold.woff2",
       "fields": {
-        "type": "application/font-woff2",
+        "type": "font/woff2",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSerif-Bold.woff2"
       }
     },
     {
       "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSerif-BoldItalic.woff2",
       "fields": {
-        "type": "application/font-woff2",
+        "type": "font/woff2",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSerif-BoldItalic.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSerif-Medium.woff2",
+      "fields": {
+        "type": "font/woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSerif-Medium.woff2"
       }
     },
     {
       "file": "../../../../node_modules/@tldraw/assets/fonts/IBMPlexSerif-MediumItalic.woff2",
       "fields": {
-        "type": "application/font-woff2",
+        "type": "font/woff2",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/IBMPlexSerif-MediumItalic.woff2"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrowhead-diamond.svg",
+      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Bold_Italic.woff2",
       "fields": {
-        "type": "image/svg+xml",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrowhead-diamond.svg"
+        "type": "font/woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Bold_Italic.woff2"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/icons/icon/chevrons-ne.svg",
+      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Bold.woff2",
+      "fields": {
+        "type": "font/woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Bold.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Regular_Italic.woff2",
+      "fields": {
+        "type": "font/woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Regular_Italic.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/fonts/Shantell_Sans-Informal_Regular.woff2",
+      "fields": {
+        "type": "font/woff2",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/fonts/Shantell_Sans-Informal_Regular.woff2"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/0_merged.svg",
       "fields": {
         "type": "image/svg+xml",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/chevrons-ne.svg"
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/0_merged.svg"
       }
     },
     {
@@ -194,6 +285,34 @@
       "fields": {
         "type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/align-top.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/alt.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/alt.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrow-arc.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrow-arc.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrow-cycle.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrow-cycle.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/arrow-elbow.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/arrow-elbow.svg"
       }
     },
     {
@@ -267,6 +386,20 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/bold.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/bold.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/bookmark.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/bookmark.svg"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/icons/icon/bring-forward.svg",
       "fields": {
         "type": "image/svg+xml",
@@ -285,6 +418,13 @@
       "fields": {
         "type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/broken.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/bulletList.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/bulletList.svg"
       }
     },
     {
@@ -358,10 +498,38 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/code.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/code.svg"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/icons/icon/color.svg",
       "fields": {
         "type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/color.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/comment.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/comment.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/corners.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/corners.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/crop.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/crop.svg"
       }
     },
     {
@@ -456,6 +624,13 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/download.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/download.svg"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/icons/icon/drag-handle-dots.svg",
       "fields": {
         "type": "image/svg+xml",
@@ -488,6 +663,13 @@
       "fields": {
         "type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/fill-fill.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/fill-lined-fill.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/fill-lined-fill.svg"
       }
     },
     {
@@ -715,6 +897,27 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/heading.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/heading.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/help-circle.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/help-circle.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/highlight.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/highlight.svg"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/icons/icon/horizontal-align-end.svg",
       "fields": {
         "type": "image/svg+xml",
@@ -743,6 +946,13 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/italic.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/italic.svg"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/icons/icon/leading.svg",
       "fields": {
         "type": "image/svg+xml",
@@ -757,10 +967,24 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/list.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/list.svg"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/icons/icon/lock.svg",
       "fields": {
         "type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/lock.svg"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/manual.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/manual.svg"
       }
     },
     {
@@ -939,6 +1163,13 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/strike.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/strike.svg"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/icons/icon/text-align-center.svg",
       "fields": {
         "type": "image/svg+xml",
@@ -1079,6 +1310,13 @@
       }
     },
     {
+      "file": "../../../../node_modules/@tldraw/assets/icons/icon/underline.svg",
+      "fields": {
+        "type": "image/svg+xml",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/underline.svg"
+      }
+    },
+    {
       "file": "../../../../node_modules/@tldraw/assets/icons/icon/undo.svg",
       "fields": {
         "type": "image/svg+xml",
@@ -1140,133 +1378,376 @@
         "type": "image/svg+xml",
         "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/zoom-out.svg"
       }
-    }
-    ,
+    },
     {
-      "file": "../../../../node_modules/@tldraw/assets/icons/icon/0_merged.svg",
+      "file": "../../../../node_modules/@tldraw/assets/translations/ar.json",
       "fields": {
-        "type": "image/svg+xml",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/icons/icon/0_merged.svg"
-      }
-    }
-    ,
-    {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/codepen.png",
-      "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/codepen.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ar.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/codesandbox.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/bn.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/codesandbox.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/bn.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/excalidraw.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/ca.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/excalidraw.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ca.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/felt.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/cs.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/felt.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/cs.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/figma.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/da.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/figma.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/da.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/github_gist.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/de.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/github_gist.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/de.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/google_calendar.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/el.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/google_calendar.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/el.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/google_maps.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/en.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/google_maps.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/en.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/google_slides.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/es.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/google_slides.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/es.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/observable.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/fa.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/observable.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/fa.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/replit.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/fi.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/replit.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/fi.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/scratch.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/fr.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/scratch.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/fr.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/spotify.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/gl.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/spotify.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/gl.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/tldraw.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/gu-in.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/tldraw.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/gu-in.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/val_town.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/he.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/val_town.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/he.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/vimeo.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/hi-in.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/vimeo.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/hi-in.json"
       }
     },
     {
-      "file": "../../../../node_modules/@tldraw/assets/embed-icons/youtube.png",
+      "file": "../../../../node_modules/@tldraw/assets/translations/hr.json",
       "fields": {
-        "type": "image/png",
-        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/embed-icons/youtube.png"
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/hr.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/hu.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/hu.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/id.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/id.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/it.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/it.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ja.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ja.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/km-kh.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/km-kh.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/kn.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/kn.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ko-kr.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ko-kr.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ku.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ku.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/languages.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/languages.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/main.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/main.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ml.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ml.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/mr.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/mr.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ms.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ms.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/my.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/my.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ne.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ne.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/nl.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/nl.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/no.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/no.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/pa.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/pa.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/pl.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/pl.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/pt-br.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/pt-br.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/pt-pt.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/pt-pt.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ro.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ro.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ru.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ru.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/sl.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/sl.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/so.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/so.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/sv.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/sv.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ta.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ta.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/te.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/te.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/th.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/th.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/tl.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/tl.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/tr.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/tr.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/uk.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/uk.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/ur.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/ur.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/vi.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/vi.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/zh-cn.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/zh-cn.json"
+      }
+    },
+    {
+      "file": "../../../../node_modules/@tldraw/assets/translations/zh-tw.json",
+      "fields": {
+        "type": "application/json",
+        "title": "$:/plugins/linonetwo/tw-whiteboard/assets/translations/zh-tw.json"
       }
     }
   ]

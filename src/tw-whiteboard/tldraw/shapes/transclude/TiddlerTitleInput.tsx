@@ -1,24 +1,38 @@
 /* eslint-disable unicorn/no-null */
-import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
 import { useCombobox } from 'downshift';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
 
 interface IProps {
-  editTitleInputReference: React.RefObject<HTMLTextAreaElement>;
+  editTitleInputReference: React.RefObject<HTMLInputElement>;
   onTitleInputChange: (newValue: string) => void;
   tiddlerTitle?: string;
 }
 
+function getMatchedTitles(inputValue: string) {
+  const trimmedInputValue = inputValue.trim();
+  if (!trimmedInputValue) {
+    return $tw.wiki.filterTiddlers('[!is[system]sort[title]limit[50]]');
+  }
+
+  const escapedInputValue = trimmedInputValue.replaceAll(']', '\\]');
+  return $tw.wiki.filterTiddlers(`[!is[system]search:title[${escapedInputValue}]sort[title]limit[50]]`);
+}
+
 export function TiddlerTitleInput(props: IProps) {
-  const [inputItems, setInputItems] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState(props.tiddlerTitle ?? '');
+  const [inputItems, setInputItems] = useState<string[]>(() => getMatchedTitles(props.tiddlerTitle ?? ''));
   const placeHolderText = useMemo(() => lingo('Tools/Transclude/PlaceHolder'), []);
-  const debouncedOnChange = useDebouncedCallback((inputValue: string) => {
-    props.onTitleInputChange(inputValue);
-    setInputItems(
-      $tw.wiki.filterTiddlers(`[!is[system]search:title[${inputValue}]sort[title]limit[250]]`),
-    );
-  });
+  const updateInputItems = useCallback((nextInputValue: string) => {
+    setInputItems(getMatchedTitles(nextInputValue));
+  }, []);
+
+  useEffect(() => {
+    const nextInputValue = props.tiddlerTitle ?? '';
+    setInputValue(nextInputValue);
+    updateInputItems(nextInputValue);
+  }, [props.tiddlerTitle, updateInputItems]);
+
   const {
     isOpen,
     getLabelProps,
@@ -27,10 +41,20 @@ export function TiddlerTitleInput(props: IProps) {
     highlightedIndex,
     getItemProps,
   } = useCombobox({
-    defaultInputValue: props.tiddlerTitle,
     items: inputItems,
+    inputValue,
+    itemToString: (item) => item ?? '',
     onInputValueChange: ({ inputValue }) => {
-      debouncedOnChange(inputValue);
+      const nextInputValue = inputValue ?? '';
+      setInputValue(nextInputValue);
+      props.onTitleInputChange(nextInputValue);
+      updateInputItems(nextInputValue);
+    },
+    onSelectedItemChange: ({ selectedItem }) => {
+      if (!selectedItem) return;
+      setInputValue(selectedItem);
+      props.onTitleInputChange(selectedItem);
+      updateInputItems(selectedItem);
     },
   });
   return (
@@ -41,7 +65,7 @@ export function TiddlerTitleInput(props: IProps) {
       }}
     >
       <label {...getLabelProps()}>{placeHolderText}</label>
-      <textarea
+      <input
         autoFocus
         autoComplete='off'
         spellCheck={false}
@@ -56,7 +80,8 @@ export function TiddlerTitleInput(props: IProps) {
             <li
               key={`${item}${index}`}
               style={{
-                backgroundColor: highlightedIndex === index ? '#bde4ff' : undefined,
+                backgroundColor: highlightedIndex === index ? 'var(--tw-whiteboard-editor-selected-background)' : undefined,
+                color: highlightedIndex === index ? 'var(--tw-whiteboard-editor-selected-foreground)' : 'var(--tw-whiteboard-editor-foreground)',
               }}
               {...getItemProps({
                 item,

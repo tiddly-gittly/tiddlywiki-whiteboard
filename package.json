@@ -35,7 +35,6 @@
     ]
   },
   "devDependencies": {
-    "zx": "^8.8.1",
     "@modern-js/tsconfig": "^2.68.14",
     "@types/lodash": "^4.17.20",
     "@types/node": "^24.5.2",
@@ -51,17 +50,18 @@
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "tw-react": "^0.6.4",
-    "tw5-typed": "^0.6.3",
-    "typescript": "^5.9.2"
+    "tw5-typed": "^1.1.4",
+    "typescript": "^5.9.2",
+    "zx": "^8.8.1"
   },
   "dependencies": {
-    "@tldraw/assets": "3.15.4",
-    "@tldraw/editor": "3.15.4",
-    "@tldraw/tldraw": "3.15.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "@tldraw/assets": "4.4.0",
+    "@tldraw/editor": "4.4.0",
+    "@tldraw/tldraw": "4.4.0",
     "downshift": "^9.0.10",
     "npm-check-updates": "^18.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tiddlywiki": "^5.3.8",
     "tiddlywiki-plugin-dev": "^0.3.2"
   }

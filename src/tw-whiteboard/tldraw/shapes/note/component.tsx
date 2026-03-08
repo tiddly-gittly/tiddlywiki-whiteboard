@@ -1,19 +1,56 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useWidget } from '$:/plugins/linonetwo/tw-react/index.js';
 import { getDefaultColorTheme, TLNoteShape, useEditor, useIsEditing } from '@tldraw/editor';
-import useDebouncedCallback from 'beautiful-react-hooks/useDebouncedCallback';
 import { ChangeEvent, CSSProperties, useCallback, useMemo, useRef } from 'react';
 import { IParseTreeNode } from 'tiddlywiki';
 
 import './style.css';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
+import { getCurrentPaletteColors } from 'src/tw-whiteboard/utils/palette';
 import { wrapTiddlerAst } from 'src/tw-whiteboard/utils/wrapTiddlerAst';
+
+function getWikiTextFromRichText(richText: TLNoteShape['props']['richText']) {
+  return richText.content
+    .map((node) => {
+      if (node.type !== 'paragraph') {
+        return '';
+      }
+
+      return (node.content ?? [])
+        .map((childNode) => {
+          if (childNode.type !== 'text') {
+            return '';
+          }
+
+          return childNode.text;
+        })
+        .join('');
+    })
+    .join('\n');
+}
+
+function getRichTextFromWikiText(wikiText: string): TLNoteShape['props']['richText'] {
+  return {
+    type: 'doc',
+    content: wikiText.split(/\r?\n/u).map((line) => {
+      if (!line) {
+        return { type: 'paragraph' };
+      }
+
+      return {
+        type: 'paragraph',
+        content: [{ type: 'text', text: line }],
+      };
+    }),
+  };
+}
 
 export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shape: TLNoteShape }) {
   const editor = useEditor();
   const theme = getDefaultColorTheme({ isDarkMode });
+  const paletteColors = getCurrentPaletteColors();
   const isEditing = useIsEditing(shape.id);
-  const tiddlerText = shape.props.text ?? '';
+  const tiddlerText = getWikiTextFromRichText(shape.props.richText);
   const adjustedColor = shape.props.color === 'black' ? 'yellow' : shape.props.color;
 
   const astNode = useMemo<IParseTreeNode>(() => {
@@ -24,15 +61,15 @@ export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shap
   useWidget(astNode, noteRenderContainerReference, { skip: isEditing });
 
   const editTitleInputReference = useRef<HTMLTextAreaElement>(null);
-  const onTextInputChange = useDebouncedCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
+  const onTextInputChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
     editor?.store.update(shape.id, (record) => ({
       ...record,
       props: {
         ...record.props,
-        text: event.target.value,
+        richText: getRichTextFromWikiText(event.target.value),
       },
     }));
-  }, []);
+  }, [editor, shape.id]);
   const editTitleContainerOnClick = useCallback(() => {
     editTitleInputReference.current?.focus?.();
   }, []);
@@ -40,6 +77,9 @@ export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shap
   const sharedStyle: CSSProperties = {
     backgroundColor: theme[adjustedColor].solid,
     color: theme.black.solid,
+    '--tw-whiteboard-chrome-border': paletteColors.dropdownBorder,
+    '--tw-whiteboard-chrome-shadow': paletteColors.shadow,
+    '--tw-whiteboard-chrome-shadow-subtle': paletteColors.shadowSubtle,
   };
 
   return (
@@ -49,6 +89,9 @@ export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shap
         key='edit-title'
         style={{ display: isEditing ? undefined : 'none', ...sharedStyle }}
         onClick={editTitleContainerOnClick}
+        onPointerDown={(event) => {
+          event.stopPropagation();
+        }}
       >
         <textarea
           tabIndex={1}
@@ -57,6 +100,9 @@ export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shap
           defaultValue={tiddlerText}
           ref={editTitleInputReference}
           onChange={onTextInputChange}
+          onPointerDown={(event) => {
+            event.stopPropagation();
+          }}
         />
       </div>
       <div className='note-shape-component-inner note-shape-view-mode' key='render' style={{ display: isEditing ? 'none' : undefined, ...sharedStyle }}>

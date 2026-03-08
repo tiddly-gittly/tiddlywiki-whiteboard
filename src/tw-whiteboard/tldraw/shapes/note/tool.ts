@@ -1,7 +1,6 @@
-import { BaseBoxShapeTool } from '@tldraw/tldraw';
+import { NoteShapeTool } from '@tldraw/tldraw';
 
-export class NoteTool extends BaseBoxShapeTool {
+export class NoteTool extends NoteShapeTool {
   static override id = 'note';
-  static override initial = 'idle';
   override shapeType = 'note';
 }
