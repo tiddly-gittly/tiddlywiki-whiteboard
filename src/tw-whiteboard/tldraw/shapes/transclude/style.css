@@ -6,8 +6,8 @@
 .transclude-shape-component-inner {
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12), 0px 1px 3px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--tw-whiteboard-chrome-border, rgba(0, 0, 0, 0.1));
+  box-shadow: 0px 1px 2px var(--tw-whiteboard-chrome-shadow, rgba(0, 0, 0, 0.12)), 0px 1px 3px var(--tw-whiteboard-chrome-shadow-subtle, rgba(0, 0, 0, 0.04));
   pointer-events: all;
   position: relative;
   padding: 1em;
@@ -27,28 +27,51 @@
 }
 .transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container {
   width: 100%;
+  position: relative;
 }
 .transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container > ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12), 0px 1px 3px rgba(0, 0, 0, 0.04);
+  max-height: 16rem;
+  overflow-y: auto;
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background: var(--tw-whiteboard-editor-background, rgba(255, 255, 255, 0.92));
+  color: var(--tw-whiteboard-editor-foreground, currentColor);
+  border: 1px solid var(--tw-whiteboard-chrome-border, rgba(0, 0, 0, 0.1));
+  box-shadow: 0px 1px 2px var(--tw-whiteboard-chrome-shadow, rgba(0, 0, 0, 0.12)), 0px 1px 3px var(--tw-whiteboard-chrome-shadow-subtle, rgba(0, 0, 0, 0.04));
   backdrop-filter: blur(5px);
 }
+.transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container > label {
+  color: var(--tw-whiteboard-editor-foreground, currentColor);
+}
 .transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container > ul li {
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   max-width: 100%;
 }
-.transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container > textarea {
-  background: transparent;
+.transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container > input {
+  background: var(--tw-whiteboard-editor-background, transparent);
   border: none;
+  border-bottom: 1px solid var(--tw-whiteboard-chrome-divider, rgba(0, 0, 0, 0.12));
+  color: var(--tw-whiteboard-editor-foreground, currentColor);
+  caret-color: var(--tw-whiteboard-editor-foreground, currentColor);
   font-size: 2em;
   overflow-wrap: break-word;
   overflow-wrap: anywhere;
   width: 100% !important;
+  padding: 0 0 0.25rem;
+}
+.transclude-shape-component-inner.transclude-shape-edit-mode .transclude-shape-edit-mode-input-container > input::placeholder {
+  color: var(--tw-whiteboard-editor-foreground, currentColor);
+  opacity: 0.72;
 }
 
 .shape-view-toolbar-container {
@@ -63,27 +86,13 @@
 }
 .shape-view-toolbar-container:hover {
   opacity: 1;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  border-bottom: 1px solid var(--tw-whiteboard-chrome-divider, rgba(128, 128, 128, 0.2));
   cursor: move;
 }
 
 /**
  * Remove scrollbar
  */
-.transclude-shape-component-inner.transclude-shape-edit-mode > textarea::-webkit-scrollbar {
-	width: 0 !important
-}
-.transclude-shape-component-inner.transclude-shape-edit-mode > textarea {
-  overscroll-behavior: contain;
-	overflow: -moz-scrollbars-none;
-}
-.transclude-shape-edit-mode-input-container > textarea::-webkit-scrollbar {
-	width: 0 !important
-}
-.transclude-shape-edit-mode-input-container > textarea {
-  overscroll-behavior: contain;
-	overflow: -moz-scrollbars-none;
-}
 .transclude-shape-component-inner {
   overscroll-behavior: contain;
 	overflow: -moz-scrollbars-none;

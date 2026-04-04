@@ -6,8 +6,8 @@
 .note-shape-component-inner {
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12), 0px 1px 3px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--tw-whiteboard-chrome-border, rgba(0, 0, 0, 0.1));
+  box-shadow: 0px 1px 2px var(--tw-whiteboard-chrome-shadow, rgba(0, 0, 0, 0.12)), 0px 1px 3px var(--tw-whiteboard-chrome-shadow-subtle, rgba(0, 0, 0, 0.04));
   pointer-events: all;
   position: relative;
   padding: 1em;
@@ -26,10 +26,16 @@
 .note-shape-component-inner.note-shape-edit-mode > textarea {
   background: transparent;
   border: none;
+  color: inherit;
+  caret-color: currentColor;
   overflow-wrap: break-word;
   width: 100% !important;
   height: 100% !important;
   resize: none;
+}
+.note-shape-component-inner.note-shape-edit-mode > textarea::placeholder {
+  color: inherit;
+  opacity: 0.72;
 }
 
 /**

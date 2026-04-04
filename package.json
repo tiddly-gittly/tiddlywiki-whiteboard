@@ -44,7 +44,6 @@
     "eslint-config-tidgi": "^2.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.6",
-    "postcss": "^8.5.6",
     "rimraf": "^6.1.0",
     "ts-node": "^10.9.2",
     "tw5-typed": "^0.6.8",
@@ -56,13 +55,13 @@
     "tw-react": "^0.6.4"
   },
   "dependencies": {
-    "@tldraw/assets": "3.15.4",
-    "@tldraw/editor": "3.15.4",
-    "@tldraw/tldraw": "3.15.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "@tldraw/assets": "4.4.0",
+    "@tldraw/editor": "4.4.0",
+    "@tldraw/tldraw": "4.4.0",
     "downshift": "^9.0.10",
     "npm-check-updates": "^19.1.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tiddlywiki": "^5.3.8",
     "tiddlywiki-plugin-dev": "^0.3.2"
   }
