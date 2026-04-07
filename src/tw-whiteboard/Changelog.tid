@@ -1,0 +1,10 @@
+title: $:/plugins/linonetwo/tw-whiteboard/changelog
+type: text/vnd.tiddlywiki
+
+! Changelog
+
+!! v1.8.1
+
+* Add whiteboard sidebar workflow for switching and creating boards in layout mode.
+* Use core title editing mechanism in create flow for duplicate-title feedback.
+* Add compatibility migration for legacy "wikitext-note" records when loading whiteboard data.
