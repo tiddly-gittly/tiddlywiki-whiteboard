@@ -3,7 +3,12 @@ type: text/vnd.tiddlywiki
 
 ! Changelog
 
-!! v1.8.1
+!! v1.8.3
+
+* Add jasmine unit tests covering plugin registration, file-type, migration regex, sidebar state, and create flow.
+* Update CI workflows to use actions/cache@v4.
+
+!! v1.8.2
 
 * Add whiteboard sidebar workflow for switching and creating boards in layout mode.
 * Use core title editing mechanism in create flow for duplicate-title feedback.
