@@ -1,5 +1,5 @@
-import { NoteShapeOptions, NoteShapeUtil } from '@tldraw/tldraw';
 import { TLNoteShape } from '@tldraw/editor';
+import { NoteShapeOptions, NoteShapeUtil } from '@tldraw/tldraw';
 import { NoteComponent } from './component';
 import { noteShapeMigrations, noteShapeProps } from './TLNoteShape';
 

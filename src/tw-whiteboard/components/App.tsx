@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { StrictMode, useCallback, useEffect, useState } from 'react';
 
 import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
@@ -13,9 +12,9 @@ import '@tldraw/tldraw/tldraw.css';
 import { assetUrls } from '../tldraw/assets/formatedAssets';
 import { getComponents, getOverrides } from '../tldraw/overrides';
 import { NoteTool } from '../tldraw/shapes/note/tool';
-import { WIkiTextTLNoteShapeUtil as NoteShapeUtil } from '../tldraw/shapes/note/util';
+import { WIkiTextTLNoteShapeUtil as NoteShapeUtility } from '../tldraw/shapes/note/util';
 import { TranscludeTool } from '../tldraw/shapes/transclude/tool';
-import { TranscludeShapeUtil } from '../tldraw/shapes/transclude/util';
+import { TranscludeShapeUtil as TranscludeShapeUtility } from '../tldraw/shapes/transclude/util';
 import { PropsContext } from '../utils/context';
 
 /** every ms to save */
@@ -50,8 +49,10 @@ export interface TDExportJSON {
   updatedCount?: number;
 }
 
-const extraTools: TLStateNodeConstructor[] = [NoteTool, TranscludeTool];
-const extraShapeUtils = [NoteShapeUtil, TranscludeShapeUtil];
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+const extraTools: TLStateNodeConstructor[] = [NoteTool, TranscludeTool] as any;
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+const extraShapeUtilities = [NoteShapeUtility, TranscludeShapeUtility] as any;
 
 export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
   const {
@@ -88,13 +89,21 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
     onReady();
     if (initialTiddlerText) {
       // Backward-compat: migrate legacy shape type 'wikitext-note' -> 'note' before parsing
-      const migratedText = initialTiddlerText.replace(/"wikitext-note"/g, '"note"');
+      // Also strip the old subType from schema.recordVersions so tldraw's validator doesn't reject it
+      const migratedText = initialTiddlerText
+        // Remove "wikitext-note":N from schema subTypeVersions (old format)
+        .replace(/,\s*"wikitext-note"\s*:\s*\d+/g, '')
+        .replace(/"wikitext-note"\s*:\s*\d+\s*,/g, '')
+        // Remove "com.tldraw.shape.wikitext-note":N from new schema format
+        .replace(/,\s*"com\.tldraw\.shape\.wikitext-note"\s*:\s*\d+/g, '')
+        .replace(/"com\.tldraw\.shape\.wikitext-note"\s*:\s*\d+\s*,/g, '')
+        // Replace all remaining occurrences to just "note"
+        .replace(/"wikitext-note"/g, '"note"');
       const parseFileResult = parseTldrawJsonFile({
         schema: newEditor.store.schema,
         json: migratedText,
       });
       if (!parseFileResult.ok) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
         const errorMessage = `$:/plugins/linonetwo/tw-whiteboard load tiddler ${currentTiddler} failed, type: ${parseFileResult.error.type}, cause ${
           JSON.stringify(parseFileResult.error)
         },\ntext:\n${initialTiddlerText}`;
@@ -111,7 +120,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
       // FIXME: tldraw haven't export these types, but they are useable https://github.com/tldraw/tldraw/issues/1939
       /* eslint-disable @typescript-eslint/no-unsafe-call */
       /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-      /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
       /* eslint-disable @typescript-eslint/no-unsafe-argument */
       // @ts-expect-error Property 'atomic' does not exist on type 'TLStore'.ts(2339)
       newEditor.store.atomic(() => {
@@ -137,7 +146,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
         newEditor.updateInstanceState({ isFocused });
         /* eslint-enable @typescript-eslint/no-unsafe-call */
         /* eslint-enable @typescript-eslint/no-unsafe-assignment */
-        /* eslint-enable @typescript-eslint/no-unsafe-member-access */
+
         /* eslint-enable @typescript-eslint/no-unsafe-argument */
       });
     }
@@ -164,7 +173,6 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
         onSave(currentTiddler!, await serializeTldrawJson(editor));
       })();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTiddler, editor]);
 
   const deferSave = useCallback(
@@ -194,6 +202,7 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
     const handleChange = debounce(deferSave, debounceSaveTime);
     const dispose = editor.store.listen(handleChange, { scope: 'document' });
     return () => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!editor) return;
       deferSave();
       dispose();
@@ -206,9 +215,9 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
         <ParentWidgetContext.Provider value={parentWidget}>
           <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
             <Tldraw
-              persistenceKey={currentTiddler ?? 'temp-without-title'}
               onMount={onMount}
-              shapeUtils={extraShapeUtils}
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              shapeUtils={extraShapeUtilities}
               tools={extraTools}
               autoFocus={false}
               inferDarkMode

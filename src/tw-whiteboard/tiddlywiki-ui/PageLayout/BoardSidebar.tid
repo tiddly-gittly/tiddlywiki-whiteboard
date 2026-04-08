@@ -1,0 +1,105 @@
+title: $:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/BoardSidebar
+
+\import [subfilter{$:/core/config/GlobalImportFilter}]
+\define lingo-base() $:/plugins/linonetwo/tw-whiteboard/language/
+\procedure temp-tiddler() $:/state/Whiteboard/PageLayout/create-tiddler
+\function temp-tiddler-draft-title() [<temp-tiddler>get[draft.title]]
+\function temp-tiddler-tags() [<temp-tiddler>get[tags]]
+\function sidebar-open() [{$:/state/Whiteboard/PageLayout/sidebarOpen}]
+\function sidebar-mode() [{$:/state/Whiteboard/PageLayout/sidebarMode}]
+
+<$reveal type="match" state="$:/state/Whiteboard/PageLayout/sidebarOpen" text="yes">
+
+<!-- Mobile overlay mask (click anywhere to close) -->
+<$button class="tw-whiteboard-sidebar-overlay tw-whiteboard-sidebar-overlay-btn">
+  <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/sidebarOpen" text="no"/>
+</$button>
+
+<div class="tw-whiteboard-sidebar tw-whiteboard-sidebar--open">
+
+  <!-- Header -->
+  <div class="tw-whiteboard-sidebar-header">
+    <span class="tw-whiteboard-sidebar-title">
+      <$reveal type="match" state="$:/state/Whiteboard/PageLayout/sidebarMode" text="create">
+        {{$:/language/Buttons/NewTiddler/Caption}}
+      </$reveal>
+      <$reveal type="nomatch" state="$:/state/Whiteboard/PageLayout/sidebarMode" text="create">
+        <<lingo SwitchBoardTiddler>>
+      </$reveal>
+    </span>
+    <$button class="tw-whiteboard-sidebar-close-btn" tooltip="Close">
+      <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/sidebarOpen" text="no"/>
+      {{$:/core/images/close-button}}
+    </$button>
+  </div>
+
+  <!-- Content -->
+  <div class="tw-whiteboard-sidebar-content">
+
+    <!-- CREATE MODE -->
+    <$reveal type="match" state="$:/state/Whiteboard/PageLayout/sidebarMode" text="create">
+      <div class="tw-whiteboard-sidebar-create-container">
+
+        <!-- Use core EditTemplate/title for the draft tiddler: gets duplicate-title warnings automatically -->
+        <$tiddler tiddler=<<temp-tiddler>>>
+          {{||$:/core/ui/EditTemplate/title}}
+        </$tiddler>
+
+        <div class="tw-whiteboard-sidebar-create-actions">
+          <!-- Confirm: create the tiddler -->
+          <$button
+            class="tw-whiteboard-sidebar-create-confirm"
+            tooltip={{$:/language/Buttons/NewTiddler/Caption}}
+            disabled={{{ [<temp-tiddler>get[draft.title]is[blank]then[yes]] }}}
+          >
+            <$action-createtiddler $basetitle=<<temp-tiddler-draft-title>> tags=<<temp-tiddler-tags>> type="application/vnd.tldraw+json">
+              <$action-deletetiddler $tiddler=<<temp-tiddler>>/>
+              <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/focusedTiddler" text=<<createTiddler-title>>/>
+              <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/sidebarOpen" text="no"/>
+            </$action-createtiddler>
+            {{$:/core/images/done-button}}
+          </$button>
+          <!-- Cancel: delete draft and close -->
+          <$button
+            class="tw-whiteboard-sidebar-create-cancel"
+            tooltip={{$:/language/Cancel}}
+          >
+            <$action-deletetiddler $tiddler=<<temp-tiddler>>/>
+            <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/sidebarOpen" text="no"/>
+            {{$:/core/images/close-button}}
+          </$button>
+        </div>
+
+      </div>
+    </$reveal>
+
+    <!-- SWITCH MODE -->
+    <$reveal type="nomatch" state="$:/state/Whiteboard/PageLayout/sidebarMode" text="create">
+      <ul class="tw-whiteboard-sidebar-board-list">
+        <$list
+          filter="[all[shadows+tiddlers]field:type[application/vnd.tldraw+json]sort[modified]] -[[$:/plugins/linonetwo/tw-whiteboard/examples/WhiteBoardTutorial]]"
+          emptyMessage="<li class='tw-whiteboard-sidebar-board-empty'>No whiteboards found</li>"
+        >
+          <$set name="isActive" filter="[<currentTiddler>match{$:/state/Whiteboard/PageLayout/focusedTiddler}]">
+          <li class={{{ [<isActive>!is[blank]then[tw-whiteboard-sidebar-board-item tw-whiteboard-sidebar-board-item--active]] ~[[tw-whiteboard-sidebar-board-item]] }}}>
+            <$button class="tw-whiteboard-sidebar-board-item-btn">
+              <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/focusedTiddler" text=<<currentTiddler>>/>
+              <$action-setfield $tiddler="$:/state/Whiteboard/PageLayout/sidebarOpen" text="no"/>
+              <span class="tw-whiteboard-sidebar-board-item-icon">{{$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/whiteboard-icon}}</span>
+              <span class="tw-whiteboard-sidebar-board-item-title">
+                <$transclude field="caption"><$view field="title"/></$transclude>
+              </span>
+              <$reveal type="match" state="$:/state/Whiteboard/PageLayout/focusedTiddler" text=<<currentTiddler>>>
+                <span class="tw-whiteboard-sidebar-board-item-check">{{$:/core/images/done-button}}</span>
+              </$reveal>
+            </$button>
+          </li>
+          </$set>
+        </$list>
+      </ul>
+    </$reveal>
+
+  </div>
+</div>
+
+</$reveal>

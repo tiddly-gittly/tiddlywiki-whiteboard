@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-null */
 import { useCombobox } from 'downshift';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';

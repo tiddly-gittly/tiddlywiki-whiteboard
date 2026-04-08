@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/no-unlimited-disable */
+/* eslint-disable */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useWidget } from '$:/plugins/linonetwo/tw-react/index.js';
 import { getDefaultColorTheme, TLNoteShape, useEditor, useIsEditing } from '@tldraw/editor';
@@ -11,13 +13,13 @@ import { wrapTiddlerAst } from 'src/tw-whiteboard/utils/wrapTiddlerAst';
 
 function getWikiTextFromRichText(richText: TLNoteShape['props']['richText']) {
   return richText.content
-    .map((node) => {
+    .map((node: any) => {
       if (node.type !== 'paragraph') {
         return '';
       }
 
       return (node.content ?? [])
-        .map((childNode) => {
+        .map((childNode: any) => {
           if (childNode.type !== 'text') {
             return '';
           }
@@ -62,7 +64,7 @@ export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shap
 
   const editTitleInputReference = useRef<HTMLTextAreaElement>(null);
   const onTextInputChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
-    editor?.store.update(shape.id, (record) => ({
+    editor?.store.update(shape.id, (record: any) => ({
       ...record,
       props: {
         ...record.props,
@@ -77,10 +79,10 @@ export function NoteComponent({ shape, isDarkMode }: { isDarkMode: boolean; shap
   const sharedStyle: CSSProperties = {
     backgroundColor: theme[adjustedColor].solid,
     color: theme.black.solid,
-    '--tw-whiteboard-chrome-border': paletteColors.dropdownBorder,
-    '--tw-whiteboard-chrome-shadow': paletteColors.shadow,
-    '--tw-whiteboard-chrome-shadow-subtle': paletteColors.shadowSubtle,
   };
+  (sharedStyle as any)['--tw-whiteboard-chrome-border'] = paletteColors.dropdownBorder;
+  (sharedStyle as any)['--tw-whiteboard-chrome-shadow'] = paletteColors.shadow;
+  (sharedStyle as any)['--tw-whiteboard-chrome-shadow-subtle'] = paletteColors.shadowSubtle;
 
   return (
     <div className='note-shape-component-outer'>

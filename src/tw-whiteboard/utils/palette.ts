@@ -93,14 +93,12 @@ export function getCurrentPaletteColors(): IPaletteColors {
   const paletteTitle = $tw.wiki.getTiddlerText('$:/palette') ?? FALLBACK_PALETTE_TITLE;
   const foreground = resolvePaletteColor('foreground', paletteTitle) || '#333333';
   const mutedForeground = resolvePaletteColor('muted-foreground', paletteTitle) || foreground;
-  const dropdownBackground =
-    resolvePaletteColor('dropdown-background', paletteTitle) ||
+  const dropdownBackground = resolvePaletteColor('dropdown-background', paletteTitle) ||
     resolvePaletteColor('tiddler-editor-background', paletteTitle) ||
     resolvePaletteColor('background', paletteTitle) ||
     '#ffffff';
   const dropdownBorder = resolvePaletteColor('dropdown-border', paletteTitle) || mutedForeground;
-  const selectionBackground =
-    resolvePaletteColor('selection-background', paletteTitle) ||
+  const selectionBackground = resolvePaletteColor('selection-background', paletteTitle) ||
     resolvePaletteColor('dropdown-tab-background-selected', paletteTitle) ||
     colorWithAlpha(foreground, 0.12);
   const selectionForeground = resolvePaletteColor('selection-foreground', paletteTitle) || foreground;

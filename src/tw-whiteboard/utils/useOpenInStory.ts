@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
 import { useCallback, useContext } from 'react';
 

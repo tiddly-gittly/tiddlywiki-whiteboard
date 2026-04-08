@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 (function whiteboardWidgetIIFE() {
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!$tw.browser) {
     return;
   }
@@ -8,7 +7,7 @@
   try {
     const components = require('$:/plugins/linonetwo/tw-whiteboard/widget.js');
     const { whiteboard } = components;
-    /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
     exports.whiteboard = whiteboard;
     exports['edit-whiteboard'] = whiteboard;
   } catch (error) {

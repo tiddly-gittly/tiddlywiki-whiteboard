@@ -33,3 +33,277 @@ div.tw-whiteboard-layout-container {
   width: 100%;
   font-size: 2em;
 }
+
+/* ============================================================
+   Board Sidebar
+   ============================================================ */
+
+/* Overlay – transparent on desktop, clickable strip on mobile */
+.tw-whiteboard-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: transparent;
+  /* The overlay itself is transparent; on mobile only the right strip is visible */
+}
+/* The overlay contains a single full-size invisible button to catch clicks */
+.tw-whiteboard-sidebar-overlay-btn,
+.tw-whiteboard-sidebar-overlay > button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+/* Sidebar panel */
+.tw-whiteboard-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 320px;
+  max-width: calc(100vw - 20px);
+  background: var(--tiddlywiki-background-color, #fff);
+  color: var(--tiddlywiki-foreground-color, #1a1a1a);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.18);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-right: 1px solid var(--tiddlywiki-muted-foreground-color, #e0e0e0);
+}
+
+.tw-whiteboard-sidebar--open {
+  transform: translateX(0);
+}
+
+/* Header */
+.tw-whiteboard-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 12px 10px 16px;
+  border-bottom: 1px solid var(--tiddlywiki-muted-foreground-color, #e0e0e0);
+  flex-shrink: 0;
+  min-height: 52px;
+}
+
+.tw-whiteboard-sidebar-title {
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.tw-whiteboard-sidebar-close-btn,
+.tw-whiteboard-sidebar-close-btn.tc-btn-invisible {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 4px !important;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-left: 8px;
+  opacity: 0.7;
+  transition: opacity 0.15s, background 0.15s;
+  line-height: 1;
+}
+.tw-whiteboard-sidebar-close-btn:hover {
+  opacity: 1;
+  background: var(--tiddlywiki-muted-foreground-color, #e0e0e0) !important;
+}
+.tw-whiteboard-sidebar-close-btn svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Content area */
+.tw-whiteboard-sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+/* Board list */
+.tw-whiteboard-sidebar-board-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tw-whiteboard-sidebar-board-empty {
+  padding: 20px 16px;
+  opacity: 0.6;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.tw-whiteboard-sidebar-board-item {
+  display: flex;
+  align-items: center;
+  margin: 2px 6px;
+}
+
+.tw-whiteboard-sidebar-board-item-btn,
+.tw-whiteboard-sidebar-board-item-btn.tc-btn-invisible {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px !important;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.12s;
+  user-select: none;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  background: none !important;
+  border: none !important;
+  color: inherit !important;
+}
+
+.tw-whiteboard-sidebar-board-item-btn:hover {
+  background: rgba(0,0,0,0.06) !important;
+}
+
+.tw-whiteboard-sidebar-board-item--active .tw-whiteboard-sidebar-board-item-btn {
+  background: rgba(59, 130, 246, 0.12) !important;
+  font-weight: 600;
+}
+
+.tw-whiteboard-sidebar-board-item-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+.tw-whiteboard-sidebar-board-item-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.tw-whiteboard-sidebar-board-item-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tw-whiteboard-sidebar-board-item-check {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #3b82f6;
+}
+.tw-whiteboard-sidebar-board-item-check svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Create mode */
+.tw-whiteboard-sidebar-create-container {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Override core EditTemplate/title styles inside sidebar */
+.tw-whiteboard-sidebar-create-container .tc-titlebar.tc-edit-texteditor {
+  width: 100%;
+  font-size: 1rem;
+  padding: 8px 10px;
+  border: 1px solid var(--tiddlywiki-muted-foreground-color, #d0d0d0);
+  border-radius: 6px;
+  box-sizing: border-box;
+  background: var(--tiddlywiki-background-color, #fff);
+  color: var(--tiddlywiki-foreground-color, #1a1a1a);
+}
+.tw-whiteboard-sidebar-create-container .tc-titlebar.tc-edit-texteditor:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -1px;
+}
+
+/* Warning message (duplicate title) from core template */
+.tw-whiteboard-sidebar-create-container .tc-message-box {
+  font-size: 0.85rem;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: rgba(255, 200, 0, 0.15);
+  border: 1px solid rgba(200, 150, 0, 0.4);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.tw-whiteboard-sidebar-create-container .tc-message-box svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+}
+
+.tw-whiteboard-sidebar-create-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.tw-whiteboard-sidebar-create-confirm,
+.tw-whiteboard-sidebar-create-cancel,
+.tw-whiteboard-sidebar-create-confirm.tc-btn-invisible,
+.tw-whiteboard-sidebar-create-cancel.tc-btn-invisible {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  background: none !important;
+  border: 1px solid var(--tiddlywiki-muted-foreground-color, #d0d0d0) !important;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 6px 10px !important;
+  transition: background 0.15s, opacity 0.15s;
+}
+.tw-whiteboard-sidebar-create-confirm:hover,
+.tw-whiteboard-sidebar-create-cancel:hover {
+  background: rgba(0,0,0,0.06) !important;
+}
+.tw-whiteboard-sidebar-create-confirm[disabled],
+.tw-whiteboard-sidebar-create-confirm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.tw-whiteboard-sidebar-create-confirm svg,
+.tw-whiteboard-sidebar-create-cancel svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Mobile: sidebar covers full screen, right 20px strip is the overlay/mask */
+@media (max-width: 600px) {
+  .tw-whiteboard-sidebar {
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+  }
+
+  .tw-whiteboard-sidebar-overlay {
+    /* full-screen backdrop */
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .tw-whiteboard-sidebar-overlay-btn,
+  .tw-whiteboard-sidebar-overlay > button {
+    /* let clicks on the overlay through to the button which closes sidebar */
+    cursor: pointer;
+  }
+}

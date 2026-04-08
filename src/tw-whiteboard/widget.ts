@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import 'requestidlecallback-polyfill';
 import { widget as Widget } from '$:/plugins/linonetwo/tw-react/widget.js';
 import { IChangedTiddlers } from 'tiddlywiki';
@@ -91,7 +89,7 @@ class TldrawWhiteBoardWidget extends Widget<IAppProps> {
     }
     // prevent save after destroy. On react unmount, emergency save in its willUnmount will try to call onSave. But when in story view and it is draft, this will cause save draft while tw is trying to delete draft. Cause draft not delete after end editing.
     if (this.isDraft && !this.ready) return;
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+
     const previousTiddler = $tw.wiki.getTiddler(title);
     // prevent useless call to addTiddler
     if (previousTiddler?.fields.text !== newText) {

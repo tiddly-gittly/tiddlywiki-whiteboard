@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { renderSVGTiddler } from 'src/tw-whiteboard/utils/renderSVGTiddler';
 import { getAssetUrlsByMetaUrl } from './getAssetUrlsByMetaUrl';
 

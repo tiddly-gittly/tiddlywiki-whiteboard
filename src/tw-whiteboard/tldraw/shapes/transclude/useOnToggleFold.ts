@@ -6,7 +6,7 @@ const DEFAULT_FOLD_HEIGHT = 40;
 export function useOnToggleFold(shape: TranscludeShape) {
   const editor = useEditor();
   const onToggleFold = useCallback(() => {
-    editor?.store.update(shape.id, (record) => {
+    editor?.store.update(shape.id, (record: any) => {
       const oldProps = record.props as TranscludeShape['props'];
       const oldMeta = record.meta as TranscludeShape['meta'];
       return ({

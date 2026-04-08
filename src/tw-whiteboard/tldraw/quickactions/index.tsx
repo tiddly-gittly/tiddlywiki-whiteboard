@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { DefaultQuickActions, DefaultQuickActionsContent, TldrawUiMenuItem } from '@tldraw/tldraw';
 import { useContext } from 'react';
 import { PropsContext } from 'src/tw-whiteboard/utils/context';

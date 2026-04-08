@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/no-null */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useMemo } from 'react';
 import { lingo } from 'src/tw-whiteboard/utils/lingo';
 import { renderSVGTiddler } from 'src/tw-whiteboard/utils/renderSVGTiddler';
