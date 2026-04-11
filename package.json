@@ -64,5 +64,10 @@
     "react-dom": "^18.3.1",
     "tiddlywiki": "^5.3.8",
     "tiddlywiki-plugin-dev": "^0.4.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild-plugin-browserslist": "1.0.2"
+    }
   }
 }
