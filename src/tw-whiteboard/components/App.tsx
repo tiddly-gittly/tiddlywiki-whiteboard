@@ -1,4 +1,4 @@
-import { StrictMode, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
 import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, Tldraw, TLRecord } from '@tldraw/tldraw';
@@ -210,24 +210,22 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
   }, [deferSave, editor]);
 
   return (
-    <StrictMode>
-      <PropsContext.Provider value={props}>
-        <ParentWidgetContext.Provider value={parentWidget}>
-          <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
-            <Tldraw
-              onMount={onMount}
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              shapeUtils={extraShapeUtilities}
-              tools={extraTools}
-              autoFocus={false}
-              inferDarkMode
-              assetUrls={assetUrls}
-              overrides={useMemo(() => getOverrides(props), [currentTiddler])}
-              components={useMemo(() => getComponents(props), [currentTiddler])}
-            />
-          </div>
-        </ParentWidgetContext.Provider>
-      </PropsContext.Provider>
-    </StrictMode>
+    <PropsContext.Provider value={props}>
+      <ParentWidgetContext.Provider value={parentWidget}>
+        <div className='tw-whiteboard-tldraw-container' style={{ height, width }}>
+          <Tldraw
+            onMount={onMount}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            shapeUtils={extraShapeUtilities}
+            tools={extraTools}
+            autoFocus={false}
+            inferDarkMode
+            assetUrls={assetUrls}
+            overrides={useMemo(() => getOverrides(props), [currentTiddler])}
+            components={useMemo(() => getComponents(props), [currentTiddler])}
+          />
+        </div>
+      </ParentWidgetContext.Provider>
+    </PropsContext.Provider>
   );
 }
