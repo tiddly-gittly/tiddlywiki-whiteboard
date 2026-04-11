@@ -1,4 +1,4 @@
-import { StrictMode, useCallback, useEffect, useState } from 'react';
+import { StrictMode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { type IDefaultWidgetProps, ParentWidgetContext } from '$:/plugins/linonetwo/tw-react/index.js';
 import { debounce, Editor, parseTldrawJsonFile, serializeTldrawJson, StoreSnapshot, Tldraw, TLRecord } from '@tldraw/tldraw';
@@ -222,8 +222,8 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
               autoFocus={false}
               inferDarkMode
               assetUrls={assetUrls}
-              overrides={getOverrides(props)}
-              components={getComponents(props)}
+              overrides={useMemo(() => getOverrides(props), [currentTiddler])}
+              components={useMemo(() => getComponents(props), [currentTiddler])}
             />
           </div>
         </ParentWidgetContext.Provider>
