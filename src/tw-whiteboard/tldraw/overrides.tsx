@@ -10,7 +10,7 @@ import {
   useTools,
 } from '@tldraw/tldraw';
 import type { IAppProps } from '../components/App';
-import { makeCustomMainMenu } from './mainmenu';
+import { CustomMainMenu } from './mainmenu';
 import { CustomQuickActions } from './quickactions';
 import { NoteTool } from './shapes/note/tool';
 import { TranscludeTool } from './shapes/transclude/tool';
@@ -66,7 +66,7 @@ export const getOverrides = (props: IAppProps): TLUiOverrides => ({
   },
 });
 
-export const getComponents = (appProps: IAppProps & { parentWidget?: any }) => {
+export const getComponents = (appProps: IAppProps) => {
   const components: TLComponents = {
     Toolbar: (props) => {
       const inLayout = $tw.wiki.getTiddlerText('$:/layout') === '$:/plugins/linonetwo/tw-whiteboard/tiddlywiki-ui/PageLayout/WhiteBoard';
@@ -91,7 +91,7 @@ export const getComponents = (appProps: IAppProps & { parentWidget?: any }) => {
       );
     },
     QuickActions: CustomQuickActions,
-    MainMenu: makeCustomMainMenu(appProps),
+    MainMenu: CustomMainMenu,
   };
   return components;
 };
