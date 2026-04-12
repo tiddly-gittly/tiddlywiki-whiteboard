@@ -3,6 +3,12 @@ type: text/vnd.tiddlywiki
 
 ! Changelog
 
+!! v1.9.0
+
+* Update dependencies and fix the TypeScript config.
+* Keep whiteboard menu items clickable across multiple boards.
+* Stop toolbar hover from triggering unnecessary tldraw overflow recalculations that caused ResizeObserver loop browser errors.
+
 !! v1.8.3
 
 * Add jasmine unit tests covering plugin registration, file-type, migration regex, sidebar state, and create flow.

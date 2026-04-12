@@ -1,0 +1,39 @@
+diff --git a/dist-cjs/lib/ui/components/Toolbar/OverflowingToolbar.js b/dist-cjs/lib/ui/components/Toolbar/OverflowingToolbar.js
+index 022c8a07091830ae093de6a4550fdcce0ffe3ffd..b42347cf6b22554b96c207e1fb12786f66771af0 100644
+--- a/dist-cjs/lib/ui/components/Toolbar/OverflowingToolbar.js
++++ b/dist-cjs/lib/ui/components/Toolbar/OverflowingToolbar.js
+@@ -193,8 +193,6 @@ function OverflowingToolbar({
+     mutationObserver.observe(mainToolsRef.current, {
+       childList: true,
+       subtree: true,
+-      attributes: true,
+-      characterData: true
+     });
+     const sizingParent = findParentWithClassName(mainToolsRef.current, sizingParentClassName);
+     const resizeObserver = new ResizeObserver(onDomUpdate);
+diff --git a/dist-esm/lib/ui/components/Toolbar/OverflowingToolbar.mjs b/dist-esm/lib/ui/components/Toolbar/OverflowingToolbar.mjs
+index 5b8d1a5eec6cdb90a6133f62c9e69609ae68f374..7734f61b33560719619b56cc2183c0e45a06fe46 100644
+--- a/dist-esm/lib/ui/components/Toolbar/OverflowingToolbar.mjs
++++ b/dist-esm/lib/ui/components/Toolbar/OverflowingToolbar.mjs
+@@ -171,8 +171,6 @@ function OverflowingToolbar({
+     mutationObserver.observe(mainToolsRef.current, {
+       childList: true,
+       subtree: true,
+-      attributes: true,
+-      characterData: true
+     });
+     const sizingParent = findParentWithClassName(mainToolsRef.current, sizingParentClassName);
+     const resizeObserver = new ResizeObserver(onDomUpdate);
+diff --git a/src/lib/ui/components/Toolbar/OverflowingToolbar.tsx b/src/lib/ui/components/Toolbar/OverflowingToolbar.tsx
+index 5f99e449cee2f7ec08fa05e66acdbb4be7a7277e..6313a73ad1d48c573bf0b153876ce4c978b4f332 100644
+--- a/src/lib/ui/components/Toolbar/OverflowingToolbar.tsx
++++ b/src/lib/ui/components/Toolbar/OverflowingToolbar.tsx
+@@ -240,8 +240,6 @@ export function OverflowingToolbar({
+ 		mutationObserver.observe(mainToolsRef.current, {
+ 			childList: true,
+ 			subtree: true,
+-			attributes: true,
+-			characterData: true,
+ 		})
+ 
+ 		const sizingParent = findParentWithClassName(mainToolsRef.current, sizingParentClassName)
