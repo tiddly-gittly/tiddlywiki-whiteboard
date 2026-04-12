@@ -75,6 +75,26 @@ export function App(props: IAppProps & IDefaultWidgetProps): React.JSX.Element {
   const [editor, setEditor] = useState<Editor | undefined>(undefined);
 
   useEffect(() => {
+    type PatchedWindow = Window & { __twWhiteboardResizeObserverErrorPatched?: boolean };
+    const patchedWindow = window as PatchedWindow;
+    if (patchedWindow.__twWhiteboardResizeObserverErrorPatched) return;
+    patchedWindow.__twWhiteboardResizeObserverErrorPatched = true;
+
+    const isResizeObserverNoise = (message?: string | null) =>
+      message === 'ResizeObserver loop completed with undelivered notifications.'
+      || message === 'ResizeObserver loop limit exceeded';
+
+    const onWindowError = (event: ErrorEvent) => {
+      if (isResizeObserverNoise(event.message)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    };
+
+    window.addEventListener('error', onWindowError);
+  }, []);
+
+  useEffect(() => {
     if (!editor) return;
     // set configs
     editor.user.updateUserPreferences({ colorScheme: isDarkMode ? 'dark' : 'light', locale });
