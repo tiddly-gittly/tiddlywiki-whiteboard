@@ -11,3 +11,7 @@
   border-radius: unset;
   background-color: unset;
 }
+
+.tw-whiteboard-tldraw-container .tlui-menu-click-capture {
+  pointer-events: none;
+}
