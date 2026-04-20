@@ -18,7 +18,10 @@
     "update": "npm-check-updates -u && dprint config update",
     "new": "tiddlywiki-plugin-dev new",
     "build:library": "npm run clean && tiddlywiki-plugin-dev build --library --output dist/library",
-    "publish:offline": "npm run clean && tiddlywiki-plugin-dev publish --offline"
+    "publish:offline": "npm run clean && tiddlywiki-plugin-dev publish --offline",
+    "test:playwright": "playwright test",
+    "test:playwright:headed": "playwright test --headed",
+    "test:playwright:debug": "playwright test --debug"
   },
   "engines": {
     "node": ">=20"
@@ -52,7 +55,9 @@
     "ts-node": "^10.9.2",
     "tw-react": "^0.6.4",
     "tw5-typed": "^1.1.5",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "@playwright/test": "^1.59.1",
+    "postcss": "^8.5.9"
   },
   "dependencies": {
     "@tldraw/assets": "4.4.0",
@@ -63,12 +68,9 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tiddlywiki": "^5.3.8",
-    "tiddlywiki-plugin-dev": "^0.5.3"
+    "tiddlywiki-plugin-dev": "^0.5.7"
   },
   "pnpm": {
-    "overrides": {
-      "esbuild-plugin-browserslist": "1.0.2"
-    },
     "patchedDependencies": {
       "tldraw@4.4.0": "patches/tldraw@4.4.0.patch"
     }
